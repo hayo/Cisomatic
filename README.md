@@ -41,8 +41,8 @@ Eén motor, en per formulier een map.
 ```
 index.php                 de voordeur: een lijst van de formulieren
 config.php                welke formulieren, tijdzone, limieten, bewaren
-assets/app.css            vormgeving van voordeur en formulieren, op de tokens van de site
-assets/standalone.css     de tokens en een basis voor de losse pagina
+assets/app.css            vormgeving van voordeur en formulieren, op tokens
+assets/standalone.css     de huisstijl: de tokens en een basis voor de pagina
 assets/app.js             de motor in de browser: stappen, zichtbaarheid, rijen, bewaren, inladen
 src/bootstrap.php         laadt alles; cm_config(), cm_asset(), cm_formulier(), cm_werkplek(), cm_verwerk()
 src/helpers.php           escapen, niveaus, datum, opsommingen, bestandsnaam
@@ -54,7 +54,7 @@ src/opslag.php            wegschrijven naar 'bewaar_map', als dat aan staat
 src/pagina.php            de inhoud: formulier of resultaat, als <article>
 src/resultaat.php         de pagina na het versturen
 src/kiezer.php            de voordeur als <article>
-src/document.php          html, head en body eromheen, voor de losse pagina
+src/document.php          html, head en body eromheen, met app.css en standalone.css
 bewaard/                  opgeslagen documenten, als bewaren aan staat
 
 <formulier>/index.php         roept de motor aan met de naam van de map
@@ -71,19 +71,14 @@ De motorfuncties heten `cm_`, die van de quickscan `qs_`, die van quickscan 2.0
 van de AI scan `ai_`, `gai_` voor generatieve AI, en die van het CIO oordeel
 `co_`. Een formulier gebruikt de motor; de motor kent geen formulier bij naam.
 
-## Drie manieren om het te draaien
+## Draaien
 
-**Binnen hayobethlehem.nl**, op `/forge/cisomatic` en
-`/forge/cisomatic/<formulier>`. `parser.php` vindt `index.php` zoals elke
-andere inhoudsmap, en laadt `assets/app.css` als sectiestylesheet.
+Kopieer de map naar een server met PHP 8.1 of nieuer, en open `index.php`. De
+map moet onder de documentroot staan, want daaruit leidt `cm_asset()` de URL's
+af. Elke pagina is een hele pagina met de neutrale opmaak van
+`assets/standalone.css`.
 
-**Los op dezelfde site**, met `/standalone` achter het adres. `.htaccess` stuurt
-dat rechtstreeks naar `index.php`, dat dan een eigen pagina maakt met
-`assets/standalone.css`. De oude adressen `/forge/quickscan` en `/forge/dpia`
-sturen door.
-
-**Op een andere server.** Kopieer de map en open `index.php`. De map moet onder
-de documentroot staan, want daaruit leidt `cm_asset()` de URL's af.
+Lokaal: `php -S localhost:8000` in de map, en dan `http://localhost:8000/`.
 
 ## Een formulier toevoegen
 
@@ -196,20 +191,20 @@ organisatie zonder lijst; dan vraagt het formulier om een toelichting.
 
 ## Opmaak
 
-`assets/app.css` gebruikt de tokennamen van de site: `--ink`, `--pill-bg`,
-`--line`, `--line-soft`, `--panel`, `--page`, `--text`, `--muted`,
-`--muted-soft`, `--link`, `--on-ink`, `--pill-ink`, `--radius`, `--font-ui` en
-`--ui-lg`, `--ui-md`, `--ui-sm`. Binnen de site definieert `style.css` ze, los
-van de site doet `standalone.css` dat. Een eigen huisstijl is dus één bestand
-aanpassen: `standalone.css`.
+`assets/app.css` gebruikt alleen tokens: `--ink`, `--ink-hover`, `--pill-bg`,
+`--pill-bg-hover`, `--line`, `--line-soft`, `--panel`, `--page`, `--text`,
+`--muted`, `--muted-soft`, `--link`, `--on-ink`, `--pill-ink`, `--radius`,
+`--font-ui` en `--ui-lg`, `--ui-md`, `--ui-sm`. `standalone.css` definieert ze,
+voor licht en donker, en geeft de pagina een basis. Een eigen huisstijl is dus
+één bestand aanpassen: `standalone.css`.
 
 Het formulier heeft geen klassen. `app.css` kiest op element en op de
 data-attributen die `app.js` toch al nodig heeft. Alles hangt onder
 `#cisomatic`; wat bij één formulier hoort, kiest ook op
 `data-formulier`.
 
-De Content Security Policy van de site staat geen inline script of stijl toe.
-Daarom staat er geen `onclick` of `style` in de opmaak.
+`src/document.php` stuurt een Content Security Policy mee die geen inline
+script of stijl toestaat. Daarom staat er geen `onclick` of `style` in de opmaak.
 
 ## Invullen
 
@@ -232,9 +227,8 @@ bewust geen server-endpoint dat opgeslagen antwoorden kan openen.
 
 ## Werkplek
 
-Achter de login van de utilities draaien dezelfde formulieren op
-`/utilities/cisomatic`. Daar bewaart de server het concept, in de tabel
-`cisomatic_documents`, met een lijst om verder te gaan en een archief. De host
+Een host, bijvoorbeeld achter een login, kan het concept op de server bewaren,
+met een lijst om verder te gaan en een archief. De host
 roept `cm_werkplek()` aan vóór `cm_verwerk()`, met de antwoorden waarmee het
 formulier opent, verborgen velden zoals het CSRF-token, en het adres van de
 lijst. Het formulier krijgt dan `data-werkplek` en een knop "Bewaren".
@@ -256,13 +250,12 @@ het klembord als opgemaakte tekst.
 
 Met `logo` staat er een beeld bovenaan elke pagina van het `.odt`-bestand,
 tegen de bovenrand. `midden` zet het lint van een rijkslogo op het midden van
-de pagina. Het logo staat standaard uit. De config staat in git, en de site is
-openbaar: wie het Rijkslogo hier aanzet, laat elke bezoeker documenten met dat
-logo maken. Zet het dus alleen aan op een eigen installatie binnen het Rijk.
+de pagina. Het logo staat standaard uit. Op een openbare installatie laat wie
+het Rijkslogo aanzet elke bezoeker documenten met dat logo maken. Zet het dus
+alleen aan op een eigen installatie binnen het Rijk.
 
 `config.php` heeft geen geheimen. `bewaar_map` staat op `null`: de server
-bewaart niets. Op hayobethlehem.nl moet dat zo blijven, want de
-privacyverklaring belooft dat een bezoek niets vastlegt. Zet je hem op een map,
+bewaart niets. Zet je hem op een map,
 bijvoorbeeld `__DIR__ . '/bewaard'`, dan komen er per document twee bestanden
 in: het `.odt`-bestand en de antwoorden als JSON, met datum, tijd, formulier en
 projectnaam in de naam. De projectnaam wordt teruggebracht tot kleine letters,
