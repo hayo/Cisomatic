@@ -3,8 +3,8 @@
 /**
  * De inhoud: het formulier, of het document na het versturen.
  *
- * Alleen een article, zonder html, head of body. Die levert de site eromheen,
- * of src/document.php als het formulier zelfstandig draait.
+ * Alleen een article, zonder html, head of body. Die levert src/document.php
+ * eromheen.
  *
  * Verwacht $formulier, $antwoorden, $fouten, $uitkomst, $blokken, $opgeslagen en $opslagFout.
  */
