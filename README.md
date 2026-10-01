@@ -4,7 +4,7 @@ Webformulieren voor het papierwerk rond een IT-project. Je kiest een formulier,
 beantwoordt de vragen stap voor stap, en krijgt meteen een document:
 op de pagina, en als OpenDocument-tekst (`.odt`).
 
-demo: https://hayobethlehem.nl/forge/cisomatic
+Demo: https://hayobethlehem.nl/forge/cisomatic
 
 Er zijn nu negen formulieren:
 
