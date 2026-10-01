@@ -1,0 +1,798 @@
+#cisomatic {
+    --fout: #a3281f;
+    --waarschuwing: #8a5a10;
+    line-height: 1.6;
+}
+
+#cisomatic [hidden] { display: none !important; }
+
+#cisomatic :is(p, ul, ol, h2, h3, h4, h5, blockquote, figure):where(:not(.facts > *)) {
+    margin: 0 0 0.7em;
+    padding: 0;
+}
+
+#cisomatic :is(ul, ol) { padding-left: 1.3em; }
+#cisomatic li { margin: 0 0 0.3em; padding: 0; }
+
+#cisomatic > h1 + p { margin-bottom: 2em; }
+
+#cisomatic h2:where(:not(.facts > *)) { font-size: 140%; line-height: 1.25; }
+#cisomatic h3:where(:not(.facts > *)) { font-size: 120%; line-height: 1.3; }
+#cisomatic :is(h4, h5) { font-size: 100%; line-height: 1.4; }
+
+#cisomatic code {
+    font-size: 90%;
+    background: var(--line-soft);
+    padding: 0.1em 0.35em;
+    border-radius: 0.3em;
+}
+
+#cisomatic > ul { list-style: none; padding: 0; }
+
+#cisomatic > ul > li {
+    background: var(--panel);
+    border: 0.07em solid var(--line);
+    border-radius: var(--radius);
+    padding: 1.2em 1.6em;
+    margin-bottom: 1em;
+}
+
+#cisomatic > ul h2 { font-size: 120%; margin-bottom: 0.3em; }
+#cisomatic > ul p { color: var(--muted); margin: 0; }
+
+#cisomatic form > section,
+#cisomatic > section:where(:not(.vooraf, .melding, .facts, [data-eerder])) {
+    background: var(--panel);
+    border: 0.07em solid var(--line);
+    border-radius: var(--radius);
+    padding: 1.4em 1.6em;
+    margin-bottom: 1.5em;
+}
+
+#cisomatic .vooraf {
+    background: var(--pill-bg);
+    border-radius: var(--radius);
+    padding: 1.2em 1.5em;
+    margin-bottom: 1.5em;
+}
+
+#cisomatic .vooraf > h2 { font-size: 120%; }
+#cisomatic .vooraf > p:last-child { color: var(--muted); margin-bottom: 0; }
+
+#cisomatic [data-eerder],
+#cisomatic > details {
+    border: 0.1em dashed var(--muted-soft);
+    border-radius: var(--radius);
+    padding: 1em 1.4em;
+    margin-bottom: 1.5em;
+    font-family: var(--font-ui);
+}
+
+#cisomatic [data-eerder] > h2 { font-size: 100%; }
+#cisomatic > details > summary { cursor: pointer; font-weight: bold; }
+#cisomatic > details[open] > summary { margin-bottom: 0.6em; }
+
+#cisomatic [data-eerder-tekst],
+#cisomatic > details > p {
+    font-size: var(--ui-lg);
+    color: var(--muted);
+}
+
+#cisomatic input[type="file"] {
+    font: inherit;
+    font-size: var(--ui-lg);
+    margin-bottom: 0.5em;
+}
+
+#cisomatic [data-hervat-melding] { color: var(--ink); font-weight: bold; }
+#cisomatic [data-hervat-melding][role="alert"] { color: var(--fout); }
+
+#cisomatic .melding {
+    border-left: 0.3em solid var(--ink);
+    background: var(--pill-bg);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    padding: 0.9em 1.2em;
+    margin-bottom: 1.5em;
+    font-family: var(--font-ui);
+    font-size: var(--ui-lg);
+}
+
+#cisomatic .melding h3 { font-size: inherit; }
+#cisomatic .melding > :last-child { margin-bottom: 0; }
+#cisomatic .melding.waarschuwing { border-left-color: var(--waarschuwing); }
+#cisomatic .melding[role="alert"] { border-left-color: var(--fout); }
+#cisomatic .melding[role="alert"] :is(h3, strong) { color: var(--fout); }
+#cisomatic .melding a { color: inherit; }
+
+#cisomatic [data-sectie] > header > p:first-child {
+    display: inline-block;
+    font-family: var(--font-ui);
+    font-size: var(--ui-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+    background: var(--line-soft);
+    border-radius: 1em;
+    padding: 0.2em 0.8em;
+}
+
+#cisomatic [data-stap="2"] > header > p:first-child {
+    color: var(--pill-ink);
+    background: var(--pill-bg);
+}
+
+#cisomatic [data-sectie] > header > h2 + p { color: var(--muted); margin-bottom: 1.5em; }
+
+#cisomatic :is([data-sectie], [data-vraag], [data-foutsamenvatting]):focus { outline: none; }
+
+#cisomatic .buiten-stap { display: none; }
+
+#cisomatic[data-na-eerste-stap] > h1 + p,
+#cisomatic[data-na-eerste-stap] > :is(.vooraf, [data-eerder], details) { display: none; }
+
+#cisomatic [data-sectie] > details {
+    border-top: 0.07em solid var(--line);
+    margin-top: 1.5em;
+    padding-top: 1em;
+}
+
+#cisomatic [data-sectie] > details > summary {
+    cursor: pointer;
+    font-family: var(--font-ui);
+    font-weight: bold;
+}
+
+#cisomatic [data-sectie] > details[open] > summary { margin-bottom: 1.2em; }
+
+#cisomatic [data-vraag] {
+    display: grid;
+    gap: 0.4em;
+    min-width: 0;
+    margin: 0 0 1.8em;
+    padding: 0;
+    border: 0;
+}
+
+#cisomatic :is(fieldset[data-vraag] > legend, div[data-vraag] > label) {
+    font-family: var(--font-ui);
+    font-weight: bold;
+    padding: 0;
+}
+
+#cisomatic fieldset[data-vraag] > legend { margin-bottom: 0.4em; }
+
+#cisomatic [data-vraag] > p {
+    font-family: var(--font-ui);
+    font-size: var(--ui-lg);
+    color: var(--muted);
+    margin: 0;
+}
+
+#cisomatic [data-vraag] > [data-fout] { color: var(--fout); font-weight: bold; }
+
+#cisomatic [data-vraag]:has([aria-invalid="true"]) {
+    border-left: 0.2em solid var(--fout);
+    padding-left: 0.9em;
+    margin-left: -1.1em;
+}
+
+#cisomatic :is(fieldset[data-vraag] > legend, div[data-vraag] > label, [data-sectie] > details > summary) > small {
+    font-family: var(--font-ui);
+    font-size: var(--ui-sm);
+    font-weight: normal;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+    background: var(--line-soft);
+    border-radius: 1em;
+    padding: 0.1em 0.6em;
+    vertical-align: 0.1em;
+}
+
+#cisomatic [data-type="kop"] {
+    border-top: 0.07em solid var(--line);
+    padding-top: 1.4em;
+    margin-top: 2.2em;
+}
+
+#cisomatic header + [data-type="kop"] { border-top: 0; padding-top: 0; margin-top: 0; }
+#cisomatic [data-type="kop"] > h3 { margin: 0; }
+#cisomatic [data-type="kop"] > :is(p, ul) { color: var(--muted); margin: 0; }
+
+#cisomatic:is([data-formulier="iama"], [data-formulier="ciooordeel"]) [data-nummer] { display: none; }
+
+#cisomatic:is([data-formulier="iama"], [data-formulier="soevereiniteit"], [data-formulier="aiscan"], [data-formulier="ciooordeel"]) [data-stap] > header > p:first-child {
+    color: var(--muted);
+    background: var(--line-soft);
+}
+
+#cisomatic[data-formulier="dpia"] :is([data-vraag$="_impact"], [data-vraag$="_kans"], [data-vraag^="bron_"]) {
+    display: inline-grid;
+    width: 48%;
+    margin-right: 1.9%;
+    vertical-align: top;
+}
+
+#cisomatic [data-sectie] > details[data-groep] {
+    border-top: 0.07em solid var(--line);
+    margin: 0;
+    padding: 0.7em 0;
+}
+
+#cisomatic [data-sectie] > details[data-groep] > summary {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3em 1em;
+    align-items: baseline;
+    justify-content: space-between;
+    font-weight: bold;
+}
+
+#cisomatic [data-sectie] > details[data-groep] > summary::before { content: "▸"; color: var(--muted); }
+#cisomatic [data-sectie] > details[data-groep][open] > summary::before { content: "▾"; }
+#cisomatic [data-sectie] > details[data-groep] > summary > span { flex: 1; }
+#cisomatic [data-sectie] > details[data-groep] > summary > output { font-weight: normal; }
+#cisomatic [data-sectie] > details[data-groep][open] > summary { margin-bottom: 0.8em; }
+#cisomatic [data-sectie] > details[data-groep] > p { color: var(--muted); margin-bottom: 1.2em; }
+
+#cisomatic details[data-groep] details { margin: -0.8em 0 1.6em; font-family: var(--font-ui); }
+#cisomatic details[data-groep] details > summary { cursor: pointer; color: var(--muted); }
+#cisomatic details[data-groep] details[open] > summary { margin-bottom: 1em; }
+
+#cisomatic fieldset[data-maatregel] {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4em;
+    min-width: 0;
+    margin: 0;
+    padding: 0.6em 0 0.7em;
+    border: 0;
+    border-top: 0.07em solid var(--line-soft);
+}
+
+#cisomatic fieldset[data-maatregel] > legend {
+    float: left;
+    width: 100%;
+    padding: 0 0 0.3em;
+    font-family: var(--font-ui);
+}
+
+#cisomatic [data-type="maatregelen"] fieldset[data-maatregel] > label {
+    display: inline-flex;
+    gap: 0.4em;
+    align-items: center;
+    padding: 0.2em 0.8em;
+    border: 0.07em solid var(--line);
+    border-radius: 1em;
+    background: var(--page);
+    font-family: var(--font-ui);
+    font-size: var(--ui-md);
+    cursor: pointer;
+}
+
+#cisomatic fieldset[data-maatregel] > label > input { margin: 0; accent-color: var(--ink); }
+#cisomatic fieldset[data-maatregel] > label:has(> input:checked) { border-color: var(--ink); background: var(--pill-bg); }
+
+#cisomatic label:has(> input:is([type="radio"], [type="checkbox"])) {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    column-gap: 0.7em;
+    align-items: start;
+    padding: 0.6em 0.9em;
+    border: 0.07em solid var(--line);
+    border-radius: 0.5em;
+    background: var(--page);
+    font-family: var(--font-ui);
+    cursor: pointer;
+}
+
+#cisomatic label:has(> input:is([type="radio"], [type="checkbox"])):hover { border-color: var(--muted-soft); }
+#cisomatic label:has(> input:checked) { border-color: var(--ink); background: var(--pill-bg); }
+#cisomatic label:has(> input:focus-visible) { outline: 0.15em solid var(--ink); outline-offset: 0.1em; }
+
+#cisomatic label > input:is([type="radio"], [type="checkbox"]) { grid-row: span 2; margin: 0.4em 0 0; accent-color: var(--ink); }
+#cisomatic label > small { grid-column: 2; font-size: var(--ui-lg); color: var(--muted); }
+
+#cisomatic label mark {
+    font-size: var(--ui-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--ink);
+    background: none;
+    border: 0.1em solid currentColor;
+    border-radius: 1em;
+    padding: 0 0.5em;
+    margin-left: 0.3em;
+    vertical-align: 0.1em;
+}
+
+#cisomatic fieldset > details {
+    margin: 0 0 0.4em 0.9em;
+    font-family: var(--font-ui);
+    font-size: var(--ui-lg);
+    color: var(--muted);
+}
+
+#cisomatic fieldset > details > summary { cursor: pointer; }
+
+#cisomatic fieldset > details > p {
+    border-left: 0.15em solid var(--line);
+    padding-left: 0.8em;
+    margin: 0.4em 0 0.6em;
+}
+
+#cisomatic fieldset[data-type="checkbox"],
+#cisomatic fieldset[data-type="checkbox"] fieldset { grid-template-columns: repeat(auto-fill, minmax(17em, 1fr)); }
+#cisomatic fieldset[data-type="checkbox"] > :is(p, fieldset) { grid-column: 1 / -1; }
+
+#cisomatic fieldset fieldset:not([data-rij], [data-maatregel]) {
+    display: grid;
+    gap: 0.4em;
+    min-width: 0;
+    margin: 0 0 0.8em;
+    padding: 0;
+    border: 0;
+}
+
+#cisomatic fieldset fieldset:not([data-rij], [data-maatregel]) > legend {
+    font-family: var(--font-ui);
+    font-size: var(--ui-md);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--muted-soft);
+    padding: 0;
+    margin: 0.4em 0;
+}
+
+#cisomatic fieldset[data-rij] {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(11em, 1fr));
+    gap: 0.6em 1em;
+    align-items: end;
+    min-width: 0;
+    margin: 0 0 0.6em;
+    padding: 0.8em 1em 1em;
+    border: 0.07em solid var(--line);
+    border-radius: 0.5em;
+    background: var(--page);
+}
+
+#cisomatic fieldset[data-rij] > legend {
+    font-family: var(--font-ui);
+    font-size: var(--ui-md);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+    padding: 0 0.4em;
+}
+
+#cisomatic fieldset[data-rij] > label {
+    display: grid;
+    gap: 0.25em;
+    font-family: var(--font-ui);
+    font-size: var(--ui-lg);
+    color: var(--muted);
+}
+
+#cisomatic fieldset[data-rij] > label:has(> textarea) { grid-column: 1 / -1; }
+#cisomatic fieldset[data-rij] > button { justify-self: start; }
+
+#cisomatic :is(input[type="text"], input[type="email"], select, textarea) {
+    box-sizing: border-box;
+    width: 100%;
+    font: inherit;
+    font-family: var(--font-ui);
+    color: var(--text);
+    background: var(--page);
+    border: 0.07em solid var(--line);
+    border-radius: 0.5em;
+    padding: 0.5em 0.65em;
+}
+
+#cisomatic fieldset[data-rij] :is(input, select, textarea) { background: var(--panel); }
+
+#cisomatic :is(input[type="text"], input[type="email"], select, textarea):focus-visible {
+    border-color: var(--ink);
+    outline: 0.15em solid var(--ink);
+    outline-offset: 0.05em;
+}
+
+#cisomatic textarea { resize: vertical; line-height: 1.5; }
+
+#cisomatic [data-afgeleid] {
+    gap: 0.3em;
+    background: var(--pill-bg);
+    border-radius: var(--radius);
+    padding: 1em 1.2em;
+    margin-bottom: 1.2em;
+}
+
+#cisomatic [data-afgeleid] > p:first-child {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5em;
+    align-items: baseline;
+    justify-content: space-between;
+    font-size: inherit;
+    color: var(--text);
+}
+
+#cisomatic [data-afgeleid] > ul {
+    font-family: var(--font-ui);
+    font-size: var(--ui-lg);
+    color: var(--muted);
+    margin: 0;
+}
+
+#cisomatic output {
+    font-size: var(--ui-lg);
+    font-weight: bold;
+    color: var(--ink);
+    background: var(--page);
+    border: 0.1em solid currentColor;
+    border-radius: 1em;
+    padding: 0.1em 0.8em;
+}
+
+#cisomatic [data-niveau="m"] output { color: var(--waarschuwing); }
+#cisomatic :is([data-niveau="h"], [data-niveau="zh"]) output { color: var(--fout); }
+#cisomatic [data-afgeleid-ondergrens] strong { color: var(--text); }
+
+#cisomatic [data-voortgang] {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    background: var(--page);
+    padding: 0.7em 0;
+    margin-bottom: 0.6em;
+}
+
+#cisomatic progress {
+    display: block;
+    width: 100%;
+    height: 0.35em;
+    appearance: none;
+    border: 0;
+    border-radius: 1em;
+    background: var(--line-soft);
+    color: var(--ink);
+    overflow: hidden;
+}
+
+#cisomatic progress::-webkit-progress-bar { background: var(--line-soft); }
+#cisomatic progress::-webkit-progress-value { background: var(--ink); transition: width 0.25s ease; }
+#cisomatic progress::-moz-progress-bar { background: var(--ink); }
+
+#cisomatic [data-voortgang] > p {
+    justify-content: space-between;
+    margin: 0.5em 0 0;
+}
+
+#cisomatic [data-voortgang-tekst] {
+    font-family: var(--font-ui);
+    font-size: var(--ui-lg);
+    color: var(--muted);
+}
+
+#cisomatic p:has(> button) {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5em;
+    align-items: center;
+}
+
+#cisomatic button {
+    font-family: var(--font-ui);
+    font-size: var(--ui-md);
+    line-height: 1.2;
+    padding: 0.6em 1.1em;
+    color: var(--pill-ink);
+    background: var(--pill-bg);
+    border: 0.1em solid var(--line);
+    border-radius: 0.4em;
+    cursor: pointer;
+}
+
+#cisomatic button:hover { background: var(--pill-bg-hover); }
+#cisomatic button:focus-visible { outline: 0.15em solid var(--ink); outline-offset: 0.15em; }
+
+#cisomatic button:is([type="submit"], [data-volgende], [data-eerder-verder]) {
+    font-size: var(--ui-lg);
+    color: var(--on-ink);
+    background: var(--ink);
+    border-color: var(--ink);
+}
+
+#cisomatic button:is([type="submit"], [data-volgende], [data-eerder-verder]):hover { background: var(--ink-hover); }
+
+#cisomatic [data-afsluiting-hint] {
+    font-family: var(--font-ui);
+    font-size: var(--ui-lg);
+    color: var(--muted);
+}
+
+#cisomatic > h2 { margin-bottom: 0.2em; }
+
+#cisomatic > h2 + p {
+    font-family: var(--font-ui);
+    font-size: var(--ui-lg);
+    color: var(--muted);
+    margin-bottom: 1.5em;
+}
+
+#cisomatic .facts [data-niveau="m"] { color: var(--waarschuwing); }
+#cisomatic .facts :is([data-niveau="h"], [data-niveau="zh"]) { color: var(--fout); font-weight: bold; }
+
+#cisomatic [data-risico="midden"] { color: var(--waarschuwing); }
+#cisomatic :is([data-risico="hoog"], [data-risico="zeer-hoog"]) { color: var(--fout); }
+
+#cisomatic :is(#analyses, #wegingen) > p { color: var(--muted); }
+
+#cisomatic #analyses ul { list-style: none; padding: 0; }
+
+#cisomatic #analyses li {
+    border-top: 0.07em solid var(--line);
+    padding-top: 0.8em;
+    margin-bottom: 0.8em;
+}
+
+#cisomatic #analyses li:first-child { border-top: 0; padding-top: 0; }
+#cisomatic #analyses strong { font-family: var(--font-ui); }
+
+#cisomatic #analyses small {
+    font-family: var(--font-ui);
+    font-size: var(--ui-md);
+    color: var(--muted);
+    margin-left: 0.5em;
+}
+
+#cisomatic #analyses li > p { color: var(--muted); margin: 0.2em 0 0; }
+
+#cisomatic #wegingen h4 {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5em;
+    align-items: baseline;
+    justify-content: space-between;
+    font-family: var(--font-ui);
+    border-top: 0.07em solid var(--line);
+    padding-top: 0.8em;
+    margin: 1em 0 0.4em;
+}
+
+#cisomatic #wegingen mark {
+    font-size: var(--ui-md);
+    color: var(--pill-ink);
+    background: var(--pill-bg);
+    border-radius: 1em;
+    padding: 0.15em 0.8em;
+}
+
+#cisomatic #wegingen h4 + p { color: var(--muted); }
+
+#cisomatic #wegingen blockquote {
+    border-left: 0.15em solid var(--line);
+    padding-left: 0.8em;
+}
+
+#cisomatic #wegingen small {
+    font-family: var(--font-ui);
+    font-size: var(--ui-md);
+    font-style: italic;
+    color: var(--muted);
+}
+
+#cisomatic #pad ol { list-style: none; padding: 0; }
+
+#cisomatic #pad li {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 0.1em 1em;
+    padding: 0.5em 0 0.5em 0.9em;
+    margin: 0;
+    border-left: 0.15em solid var(--line);
+    font-family: var(--font-ui);
+}
+
+#cisomatic #pad li.geraakt { border-left-color: var(--ink); }
+#cisomatic #pad li:not(.geraakt) { opacity: 0.6; }
+#cisomatic #pad span { font-size: var(--ui-lg); color: var(--muted); }
+#cisomatic #pad span:first-of-type { text-align: right; }
+#cisomatic #pad span:last-child { grid-column: 1 / -1; color: var(--ink); }
+#cisomatic #pad li:not(.geraakt) span:last-child { color: var(--muted); }
+
+#cisomatic ol[data-labels] {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1em;
+    font-family: var(--font-ui);
+}
+
+#cisomatic ol[data-labels] > li {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 0 0.6em;
+    align-items: baseline;
+    box-sizing: border-box;
+    padding: 0.25em 0.9em;
+    margin: 0 0 0.3em;
+    border-radius: 0.3em 1.2em 1.2em 0.3em;
+    print-color-adjust: exact;
+}
+
+#cisomatic ol[data-labels] > li > strong { font-size: 120%; }
+#cisomatic ol[data-labels] > li > em { font-style: normal; font-weight: bold; }
+#cisomatic ol[data-labels] > li[aria-current] { outline: 0.2em solid var(--ink); outline-offset: 0.15em; }
+
+#cisomatic [data-letter="A"] { width: 60%; color: #fff; background: #1b6e30; }
+#cisomatic [data-letter="B"] { width: 68%; color: #0f2208; background: #6aa84f; }
+#cisomatic [data-letter="C"] { width: 76%; color: #2a2100; background: #e8c547; }
+#cisomatic [data-letter="D"] { width: 84%; color: #2a1500; background: #e8923a; }
+#cisomatic [data-letter="E"] { width: 92%; color: #fff; background: #b3261e; }
+
+#cisomatic #volledig > form + p {
+    font-family: var(--font-ui);
+    font-size: var(--ui-lg);
+    color: var(--muted);
+}
+
+#cisomatic #volledig nav {
+    background: var(--pill-bg);
+    border-radius: var(--radius);
+    padding: 1em 1.2em;
+    margin: 1em 0;
+}
+
+#cisomatic #volledig nav h4 {
+    font-family: var(--font-ui);
+    font-size: var(--ui-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+    margin-bottom: 0.5em;
+}
+
+#cisomatic #volledig nav ol {
+    columns: 2;
+    column-gap: 2em;
+    font-family: var(--font-ui);
+    font-size: var(--ui-lg);
+    margin: 0;
+}
+
+#cisomatic #volledig nav li { break-inside: avoid; margin-bottom: 0.2em; }
+
+#cisomatic [data-document] { margin-top: 1.2em; }
+#cisomatic [data-document] > h2 { font-size: 140%; }
+
+#cisomatic [data-document] > h3 {
+    font-size: 125%;
+    border-top: 0.07em solid var(--line);
+    padding-top: 1em;
+    margin-top: 2em;
+    scroll-margin-top: 1em;
+}
+
+#cisomatic [data-document] > h4 { font-size: 110%; margin-top: 1.4em; }
+#cisomatic [data-document] > h5 { margin-top: 1.2em; }
+
+#cisomatic [data-document] blockquote {
+    background: var(--pill-bg);
+    border-left: 0.2em solid var(--ink);
+    border-radius: 0 0.5em 0.5em 0;
+    padding: 0.7em 1em;
+}
+
+#cisomatic [data-document] hr { border: 0; border-top: 0.07em solid var(--line); margin: 1.5em 0; }
+
+#cisomatic [data-document] figure { overflow-x: auto; margin: 0.4em 0 1.2em; }
+
+#cisomatic [data-document] table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--font-ui);
+    font-size: var(--ui-lg);
+    line-height: 1.45;
+}
+
+#cisomatic [data-document] table:is([data-kolommen="6"], [data-kolommen="7"]) { min-width: 46em; }
+
+#cisomatic [data-document] :is(th, td) {
+    text-align: left;
+    vertical-align: top;
+    padding: 0.45em 0.6em;
+    border: 0.07em solid var(--line);
+}
+
+#cisomatic [data-document] thead th { background: var(--pill-bg); color: var(--pill-ink); }
+#cisomatic [data-document] tbody th { background: var(--line-soft); }
+
+#cisomatic [data-document] svg { display: block; max-width: 100%; height: auto; font-family: var(--font-ui); font-size: 0.9em; }
+#cisomatic [data-document] svg rect { fill: var(--panel); stroke: var(--ink); stroke-width: 1.5; }
+#cisomatic [data-document] svg g > text { fill: var(--text); }
+#cisomatic [data-document] svg path[data-scope] { fill: none; stroke: var(--muted); stroke-width: 1.5; }
+#cisomatic [data-document] svg path[data-scope="buiten"] { stroke-dasharray: 6 5; }
+#cisomatic [data-document] svg marker path { fill: var(--muted); }
+#cisomatic [data-document] svg circle { fill: var(--ink); }
+#cisomatic [data-document] svg circle + text { fill: var(--on-ink); font-weight: bold; }
+
+#cisomatic [data-document] figcaption {
+    font-family: var(--font-ui);
+    font-size: var(--ui-md);
+    color: var(--muted);
+    margin-top: 0.4em;
+}
+
+#cisomatic > footer {
+    border-top: 0.07em solid var(--line);
+    margin-top: 2.5em;
+    padding-top: 1em;
+}
+
+#cisomatic > footer p {
+    font-family: var(--font-ui);
+    font-size: var(--ui-md);
+    color: var(--muted);
+}
+
+#cisomatic [data-toast] {
+    position: fixed;
+    left: 50%;
+    bottom: 1.3em;
+    z-index: 20;
+    max-width: min(34em, calc(100% - 2em));
+    margin: 0;
+    padding: 0.7em 1.3em;
+    color: var(--on-ink);
+    background: var(--ink);
+    border-radius: 1.5em;
+    box-shadow: 0 0.4em 1.5em rgb(0 0 0 / 0.18);
+    font-family: var(--font-ui);
+    font-size: var(--ui-lg);
+    opacity: 0;
+    transform: translate(-50%, 0.8em);
+    transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+#cisomatic [data-toast].toast-zichtbaar { opacity: 1; transform: translate(-50%, 0); }
+
+@media (prefers-reduced-motion: reduce) {
+    #cisomatic [data-toast],
+    #cisomatic progress::-webkit-progress-value { transition: none; }
+}
+
+@media (max-width: 30em) {
+    #cisomatic form > section,
+    #cisomatic > section:where(:not(.vooraf, .melding, .facts, [data-eerder])) { padding: 1em; }
+
+    #cisomatic[data-formulier="dpia"] :is([data-vraag$="_impact"], [data-vraag$="_kans"], [data-vraag^="bron_"]) {
+        display: grid;
+        width: auto;
+        margin-right: 0;
+    }
+
+    #cisomatic [data-letter="A"] { width: 80%; }
+    #cisomatic [data-letter="B"] { width: 85%; }
+    #cisomatic [data-letter="C"] { width: 90%; }
+    #cisomatic [data-letter="D"] { width: 95%; }
+    #cisomatic [data-letter="E"] { width: 100%; }
+
+    #cisomatic #pad li { grid-template-columns: 1fr; }
+    #cisomatic #pad span:first-of-type { text-align: left; }
+    #cisomatic #volledig nav ol { columns: 1; }
+}
+
+@media print {
+    #cisomatic :is([data-voortgang], [data-eerder], [data-toast], [data-acties], p:has(> button)),
+    #cisomatic > details,
+    #cisomatic > p:has(> a:only-child),
+    #cisomatic #volledig > :is(form, form + p, nav) { display: none !important; }
+
+    #cisomatic form > section,
+    #cisomatic > section { border: 0; padding: 0; background: none; }
+
+    #cisomatic .buiten-stap { display: block; }
+    #cisomatic :is(h2, h3, h4, h5) { break-after: avoid; }
+    #cisomatic [data-document] figure { overflow: visible; }
+    #cisomatic [data-document] tr { break-inside: avoid; }
+}
