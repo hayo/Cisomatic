@@ -308,7 +308,7 @@ function sm_sectie_strategie(): array
             [
                 'key' => 'sm_eigen_kanalen',
                 'type' => 'radio',
-                'label' => 'Staat alles wat je hier plaatst eerst op je eigen openbare kanalen?',
+                'label' => 'Staat alles wat je hier plaatst ook op je eigen openbare kanalen?',
                 'hint' => 'Zoals je eigen site of social.overheid.nl. Dit kanaal komt erbij, niet in plaats daarvan.',
                 'verplicht_als' => ['sm_platform' => sm_platforms_behalve('mastodon')],
                 'toon_als' => ['sm_platform' => sm_platforms_behalve('mastodon')],
@@ -552,7 +552,8 @@ function sm_sectie_vaststellen(): array
                 'key' => 'sm_directeur',
                 'type' => 'text',
                 'label' => 'Wie stelt dit vast?',
-                'hint' => 'De directeur Communicatie van je organisatie, of wie daarvoor gemandateerd is.',
+                'hint' => 'De leidinggevende voor communicatie in je organisatie, zoals de directeur, het hoofd of de '
+                    . 'manager Communicatie, of wie daarvoor gemandateerd is.',
             ],
         ],
     ];

@@ -11,24 +11,44 @@
  * - explain: het kader vraagt voor dit platform altijd een explain
  * - toestel: de app mag niet op apparatuur van het Rijk
  * En 'bewindspersoon': mag een bewindspersoon hier een account hebben (ja, nee,
- * of verboden, dan is het niet inzetten).
+ * of verboden, dan is het niet inzetten). 'let_op' geeft aandachtspunten bij
+ * adverteren, per soort advertentie, of bij 'alle' voor elke advertentie.
  */
 
 declare(strict_types=1);
 
+/** De doelen, met de toelichting uit de notitie als hint. */
 const SM_DOELEN = [
-    'informeren' => ['label' => 'Informeren', 'hint' => 'Volledige informatie over beleid of diensten.'],
-    'attenderen' => ['label' => 'Attenderen', 'hint' => 'Kort wijzen op nieuws, met een link naar meer.'],
-    'duiden' => ['label' => 'Duiden', 'hint' => 'Uitleggen waarom iets gebeurt.'],
-    'publieksvoorlichting' => ['label' => 'Publieksvoorlichting', 'hint' => 'Het brede publiek voorlichten over regels en rechten.'],
-    'activeren' => ['label' => 'Activeren', 'hint' => 'Mensen iets laten doen, zoals zich aanmelden.'],
-    'gedrag' => ['label' => 'Gedragsbeïnvloeding', 'hint' => 'Mensen helpen iets anders te doen, zoals veiliger rijden.'],
-    'arbeidsmarkt' => ['label' => 'Arbeidsmarktcommunicatie', 'hint' => 'Nieuwe medewerkers werven.'],
-    'bereik' => ['label' => 'Bereik vergroten', 'hint' => 'Meer mensen laten zien wat de overheid doet.'],
-    'communitymanagement' => ['label' => 'Communitymanagement', 'hint' => 'Een groep volgers betrekken en bij elkaar houden.'],
-    'stakeholdermanagement' => ['label' => 'Stakeholdermanagement', 'hint' => 'Contact met organisaties en partners.'],
-    'internationaal' => ['label' => 'Internationale betrekkingen'],
-    'monitoring' => ['label' => 'Monitoring', 'hint' => 'Volgen wat er over een onderwerp gezegd wordt.'],
+    'informeren' => ['label' => 'Informeren', 'hint' => 'Feitelijke informatie geven, zodat mensen zelf een oordeel kunnen vormen.'],
+    'attenderen' => [
+        'label' => 'Attenderen',
+        'hint' => 'Aandacht vragen voor een actueel onderwerp, met een link naar de volledige informatie op een eigen kanaal.',
+    ],
+    'duiden' => ['label' => 'Duiden', 'hint' => 'Uitleggen wat iets betekent voor mensen of bedrijven.'],
+    'publieksvoorlichting' => [
+        'label' => 'Publieksvoorlichting',
+        'hint' => 'Het brede publiek op een toegankelijke manier voorlichten over beleid van het Rijk.',
+    ],
+    'activeren' => ['label' => 'Activeren', 'hint' => 'Mensen iets laten doen, zoals zich aanmelden, iets aanvragen of meedoen.'],
+    'gedrag' => ['label' => 'Gedragsbeïnvloeding', 'hint' => 'Bepaald gedrag stimuleren, ontmoedigen of veranderen, zoals veiliger rijden.'],
+    'arbeidsmarkt' => ['label' => 'Arbeidsmarktcommunicatie', 'hint' => 'Medewerkers werven, binden en behouden.'],
+    'bereik' => [
+        'label' => 'Zichtbaarheid vergroten',
+        'hint' => 'Meer bereik en aandacht voor je organisatie of je boodschap, zonder dat je mensen vraagt iets te doen.',
+    ],
+    'communitymanagement' => [
+        'label' => 'Communitymanagement',
+        'hint' => 'Contact houden met een vaste groep volgers, voor gesprek en betrokkenheid.',
+    ],
+    'stakeholdermanagement' => [
+        'label' => 'Stakeholdermanagement',
+        'hint' => 'Relaties opbouwen en onderhouden rond een dossier of opgave.',
+    ],
+    'internationaal' => [
+        'label' => 'Internationale betrekkingen',
+        'hint' => 'Relaties en samenwerking met het buitenland opbouwen en onderhouden.',
+    ],
+    'monitoring' => ['label' => 'Monitoring', 'hint' => 'Actief volgen en analyseren wat er speelt in de samenleving en de media.'],
 ];
 
 const SM_VORMEN = [
@@ -85,6 +105,9 @@ function sm_kaders(): array
         . 'Gegevens gaan naar landen buiten de EU.';
     $metaDsa = 'Meta voldoet nog niet aan de moderatieregels van de Digital Services Act (DSA). Melden van '
         . 'schadelijke berichten is niet eenvoudig.';
+    $metaAdvertenties = 'Onderzoek wijst op raciale discriminatie door het advertentiealgoritme van Meta. Dat '
+        . 'algoritme kiest zelf wie je advertentie ziet, ook als je breed richt. Laat een campagne daarom ook via '
+        . 'andere kanalen lopen.';
 
     return [
         'facebook' => [
@@ -111,6 +134,7 @@ function sm_kaders(): array
             'bewindspersoon' => 'nee',
             'betaald' => ['publiekscampagnes', 'arbeidsmarktcampagnes', 'gedrag'],
             'contact' => [],
+            'let_op' => ['alle' => $metaAdvertenties],
         ],
         'instagram' => [
             'naam' => 'Instagram',
@@ -132,6 +156,7 @@ function sm_kaders(): array
             'bewindspersoon' => 'ja',
             'betaald' => ['publiekscampagnes', 'arbeidsmarktcampagnes', 'gedrag', 'bereik'],
             'contact' => ['reacties', 'vragen'],
+            'let_op' => ['alle' => $metaAdvertenties],
         ],
         'x' => [
             'naam' => 'X',
@@ -140,7 +165,9 @@ function sm_kaders(): array
             'explain' => true,
             'uitleg' => 'X is in beginsel niet inzetbaar. Het kan beperkt, om journalisten, politici, '
                 . 'beleidsmakers en internationale partners te bereiken. Denk aan korte attenderingen, '
-                . 'persvoorlichting en internationale communicatie. X is niet bedoeld voor brede voorlichting.',
+                . 'persvoorlichting, internationale communicatie en crisiscommunicatie voor die groepen. Dat mag alleen '
+                . 'als je motiveert waarom het nodig is, en als aanvulling op je eigen openbare kanalen. X is niet '
+                . 'bedoeld voor brede voorlichting.',
             'doelgroep' => 'Een kleine, politiek betrokken groep: journalisten, politici, bestuurders, '
                 . 'beleidsmakers, belangenorganisaties en mensen die het nieuws op de voet volgen. Weinig jongeren, '
                 . 'en geen goede afspiegeling van Nederland.',
@@ -164,8 +191,8 @@ function sm_kaders(): array
             'toestel' => true,
             'uitleg' => 'TikTok is in beginsel niet inzetbaar. Het kan beperkt, om jongeren en jongvolwassenen te '
                 . 'bereiken met campagnes, werving of gedragsbeïnvloeding. Dat mag alleen als een minder risicovol '
-                . 'kanaal hen niet goed bereikt. Het is niet voor bewindspersonen, crisiscommunicatie, ingewikkelde '
-                . 'uitleg of dienstverlening.',
+                . 'kanaal hen niet goed bereikt. Gedragsbeïnvloeding kan alleen met advertenties. Het is niet voor '
+                . 'bewindspersonen, crisiscommunicatie, ingewikkelde uitleg of dienstverlening.',
             'doelgroep' => 'Vooral jongeren en jongvolwassenen, ook groepen die de overheid op andere manieren moeilijk '
                 . 'bereikt. Minder geschikt voor ouderen en professionals.',
             'risicos' => [
@@ -174,7 +201,7 @@ function sm_kaders(): array
                 'De Europese Commissie stelde voorlopig vast dat TikTok de DSA schendt, door een verslavend ontwerp.',
                 'Er zijn zorgen over wat TikTok met persoonsgegevens doet, zeker van kinderen.',
             ],
-            'doelen' => ['activeren', 'arbeidsmarkt', 'attenderen', 'gedrag', 'publieksvoorlichting'],
+            'doelen' => ['activeren', 'arbeidsmarkt', 'attenderen', 'publieksvoorlichting'],
             'vormen' => ['arbeidsmarktcampagnes', 'explainers', 'publiekscampagnes'],
             'bewindspersoon' => 'verboden',
             'betaald' => ['publiekscampagnes', 'arbeidsmarktcampagnes', 'gedrag'],
@@ -219,6 +246,11 @@ function sm_kaders(): array
             'bewindspersoon' => 'ja',
             'betaald' => ['arbeidsmarktcampagnes', 'bereik'],
             'contact' => ['reacties', 'vragen'],
+            'let_op' => [
+                'arbeidsmarktcampagnes' => 'Het College voor de Rechten van de Mens waarschuwt voor discriminatie door '
+                    . 'algoritmes bij werving. Op LinkedIn kiest een algoritme wie je advertentie ziet. Werf daarom ook '
+                    . 'via andere kanalen, zoals Werken voor Nederland.',
+            ],
         ],
         'mastodon' => [
             'naam' => 'social.overheid.nl',
