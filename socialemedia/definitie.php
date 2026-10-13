@@ -18,7 +18,7 @@ return [
     'download_uitleg' => 'Het document opent in Word, LibreOffice en Google Docs, met kopjes, lijsten en tabellen.',
     'inladen' => 'Een bestand van een eerdere keer. Je browser leest het zelf, dus er gaat niets naar de server.',
     'voet' => 'Gebaseerd op de rijksbrede platformkaders en de richtlijnen voor toetreding en vertrek. Stand van '
-        . 'september 2026. Dit document vervangt het advies van je CPO, CISO en CIO niet.',
+        . 'oktober 2026. Dit document vervangt het advies van je CPO, CISO en CIO niet.',
     'stappen' => [
         1 => 'Het kanaal',
         2 => 'Stap 1 · doel en doelgroep',

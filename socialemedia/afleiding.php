@@ -40,8 +40,8 @@ const SM_TEKSTEN = [
     'vormen' => 'Deze vormen vallen buiten het kader: {lijst}.',
     'betaald' => 'Deze betaalde inzet valt buiten het kader: {lijst}.',
     'contact' => 'Dit contact valt buiten het kader: {lijst}.',
-    'eigen_deels' => 'Niet alles wat jullie hier plaatsen, staat eerst op je eigen openbare kanalen.',
-    'eigen_nee' => 'Wat jullie hier plaatsen, staat niet eerst op je eigen openbare kanalen.',
+    'eigen_deels' => 'Niet alles wat jullie hier plaatsen, staat ook op je eigen openbare kanalen.',
+    'eigen_nee' => 'Wat jullie hier plaatsen, staat niet op je eigen openbare kanalen.',
     'doorverwijzen' => 'Jullie wijzen mensen niet op de risico’s van contact via {naam}, en verwijzen niet door naar een '
         . 'kanaal van de overheid.',
     'prive_toestel' => 'Het account wordt beheerd vanaf een privétoestel.',
@@ -211,6 +211,10 @@ function sm_evalueer(array $a): array
     $letOp = !$betaald ? [] : array_values(array_filter([
         SM_LET_OP['dsa'],
         ($a['sm_doelgericht'] ?? '') === 'profiel' ? SM_LET_OP['profiel'] : '',
+        ...array_values(array_intersect_key(
+            $kader['let_op'] ?? [],
+            array_flip(['alle', ...(array) ($a['sm_betaald'] ?? [])])
+        )),
     ]));
 
     return [

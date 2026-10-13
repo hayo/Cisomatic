@@ -94,7 +94,7 @@ function sm_document(array $a, array $u): array
         ['h2', '2. Kanaalstrategie'],
         ['term', 'Minder risicovol alternatief', $t('sm_alternatief')],
         ['alinea', $vrij('sm_alternatief_toelichting')],
-        ...($kader['inzet'] === 'primair' ? [] : [['term', 'Eerst op eigen kanalen', $t('sm_eigen_kanalen')]]),
+        ...($kader['inzet'] === 'primair' ? [] : [['term', 'Ook op eigen kanalen', $t('sm_eigen_kanalen')]]),
 
         ['h2', '3. Weging'],
         ['term', 'Wijst op risico’s en verwijst door', $t('sm_doorverwijzen')],
