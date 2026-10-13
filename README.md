@@ -101,9 +101,26 @@ argument van `cm_verwerk()` of `cm_kiezer()`.
 Een site kan de losse pagina opvragen met `/standalone` achter het adres. De
 voordeur zet dat staartje dan ook achter elk formulier.
 
-De code is in deze repo en in de site gelijk. Deze repo is de bron. De site
-haalt de map op met `git subtree pull`, en stuurt eigen wijzigingen terug met
-`git subtree push`.
+De code is in deze repo en in de site gelijk. Deze repo is de bron. Na elke
+push naar `main` zet de GitHub Action `naar-codeberg.yml` de map ook in de repo
+van de site op Codeberg, met `git subtree`. Het werk zelf doet
+`.github/naar-codeberg.sh`, dat ook lokaal draait. Zo zet je het aan:
+
+1. Maak op Codeberg een token met schrijfrechten op repositories, onder
+   Instellingen, Applicaties.
+2. Zet dat op GitHub onder Settings, Secrets and variables, Actions, als geheim
+   `CODEBERG_TOKEN`.
+3. Zet daar ook de variabele `CODEBERG_REPO`, zoals `eigenaar/repo`. Zonder die
+   variabele draait de Action niet. Optioneel: `CODEBERG_PAD` (standaard
+   `hb2025/content/forge/cisomatic`), `CODEBERG_TAK` (standaard `main`) en
+   `CODEBERG_GEBRUIKER`, als de repo bij een organisatie hoort.
+4. Start de Action één keer met de hand, onder Actions, met "eerste keer" aan.
+   Die vervangt de map op de site door een subtree. Wat alleen daar in die map
+   stond, valt weg.
+
+Daarna gaat het vanzelf. Pas je op de site toch iets aan in de map, stuur het
+dan terug met `git subtree push --prefix=<map> <deze repo> <branch>`, en maak
+een pull request. Anders botst de volgende update.
 
 ## Een formulier toevoegen
 
