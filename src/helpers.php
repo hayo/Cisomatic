@@ -116,3 +116,19 @@ function cm_bestandsnaam(string $naam, string $extensie): string
     return (new DateTimeImmutable('now'))->format('Y-m-d') . '_' . cm_formulier()['id'] . '_'
         . cm_slug($naam) . '.' . $extensie;
 }
+
+/**
+ * Het icoon van een formulier: icoon.svg in zijn map, als SVG voor in de
+ * pagina. Zo neemt het de kleur van de tekst over, ook in donker. Leeg als het
+ * formulier geen icoon heeft.
+ */
+function cm_icoon(string $id): string
+{
+    $bestand = CM_ROOT . '/' . $id . '/icoon.svg';
+
+    if (!is_file($bestand)) {
+        return '';
+    }
+
+    return str_replace('<svg ', '<svg aria-hidden="true" focusable="false" ', trim((string) file_get_contents($bestand)));
+}

@@ -72,6 +72,7 @@ bewaard/                  opgeslagen documenten, als bewaren aan staat
 <formulier>/vooraf.php        "Voor je begint", boven het formulier
 <formulier>/samenvatting.php  de uitkomst in het kort, boven het document
 <formulier>/regels.js         wat het formulier in de browser uitrekent
+<formulier>/icoon.svg         het icoon op de voordeur
 ```
 
 De motorfuncties heten `cm_`, die van de quickscan `qs_`, die van quickscan 2.0
@@ -131,6 +132,8 @@ een pull request. Anders botst de volgende update.
 2. Zet de naam van de map in `config.php`, onder `formulieren`.
 3. Schrijf `definitie.php`, `vragen.php`, `vooraf.php`, `samenvatting.php` en
    `regels.js`. De voordeur toont het formulier vanzelf.
+4. Teken eventueel een `icoon.svg`. Zonder icoon toont de voordeur alleen de
+   tekst.
 
 De motor verwacht een vraag met de sleutel `projectnaam`: die geeft het
 document en het bestand een naam.
@@ -275,6 +278,14 @@ Het formulier heeft geen klassen. `app.css` kiest op element en op de
 data-attributen die `app.js` toch al nodig heeft. Alles hangt onder
 `#cisomatic`; wat bij één formulier hoort, kiest ook op
 `data-formulier`.
+
+Elk formulier heeft een icoon in `icoon.svg`, in de stijl van de iconen van de
+Rijksoverheid: een lijn van gelijke dikte, eenvoudige vormen en één kleur. Het
+vlak is 48 bij 48, met `stroke="currentColor"`, `stroke-width="2"` en ronde
+uiteinden. De voordeur zet het icoon in de pagina, zodat het de kleur `--ink`
+krijgt, ook in donker. Een tweede versie van een formulier krijgt hetzelfde
+icoon met een 2 in een rondje rechtsonder. Een `mask` in zo'n icoon heeft een
+`id` die alleen in dat formulier voorkomt.
 
 `src/document.php` stuurt een Content Security Policy mee die geen inline
 script of stijl toestaat. Daarom staat er geen `onclick` of `style` in de opmaak.

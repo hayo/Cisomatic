@@ -40,6 +40,22 @@
 #cisomatic > ul h2 { font-size: 120%; margin-bottom: 0.3em; }
 #cisomatic > ul p { color: var(--muted); margin: 0; }
 
+#cisomatic > ul > li:has(> svg) {
+    display: grid;
+    grid-template-columns: 3.2em 1fr;
+    column-gap: 1.2em;
+    align-items: start;
+}
+
+#cisomatic > ul > li > svg {
+    grid-row: 1 / span 2;
+    width: 3.2em;
+    height: 3.2em;
+    color: var(--ink);
+}
+
+#cisomatic > ul > li:has(> svg) > :not(svg) { grid-column: 2; }
+
 #cisomatic form > section,
 #cisomatic > section:where(:not(.vooraf, .melding, .facts, [data-eerder])) {
     background: var(--panel);
@@ -765,6 +781,9 @@
 @media (max-width: 30em) {
     #cisomatic form > section,
     #cisomatic > section:where(:not(.vooraf, .melding, .facts, [data-eerder])) { padding: 1em; }
+
+    #cisomatic > ul > li:has(> svg) { grid-template-columns: 2.4em 1fr; column-gap: 0.9em; }
+    #cisomatic > ul > li > svg { width: 2.4em; height: 2.4em; }
 
     #cisomatic[data-formulier="dpia"] :is([data-vraag$="_impact"], [data-vraag$="_kans"], [data-vraag^="bron_"]) {
         display: grid;

@@ -22,6 +22,7 @@ declare(strict_types=1);
     <ul>
         <?php foreach ($formulieren as $formulier): ?>
             <li>
+                <?= cm_icoon($formulier['id']) ?>
                 <h2><a href="<?= h($basis . '/' . $formulier['id'] . $staart) ?>"><?= h($formulier['titel']) ?></a></h2>
                 <p><?= h($formulier['intro']) ?></p>
             </li>
