@@ -7,7 +7,8 @@ of een exitplan, voor de directeur Communicatie.
 
 Twee bronnen liggen eronder: de rijksbrede platformkaders (met de werkwijze in
 vier stappen), en de platformonafhankelijke richtlijnen voor toetreding en
-vertrek.
+vertrek. De kaders zijn de bijlage bij de notitie "Aanwezigheid Rijksoverheid
+op sociale media"; de scan volgt versie 1.0, van 1 oktober 2026.
 
 ## Eén scan per kanaal
 
@@ -88,10 +89,14 @@ Waar de ruimte vandaan komt:
   kader vraagt dat je mensen op de risico's wijst en doorverwijst. Op
   social.overheid.nl gaat het om vragen met privacygevoelige gegevens.
 
-Bij adverteren komen twee aandachtspunten in het document: het verbod uit de
-DSA op advertenties op basis van gevoelige gegevens en op profielen van
-minderjarigen, en een advies om breed te richten als je op interesses richt.
-Ze tellen niet mee voor de uitkomst.
+Bij adverteren komen aandachtspunten in het document: het verbod uit de DSA op
+advertenties op basis van gevoelige gegevens en op profielen van minderjarigen,
+en een advies om breed te richten als je op interesses richt. Een kader kan er
+eigen punten aan toevoegen (`let_op`): bij Facebook en Instagram de raciale
+discriminatie door het advertentiealgoritme van Meta, bij LinkedIn de
+waarschuwing van het College voor de Rechten van de Mens over algoritmes bij
+werving, alleen als je adverteert voor werving. Ze tellen niet mee voor de
+uitkomst.
 
 ## De vier stappen
 
@@ -99,7 +104,7 @@ Ze tellen niet mee voor de uitkomst.
    de ruimte van het kader. Bereik je de doelgroep niet, dan dient het kanaal
    het doel niet.
 2. **Kanaalstrategie.** Is er een minder risicovol kanaal dat hetzelfde doel
-   bereikt? En staat alles eerst op eigen openbare kanalen?
+   bereikt? En staat alles ook op eigen openbare kanalen?
 3. **Weging.** De risico's uit het kader, of je doorverwijst, het toestel (bij
    TikTok), de maatregelen, en of de meerwaarde opweegt.
 4. **Comply or explain.** De tool rekent de uitkomst uit.
@@ -113,7 +118,7 @@ Ze tellen niet mee voor de uitkomst.
   het Rijk, of een bewindspersoon wil op een platform waar dat nooit mag.
 - **Explain**: het kader vraagt altijd een explain (Facebook, X, TikTok, en elk
   platform zonder kader), of de inzet gaat verder dan de ruimte. Dat is
-  organisch, betaald of contact buiten het kader, niet alles eerst op eigen
+  organisch, betaald of contact buiten het kader, niet alles ook op eigen
   kanalen, niet doorverwijzen, beheer vanaf een privétoestel, of een
   bewindspersoon waar het kader dat niet noemt of met betaalde promotie.
 - **Comply**: anders.
@@ -128,21 +133,28 @@ document onder "Nog te regelen".
 ## De kaders
 
 `kaders.php` houdt per platform bij wat het kader zegt: het advies, de
-doelgroep, de risico's, of een bewindspersoon er mag zijn, en de ruimte per
-soort gebruik. Wat daar niet in staat, valt erbuiten. De kaders worden elk jaar
+doelgroep, de risico's, of een bewindspersoon er mag zijn, de ruimte per soort
+gebruik, en waar je op let bij adverteren. Wat daar niet in staat, valt erbuiten. De kaders worden elk jaar
 herzien; loop dit bestand dan na.
+
+De hints bij de doelen volgen de toelichting op de communicatiedoelen in de
+notitie. Die noemt ook dienstverlening, interactie en veilig contact; de scan
+vraagt die bij contact.
 
 Een platform zonder kader krijgt de vraag waar het bedrijf zit. Een land met
 een offensief cyberprogramma tegen Nederland geeft de toestelregel van TikTok;
 buiten de EU komt als risico in het kader.
 
-Drie punten in de brontekst zijn niet eenduidig. De tool kiest zo:
+Vier punten in de brontekst zijn niet eenduidig. De tool kiest zo:
 
 - Instagram noemt stakeholdermanagement zowel bij "wel" als bij "niet". De tool
   houdt het buiten de ruimte.
 - TikTok noemt attenderen zowel bij "wel" als bij "niet". De tool houdt het
   binnen de ruimte, omdat het kader TikTok geschikt noemt om jongeren te
   attenderen.
+- TikTok noemt bij de doelen "gedragsbeïnvloeding middels betaalde inzet", het
+  advies alleen gedragsbeïnvloeding. De tool volgt de doelen: adverteren mag,
+  berichten plaatsen valt erbuiten.
 - YouTube noemt corporate communicatie en crisiscommunicatie bij de doelen. De
   tool behandelt ze als vormen.
 

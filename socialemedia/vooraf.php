@@ -8,8 +8,8 @@ declare(strict_types=1);
     <section class="vooraf">
         <h2>Voor je begint</h2>
         <p>Het Rijk heeft per platform een kader. Daarin staat waarvoor je het platform mag inzetten, en welke
-           risico’s erbij horen. Deze scan volgt een kanaal door de hele cyclus: starten, de jaarlijkse toets, en
-           vertrekken.</p>
+           risico’s erbij horen. Het kader geldt voor elk account dat je organisatie op dat platform beheert. Deze
+           scan volgt een kanaal door de hele cyclus: starten, de jaarlijkse toets, en vertrekken.</p>
         <p>Start je een kanaal, of toets je een kanaal dat al loopt? Dan ga je door vier stappen:</p>
         <ol>
             <li>Doel en doelgroep: bereik je je doelen, en zit je doelgroep op het platform?</li>
