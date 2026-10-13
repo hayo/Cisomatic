@@ -2,8 +2,8 @@ name: Naar Codeberg
 
 # Zet de cisomatic na elke push naar main ook in de repo van de site op
 # Codeberg, met git subtree. Dat doet naar-codeberg.sh. Nodig: het geheim
-# CODEBERG_TOKEN en de variabele CODEBERG_REPO (eigenaar/repo). Zonder die
-# variabele draait de workflow niet. Zie README.md, onder Binnen een site.
+# CODEBERG_TOKEN. Zonder dat geheim slaat de workflow zichzelf over. Zie
+# README.md, onder Binnen een site.
 
 on:
   push:
@@ -24,7 +24,6 @@ permissions:
 
 jobs:
   bijwerken:
-    if: vars.CODEBERG_REPO != ''
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -32,16 +31,16 @@ jobs:
       - name: Werk de site op Codeberg bij
         env:
           CODEBERG_TOKEN: ${{ secrets.CODEBERG_TOKEN }}
-          CODEBERG_REPO: ${{ vars.CODEBERG_REPO }}
+          CODEBERG_REPO: ${{ vars.CODEBERG_REPO || 'hayo/codeberg-hayobethlehem.nl' }}
           CODEBERG_GEBRUIKER: ${{ vars.CODEBERG_GEBRUIKER }}
           GITHUB_TOKEN: ${{ github.token }}
           PAD: ${{ vars.CODEBERG_PAD || 'hb2025/content/forge/cisomatic' }}
-          TAK: ${{ vars.CODEBERG_TAK || 'main' }}
+          TAK: ${{ vars.CODEBERG_TAK }}
           EERSTE_KEER: ${{ inputs.eerste_keer || false }}
         run: |
           if [ -z "$CODEBERG_TOKEN" ]; then
-            echo "::error::Het geheim CODEBERG_TOKEN ontbreekt."
-            exit 1
+            echo "::warning::Het geheim CODEBERG_TOKEN ontbreekt, dus de site op Codeberg blijft zoals hij is."
+            exit 0
           fi
           gebruiker="${CODEBERG_GEBRUIKER:-${CODEBERG_REPO%%/*}}"
           SITE_URL="https://${gebruiker}:${CODEBERG_TOKEN}@codeberg.org/${CODEBERG_REPO}.git" \

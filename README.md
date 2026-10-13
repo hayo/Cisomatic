@@ -110,10 +110,11 @@ van de site op Codeberg, met `git subtree`. Het werk zelf doet
    Instellingen, Applicaties.
 2. Zet dat op GitHub onder Settings, Secrets and variables, Actions, als geheim
    `CODEBERG_TOKEN`.
-3. Zet daar ook de variabele `CODEBERG_REPO`, zoals `eigenaar/repo`. Zonder die
-   variabele draait de Action niet. Optioneel: `CODEBERG_PAD` (standaard
-   `hb2025/content/forge/cisomatic`), `CODEBERG_TAK` (standaard `main`) en
-   `CODEBERG_GEBRUIKER`, als de repo bij een organisatie hoort.
+3. Optioneel, als variabelen op dezelfde plek: `CODEBERG_REPO` (standaard
+   `hayo/codeberg-hayobethlehem.nl`), `CODEBERG_PAD` (standaard
+   `hb2025/content/forge/cisomatic`), `CODEBERG_TAK` (standaard de
+   standaardbranch) en `CODEBERG_GEBRUIKER`, als de repo bij een organisatie
+   hoort. Zonder het geheim slaat de Action zichzelf over.
 4. Start de Action één keer met de hand, onder Actions, met "eerste keer" aan.
    Die vervangt de map op de site door een subtree. Wat alleen daar in die map
    stond, valt weg.
