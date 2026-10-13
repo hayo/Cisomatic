@@ -23,7 +23,10 @@ EERSTE_KEER="${EERSTE_KEER:-false}"
 werkmap="$(mktemp -d)"
 trap 'rm -rf "$werkmap"' EXIT
 
-git clone -q ${TAK:+--branch "$TAK"} "$SITE_URL" "$werkmap/site"
+if ! git clone -q ${TAK:+--branch "$TAK"} "$SITE_URL" "$werkmap/site"; then
+    echo "De site is niet op te halen. Klopt het token, en mag het lezen en schrijven in repositories?" >&2
+    exit 1
+fi
 cd "$werkmap/site"
 TAK="$(git symbolic-ref --short HEAD)"
 git config user.name "Hayo Bethlehem"

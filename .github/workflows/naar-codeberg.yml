@@ -26,7 +26,7 @@ jobs:
   bijwerken:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Werk de site op Codeberg bij
         env:
@@ -42,7 +42,9 @@ jobs:
             echo "::warning::Het geheim CODEBERG_TOKEN ontbreekt, dus de site op Codeberg blijft zoals hij is."
             exit 0
           fi
+          # Een geplakt token heeft soms een spatie of regeleinde erbij.
+          token="$(printf '%s' "$CODEBERG_TOKEN" | tr -d '[:space:]')"
           gebruiker="${CODEBERG_GEBRUIKER:-${CODEBERG_REPO%%/*}}"
-          SITE_URL="https://${gebruiker}:${CODEBERG_TOKEN}@codeberg.org/${CODEBERG_REPO}.git" \
+          SITE_URL="https://${gebruiker}:${token}@codeberg.org/${CODEBERG_REPO}.git" \
           BRON_URL="https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" \
             bash .github/naar-codeberg.sh
