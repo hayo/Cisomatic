@@ -21,7 +21,8 @@ return [
 
     // Map waarin elk document als bestand wordt bewaard, bijvoorbeeld
     // __DIR__ . '/bewaard'. Bij null bewaart de server niets, en downloadt de
-    // invuller het document zelf.
+    // invuller het document zelf. Uit op hayobethlehem.nl, want de
+    // privacyverklaring daar belooft dat een bezoek niets vastlegt.
     'bewaar_map' => null,
 
     // Het logo bovenaan elke pagina van het .odt-bestand, tegen de bovenrand.

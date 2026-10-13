@@ -1,11 +1,11 @@
 <?php
 
 /**
- * De hele pagina om de inhoud heen.
+ * Een hele pagina om de inhoud heen, voor als er geen site omheen zit.
  *
  * standalone.css komt na app.css. Het geeft de kale pagina een basis, en levert
- * de kleuren en maten waarop app.css draait. Een eigen huisstijl vraagt dus
- * alleen om een aangepast standalone.css.
+ * de kleuren en maten waarop app.css draait. Binnen een site levert de site
+ * die. Een eigen huisstijl vraagt dus alleen om een aangepast standalone.css.
  *
  * Verwacht $titel, en in $inhoud het pad van de inhoud.
  */
@@ -16,6 +16,7 @@ declare(strict_types=1);
 /** @var string $inhoud */
 
 // Geen inline script of stijl: de opmaak heeft geen onclick of style nodig.
+// Binnen een site stuurt de site deze kop mee; hier doet niemand dat.
 header("Content-Security-Policy: script-src 'self'; style-src 'self'");
 
 ?>

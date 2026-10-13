@@ -424,7 +424,7 @@ function cm_stuur_odt(array $blokken, string $bestandsnaam, string $auteur = '')
 {
     $odt = cm_odt($blokken, $auteur);
 
-    // Een host kan al een outputbuffer hebben lopen; die hoort niet in het bestand.
+    // Een site of host kan al een outputbuffer hebben lopen; die hoort niet in het bestand.
     while (ob_get_level() > 0) {
         ob_end_clean();
     }

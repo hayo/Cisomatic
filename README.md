@@ -84,10 +84,26 @@ formulier gebruikt de motor; de motor kent geen formulier bij naam.
 
 Kopieer de map naar een server met PHP 8.1 of nieuer, en open `index.php`. De
 map moet onder de documentroot staan, want daaruit leidt `cm_asset()` de URL's
-af. Elke pagina is een hele pagina met de neutrale opmaak van
+af. Dan is elke pagina een hele pagina, met de neutrale opmaak van
 `assets/standalone.css`.
 
 Lokaal: `php -S localhost:8000` in de map, en dan `http://localhost:8000/`.
+
+### Binnen een site
+
+De map kan ook in een site staan, zoals op hayobethlehem.nl. De parser van de
+site sluit dan `index.php` in, en de motor levert alleen de inhoud. De site zet
+er kop, menu en opmaak omheen, en laadt `assets/app.css`. `cm_zelfstandig()`
+ziet het verschil zelf: is het opgevraagde script een bestand in deze map, dan
+draait de motor los. Een host die het anders wil, geeft het mee als tweede
+argument van `cm_verwerk()` of `cm_kiezer()`.
+
+Een site kan de losse pagina opvragen met `/standalone` achter het adres. De
+voordeur zet dat staartje dan ook achter elk formulier.
+
+De code is in deze repo en in de site gelijk. Deze repo is de bron. De site
+haalt de map op met `git subtree pull`, en stuurt eigen wijzigingen terug met
+`git subtree push`.
 
 ## Een formulier toevoegen
 
@@ -204,9 +220,9 @@ organisatie zonder lijst; dan vraagt het formulier om een toelichting.
 `assets/app.css` gebruikt alleen tokens: `--ink`, `--ink-hover`, `--pill-bg`,
 `--pill-bg-hover`, `--line`, `--line-soft`, `--panel`, `--page`, `--text`,
 `--muted`, `--muted-soft`, `--link`, `--on-ink`, `--pill-ink`, `--radius`,
-`--font-ui` en `--ui-lg`, `--ui-md`, `--ui-sm`. `standalone.css` definieert ze,
-voor licht en donker, en geeft de pagina een basis. Een eigen huisstijl is dus
-één bestand aanpassen: `standalone.css`.
+`--font-ui` en `--ui-lg`, `--ui-md`, `--ui-sm`. Los definieert `standalone.css`
+ze, voor licht en donker, en geeft het de pagina een basis. Binnen een site doet
+de site dat. Een eigen huisstijl is dus één bestand aanpassen: `standalone.css`.
 
 Het formulier heeft geen klassen. `app.css` kiest op element en op de
 data-attributen die `app.js` toch al nodig heeft. Alles hangt onder
@@ -248,6 +264,10 @@ vragen die nu verborgen zijn: `cm_lees_antwoorden($post, true)`. Bij elke keer
 bewaren rekent `cm_voortgang()` uit hoeveel verplichte vragen van toepassing
 zijn, hoeveel daarvan ingevuld zijn, en of het document al gemaakt kan worden.
 De lijst toont dat als een balk.
+
+Staat het script van de host buiten deze map, dan levert de motor alleen de
+inhoud, net als binnen een site. Wil de host een hele pagina, dan geeft hij
+`true` mee aan `cm_verwerk()`.
 
 ## Het document
 

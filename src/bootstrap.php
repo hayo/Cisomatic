@@ -35,7 +35,8 @@ function cm_config(): array
 /**
  * URL van een bestand in deze map, met de wijzigingstijd erachter.
  *
- * Afgeleid uit de documentroot, zodat het pad klopt waar de map ook staat. De tijd erachter laat een nieuwe versie
+ * Afgeleid uit de documentroot, zodat het pad klopt binnen een site en los
+ * daarvan, waar de map ook staat. De tijd erachter laat een nieuwe versie
  * meteen doorkomen, ook bij een browser die het bestand een jaar bewaart.
  */
 function cm_asset(string $pad): string
@@ -105,10 +106,26 @@ function cm_werkplek(?array $werkplek = null): ?array
 }
 
 /**
- * Toont een formulier, of rekent de antwoorden door tot een document. Levert
- * altijd een hele pagina, met de neutrale opmaak van standalone.css.
+ * Draait de motor los, of binnen een site? Los is het opgevraagde script een
+ * bestand in deze map, zoals de index.php van een formulier. Binnen een site
+ * is het de parser van de site, die index.php alleen insluit. Een host die het
+ * anders wil, geeft het zelf mee aan cm_verwerk() of cm_kiezer().
  */
-function cm_verwerk(string $id): void
+function cm_zelfstandig(): bool
+{
+    $script = realpath((string) ($_SERVER['SCRIPT_FILENAME'] ?? ''));
+
+    return $script !== false && str_starts_with($script, (string) realpath(CM_ROOT) . DIRECTORY_SEPARATOR);
+}
+
+/**
+ * Toont een formulier, of rekent de antwoorden door tot een document.
+ *
+ * Binnen een site levert dit alleen de inhoud, en zet de site er kop, menu en
+ * opmaak omheen. Los levert het een hele pagina met de neutrale opmaak van
+ * standalone.css. Zie cm_zelfstandig().
+ */
+function cm_verwerk(string $id, ?bool $zelfstandig = null): void
 {
     $formulier = cm_formulier($id);
     $antwoorden = cm_werkplek()['antwoorden'] ?? [];
@@ -147,23 +164,26 @@ function cm_verwerk(string $id): void
     $titel = $blokken === null ? $formulier['titel'] : cm_documenttitel($blokken);
     $inhoud = __DIR__ . '/pagina.php';
 
-    require __DIR__ . '/document.php';
+    require ($zelfstandig ?? cm_zelfstandig()) ? __DIR__ . '/document.php' : $inhoud;
 }
 
 /** De voordeur: een lijst van alle formulieren. */
-function cm_kiezer(): void
+function cm_kiezer(?bool $zelfstandig = null): void
 {
     $formulieren = array_map('cm_definitie', cm_config()['formulieren']);
 
-    // Een formulier staat een map dieper dan deze pagina. Opgevraagd als
-    // index.php linkt de voordeur ook naar de index.php van elk formulier.
+    // Een formulier staat een map dieper dan deze pagina. Alleen het staartje
+    // verschilt: index.php, of /standalone als een site daarmee de losse
+    // pagina opvraagt. De voordeur zet het achter elk formulier.
     $pad = rtrim((string) parse_url((string) ($_SERVER['REQUEST_URI'] ?? ''), PHP_URL_PATH), '/');
-    [$basis, $staart] = str_ends_with($pad, '/index.php')
-        ? [substr($pad, 0, -strlen('/index.php')), '/index.php']
-        : [$pad, ''];
+    [$basis, $staart] = match (true) {
+        str_ends_with($pad, '/standalone') => [substr($pad, 0, -strlen('/standalone')), '/standalone'],
+        str_ends_with($pad, '/index.php') => [substr($pad, 0, -strlen('/index.php')), '/index.php'],
+        default => [$pad, ''],
+    };
 
     $titel = 'Cisomatic';
     $inhoud = __DIR__ . '/kiezer.php';
 
-    require __DIR__ . '/document.php';
+    require ($zelfstandig ?? cm_zelfstandig()) ? __DIR__ . '/document.php' : $inhoud;
 }
