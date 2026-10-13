@@ -51,6 +51,9 @@ return [
         'aiscan' => ['naam' => 'de AI scan', 'zet' => ['ai' => 'onderdeel']],
     ],
 
+    // De DPIA heeft al een eigen vaststelling.
+    'vaststelling' => false,
+
     'bestanden' => ['risicos.php', 'vragen.php', 'afleiding.php', 'rapport.php'],
     'secties' => 'dp_secties',
     'uitkomst' => 'dp_uitkomst',

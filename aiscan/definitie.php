@@ -41,6 +41,9 @@ return [
         'soevereiniteit' => ['naam' => 'de soevereiniteitsscan'],
     ],
 
+    // Het rapport zet de antwoorden zelf al in een hoofdstuk.
+    'antwoorden' => false,
+
     'bestanden' => ['vragen.php', 'afleiding.php', 'rapport.php'],
     'secties' => 'ai_secties',
     'uitkomst' => 'ai_uitkomst',

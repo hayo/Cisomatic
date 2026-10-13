@@ -17,7 +17,7 @@ function ai_rapport(array $a, array $u): array
     $opmerkingen = cm_regels((string) ($a['ai_opmerkingen'] ?? ''));
 
     return [
-        ...ai_rapport_inleiding($a, $naam),
+        ...ai_rapport_inleiding($a, $u, $naam),
         ...ai_rapport_samenvatting($u),
         ...ai_rapport_plichten($u),
         ...($u['standpunt'] === null ? [] : ai_rapport_standpunt($u['standpunt'])),
@@ -30,10 +30,12 @@ function ai_rapport(array $a, array $u): array
     ];
 }
 
-function ai_rapport_inleiding(array $a, string $naam): array
+function ai_rapport_inleiding(array $a, array $u, string $naam): array
 {
     return [
         ['h1', 'AI scan ' . $naam],
+        ...array_map(static fn (string $term, string $tekst): array => ['term', $term, $tekst],
+            array_keys(ai_kort($u)), array_values(ai_kort($u))),
         ['term', 'Datum', cm_datum_nl(new DateTimeImmutable('now'))],
         ['term', 'Opgesteld door', (string) $a['aanvrager']],
         ...(($a['organisatieonderdeel'] ?? '') === '' ? [] : [['term', 'Organisatie', (string) $a['organisatieonderdeel']]]),

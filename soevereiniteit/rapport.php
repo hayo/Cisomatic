@@ -18,7 +18,7 @@ function sv_rapport(array $a, array $u): array
     $opmerkingen = cm_regels((string) ($a['sv_opmerkingen'] ?? ''));
 
     return [
-        ...sv_rapport_inleiding($a, $naam),
+        ...sv_rapport_inleiding($a, $u, $naam),
         ...sv_rapport_samenvatting($u),
         ...sv_rapport_themas($a, $u),
         ...sv_rapport_rekenwijze(),
@@ -29,10 +29,12 @@ function sv_rapport(array $a, array $u): array
     ];
 }
 
-function sv_rapport_inleiding(array $a, string $naam): array
+function sv_rapport_inleiding(array $a, array $u, string $naam): array
 {
     return [
         ['h1', 'Soevereiniteitsscan ' . $naam],
+        ['term', 'Label', sv_label($u['label'])],
+        ['term', 'Past bij de informatie', $u['oordeel']],
         ['term', 'Clouddienst', (string) $a['cloud_leverancier']],
         ['term', 'Soort leverancier', cm_antwoord_tekst('sv_profiel', $a)],
         ['term', 'Informatie', cm_antwoord_tekst('sv_belang', $a)],

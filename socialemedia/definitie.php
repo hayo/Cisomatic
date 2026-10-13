@@ -33,6 +33,8 @@ return [
     ],
     'route' => 'sm_situatie',
 
+    'vaststelling' => [['Ingevuld door', 'aanvrager'], ['Vastgesteld door', 'sm_directeur']],
+
     'bestanden' => ['kaders.php', 'vragen.php', 'exit.php', 'afleiding.php', 'advies.php'],
     'secties' => 'sm_secties',
     'evalueer' => 'sm_evalueer',

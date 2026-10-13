@@ -37,6 +37,21 @@ function qs_termtabel(array $rijen): array
     return ['tabel', ['rijen' => $rijen, 'breedtes' => [5.2, 11.4], 'rijkop' => true]];
 }
 
+/**
+ * De vaststelling onder het advies: wie invulde, wie beoordeelde, en wie het
+ * advies vaststelt. Die rollen volgen uit de uitkomst.
+ *
+ * @return list<array{0:string,1:?string}>
+ */
+function qs_vaststelling(array $a, array $u): array
+{
+    return [
+        ['Ingevuld door', 'aanvrager'],
+        ['Beoordeeld door', ($a['rol'] ?? '') === 'beoordelaar' ? 'beoordelaar_naam' : null],
+        ...array_map(static fn (string $rol): array => ['Vastgesteld door de ' . $rol, null], $u['vaststelling']),
+    ];
+}
+
 /** Titel, wie en wanneer, en in welke stap. */
 function qs_advies_kop(array $a, array $u): array
 {
@@ -58,6 +73,19 @@ function qs_advies_kop(array $a, array $u): array
 
     if ($beoordeeld && trim((string) ($a['beoordelaar_naam'] ?? '')) !== '') {
         $b[] = ['term', 'Beoordeeld door', (string) $a['beoordelaar_naam']];
+    }
+
+    // De uitkomst, zodat die meteen op de titelpagina staat.
+    if (!empty($u['uitzondering'])) {
+        $b[] = ['term', 'Uitkomst', 'Geen te beschermen informatie. De beoordelaar toetst die motivatie.'];
+    } else {
+        $b[] = ['term', 'Beveiligingsniveau', 'BBN ' . (int) $u['bbn']];
+        $b[] = ['term', 'Risiconiveau', ucfirst((string) $u['risiconiveau'])];
+    }
+    $b[] = ['term', 'Status', $beoordeeld ? 'Stap 2: de wegingen zijn vastgesteld' : 'Stap 1: de wegingen zijn voorlopig'];
+    if ($u['blokkerend'] !== []) {
+        $b[] = ['term', 'Blokkerend', count($u['blokkerend']) . (count($u['blokkerend']) === 1 ? ' punt houdt'
+            : ' punten houden') . ' het voorstel tegen'];
     }
 
     $b[] = ['alinea', 'Dit advies is automatisch samengesteld op basis van de ingevulde antwoorden en de '

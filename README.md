@@ -59,6 +59,7 @@ src/formulier.php         formulier naar HTML
 src/opmaak.php            documentblokken naar HTML, en het schema als SVG
 src/odt.php               documentblokken naar .odt; de zip zonder extensies
 src/opslag.php            wegschrijven naar 'bewaar_map', als dat aan staat
+src/verantwoording.php    kenmerk, vingerafdruk en het hoofdstuk Verantwoording onder elk document
 src/pagina.php            de inhoud: formulier of resultaat, als <article>
 src/resultaat.php         de pagina na het versturen
 src/kiezer.php            de voordeur als <article>
@@ -158,6 +159,8 @@ Alleen gegevens, geen code. De voordeur leest dit bestand ook.
 | `document` | Functie die van antwoorden en uitkomst de documentblokken maakt |
 | `uitkomst` | Optioneel: functie voor `toon_als_uitkomst` en `verplicht_als_uitkomst` |
 | `valideer` | Optioneel: functie met controles bovenop de invulplicht |
+| `vaststelling` | Optioneel: wie het document ondertekent. Een lijst van `[rol, sleutel]`, met de sleutel van het antwoord met de naam of `null`. Of een functie die die lijst geeft. `false` als het document dat zelf al doet |
+| `antwoorden` | Optioneel: `false` als het document alle antwoorden al zelf toont |
 
 ### vragen.php
 
@@ -219,8 +222,34 @@ vormen de titelpagina, zonder voettekst. Daarna volgt een inhoudsopgave met de
 `h2` en `h3`, en dan de hoofdstukken. De inhoudsopgave is een echte: elke kop
 krijgt een bladwijzer, en het paginanummer is een verwijzing daarnaar.
 LibreOffice vult de nummers bij het openen in. Word toont ze pas na "Veld
-bijwerken". De voettekst toont de titel en "Pagina x van y". De opsteller
-(`aanvrager`) staat als auteur in de eigenschappen van het bestand.
+bijwerken". De voettekst toont de titel, het kenmerk en "Pagina x van y". De
+opsteller (`aanvrager`) staat als auteur in de eigenschappen van het bestand,
+het kenmerk als eigen eigenschap.
+
+Zet de uitkomst op de titelpagina, als `term` onder de `h1`. Wie het document
+opent, ziet dan meteen wat eruit kwam.
+
+### Verantwoording
+
+Elk document is geschikt voor een audit. De motor voegt daarvoor zelf toe, in
+`src/verantwoording.php`:
+
+- **Het kenmerk**, zoals `FITGAP-3F9A2C1B`: het formulier en het begin van de
+  vingerafdruk. Op de titelpagina, in de voettekst en in de eigenschappen.
+- **Een hoofdstuk Verantwoording**, als laatste:
+  - *Over dit document*: formulier, kenmerk, datum en tijd, opsteller, de
+    versie van de regels en de grondslag (`voet`).
+  - *Vaststelling*: een tabel met rol, naam, datum en handtekening. Zonder
+    `vaststelling` in de definitie: opgesteld, beoordeeld en vastgesteld door.
+  - *Alle antwoorden*: per sectie elke vraag die van toepassing was, met het
+    antwoord. Zonder `antwoorden => false`.
+  - *Controle*: de vingerafdruk en de naam van het antwoordbestand.
+
+De vingerafdruk is een SHA-256 over de antwoorden. Het antwoordbestand heeft
+hem ook, met het kenmerk. Een auditor laadt dat bestand, maakt het document
+opnieuw, en vergelijkt. De versie van de regels is een vingerafdruk van de code
+van de motor en het formulier: met dezelfde versie en dezelfde antwoorden komt
+dezelfde uitkomst eruit.
 
 Alle tekst is platte tekst. Nadruk zit in de soort van het blok, dus een
 antwoord wordt nooit per ongeluk vet of een kop.

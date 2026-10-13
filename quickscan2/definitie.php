@@ -42,6 +42,10 @@ return [
         'aiscan' => ['naam' => 'de AI scan', 'zet' => ['ai' => 'onderdeel']],
     ],
 
+    // Het advies zet de antwoorden zelf al in een hoofdstuk.
+    'vaststelling' => 'q2_vaststelling',
+    'antwoorden' => false,
+
     'bestanden' => ['toelichting.php', 'vragen.php', 'afleiding.php', 'beslisboom.php', 'advies.php'],
     'secties' => 'q2_secties',
     'valideer' => 'q2_valideer',

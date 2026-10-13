@@ -24,6 +24,10 @@ return [
     ],
     'route' => 'te_beschermen_informatie',
 
+    // Het advies zet de antwoorden zelf al in een hoofdstuk.
+    'vaststelling' => 'qs_vaststelling',
+    'antwoorden' => false,
+
     'bestanden' => ['toelichting.php', 'vragen.php', 'afleiding.php', 'beslisboom.php', 'advies.php'],
     'secties' => 'qs_secties',
     'valideer' => 'qs_valideer_bijstelling',

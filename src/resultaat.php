@@ -31,6 +31,8 @@ $opgemaakt = cm_blokken_naar_html($blokken);
     'soort' => $formulier['id'],
     'projectnaam' => $antwoorden['projectnaam'] ?? '',
     'opgeslagen_op' => (new DateTimeImmutable('now'))->format(DATE_ATOM),
+    'kenmerk' => cm_kenmerk(cm_vingerafdruk($antwoorden)),
+    'vingerafdruk' => cm_vingerafdruk($antwoorden),
     'antwoorden' => $antwoorden,
 ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_AMP) ?></script>
 

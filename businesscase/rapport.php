@@ -74,6 +74,8 @@ function bc_rapport_inleiding(array $a, array $u, string $naam): array
 {
     return [
         ['h1', 'Business case en intaketoets ' . $naam],
+        ['term', 'Risico', $u['risico']['label']],
+        ['term', 'Advies', $u['risico']['advies']],
         ['term', 'Versie', $u['versie']],
         ['term', 'Datum', cm_datum_nl(new DateTimeImmutable('now'))],
         ['term', 'Opgesteld door', (string) $a['aanvrager']],

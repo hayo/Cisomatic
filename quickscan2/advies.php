@@ -39,6 +39,23 @@ function q2_termtabel(array $rijen): array
     return ['tabel', ['rijen' => $rijen, 'breedtes' => [5.2, 11.4], 'rijkop' => true]];
 }
 
+/**
+ * De vaststelling onder het advies: wie invulde en beoordeelde, wie advies
+ * geeft, en de proceseigenaar die vaststelt.
+ *
+ * @return list<array{0:string,1:?string}>
+ */
+function q2_vaststelling(array $a, array $u): array
+{
+    return [
+        ['Ingevuld door', 'aanvrager'],
+        ['Beoordeeld door', ($a['rol'] ?? '') === 'beoordelaar' ? 'beoordelaar_naam' : null],
+        ['Advies van de CISO', null],
+        ...(str_contains(implode(' ', $u['vaststelling']), 'de CIO') ? [['Advies van de CIO', null]] : []),
+        ['Vastgesteld door de proceseigenaar', null],
+    ];
+}
+
 /** Titel, wie en wanneer, en in welke stap. */
 function q2_advies_kop(array $a, array $u): array
 {
@@ -61,6 +78,18 @@ function q2_advies_kop(array $a, array $u): array
 
     if ($beoordeeld && trim((string) ($a['beoordelaar_naam'] ?? '')) !== '') {
         $b[] = ['term', 'Beoordeeld door', (string) $a['beoordelaar_naam']];
+    }
+
+    // De uitkomst, zodat die meteen op de titelpagina staat.
+    $b[] = ['term', 'Cyberbeveiligingswet', $u['cbw']['waar'] ? 'Geldt: de organisatie is een essentiële entiteit'
+        : 'Geldt niet, de BIO2 wel'];
+    $b[] = ['term', 'Beveiligingsniveau', (string) $u['niveau']];
+    $b[] = ['term', 'Te beschermen belangen', (string) $u['tbb']['label']];
+    $b[] = ['term', 'Risiconiveau', ucfirst((string) $u['risiconiveau'])];
+    $b[] = ['term', 'Status', $beoordeeld ? 'Stap 2: de wegingen zijn vastgesteld' : 'Stap 1: de wegingen zijn voorlopig'];
+    if ($u['blokkerend'] !== []) {
+        $b[] = ['term', 'Blokkerend', count($u['blokkerend']) . (count($u['blokkerend']) === 1 ? ' punt houdt'
+            : ' punten houden') . ' het voorstel tegen'];
     }
 
     $b[] = ['alinea', 'Dit advies is automatisch samengesteld uit de antwoorden. De regels komen uit de BIO2 '

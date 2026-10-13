@@ -48,6 +48,10 @@ return [
         'businesscase' => ['naam' => 'de business case', 'overslaan' => $eigen],
     ],
 
+    // De verklaring heeft al alle normen en een eigen ondertekening.
+    'vaststelling' => false,
+    'antwoorden' => false,
+
     'bestanden' => ['../fitgap/verklaring.php', '../fitgap/cloudprivacy.php', 'bio2.php'],
     'regels' => 'fitgap/regels.js',
     'secties' => 'fg2_secties',

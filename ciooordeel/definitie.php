@@ -44,6 +44,8 @@ return [
         'iama' => ['naam' => 'de IAMA', 'overslaan' => $eigen],
     ],
 
+    'vaststelling' => [['Opgesteld door', 'aanvrager'], ['Vastgesteld door de CIO', null]],
+
     'bestanden' => ['vragen.php', 'afleiding.php', 'rapport.php'],
     'secties' => 'co_secties',
     'evalueer' => 'co_evalueer',

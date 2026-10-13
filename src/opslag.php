@@ -41,7 +41,10 @@ function cm_bewaar(array $blokken, array $antwoorden, array $uitkomst): ?array
         . cm_slug((string) ($antwoorden['projectnaam'] ?? ''));
     $pad = $map . '/' . $basis . '.odt';
 
-    if (file_put_contents($pad, cm_odt($blokken, (string) ($antwoorden['aanvrager'] ?? '')), LOCK_EX) === false) {
+    $vingerafdruk = cm_vingerafdruk($antwoorden);
+    $odt = cm_odt($blokken, (string) ($antwoorden['aanvrager'] ?? ''), cm_kenmerk($vingerafdruk));
+
+    if (file_put_contents($pad, $odt, LOCK_EX) === false) {
         throw new RuntimeException('Het document kon niet worden weggeschreven naar ' . $pad . '.');
     }
 
@@ -49,6 +52,8 @@ function cm_bewaar(array $blokken, array $antwoorden, array $uitkomst): ?array
         'soort'         => cm_formulier()['id'],
         'opgeslagen_op' => $moment->format(DATE_ATOM),
         'projectnaam'   => $antwoorden['projectnaam'] ?? '',
+        'kenmerk'       => cm_kenmerk($vingerafdruk),
+        'vingerafdruk'  => $vingerafdruk,
         'antwoorden'    => $antwoorden,
         'uitkomst'      => $uitkomst,
     ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);

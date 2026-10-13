@@ -38,6 +38,10 @@ return [
         'businesscase' => ['naam' => 'de business case', 'overslaan' => $eigen],
     ],
 
+    // De verklaring heeft al alle normen en een eigen ondertekening.
+    'vaststelling' => false,
+    'antwoorden' => false,
+
     'bestanden' => ['verklaring.php', 'cloudprivacy.php', 'bio.php'],
     'secties' => 'fg1_secties',
     'valideer' => 'fg_valideer',

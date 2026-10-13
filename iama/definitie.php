@@ -51,6 +51,10 @@ return [
         'aiscan' => ['naam' => 'de AI scan', 'als' => ['ai_omschrijving' => 'ia_doel']],
     ],
 
+    // Het rapport heeft al alle antwoorden en het besluit.
+    'vaststelling' => false,
+    'antwoorden' => false,
+
     'bestanden' => ['vragen.php', 'afleiding.php', 'rapport.php'],
     'secties' => 'ia_secties',
     'evalueer' => 'ia_evalueer',

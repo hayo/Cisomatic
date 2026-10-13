@@ -67,6 +67,10 @@ function dp_rapport_inleiding(array $a, array $u, string $naam): array
 
     return [
         ['h1', 'DPIA ' . $naam],
+        ...($u['samen'] ? [
+            ['term', 'Grootste risico', cm_niveau_label($u['hoogste'])],
+            ['term', 'Met de extra maatregelen', cm_niveau_label($u['hoogste_rest'])],
+        ] : [['term', 'Stand', 'Beschrijving. De beoordeling volgt samen met de privacyfunctionaris.']]),
         ['term', 'Versie', $u['versie']],
         ['term', 'Datum', $datum],
         ['term', 'Opgesteld door', (string) $a['aanvrager']],

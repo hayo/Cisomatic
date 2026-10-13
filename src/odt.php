@@ -147,7 +147,7 @@ const CM_ODT_INHOUDSTIJLEN = '<style:style style:name="Titelpagina" style:family
  *
  * @param list<array<int,mixed>> $blokken
  */
-function cm_odt(array $blokken, string $auteur = ''): string
+function cm_odt(array $blokken, string $auteur = '', string $kenmerk = ''): string
 {
     $apart = !empty(cm_formulier()['hoofdstuk_per_pagina']);
     $titel = cm_documenttitel($blokken);
@@ -204,6 +204,7 @@ function cm_odt(array $blokken, string $auteur = ''): string
         . '<office:document-meta ' . CM_ODT_NS . '><office:meta>'
         . '<dc:title>' . cm_odt_tekst($titel) . '</dc:title>' . $maker
         . '<dc:language>nl-NL</dc:language>'
+        . ($kenmerk === '' ? '' : '<meta:user-defined meta:name="Kenmerk">' . cm_odt_tekst($kenmerk) . '</meta:user-defined>')
         . '<meta:creation-date>' . date('Y-m-d\TH:i:s') . '</meta:creation-date>'
         . '</office:meta></office:document-meta>';
 
@@ -219,7 +220,7 @@ function cm_odt(array $blokken, string $auteur = ''): string
         'META-INF/manifest.xml' => sprintf(CM_ODT_MANIFEST, $logo === null ? '' : '<manifest:file-entry manifest:full-path="'
             . $logo['pad'] . '" manifest:media-type="' . $logo['mime'] . '"/>'),
         'meta.xml' => $meta,
-        'styles.xml' => CM_ODT_STIJLEN . cm_odt_opmaak($titel, $logo),
+        'styles.xml' => CM_ODT_STIJLEN . cm_odt_opmaak($kenmerk === '' ? $titel : $titel . ' · ' . $kenmerk, $logo),
         'content.xml' => $content,
         ...($logo === null ? [] : [$logo['pad'] => $logo['data']]),
     ]);
@@ -420,9 +421,9 @@ function cm_zip(array $bestanden): string
 }
 
 /** Stuurt het document als .odt-download en stopt het verzoek. */
-function cm_stuur_odt(array $blokken, string $bestandsnaam, string $auteur = ''): never
+function cm_stuur_odt(array $blokken, string $bestandsnaam, string $auteur = '', string $kenmerk = ''): never
 {
-    $odt = cm_odt($blokken, $auteur);
+    $odt = cm_odt($blokken, $auteur, $kenmerk);
 
     // Een site of host kan al een outputbuffer hebben lopen; die hoort niet in het bestand.
     while (ob_get_level() > 0) {

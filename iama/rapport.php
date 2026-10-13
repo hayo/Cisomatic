@@ -154,6 +154,9 @@ function ia_rapport_inleiding(array $a, array $u, string $naam): array
 
     return [
         ['h1', 'IAMA ' . $naam],
+        ['term', 'Advies', ($a['ia_advies'] ?? '') === '' ? 'Nog niet gegeven: de IAMA is na sessie ' . $u['sessie']
+            . ' nog niet af.' : cm_antwoord_tekst('ia_advies', $a)],
+        ...($u['ernst'] === '' ? [] : [['term', 'Zwaarste inbreuk', ucfirst((string) $u['ernst'])]]),
         ['term', 'Versie', $u['versie']],
         ['term', 'Datum', $datum],
         ['term', 'Opgesteld door', (string) $a['aanvrager']],

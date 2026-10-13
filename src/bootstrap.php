@@ -18,6 +18,7 @@ require_once __DIR__ . '/formulier.php';
 require_once __DIR__ . '/opmaak.php';
 require_once __DIR__ . '/odt.php';
 require_once __DIR__ . '/opslag.php';
+require_once __DIR__ . '/verantwoording.php';
 
 /** @return array<string,mixed> */
 function cm_config(): array
@@ -147,10 +148,11 @@ function cm_verwerk(string $id, ?bool $zelfstandig = null): void
 
         if ($fouten === []) {
             $uitkomst = $formulier['evalueer']($antwoorden);
-            $blokken = $formulier['document']($antwoorden, $uitkomst);
+            $blokken = cm_verantwoord($formulier['document']($antwoorden, $uitkomst), $antwoorden, $uitkomst);
 
             if ($alsDocument) {
-                cm_stuur_odt($blokken, cm_bestandsnaam((string) ($antwoorden['projectnaam'] ?? ''), 'odt'), (string) ($antwoorden['aanvrager'] ?? ''));
+                cm_stuur_odt($blokken, cm_bestandsnaam((string) ($antwoorden['projectnaam'] ?? ''), 'odt'),
+                    (string) ($antwoorden['aanvrager'] ?? ''), cm_kenmerk(cm_vingerafdruk($antwoorden)));
             }
 
             try {

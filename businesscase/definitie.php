@@ -44,6 +44,10 @@ return [
         ],
     ],
 
+    // Het rapport heeft al alle antwoorden en het besluit van het MT.
+    'vaststelling' => false,
+    'antwoorden' => false,
+
     'bestanden' => ['vragen.php', 'afleiding.php', 'rapport.php'],
     'secties' => 'bc_secties',
     'evalueer' => 'bc_evalueer',
