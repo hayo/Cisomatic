@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 ?>
 <article id="cisomatic" lang="nl">
+    <h1>CisoMatic</h1>
     <img src="<?= h(cm_asset('img/cisomatic.jpg')) ?>" alt="Cisomatic" width="2752" height="1536" decoding="async">
     <p>Kies hieronder een formulier. Je beantwoordt de vragen stap voor stap, en daarna maakt de tool er
        meteen een document van.</p>

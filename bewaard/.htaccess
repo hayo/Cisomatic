@@ -1,0 +1,3 @@
+# Op Apache: de bewaarde documenten niet via een URL prijsgeven.
+# Op nginx werkt dit niet; regel dat daar in de siteconfiguratie.
+Require all denied

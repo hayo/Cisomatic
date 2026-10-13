@@ -9,7 +9,7 @@ const CM_NIVEAUS = ['zl' => 'Zeer laag', 'l' => 'Laag', 'm' => 'Midden', 'h' => 
 const CM_MAATREGELKEUZES = ['al' => 'Is er al', 'komt' => 'Komt er', 'nee' => 'Niet nodig'];
 
 /** HTML-escape. */
-function h(?string $waarde): string
+function h(string|int|float|null $waarde): string
 {
     return htmlspecialchars((string) $waarde, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 }
