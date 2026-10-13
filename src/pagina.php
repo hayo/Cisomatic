@@ -105,4 +105,4 @@ $werkplek = cm_werkplek();
     </footer>
 </article>
 <script src="<?= h(cm_asset('assets/app.js')) ?>" defer></script>
-<script src="<?= h(cm_asset($formulier['id'] . '/regels.js')) ?>" defer></script>
+<script src="<?= h(cm_asset($formulier['regels'] ?? $formulier['id'] . '/regels.js')) ?>" defer></script>

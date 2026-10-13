@@ -8,7 +8,7 @@ declare(strict_types=1);
 
 return [
     // De formulieren, in de volgorde van de voordeur. Elk is een map naast src/.
-    'formulieren' => ['businesscase', 'quickscan2', 'socialemedia', 'quickscan', 'dpia', 'aiscan', 'iama', 'soevereiniteit', 'ciooordeel'],
+    'formulieren' => ['businesscase', 'quickscan2', 'socialemedia', 'quickscan', 'dpia', 'aiscan', 'iama', 'soevereiniteit', 'ciooordeel', 'fitgap2', 'fitgap'],
 
     // Tijdzone voor de datum in het document en in de bestandsnaam.
     'timezone' => 'Europe/Amsterdam',

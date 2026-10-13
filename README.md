@@ -6,7 +6,7 @@ op de pagina, en als OpenDocument-tekst (`.odt`).
 
 Demo: https://hayobethlehem.nl/forge/cisomatic
 
-Er zijn nu negen formulieren:
+Er zijn nu elf formulieren:
 
 - **[businesscase](businesscase/README.md)**: de business case en intaketoets,
   vóór alles. Vijf toetsen: is het nodig, kan het zonder nieuw systeem, is er al
@@ -33,6 +33,12 @@ Er zijn nu negen formulieren:
 - **[ciooordeel](ciooordeel/README.md)**: het CIO oordeel, voor de adviseur van
   het CIO office. Elf aandachtsgebieden uit het toetskader van het AcICT en het
   Kwaliteitskader CIO-oordelen, een voorstel voor het oordeel, en het rapport.
+- **[fitgap2](fitgap2/README.md)**: de fit/gap voor de BIO2 en de
+  Cyberbeveiligingswet. De verklaring van een leverancier, per maatregel: voldoet
+  de dienst, hoe, en zo niet, wat er nog moet gebeuren en wanneer. Met de eisen
+  aan de keten, het cloudbeleid, en ISO 27017, 27018 en 27701.
+- **[fitgap](fitgap/README.md)**: dezelfde fit/gap op de BIO 1, met de normen
+  die bij het vastgestelde beveiligingsniveau horen.
 
 Plain PHP, geen Composer, geen build, geen afhankelijkheden.
 
@@ -70,8 +76,9 @@ bewaard/                  opgeslagen documenten, als bewaren aan staat
 De motorfuncties heten `cm_`, die van de quickscan `qs_`, die van quickscan 2.0
 `q2_`, die van de DPIA `dp_`, die van de IAMA `ia_`, die van de business case
 `bc_`, die van de kanalenscan `sm_`, die van de soevereiniteitsscan `sv_`, die
-van de AI scan `ai_`, `gai_` voor generatieve AI, en die van het CIO oordeel
-`co_`. Een formulier gebruikt de motor; de motor kent geen formulier bij naam.
+van de AI scan `ai_`, `gai_` voor generatieve AI, die van het CIO oordeel `co_`,
+en die van de fit/gap `fg_`, met `fg1_` voor de BIO 1 en `fg2_` voor de BIO2. Een
+formulier gebruikt de motor; de motor kent geen formulier bij naam.
 
 ## Draaien
 
@@ -110,7 +117,8 @@ Alleen gegevens, geen code. De voordeur leest dit bestand ook.
 | `route` | De vraag die bepaalt hoeveel stappen er zijn. Tot die beantwoord is, noemt de voortgang geen totaal |
 | `hoofdstuk_per_pagina` | In het `.odt`-bestand begint elk hoofdstuk op een nieuwe pagina |
 | `overnemen` | Per ander formulier: `naam`, welke sleutels over te `slaan`, welke waarden te `zet`ten, en welke antwoorden het `als` een andere sleutel overneemt (`van => naar`) |
-| `bestanden` | De PHP-bestanden van het formulier, in laadvolgorde |
+| `bestanden` | De PHP-bestanden van het formulier, in laadvolgorde. Een pad als `../fitgap/verklaring.php` deelt code met een ander formulier |
+| `regels` | Optioneel: een ander `regels.js`, zoals `fitgap/regels.js`. Anders dat in de map van het formulier |
 | `secties` | Functie die de secties geeft |
 | `evalueer` | Functie die van de antwoorden de uitkomst maakt |
 | `document` | Functie die van antwoorden en uitkomst de documentblokken maakt |

@@ -199,9 +199,10 @@
 #cisomatic [data-type="kop"] > h3 { margin: 0; }
 #cisomatic [data-type="kop"] > :is(p, ul) { color: var(--muted); margin: 0; }
 
-#cisomatic:is([data-formulier="iama"], [data-formulier="ciooordeel"]) [data-nummer] { display: none; }
+#cisomatic:is([data-formulier="iama"], [data-formulier="ciooordeel"], [data-formulier^="fitgap"]) [data-nummer] { display: none; }
 
-#cisomatic:is([data-formulier="iama"], [data-formulier="soevereiniteit"], [data-formulier="aiscan"], [data-formulier="ciooordeel"]) [data-stap] > header > p:first-child {
+#cisomatic:is([data-formulier="iama"], [data-formulier="soevereiniteit"], [data-formulier="aiscan"], [data-formulier="ciooordeel"],
+    [data-formulier^="fitgap"]) [data-stap] > header > p:first-child {
     color: var(--muted);
     background: var(--line-soft);
 }
