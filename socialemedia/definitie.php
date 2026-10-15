@@ -35,6 +35,9 @@ return [
 
     'vaststelling' => [['Ingevuld door', 'aanvrager'], ['Vastgesteld door', 'sm_directeur']],
 
+    // Op de voordeur: de fase waarin je dit invult.
+    'fase' => 'ontwerp',
+
     'bestanden' => ['kaders.php', 'vragen.php', 'exit.php', 'afleiding.php', 'advies.php'],
     'secties' => 'sm_secties',
     'evalueer' => 'sm_evalueer',

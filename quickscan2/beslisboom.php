@@ -1323,3 +1323,35 @@ function q2_wegingen(array $a, array $u): array
 
     return $wegingen;
 }
+
+/**
+ * Welke andere formulieren deze quickscan voorstelt, voor het dossier. Per
+ * formulier: of het voorgesteld is, en waarom. Een DPIA pretoets wijst ook
+ * naar de DPIA; die begint met de pretoets.
+ *
+ * @return array<string,array{voorgesteld:bool,reden:string}>
+ */
+function q2_vervolg(array $a, array $u): array
+{
+    $analyses = array_column($u['analyses'], 'reden', 'naam');
+    $cloud = in_array($a['cloud'] ?? '', ['ja', 'mogelijk'], true);
+
+    return [
+        'dpia' => match (true) {
+            isset($analyses['DPIA']) => ['voorgesteld' => true, 'reden' => $analyses['DPIA']],
+            isset($analyses['DPIA pretoets']) => ['voorgesteld' => true,
+                'reden' => 'Eerst een pretoets door de CPO. ' . $analyses['DPIA pretoets']],
+            default => ['voorgesteld' => false, 'reden' => 'De quickscan vraagt geen DPIA.'],
+        },
+        'iama' => isset($analyses['IAMA'])
+            ? ['voorgesteld' => true, 'reden' => $analyses['IAMA']]
+            : ['voorgesteld' => false, 'reden' => 'De quickscan vraagt geen IAMA.'],
+        'aiscan' => isset($analyses['AI scan'])
+            ? ['voorgesteld' => true, 'reden' => $analyses['AI scan']]
+            : ['voorgesteld' => false, 'reden' => 'Er komt geen AI in het systeem.'],
+        'soevereiniteit' => $cloud
+            ? ['voorgesteld' => true, 'reden' => 'Het systeem gebruikt een clouddienst, of sluit die niet uit. De '
+                . 'soevereiniteitsscan laat zien wie die dienst in handen heeft.']
+            : ['voorgesteld' => false, 'reden' => 'Het systeem gebruikt geen clouddienst.'],
+    ];
+}

@@ -55,6 +55,9 @@ return [
     'vaststelling' => false,
     'antwoorden' => false,
 
+    // Op de voordeur: de fase waarin je dit invult.
+    'fase' => 'ontwerp',
+
     'bestanden' => ['vragen.php', 'afleiding.php', 'rapport.php'],
     'secties' => 'ia_secties',
     'evalueer' => 'ia_evalueer',

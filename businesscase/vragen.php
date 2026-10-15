@@ -30,6 +30,7 @@ function bc_secties(): array
 {
     return [
         bc_sectie_over(),
+        bc_sectie_probleem(),
         bc_sectie_nodig(),
         bc_sectie_zonder_it(),
         bc_sectie_bestaand(),
@@ -121,6 +122,20 @@ function bc_checks(): array
     ];
 }
 
+/**
+ * Alleen tonen als er iets is uitgezocht. Bij "nog niet uitgezocht" valt er
+ * niets toe te lichten, en zegt het document dat gewoon.
+ *
+ * @param array<string,array<string,mixed>> $opties
+ * @return array{toon_als:array<string,list<string>>}
+ */
+function bc_als_uitgezocht(string $key, array $opties): array
+{
+    $uitgezocht = array_diff(array_map('strval', array_keys($opties)), ['niet_gekeken']);
+
+    return ['toon_als' => [$key => array_values($uitgezocht)]];
+}
+
 /** Een plek uit bc_checks() als vraag met toelichting. @return list<array<string,mixed>> */
 function bc_check(string $key): array
 {
@@ -128,7 +143,8 @@ function bc_check(string $key): array
 
     return [
         bc_keuze($key, $check['label'], BC_CHECK_OPTIES, $check['hint']),
-        bc_uitleg($key . '_toelichting', 'Wat heb je bekeken? En waarom past het wel of niet?'),
+        bc_uitleg($key . '_toelichting', 'Wat heb je bekeken? En waarom past het wel of niet?',
+            bc_als_uitgezocht($key, BC_CHECK_OPTIES)),
     ];
 }
 
@@ -176,33 +192,47 @@ function bc_sectie_over(): array
 }
 
 // ---------------------------------------------------------------------------
-// Toets 1: is het nodig, en nu?
+// Toets 1: is het nodig, en nu? Eerst het probleem, dan de toets.
+
+function bc_sectie_probleem(): array
+{
+    return [
+        'id' => 'probleem',
+        'titel' => 'Wat is het probleem?',
+        'stap' => 1,
+        'intro' => 'Beschrijf eerst het werk en wat daar misgaat. Nog niet de oplossing.',
+        'vragen' => [
+            bc_vraag('proces_omschrijving', 'Om welk werk gaat het?', 'Beschrijf het werk in gewone taal. Wat '
+                . 'gebeurt er, van begin tot eind?'),
+            bc_vraag('bc_probleem', 'Wat gaat er nu mis? En hoe weet je dat?', 'Noem feiten of cijfers, zoals '
+                . 'klachten, wachttijden, fouten of een audit.', ['hoogte' => 4]),
+            bc_keuze('bc_burger_merkt', 'Merkt de burger iets van dit project?', [
+                'direct' => [
+                    'label' => 'Ja, de burger gebruikt het zelf',
+                    'hint' => 'Bijvoorbeeld een website, een app of een formulier.',
+                ],
+                'dienst' => [
+                    'label' => 'Ja, aan onze dienstverlening',
+                    'hint' => 'Bijvoorbeeld doordat een aanvraag sneller klaar is, of doordat er minder fouten in '
+                        . 'zitten.',
+                ],
+                'indirect' => [
+                    'label' => 'Alleen indirect',
+                    'hint' => 'Het werk van de organisatie wordt beter of goedkoper. De burger merkt dat niet '
+                        . 'meteen.',
+                ],
+                'niet' => ['label' => 'Nee'],
+            ], 'Met de burger bedoelen we hier ook bedrijven en instellingen.'),
+            bc_vraag('bc_burger_waarde', 'Hoe helpt dit de burger?', 'Schrijf het op zoals de burger het zou '
+                . 'zeggen. Merkt de burger niets? Leg dan uit waarom het project toch nodig is.'),
+        ],
+    ];
+}
 
 function bc_sectie_nodig(): array
 {
     return bc_toets(1, 'nodig', 'Is het nodig, en waarom nu?', 'Niets doen is altijd een keuze. Dit project moet '
         . 'dus beter zijn dan niets doen.', [
-        bc_vraag('proces_omschrijving', 'Om welk werk gaat het?', 'Beschrijf het werk in gewone taal. Wat gebeurt '
-            . 'er, van begin tot eind?'),
-        bc_vraag('bc_probleem', 'Wat gaat er nu mis? En hoe weet je dat?', 'Beschrijf het probleem, en nog niet de '
-            . 'oplossing. Noem feiten of cijfers, zoals klachten, wachttijden, fouten of een audit.', ['hoogte' => 4]),
-        bc_keuze('bc_burger_merkt', 'Merkt de burger iets van dit project?', [
-            'direct' => [
-                'label' => 'Ja, de burger gebruikt het zelf',
-                'hint' => 'Bijvoorbeeld een website, een app of een formulier.',
-            ],
-            'dienst' => [
-                'label' => 'Ja, aan onze dienstverlening',
-                'hint' => 'Bijvoorbeeld doordat een aanvraag sneller klaar is, of doordat er minder fouten in zitten.',
-            ],
-            'indirect' => [
-                'label' => 'Alleen indirect',
-                'hint' => 'Het werk van de organisatie wordt beter of goedkoper. De burger merkt dat niet meteen.',
-            ],
-            'niet' => ['label' => 'Nee'],
-        ], 'Met de burger bedoelen we hier ook bedrijven en instellingen.'),
-        bc_vraag('bc_burger_waarde', 'Hoe helpt dit de burger?', 'Schrijf het op zoals de burger het zou zeggen. '
-            . 'Merkt de burger niets? Leg dan uit waarom het project toch nodig is.'),
         bc_keuze('bc_plicht', 'Is er een plicht die jullie kunnen aantonen?', [
             'ja' => ['label' => 'Ja', 'niveau' => 'l'],
             'nee' => ['label' => 'Nee', 'niveau' => 'h'],
@@ -218,7 +248,8 @@ function bc_sectie_nodig(): array
             'niet_gekeken' => ['label' => 'Nog niet uitgezocht', 'niveau' => 'm'],
         ], 'Vergelijk met jullie eigen schatting van de kosten. Tel ook mee wat niet in geld uit te drukken is, zoals '
             . 'de rechten van de burger.'),
-        bc_uitleg('bc_alt_niets', 'Wat gebeurt er als jullie niets doen? En wat kost dat, en voor wie?'),
+        bc_uitleg('bc_alt_niets', 'Wat gebeurt er als jullie niets doen? En wat kost dat, en voor wie?',
+            ['toon_als' => ['bc_schade' => ['ja', 'nee']]]),
         bc_keuze('bc_nu', 'Moet het nu beginnen?', [
             'ja' => ['label' => 'Ja, wachten maakt het erger', 'niveau' => 'l'],
             'nee' => [
@@ -251,7 +282,8 @@ function bc_sectie_zonder_it(): array
             'niet_gekeken' => ['label' => 'Nog niet uitgezocht', 'niveau' => 'm'],
         ], 'Kijk eerst naar het werk. Is het geanalyseerd? Helpen duidelijke afspraken over wie wat beslist, een '
             . 'andere volgorde, een training of betere controle bij de invoer?'),
-        bc_uitleg('bc_alt_werkwijze_waarom', 'Wat hebben jullie bekeken of geprobeerd? Noem ook de analyse van het werk.'),
+        bc_uitleg('bc_alt_werkwijze_waarom', 'Wat hebben jullie bekeken of geprobeerd? Noem ook de analyse van het werk.',
+            ['toon_als' => ['bc_alt_werkwijze' => ['ja', 'deels', 'nee']]]),
     ], [
         'l' => ['Een andere werkwijze lost het probleem niet op. Een systeem kan helpen.'],
         'm' => ['Het is nog niet uitgezocht of het ook zonder nieuw systeem kan. Kijk eerst naar het werk: afspraken, '
@@ -275,7 +307,8 @@ function bc_sectie_bestaand(): array
             'niet_gekeken' => ['label' => 'Nog niet uitgezocht', 'niveau' => 'm'],
         ], 'Zoek op in welk domein dit hoort, en welke bouwsteen het is. Past het bij de systemen, de gegevens en de '
             . 'koppelingen die er al zijn?'),
-        bc_uitleg('bc_domeinarchitectuur_toelichting', 'Welk domein en welke bouwsteen? Of waarom past het niet?'),
+        bc_uitleg('bc_domeinarchitectuur_toelichting', 'Welk domein en welke bouwsteen? Of waarom past het niet?',
+            ['toon_als' => ['bc_domeinarchitectuur' => ['staat', 'past', 'past_niet']]]),
     ], [
         'l' => ['Wat er al is, past niet. En de oplossing staat in de domeinarchitectuur.'],
         'm' => ['Nog niet alles is uitgezocht, of de domeinarchitectuur moet nog worden aangevuld. Doe dat voor het '

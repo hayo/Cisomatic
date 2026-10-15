@@ -41,6 +41,9 @@ return [
         'iama' => ['naam' => 'de IAMA'],
     ],
 
+    // Op de voordeur: de fase waarin je dit invult.
+    'fase' => 'ontwerp',
+
     'bestanden' => ['vragen.php', 'afleiding.php', 'rapport.php'],
     'secties' => 'sv_secties',
     'evalueer' => 'sv_evalueer',

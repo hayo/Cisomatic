@@ -28,6 +28,13 @@ return [
     'vaststelling' => 'qs_vaststelling',
     'antwoorden' => false,
 
+    // Op de voordeur en in een dossier. 'vervolg' zegt welke andere formulieren
+    // de quickscan voorstelt.
+    'fase' => 'ontwerp',
+    'normenkader' => 'bio',
+    'opvolger' => 'quickscan2',
+    'vervolg' => 'qs_vervolg',
+
     'bestanden' => ['toelichting.php', 'vragen.php', 'afleiding.php', 'beslisboom.php', 'advies.php'],
     'secties' => 'qs_secties',
     'valideer' => 'qs_valideer_bijstelling',

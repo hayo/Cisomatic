@@ -169,14 +169,17 @@ function cm_verwerk(string $id, ?bool $zelfstandig = null): void
     require ($zelfstandig ?? cm_zelfstandig()) ? __DIR__ . '/document.php' : $inhoud;
 }
 
-/** De voordeur: een lijst van alle formulieren. */
-function cm_kiezer(?bool $zelfstandig = null): void
+/**
+ * Het adres van de voordeur, en het staartje achter elk formulier.
+ *
+ * Een formulier staat een map dieper dan de voordeur. Alleen het staartje
+ * verschilt: index.php, of /standalone als een site daarmee de losse pagina
+ * opvraagt. Vanaf een formulier haalt $formulier die map eraf.
+ *
+ * @return array{0:string,1:string} de basis zonder slash aan het eind, en het staartje
+ */
+function cm_adres(?string $formulier = null): array
 {
-    $formulieren = array_map('cm_definitie', cm_config()['formulieren']);
-
-    // Een formulier staat een map dieper dan deze pagina. Alleen het staartje
-    // verschilt: index.php, of /standalone als een site daarmee de losse
-    // pagina opvraagt. De voordeur zet het achter elk formulier.
     $pad = rtrim((string) parse_url((string) ($_SERVER['REQUEST_URI'] ?? ''), PHP_URL_PATH), '/');
     [$basis, $staart] = match (true) {
         str_ends_with($pad, '/standalone') => [substr($pad, 0, -strlen('/standalone')), '/standalone'],
@@ -184,8 +187,94 @@ function cm_kiezer(?bool $zelfstandig = null): void
         default => [$pad, ''],
     };
 
+    if ($formulier !== null && str_ends_with($basis, '/' . $formulier)) {
+        $basis = substr($basis, 0, -strlen('/' . $formulier));
+    }
+
+    return [$basis, $staart];
+}
+
+/** De URL van de voordeur, ook vanaf een formulier. */
+function cm_voordeur(?string $formulier = null): string
+{
+    [$basis, $staart] = cm_adres($formulier);
+
+    return $basis . ($staart === '' ? '/' : $staart);
+}
+
+/** De fasen op de voordeur, in volgorde. Een formulier noemt zijn fase in 'fase'. */
+const CM_FASEN = [
+    'start' => [
+        'titel' => 'Vóór de start',
+        'intro' => 'Moet dit project er komen? Dit vul je in voordat er geld naar een project gaat.',
+    ],
+    'ontwerp' => [
+        'titel' => 'Ontwerp en risico’s',
+        'intro' => 'Wat vragen de wetten en regels, en welke risico’s zijn er? De quickscan laat zien welke van de '
+            . 'andere scans nodig zijn.',
+    ],
+    'toetsen' => [
+        'titel' => 'Toetsen en inkoop',
+        'intro' => 'Voldoet de dienst van een leverancier, en staat het project er goed voor? Deze vult een ander '
+            . 'in: de leverancier of het CIO office.',
+    ],
+    '' => [
+        'titel' => 'Overige formulieren',
+        'intro' => '',
+    ],
+];
+
+/**
+ * De normenkaders van een dossier. Een formulier met 'normenkader' hoort bij
+ * één ervan; het dossier toont alleen de formulieren van zijn eigen kader.
+ */
+const CM_NORMENKADERS = [
+    'bio2' => 'BIO2 en Cyberbeveiligingswet',
+    'bio' => 'BIO',
+];
+
+/** De voordeur: de formulieren per fase, en de dossiers. */
+function cm_kiezer(?bool $zelfstandig = null): void
+{
+    [$basis, $staart] = cm_adres();
+    $formulieren = [];
+
+    foreach (cm_config()['formulieren'] as $id) {
+        $formulier = cm_definitie($id);
+        $formulier['href'] = $basis . '/' . $id . $staart;
+        $formulieren[] = $formulier;
+    }
+
+    $fasen = [];
+    foreach ($formulieren as $formulier) {
+        $fase = isset(CM_FASEN[$formulier['fase'] ?? '']) ? (string) ($formulier['fase'] ?? '') : '';
+        $fasen[$fase][] = $formulier;
+    }
+    $fasen = array_filter(array_replace(array_fill_keys(array_keys(CM_FASEN), []), $fasen));
+
     $titel = 'Cisomatic';
     $inhoud = __DIR__ . '/kiezer.php';
 
     require ($zelfstandig ?? cm_zelfstandig()) ? __DIR__ . '/document.php' : $inhoud;
+}
+
+/**
+ * Wat het script van het dossier over de formulieren moet weten: titel,
+ * fase, normenkader, adres, en of het in een dossier kan.
+ *
+ * @param list<array<string,mixed>> $formulieren
+ * @return list<array<string,mixed>>
+ */
+function cm_dossier_formulieren(array $formulieren): array
+{
+    return array_map(static fn (array $f): array => [
+        'id' => $f['id'],
+        'titel' => $f['titel'],
+        'naam' => $f['naam'],
+        'fase' => $f['fase'] ?? '',
+        'normenkader' => $f['normenkader'] ?? '',
+        'dossier' => $f['dossier'] ?? true,
+        'opvolger' => $f['opvolger'] ?? '',
+        'href' => $f['href'],
+    ], $formulieren);
 }

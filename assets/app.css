@@ -27,9 +27,15 @@
     border-radius: 0.3em;
 }
 
-#cisomatic > ul { list-style: none; padding: 0; }
+/* De voordeur: de formulieren per fase. */
 
-#cisomatic > ul > li {
+#cisomatic .fase { margin-top: 2.2em; }
+#cisomatic .fase > h2 { margin-bottom: 0.3em; }
+#cisomatic .fase > h2 + p { color: var(--muted); margin-bottom: 1em; }
+
+#cisomatic .fase > ul { list-style: none; padding: 0; }
+
+#cisomatic .fase > ul > li {
     background: var(--panel);
     border: 0.07em solid var(--line);
     border-radius: var(--radius);
@@ -37,27 +43,216 @@
     margin-bottom: 1em;
 }
 
-#cisomatic > ul h2 { font-size: 120%; margin-bottom: 0.3em; }
-#cisomatic > ul p { color: var(--muted); margin: 0; }
+#cisomatic .fase > ul h3 { font-size: 120%; margin-bottom: 0.3em; }
+#cisomatic .fase > ul p { color: var(--muted); margin: 0; }
+#cisomatic .fase > ul p + p { margin-top: 0.5em; font-family: var(--font-ui); font-size: var(--ui-lg); }
 
-#cisomatic > ul > li:has(> svg) {
+#cisomatic .fase > ul > li[data-eerdere-versie] { background: var(--page); }
+
+#cisomatic .fase > ul small,
+#cisomatic .dossier-formulieren small {
+    font-family: var(--font-ui);
+    font-size: var(--ui-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+    background: var(--line-soft);
+    border-radius: 1em;
+    padding: 0.1em 0.6em;
+    margin-right: 0.3em;
+}
+
+#cisomatic .fase > ul > li:has(> svg) {
     display: grid;
     grid-template-columns: 3.2em 1fr;
     column-gap: 1.2em;
     align-items: start;
 }
 
-#cisomatic > ul > li > svg {
-    grid-row: 1 / span 2;
+#cisomatic .fase > ul > li > svg {
+    grid-row: 1 / span 3;
     width: 3.2em;
     height: 3.2em;
     color: var(--ink);
 }
 
-#cisomatic > ul > li:has(> svg) > :not(svg) { grid-column: 2; }
+#cisomatic .fase > ul > li:has(> svg) > :not(svg) { grid-column: 2; }
+
+/* De dossiers op de voordeur. */
+
+#cisomatic[data-in-dossier] > :is(img, img + p, [data-fasen]) { display: none; }
+
+#cisomatic .dossiers > h2 { margin-bottom: 0.3em; }
+#cisomatic .dossiers > p { color: var(--muted); }
+#cisomatic .dossiers > p:last-child { font-family: var(--font-ui); font-size: var(--ui-lg); margin-bottom: 0; }
+
+#cisomatic [data-dossier-lijst] { list-style: none; padding: 0; margin: 1.2em 0 1.5em; }
+
+#cisomatic [data-dossier-lijst] > li {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.2em 1em;
+    align-items: baseline;
+    justify-content: space-between;
+    border-top: 0.07em solid var(--line);
+    padding: 0.7em 0;
+    margin: 0;
+    font-family: var(--font-ui);
+}
+
+#cisomatic [data-dossier-lijst] > li:last-child { border-bottom: 0.07em solid var(--line); }
+#cisomatic [data-dossier-lijst] a { font-weight: bold; }
+#cisomatic [data-dossier-lijst] span { font-size: var(--ui-lg); color: var(--muted); }
+
+#cisomatic :is([data-dossier-nieuw], .dossiers .inladen) {
+    border-top: 0.07em solid var(--line);
+    padding-top: 1.2em;
+    margin-top: 1.2em;
+}
+
+#cisomatic :is([data-dossier-nieuw], .inladen) > h3 { font-size: 110%; }
+#cisomatic [data-dossier-nieuw] [data-vraag] { margin-bottom: 1.2em; }
+#cisomatic .inladen > p { font-family: var(--font-ui); font-size: var(--ui-lg); color: var(--muted); }
+
+#cisomatic [data-dossier-melding] { font-family: var(--font-ui); font-weight: bold; }
+#cisomatic [data-dossier-melding][role="alert"] { color: var(--fout); }
+
+/* De pagina van één dossier. */
+
+#cisomatic .dossier > h2 { margin-bottom: 0.2em; }
+
+#cisomatic .dossier-meta,
+#cisomatic .dossier-bestand > :is(p, label) {
+    font-family: var(--font-ui);
+    font-size: var(--ui-lg);
+    color: var(--muted);
+}
+
+#cisomatic .dossier-stand {
+    background: var(--pill-bg);
+    border-radius: var(--radius);
+    padding: 1em 1.2em;
+    margin: 1em 0 1.5em;
+}
+
+#cisomatic .dossier-stand > p { font-family: var(--font-ui); font-weight: bold; margin: 0.6em 0 0; }
+#cisomatic .dossier-stand > progress { height: 0.5em; background: var(--panel); }
+#cisomatic .dossier-stand > progress::-webkit-progress-bar { background: var(--panel); }
+
+#cisomatic .dossier-kader {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4em;
+    min-width: 0;
+    margin: 0 0 1.5em;
+    padding: 0;
+    border: 0;
+}
+
+#cisomatic .dossier-kader > legend { font-family: var(--font-ui); font-weight: bold; padding: 0; margin-bottom: 0.2em; }
+#cisomatic .dossier-kader > p { flex-basis: 100%; font-family: var(--font-ui); font-size: var(--ui-lg); color: var(--muted); margin: 0 0 0.3em; }
+#cisomatic .dossier-kader > label { flex: 1 1 14em; }
+
+#cisomatic .dossier-formulieren { list-style: none; padding: 0; }
+
+#cisomatic .dossier-formulieren > li {
+    background: var(--panel);
+    border: 0.07em solid var(--line);
+    border-left: 0.3em solid var(--line);
+    border-radius: var(--radius);
+    padding: 1em 1.3em;
+    margin-bottom: 0.9em;
+}
+
+#cisomatic .dossier-formulieren > li[data-status="klaar"] { border-left-color: var(--ink); }
+#cisomatic .dossier-formulieren > li[data-status="bezig"] { border-left-color: var(--muted-soft); }
+#cisomatic .dossier-formulieren > li[data-status="verouderd"] { border-left-color: var(--waarschuwing); }
+#cisomatic .dossier-formulieren > li[data-status="niet-nodig"] { background: var(--page); }
+
+#cisomatic .dossier-formulieren h4 {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4em 1em;
+    align-items: baseline;
+    justify-content: space-between;
+    font-size: 110%;
+    margin-bottom: 0.3em;
+}
+
+#cisomatic .dossier-formulieren li[data-status="verouderd"] output { color: var(--waarschuwing); }
+#cisomatic .dossier-formulieren li:is([data-status="nieuw"], [data-status="niet-nodig"]) output { color: var(--muted); }
+
+#cisomatic .dossier-formulieren > li > p {
+    font-family: var(--font-ui);
+    font-size: var(--ui-lg);
+    color: var(--muted);
+    margin-bottom: 0.4em;
+}
+
+#cisomatic .dossier-formulieren > li > p:last-child { margin: 0.8em 0 0; }
+#cisomatic .dossier-voorstel strong { color: var(--text); }
+
+#cisomatic .dossier-open {
+    font-family: var(--font-ui);
+    font-size: var(--ui-lg);
+    border-top: 0.07em solid var(--line-soft);
+    padding-top: 0.5em;
+    margin-top: 0.6em;
+}
+
+#cisomatic .dossier-open > summary { cursor: pointer; font-weight: bold; color: var(--waarschuwing); }
+#cisomatic .dossier-open[open] > summary { margin-bottom: 0.4em; }
+#cisomatic .dossier-open li > span { color: var(--muted); }
+#cisomatic .dossier-open li > span::before { content: "· "; }
+
+#cisomatic .dossier-erbij { margin: 1.2em 0 2em; font-family: var(--font-ui); }
+#cisomatic .dossier-erbij > label { font-weight: bold; }
+#cisomatic .dossier-erbij select { width: auto; flex: 1 1 16em; }
+
+#cisomatic .dossier-bestand {
+    border-top: 0.07em solid var(--line);
+    padding-top: 1.2em;
+}
+
+#cisomatic .dossier-bestand > label { display: block; font-weight: bold; color: var(--text); margin-top: 1.2em; }
+#cisomatic .dossier-bestand > label + p { margin: 0.2em 0 0.5em; }
+
+#cisomatic a.knop {
+    display: inline-block;
+    font-family: var(--font-ui);
+    font-size: var(--ui-md);
+    line-height: 1.2;
+    padding: 0.6em 1.1em;
+    color: var(--on-ink);
+    background: var(--ink);
+    border: 0.1em solid var(--ink);
+    border-radius: 0.4em;
+    text-decoration: none;
+}
+
+#cisomatic a.knop:hover { background: var(--ink-hover); }
+#cisomatic a.knop:focus-visible { outline: 0.15em solid var(--ink); outline-offset: 0.15em; }
+
+#cisomatic button.gevaar { color: var(--fout); background: none; border-color: currentColor; }
+
+/* Op een formulier in een dossier: de balk bovenaan. */
+
+#cisomatic .dossierbalk {
+    background: var(--pill-bg);
+    border-radius: var(--radius);
+    padding: 0.6em 1.1em;
+    margin-bottom: 1.4em;
+    font-family: var(--font-ui);
+    font-size: var(--ui-lg);
+}
+
+#cisomatic .dossierbalk > p { margin: 0; }
+#cisomatic .dossierbalk > p:first-child { display: flex; flex-wrap: wrap; gap: 0.2em 1em; align-items: baseline; }
+#cisomatic .dossierbalk > p:first-child > a { margin-left: auto; }
+#cisomatic .dossierbalk > p + p { color: var(--muted); margin-top: 0.4em; }
 
 #cisomatic form > section,
-#cisomatic > section:where(:not(.vooraf, .melding, .facts, [data-eerder])) {
+#cisomatic > section:where(:not(.vooraf, .melding, .facts, [data-eerder], .dossier)) {
     background: var(--panel);
     border: 0.07em solid var(--line);
     border-radius: var(--radius);
@@ -74,6 +269,42 @@
 
 #cisomatic .vooraf > h2 { font-size: 120%; }
 #cisomatic .vooraf > p:last-child { color: var(--muted); margin-bottom: 0; }
+
+#cisomatic .route {
+    list-style: none;
+    counter-reset: route;
+    padding: 0;
+    margin: 1em 0 1.2em;
+    font-family: var(--font-ui);
+    font-size: var(--ui-lg);
+}
+
+#cisomatic .route > li {
+    counter-increment: route;
+    position: relative;
+    min-height: 1.7em;
+    padding: 0.1em 0 0 2.4em;
+    color: var(--muted);
+    margin-bottom: 0.4em;
+}
+
+#cisomatic .route > li::before {
+    content: counter(route);
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: grid;
+    place-items: center;
+    width: 1.6em;
+    height: 1.6em;
+    border-radius: 50%;
+    border: 0.1em solid var(--muted-soft);
+    font-weight: bold;
+}
+
+#cisomatic .route > li > strong { color: var(--text); }
+#cisomatic .route > li[aria-current] { color: var(--text); }
+#cisomatic .route > li[aria-current]::before { color: var(--on-ink); background: var(--ink); border-color: var(--ink); }
 
 #cisomatic [data-eerder],
 #cisomatic > details {
@@ -780,10 +1011,10 @@
 
 @media (max-width: 30em) {
     #cisomatic form > section,
-    #cisomatic > section:where(:not(.vooraf, .melding, .facts, [data-eerder])) { padding: 1em; }
+    #cisomatic > section:where(:not(.vooraf, .melding, .facts, [data-eerder], .dossier)) { padding: 1em; }
 
-    #cisomatic > ul > li:has(> svg) { grid-template-columns: 2.4em 1fr; column-gap: 0.9em; }
-    #cisomatic > ul > li > svg { width: 2.4em; height: 2.4em; }
+    #cisomatic .fase > ul > li:has(> svg) { grid-template-columns: 2.4em 1fr; column-gap: 0.9em; }
+    #cisomatic .fase > ul > li > svg { width: 2.4em; height: 2.4em; }
 
     #cisomatic[data-formulier="dpia"] :is([data-vraag$="_impact"], [data-vraag$="_kans"], [data-vraag^="bron_"]) {
         display: grid;
@@ -803,7 +1034,7 @@
 }
 
 @media print {
-    #cisomatic :is([data-voortgang], [data-eerder], [data-toast], [data-acties], p:has(> button)),
+    #cisomatic :is([data-voortgang], [data-eerder], [data-toast], [data-acties], [data-met-dossier], .dossierbalk, p:has(> button)),
     #cisomatic > details,
     #cisomatic > p:has(> a:only-child),
     #cisomatic #volledig > :is(form, form + p, nav) { display: none !important; }

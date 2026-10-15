@@ -8,6 +8,7 @@
  * - een groep, zoals een risico, staat op één regel die openklapt
  * - een lijst met rijen krijgt knoppen om rijen toe te voegen en weg te halen
  * - antwoorden blijven tussentijds bewaard, en een bestand laadt ze terug
+ * - in een dossier (?dossier=id) komen de antwoorden uit het dossier, en gaan ze erin
  *
  * Wat een formulier zelf uitrekent, staat in regels.js in de map van dat
  * formulier. Dat bestand meldt zich aan met cisomatic.regels({...}). De
@@ -28,6 +29,10 @@
     var aangeraakt = {};
     var bewaarTimer = null;
     var toastTimer = null;
+
+    // In een dossier: het dossier, en de functies uit dossier.js.
+    var dossier = null;
+    var api = null;
 
     window.cisomatic = {
         LABEL: LABEL,
@@ -50,12 +55,24 @@
         opslagsleutel = artikel.dataset.formulier + '-concept';
         var formulier = artikel.querySelector(':scope > form');
 
+        // Een werkplek bewaart op de server, en kent geen dossier.
+        api = artikel.hasAttribute('data-werkplek') ? null : (window.cisomaticDossier || null);
+        var dossierId = api ? api.uitAdres() : null;
+        dossier = dossierId ? api.lees(dossierId) : null;
+
         if (formulier) {
             regelRijen(formulier);
             regelStappen(formulier);
             regelInvoer(formulier);
             regelInladen(formulier);
-            regelEerderBegonnen(formulier);
+
+            if (dossier) {
+                regelDossier(formulier);
+            } else {
+                regelEerderBegonnen(formulier);
+            }
+
+            springNaarAdres(formulier);
         }
 
         if (artikel.hasAttribute('data-klaar')) {
@@ -63,6 +80,14 @@
         }
 
         regelDocumentknoppen();
+
+        if (dossier) {
+            regelDossierbalk(artikel);
+            if (artikel.hasAttribute('data-klaar')) { regelDossierResultaat(); }
+        } else if (dossierId) {
+            toast('Dat dossier staat niet in deze browser. Je vult dit formulier los in.');
+        }
+
         regelFoutsamenvatting();
     }
 
@@ -131,6 +156,10 @@
             if (mis) {
                 e.preventDefault();
                 springNaarFout(form, mis);
+            } else if (dossier) {
+                // Wat net is ingevuld, moet in het dossier staan voor de pagina wegdraait.
+                clearTimeout(bewaarTimer);
+                bewaarLokaal(form);
             }
         });
 
@@ -691,6 +720,21 @@
         // leeg formulier het concept waar iemand nog mee verder wil.
         if (!Object.keys(aangeraakt).length) { return; }
 
+        if (dossier) {
+            var artikel = document.getElementById('cisomatic');
+            var bijgewerkt = api.bewaarFormulier(dossier.id, artikel.dataset.formulier, leesAntwoorden(form, true), {
+                voortgang: telVoortgang(form),
+                open: openPunten(form),
+                overnemen: JSON.parse(form.dataset.overnemen || '{}'),
+                naam: artikel.dataset.naam
+            });
+            if (bijgewerkt) {
+                dossier = bijgewerkt;
+                werkDossierbalkBij();
+            }
+            return;
+        }
+
         try {
             localStorage.setItem(opslagsleutel, JSON.stringify({
                 bewaard_op: new Date().toISOString(),
@@ -784,6 +828,11 @@
                     return;
                 }
 
+                if (data && data.soort === 'dossier') {
+                    laadProjectbestand(form, data, eigen, overnemen, melding);
+                    return;
+                }
+
                 // Een bestand van voor de cisomatic noemt zijn soort niet.
                 // Alleen de quickscan schreef zulke bestanden.
                 var soort = data.soort || 'quickscan';
@@ -815,6 +864,28 @@
         });
     }
 
+    /**
+     * Een projectbestand: de antwoorden van dit formulier als die erin staan,
+     * en anders wat de andere formulieren in het bestand al weten.
+     */
+    function laadProjectbestand(form, data, eigen, overnemen, melding) {
+        if (!window.cisomaticDossier) {
+            toon(melding, 'Een projectbestand laad je in op de voordeur.', true);
+            return;
+        }
+
+        var project = window.cisomaticDossier.schoon(data);
+        var eigenAntwoorden = project.antwoorden[eigen];
+        var terug = !!eigenAntwoorden && typeof eigenAntwoorden === 'object';
+        var ingevuld = vulIn(form, terug
+            ? eigenAntwoorden
+            : window.cisomaticDossier.antwoordenVoor(project, eigen, overnemen).antwoorden, []);
+
+        ververs(form, true);
+        toon(melding, ingevuld + ' antwoorden ' + (terug ? 'teruggezet' : 'overgenomen') + ' uit het projectbestand van '
+            + (project.naam || 'een naamloos project') + '. Loop ze na, en vul de rest aan.', false);
+    }
+
     /** Zet antwoorden in het formulier. Geeft terug hoeveel er pasten. */
     function vulIn(form, antwoorden, overslaan) {
         var aantalGevuld = 0;
@@ -838,6 +909,112 @@
         if (isFout) { element.setAttribute('role', 'alert'); } else { element.removeAttribute('role'); }
         element.textContent = tekst;
         element.hidden = false;
+    }
+
+    // -------------------------------------------------------------- dossier
+
+    /**
+     * Een formulier in een dossier. Staan er al antwoorden van dit formulier
+     * in, dan komen die terug. Anders neemt het formulier over wat de andere
+     * formulieren in het dossier al weten.
+     */
+    function regelDossier(form) {
+        var eigen = document.getElementById('cisomatic').dataset.formulier;
+        var bewaard = dossier.antwoorden[eigen];
+
+        if (bewaard && typeof bewaard === 'object') {
+            vulIn(form, bewaard, []);
+            ververs(form, true);
+            return;
+        }
+
+        var over = api.antwoordenVoor(dossier, eigen, JSON.parse(form.dataset.overnemen || '{}'));
+        var aantal = vulIn(form, over.antwoorden, []);
+        ververs(form, true);
+
+        if (aantal) {
+            toon(document.querySelector('[data-dossier-overgenomen]'), (aantal === 1 ? 'Eén antwoord komt'
+                : aantal + ' antwoorden komen') + ' uit het dossier'
+                + (over.bronnen.length ? ', uit ' + opsomming(over.bronnen) : '')
+                + '. Loop ze na, en vul de rest aan.', false);
+        }
+    }
+
+    function regelDossierbalk(artikel) {
+        var balk = document.querySelector('[data-dossierbalk]');
+        if (!balk) { return; }
+
+        balk.querySelector('[data-dossier-terug]').href = api.adres(artikel.dataset.voordeur, dossier.id);
+        werkDossierbalkBij();
+        balk.hidden = false;
+    }
+
+    function werkDossierbalkBij() {
+        var naam = document.querySelector('[data-dossier-naam]');
+        if (naam) { naam.textContent = dossier.naam || 'Naamloos project'; }
+    }
+
+    /** Het document is gemaakt: dat komt in het dossier, met wat de quickscan voorstelt. */
+    function regelDossierResultaat() {
+        var blok = document.getElementById('antwoorden-json');
+        if (!blok) { return; }
+
+        var bijgewerkt = api.bewaarDocument(dossier.id, JSON.parse(blok.textContent));
+        if (bijgewerkt) { dossier = bijgewerkt; }
+
+        var opnieuw = document.querySelector('[data-opnieuw]');
+        if (opnieuw) { opnieuw.textContent = '← Terug naar de antwoorden'; }
+
+        elk(document.querySelectorAll('[data-zonder-dossier]'), function (b) { b.hidden = true; });
+        elk(document.querySelectorAll('[data-met-dossier]'), function (b) { b.hidden = false; });
+    }
+
+    /** Spiegelt cm_voortgang(): de verplichte vragen die nu gelden, en hoeveel daarvan ingevuld zijn. */
+    function telVoortgang(form) {
+        var a = leesAntwoorden(form);
+        var stand = { ingevuld: 0, verplicht: 0 };
+
+        elk(form.querySelectorAll('[data-vraag]'), function (blok) {
+            var type = blok.dataset.type;
+            if (type === 'afgeleid' || type === 'kop' || type === 'groep') { return; }
+            if (blok.closest('[hidden]') || !isVerplicht(blok, a)) { return; }
+
+            var waarde = a[blok.dataset.vraag];
+            var leeg = type === 'maatregelen'
+                ? !heeft(Object.keys(waarde || {}).map(function (m) { return waarde[m]; }), 'komt')
+                : (Array.isArray(waarde) ? !waarde.length : !String(waarde || '').trim());
+
+            stand.verplicht++;
+            if (!leeg) { stand.ingevuld++; }
+        });
+
+        return stand;
+    }
+
+    /** De vragen waar het antwoord nog niet bekend is, zoals "nog niet uitgezocht" of "weet ik niet". */
+    function openPunten(form) {
+        var punten = [];
+
+        elk(form.querySelectorAll('fieldset[data-type="radio"][data-vraag]'), function (blok) {
+            var gekozen = blok.querySelector('input:checked');
+            if (blok.closest('[hidden]') || !gekozen || !heeft(api.OPEN, gekozen.value)) { return; }
+
+            punten.push({
+                key: blok.dataset.vraag,
+                vraag: blok.querySelector('legend').firstChild.textContent.trim(),
+                antwoord: optieLabel(blok.dataset.vraag, gekozen.value)
+            });
+        });
+
+        return punten;
+    }
+
+    /** Een adres met #vraag-sleutel opent de stap met die vraag, zoals een link vanaf het dossier. */
+    function springNaarAdres(form) {
+        var gevonden = /^#vraag-([\w-]+)$/.exec(window.location.hash);
+        var blok = gevonden && form.querySelector('[data-vraag="' + gevonden[1] + '"]');
+
+        if (blok && !blok.closest('[hidden]')) { springNaarFout(form, blok); }
     }
 
     // ------------------------------------------------------------- meldingen

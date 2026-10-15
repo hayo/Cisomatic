@@ -153,8 +153,8 @@ function bc_vervolg(array $a): array
                 . 'oordeel van de CIO zijn dit document, een planning en een architectuurschets nodig.'
             : '',
         'Gaat het MT akkoord? Vul dan quickscan 2.0 in. Die laat zien wat de BIO2 en de Cyberbeveiligingswet vragen, '
-            . 'en of er ook een DPIA of een IAMA nodig is. Laad daar het bestand van dit document in, dan staat een '
-            . 'deel er al.',
+            . 'en of er ook een DPIA of een IAMA nodig is. In een dossier neemt de quickscan de antwoorden van dit '
+            . 'document vanzelf over. Anders laad je daar het antwoordbestand van dit document in.',
     ];
 
     return array_values(array_filter($stappen));

@@ -17,7 +17,8 @@ de motor. Hier staat wat alleen dit formulier doet.
 | Stap | Secties |
 | --- | --- |
 | Over dit project | project, opsteller, afdeling |
-| Toets 1 Nodig | het werk, het probleem, de burger, een plicht, wat niets doen kost, waarom nu |
+| Het probleem | het werk, wat er misgaat, de burger |
+| Toets 1 Nodig | een plicht, wat niets doen kost, waarom nu |
 | Toets 2 Zonder nieuw systeem | kan een andere werkwijze het oplossen? |
 | Toets 3 Wat er al is | een eigen systeem, de plek in de domeinarchitectuur |
 | Toets 4 Jullie taak | het mandaat en de taak uit het besluit, een voorziening van het Rijk, een oplossing van een andere overheid |
@@ -44,7 +45,8 @@ uitkomstblok. `regels.js` spiegelt alleen de rekenregel van
 `bc_toets_niveau()`.
 
 Er is geen ja of nee. "Nog niet uitgezocht" telt als eerst uitzoeken, zodat
-wie het niet weet geen stille nee invult. Het formulier stopt nergens, want het
+wie het niet weet geen stille nee invult. De toelichting bij zo'n vraag valt dan
+weg: er is nog niets om toe te lichten. In een dossier wordt het een open punt. Het formulier stopt nergens, want het
 document is een advies. Het MT beslist.
 
 ## De taak van de organisatie

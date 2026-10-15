@@ -54,6 +54,9 @@ return [
     // De DPIA heeft al een eigen vaststelling.
     'vaststelling' => false,
 
+    // Op de voordeur: de fase waarin je dit invult.
+    'fase' => 'ontwerp',
+
     'bestanden' => ['risicos.php', 'vragen.php', 'afleiding.php', 'rapport.php'],
     'secties' => 'dp_secties',
     'uitkomst' => 'dp_uitkomst',

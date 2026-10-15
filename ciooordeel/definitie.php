@@ -46,6 +46,10 @@ return [
 
     'vaststelling' => [['Opgesteld door', 'aanvrager'], ['Vastgesteld door de CIO', null]],
 
+    // Op de voordeur. Het CIO office vult dit in, dus het hoort niet in een dossier.
+    'fase' => 'toetsen',
+    'dossier' => false,
+
     'bestanden' => ['vragen.php', 'afleiding.php', 'rapport.php'],
     'secties' => 'co_secties',
     'evalueer' => 'co_evalueer',

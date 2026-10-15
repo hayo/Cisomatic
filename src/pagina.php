@@ -22,7 +22,14 @@ $uitvoer = (string) $formulier['uitvoer'];
 $werkplek = cm_werkplek();
 
 ?>
-<article id="cisomatic" lang="nl" data-formulier="<?= h($formulier['id']) ?>"<?= $klaar ? ' data-klaar' : '' ?><?= $werkplek !== null ? ' data-werkplek' : '' ?>>
+<article id="cisomatic" lang="nl" data-formulier="<?= h($formulier['id']) ?>"<?= $klaar ? ' data-klaar' : '' ?><?= $werkplek !== null ? ' data-werkplek' : '' ?>
+    data-naam="<?= h($formulier['naam']) ?>" data-voordeur="<?= h(cm_voordeur($formulier['id'])) ?>">
+    <?php if ($werkplek === null): ?>
+    <nav class="dossierbalk" aria-label="Dossier" data-dossierbalk hidden>
+        <p>Dossier <strong data-dossier-naam></strong> <a href="" data-dossier-terug>Terug naar het dossier</a></p>
+        <p data-dossier-overgenomen hidden></p>
+    </nav>
+    <?php endif; ?>
     <h1><?= h($formulier['titel']) ?></h1>
     <p><?= h($formulier['intro']) ?></p>
 
@@ -104,5 +111,8 @@ $werkplek = cm_werkplek();
         <p><?= h($formulier['voet']) ?></p>
     </footer>
 </article>
+<?php if ($werkplek === null): ?>
+<script src="<?= h(cm_asset('assets/dossier.js')) ?>" defer></script>
+<?php endif; ?>
 <script src="<?= h(cm_asset('assets/app.js')) ?>" defer></script>
 <script src="<?= h(cm_asset($formulier['regels'] ?? $formulier['id'] . '/regels.js')) ?>" defer></script>

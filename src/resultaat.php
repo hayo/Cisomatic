@@ -22,7 +22,7 @@ $opgemaakt = cm_blokken_naar_html($blokken);
 <?php if (cm_werkplek() !== null): ?>
     <p><a href="">&larr; Terug naar de antwoorden</a> &middot; <a href="<?= h(cm_werkplek()['lijst']) ?>">Alle documenten</a></p>
 <?php else: ?>
-    <p><a href="">&larr; Een nieuwe <?= h($formulier['naam']) ?> invullen</a></p>
+    <p><a href="" data-opnieuw>&larr; Een nieuwe <?= h($formulier['naam']) ?> invullen</a></p>
 <?php endif; ?>
 
 <?php require CM_ROOT . '/' . $formulier['id'] . '/samenvatting.php'; ?>
@@ -34,7 +34,8 @@ $opgemaakt = cm_blokken_naar_html($blokken);
     'kenmerk' => cm_kenmerk(cm_vingerafdruk($antwoorden)),
     'vingerafdruk' => cm_vingerafdruk($antwoorden),
     'antwoorden' => $antwoorden,
-], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_AMP) ?></script>
+] + (isset($formulier['vervolg']) ? ['vervolgformulieren' => $formulier['vervolg']($antwoorden, $uitkomst)] : []),
+    JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_AMP) ?></script>
 
 <section id="volledig">
     <h3>Het volledige <?= h($uitvoer) ?></h3>
@@ -61,8 +62,10 @@ $opgemaakt = cm_blokken_naar_html($blokken);
         <button type="button" data-download-json="<?= h(cm_bestandsnaam((string) ($antwoorden['projectnaam'] ?? ''), 'json')) ?>">Download de antwoorden</button>
         <button type="button" data-afdrukken>Afdrukken</button>
     </p>
-    <p data-acties hidden>Bewaar de antwoorden als je later verder wilt. Op het formulier laad je dat
-       bestand weer in, dan hoef je niet alles opnieuw in te vullen.</p>
+    <p data-acties data-zonder-dossier hidden>Bewaar de antwoorden als je later verder wilt. Op het formulier laad
+       je dat bestand weer in, dan hoef je niet alles opnieuw in te vullen. Een ander formulier leest het ook in.</p>
+    <p data-met-dossier hidden>Het document staat nu in het dossier. Wil je het hele dossier bewaren of doorgeven?
+       Download dan het projectbestand op de pagina van het dossier.</p>
 
     <?php if ($opgemaakt['inhoud'] !== []): ?>
         <nav aria-label="Inhoud van het <?= h($uitvoer) ?>">

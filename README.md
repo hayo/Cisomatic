@@ -47,12 +47,13 @@ Plain PHP, geen Composer, geen build, geen afhankelijkheden.
 Eén motor, en per formulier een map.
 
 ```
-index.php                 de voordeur: een lijst van de formulieren
+index.php                 de voordeur: de formulieren per fase, en de dossiers
 config.php                welke formulieren, tijdzone, limieten, bewaren
 assets/app.css            vormgeving van voordeur en formulieren, op tokens
 assets/standalone.css     de huisstijl: de tokens en een basis voor de pagina
 assets/app.js             de motor in de browser: stappen, zichtbaarheid, rijen, bewaren, inladen
-src/bootstrap.php         laadt alles; cm_config(), cm_asset(), cm_formulier(), cm_werkplek(), cm_verwerk()
+assets/dossier.js         de dossiers: op de voordeur, en wat een formulier uit een dossier haalt
+src/bootstrap.php         laadt alles; cm_config(), cm_asset(), cm_formulier(), cm_werkplek(), cm_verwerk(), cm_kiezer()
 src/helpers.php           escapen, niveaus, datum, opsommingen, bestandsnaam
 src/antwoorden.php        inlezen en controleren
 src/formulier.php         formulier naar HTML
@@ -62,7 +63,7 @@ src/opslag.php            wegschrijven naar 'bewaar_map', als dat aan staat
 src/verantwoording.php    kenmerk, vingerafdruk en het hoofdstuk Verantwoording onder elk document
 src/pagina.php            de inhoud: formulier of resultaat, als <article>
 src/resultaat.php         de pagina na het versturen
-src/kiezer.php            de voordeur als <article>
+src/kiezer.php            de voordeur als <article>: de fasen, en de plek voor de dossiers
 src/document.php          html, head en body eromheen, met app.css en standalone.css
 bewaard/                  opgeslagen documenten, als bewaren aan staat
 
@@ -164,6 +165,11 @@ Alleen gegevens, geen code. De voordeur leest dit bestand ook.
 | `valideer` | Optioneel: functie met controles bovenop de invulplicht |
 | `vaststelling` | Optioneel: wie het document ondertekent. Een lijst van `[rol, sleutel]`, met de sleutel van het antwoord met de naam of `null`. Of een functie die die lijst geeft. `false` als het document dat zelf al doet |
 | `antwoorden` | Optioneel: `false` als het document alle antwoorden al zelf toont |
+| `fase` | Optioneel: waar het formulier op de voordeur staat. `start`, `ontwerp` of `toetsen`; zonder fase komt het onder "Overige formulieren" |
+| `normenkader` | Optioneel: `bio2` of `bio`. Een dossier toont alleen de formulieren van zijn eigen normenkader |
+| `opvolger` | Optioneel: de nieuwere versie van dit formulier. De voordeur noemt het dan een eerdere versie, en een dossier wisselt ertussen als het normenkader verandert |
+| `dossier` | Optioneel: `false` als een ander het formulier invult, zoals de leverancier of het CIO office. Het hoort dan niet in een dossier |
+| `vervolg` | Optioneel: functie die van antwoorden en uitkomst zegt welke andere formulieren voorgesteld zijn, en waarom. Een dossier zet ze erbij |
 
 ### vragen.php
 
@@ -305,9 +311,47 @@ Knoppen die alleen met script werken, verschijnen pas als het script draait.
 
 Zodra je iets invult, wordt alles in `localStorage` bewaard, per formulier. Kom
 je terug, dan vraagt het formulier of je wilt verdergaan. Op de resultaatpagina
-download je de antwoorden als JSON, met de `soort` erin. Dat bestand laad je
-later weer in, ook in een ander formulier. Beide gebeuren in de browser; er is
-bewust geen server-endpoint dat opgeslagen antwoorden kan openen.
+download je de antwoorden als JSON, met de `soort` erin: het antwoordbestand. Dat
+bestand laad je later weer in, ook in een ander formulier. Beide gebeuren in de
+browser; er is bewust geen server-endpoint dat opgeslagen antwoorden kan openen.
+
+## Dossiers
+
+Een dossier bundelt de formulieren van één project. Op de voordeur begin je er
+een, met een naam en een normenkader. Het dossier begint met de formulieren in
+de fase `start` en de quickscan van dat normenkader. Een formulier opent dan met
+`?dossier=id` achter het adres.
+
+- **Voorinvullen.** Heeft het formulier nog geen antwoorden in het dossier, dan
+  neemt het over wat de andere formulieren al weten. Dezelfde sleutel is
+  hetzelfde antwoord, net als bij het inladen van een bestand. De regels van
+  `overnemen` gelden ook hier.
+- **Eén antwoord, overal.** Wijzigt een antwoord dat ook in een ander formulier
+  staat, dan gaat de wijziging daar ook heen. Had dat formulier al een document,
+  dan is dat verouderd. `versie`, `rol`, `beoordelaar_naam` en `opmerkingen`
+  horen bij één document en gaan niet mee. Een antwoord dat via `als` onder een
+  andere sleutel is overgenomen, gaat ook niet mee: daar is het een begin, geen
+  gedeeld antwoord.
+- **Voorstellen.** Een formulier met `vervolg` zegt na het versturen welke
+  andere formulieren nodig zijn. De quickscans doen dat voor de DPIA, de IAMA,
+  de AI scan en de soevereiniteitsscan. Wat voorgesteld is, komt in het dossier,
+  tenzij iemand het er eerder uit haalde.
+- **Wat nog moet.** Per formulier toont het dossier of het niet begonnen, bezig,
+  klaar of verouderd is, en hoeveel verplichte vragen al ingevuld zijn. Elk
+  antwoord als "nog niet uitgezocht" of "weet ik niet" (`niet_gekeken`,
+  `onbekend`, `weet_niet`, `twijfel`) is een open punt, met een link naar de
+  vraag.
+
+Alle dossiers staan in `localStorage`, onder `cisomatic-dossiers`. Het
+projectbestand is het dossier als JSON, met `"soort": "dossier"`. De voordeur
+laadt het weer in. Een antwoordbestand van één formulier begint daar een nieuw
+dossier; op de pagina van een dossier voegt het dat formulier toe. Een formulier
+leest een projectbestand ook: het neemt dan zijn eigen antwoorden over, of wat
+de andere formulieren weten.
+
+Het dossier werkt alleen met JavaScript. Zonder script blijft de voordeur een
+lijst met formulieren, en werkt elk formulier zoals altijd. Op een werkplek is
+er geen dossier; daar bewaart de server het concept.
 
 ## Werkplek
 

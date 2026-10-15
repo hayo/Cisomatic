@@ -48,6 +48,9 @@ return [
     'vaststelling' => false,
     'antwoorden' => false,
 
+    // Op de voordeur: de fase waarin je dit invult.
+    'fase' => 'start',
+
     'bestanden' => ['vragen.php', 'afleiding.php', 'rapport.php'],
     'secties' => 'bc_secties',
     'evalueer' => 'bc_evalueer',

@@ -52,6 +52,11 @@ return [
     'vaststelling' => false,
     'antwoorden' => false,
 
+    // Op de voordeur. De leverancier vult dit in, dus het hoort niet in een dossier.
+    'fase' => 'toetsen',
+    'normenkader' => 'bio2',
+    'dossier' => false,
+
     'bestanden' => ['../fitgap/verklaring.php', '../fitgap/cloudprivacy.php', 'bio2.php'],
     'regels' => 'fitgap/regels.js',
     'secties' => 'fg2_secties',
