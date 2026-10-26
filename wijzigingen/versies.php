@@ -14,6 +14,15 @@ declare(strict_types=1);
 
 return [
     [
+        'versie' => '1.2.3',
+        'datum' => '2026-10-26',
+        'wijzigingen' => [
+            'Quickscan 2.0 is nagelopen met de tekst van de Cyberbeveiligingsregeling sector overheid. De regels voor '
+                . 'de te beschermen belangen en cruciale systemen klopten al. Het advies noemt nu artikel 4 en artikel 6, '
+                . 'NATO en EU Confidential bij de meldplicht, en dat gepland onderhoud geen significant incident is.',
+        ],
+    ],
+    [
         'versie' => '1.2.2',
         'datum' => '2026-10-26',
         'wijzigingen' => [

@@ -235,10 +235,12 @@ function q2_advies_cbw(array $a, array $u): array
         $b[] = ['alinea', 'De tool ziet bij dit systeem geen incident dat vanzelf de drempels uit de regeling '
             . 'haalt. Een incident kan toch significant zijn. Beoordeel dat dan per geval.'];
     } else {
-        $b[] = ['alinea', 'Bij dit systeem liggen deze incidenten voor de hand. Ze halen de drempels uit de '
-            . 'regeling, dus ze moeten gemeld worden:'];
+        $b[] = ['alinea', 'Bij dit systeem liggen deze incidenten voor de hand. Ze halen de drempels uit artikel 6 '
+            . 'van de regeling, dus ze moeten gemeld worden:'];
         $b[] = ['lijst', $u['meldplicht']];
     }
+    $b[] = ['alinea', 'Gepland onderhoud is geen significant incident, ook niet als de dienst dan vier uur of langer '
+        . 'uitvalt.'];
 
     if (q2_via_internet($a)) {
         $b[] = ['h3', 'Registreren'];

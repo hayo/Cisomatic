@@ -81,9 +81,10 @@ De functies heten `q2_`. `regels.js` herhaalt de afleidingen uit
 
 - [BIO2, versie 1.3](https://www.bio-overheid.nl/bio2/bio-producten/baseline-informatiebeveiliging-overheid-2-bio2/)
   (9 januari 2026): de maatregelnummers in het advies verwijzen hiernaar.
-- [Cyberbeveiligingsregeling sector overheid](https://zoek.officielebekendmakingen.nl/stcrt-2026-27679.html)
-  (Stcrt. 2026, 27679): te beschermen belangen, cruciale systemen en de drempels
-  voor een significant incident.
+- [Cyberbeveiligingsregeling sector overheid](https://wetten.overheid.nl/BWBR0052963)
+  (Stcrt. 2026, 27679), geldend vanaf 15 augustus 2026: cruciale systemen
+  (artikel 4 en bijlage 1), de BIO2 als invulling van de zorgplicht (artikel 5)
+  en de drempels voor een significant incident (artikel 6).
 - [Cyberbeveiligingswet](https://wetten.overheid.nl/BWBR0052872), geldend vanaf
   15 augustus 2026: essentiële entiteiten (artikel 5 en 8), de zorgplicht
   (artikel 21), de meldplicht (artikel 25 tot en met 29) en het nationale
@@ -112,7 +113,11 @@ Waar ze hetzelfde zeggen:
   risicoanalyse. Hier is dat het hoge dreigingsprofiel, of een eis Zeer hoog.
 - De overheidsmaatregelen gelden altijd, ook bij een gunstige uitkomst. Alleen
   bij eigen maatregelen mag een risico bewust geaccepteerd worden.
-- De te beschermen belangen uit bijlage 1, met dezelfde niveaus.
+- De te beschermen belangen uit bijlage 1, met dezelfde niveaus. Alleen bij de
+  betrouwbaarheidseisen wijkt tabblad 1b van de toets af van bijlage 1 (één eis
+  Zeer hoog TBB 3, meerdere TBB 2, alle drie TBB 1). Deze quickscan volgt
+  bijlage 1 van de regeling: één eis Zeer hoog TBB 3, alle drie TBB 2, en tot
+  en met Hoog TBB 4.
 
 Wat de toets anders doet:
 
@@ -124,12 +129,16 @@ Wat de toets anders doet:
 - Met de werkwijze Basis is een impact Hoog op één aspect al genoeg voor een
   aanvullende risicoanalyse. Zo geeft een RPO van vier uur of minder daar altijd
   een analyse. Hier geeft de RPO alleen de eis aan de back-up. De tekst van de
-  BIO2 en de Cbw is leidend, en die noemen zo'n drempel niet: de BIO2 laat de
-  RPO over aan een risicoafweging (8.13.02).
+  BIO2, de Cbw en de regeling is leidend, en die noemen voor het Rijk zo'n
+  drempel niet. De BIO2 laat de RPO over aan een risicoafweging (8.13.02). In
+  de regeling maakt een RPO van vier uur een systeem alleen cruciaal bij een
+  decentrale overheid (bijlage 2, artikel 4, derde lid).
 - TBB 3 is in de toets impact Midden, en dan is een analyse alleen het
-  overwegen waard. Hier is het systeem bij TBB 3 cruciaal, en volgt altijd een
-  volledige risicoanalyse. De BIO2 en de Cbw noemen geen TBB; dat komt uit de
-  regeling. De tekst van de regeling zelf is nog niet naast de tool gelegd.
+  overwegen waard. De regeling zegt het anders: bij TBB 1, 2 of 3 is een
+  systeem van het Rijk cruciaal (artikel 4, tweede lid). Deze quickscan volgt
+  de regeling. Dat er bij een cruciaal systeem een volledige risicoanalyse
+  volgt, is een keuze van de tool; de regeling vraagt alleen een overzicht van
+  de cruciale systemen.
 - De ISMS-volwassenheid kan in de toets het advies een niveau hoger of lager
   maken. Deze quickscan vraagt er niet naar.
 

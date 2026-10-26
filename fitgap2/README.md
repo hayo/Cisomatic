@@ -53,7 +53,7 @@ vraag in, uit `leverancier_cbw`.
 - [Cyberbeveiligingswet](https://wetten.overheid.nl/BWBR0052872), geldend vanaf
   15 augustus 2026: de zorgplicht (artikel 21) en de meldtermijnen (artikel 26
   tot en met 29).
-- [Cyberbeveiligingsregeling sector overheid](https://zoek.officielebekendmakingen.nl/stcrt-2026-27679.html)
+- [Cyberbeveiligingsregeling sector overheid](https://wetten.overheid.nl/BWBR0052963)
   (Stcrt. 2026, 27679).
 - [Herziening rijksbreed cloudbeleid 2026](https://www.tweedekamer.nl/downloads/document?id=2026D35295)
   (3 juli 2026).

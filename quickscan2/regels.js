@@ -340,8 +340,8 @@
             ? 'Het zwaarste niveau telt, dus de uitkomst is TBB ' + niveau + '.'
             : 'Niets haalt TBB 4, dus de uitkomst is geen TBB.');
         redenen.push(cruciaal
-            ? 'Bij TBB 1, 2 of 3 is het systeem cruciaal. Het komt op het overzicht van cruciale systemen van de '
-                + 'organisatie, en er volgt een volledige risicoanalyse.'
+            ? 'Bij TBB 1, 2 of 3 is het systeem cruciaal (regeling, artikel 4). Het komt op het overzicht van cruciale '
+                + 'systemen van de organisatie, en er volgt een volledige risicoanalyse.'
             : 'Het systeem is niet cruciaal. De basis van de BIO2 blijft gelden.');
 
         return {

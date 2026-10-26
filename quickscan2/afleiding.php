@@ -822,8 +822,8 @@ function q2_tbb(array $a, ?array $biv = null): array
         ? 'Niets haalt TBB 4, dus de uitkomst is geen TBB.'
         : 'Het zwaarste niveau telt, dus de uitkomst is TBB ' . $niveau . '.';
     $redenen[] = $cruciaal
-        ? 'Bij TBB 1, 2 of 3 is het systeem cruciaal. Het komt op het overzicht van cruciale systemen van de '
-            . 'organisatie, en er volgt een volledige risicoanalyse.'
+        ? 'Bij TBB 1, 2 of 3 is het systeem cruciaal (regeling, artikel 4). Het komt op het overzicht van cruciale '
+            . 'systemen van de organisatie, en er volgt een volledige risicoanalyse.'
         : 'Het systeem is niet cruciaal. De basis van de BIO2 blijft gelden.';
 
     return [
@@ -863,7 +863,8 @@ function q2_meldplicht(array $a, array $biv): array
         $scenarios[] = 'Misbruik van bedrijfsinformatie met een schade van meer dan 5 miljoen euro.';
     }
     if (str_starts_with((string) ($a['rubricering'] ?? ''), 'stg-')) {
-        $scenarios[] = 'Onbevoegden krijgen staatsgeheime informatie te zien.';
+        $scenarios[] = 'Onbevoegden krijgen informatie te zien van Staatsgeheim Confidentieel of hoger, of van NATO of '
+            . 'EU Confidential of hoger.';
     }
 
     return $scenarios;
