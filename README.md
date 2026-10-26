@@ -12,14 +12,14 @@ Er zijn nu elf formulieren:
   vóór alles. Vijf toetsen: is het nodig, kan het zonder nieuw systeem, is er al
   iets, is het jullie taak, en kunnen jullie het dragen? Met een advies aan het
   MT over het risico.
-- **[quickscan2](quickscan2/README.md)**: de quickscan voor de BIO2 en de
+- **[quickscan2](quickscan2/README.md)**: quickscan 2.0, voor de BIO2 en de
   Cyberbeveiligingswet, voor ministeries, diensten en agentschappen. Te
   beschermen belangen, cloudbeleid 2026, BIO2-maatregelen, analyses.
 - **[socialemedia](socialemedia/README.md)**: de kanalenscan voor sociale media,
   voor het Rijk. Volgt één kanaal door de hele cyclus: starten, de jaarlijkse
   toets, en vertrekken. Levert een comply or explain, of een exitplan.
-- **[quickscan](quickscan/README.md)**: de IB & Privacy Quickscan, op de BIO 1.
-  Welk beveiligingsniveau geldt, welke eisen, welke analyses.
+- **[quickscan](quickscan/README.md)**: quickscan 1.0, de IB & Privacy Quickscan
+  op de BIO 1. Welk beveiligingsniveau geldt, welke eisen, welke analyses.
 - **[dpia](dpia/README.md)**: een Data Protection Impact Assessment in de opbouw
   van het Model DPIA Rijksdienst.
 - **[aiscan](aiscan/README.md)**: de AI scan, op de Beslishulp AI-verordening van
@@ -33,12 +33,12 @@ Er zijn nu elf formulieren:
 - **[ciooordeel](ciooordeel/README.md)**: het CIO oordeel, voor de adviseur van
   het CIO office. Elf aandachtsgebieden uit het toetskader van het AcICT en het
   Kwaliteitskader CIO-oordelen, een voorstel voor het oordeel, en het rapport.
-- **[fitgap2](fitgap2/README.md)**: de fit/gap voor de BIO2 en de
+- **[fitgap2](fitgap2/README.md)**: fit/gap 2.0, voor de BIO2 en de
   Cyberbeveiligingswet. De verklaring van een leverancier, per maatregel: voldoet
   de dienst, hoe, en zo niet, wat er nog moet gebeuren en wanneer. Met de eisen
   aan de keten, het cloudbeleid, en ISO 27017, 27018 en 27701.
-- **[fitgap](fitgap/README.md)**: dezelfde fit/gap op de BIO 1, met de normen
-  die bij het vastgestelde beveiligingsniveau horen.
+- **[fitgap](fitgap/README.md)**: fit/gap 1.0, dezelfde fit/gap op de BIO 1,
+  met de normen die bij het vastgestelde beveiligingsniveau horen.
 
 Plain PHP, geen Composer, geen build, geen afhankelijkheden.
 
@@ -53,7 +53,7 @@ assets/app.css            vormgeving van voordeur en formulieren, op tokens
 assets/standalone.css     de huisstijl: de tokens en een basis voor de pagina
 assets/app.js             de motor in de browser: stappen, zichtbaarheid, rijen, bewaren, inladen
 assets/dossier.js         de dossiers: op de voordeur, en wat een formulier uit een dossier haalt
-src/bootstrap.php         laadt alles; cm_config(), cm_asset(), cm_formulier(), cm_werkplek(), cm_verwerk(), cm_kiezer()
+src/bootstrap.php         laadt alles; cm_config(), cm_asset(), cm_formulier(), cm_werkplek(), cm_verwerk(), cm_kiezer(), cm_versie(), cm_wijzigingen()
 src/helpers.php           escapen, niveaus, datum, opsommingen, bestandsnaam
 src/antwoorden.php        inlezen en controleren
 src/formulier.php         formulier naar HTML
@@ -65,6 +65,9 @@ src/pagina.php            de inhoud: formulier of resultaat, als <article>
 src/resultaat.php         de pagina na het versturen
 src/kiezer.php            de voordeur als <article>: de fasen, en de plek voor de dossiers
 src/document.php          html, head en body eromheen, met app.css en standalone.css
+src/wijzigingen.php       de pagina met wijzigingen, als <article>
+wijzigingen/versies.php   de versies, de nieuwste bovenaan; de bovenste is de versie die draait
+wijzigingen/index.php     de pagina met wijzigingen; de voettekst van elke pagina linkt ernaar
 bewaard/                  opgeslagen documenten, als bewaren aan staat
 
 <formulier>/index.php         roept de motor aan met de naam van de map
@@ -82,6 +85,24 @@ De motorfuncties heten `cm_`, die van de quickscan `qs_`, die van quickscan 2.0
 van de AI scan `ai_`, `gai_` voor generatieve AI, die van het CIO oordeel `co_`,
 en die van de fit/gap `fg_`, met `fg1_` voor de BIO 1 en `fg2_` voor de BIO2. Een
 formulier gebruikt de motor; de motor kent geen formulier bij naam.
+
+## Versies
+
+De Cisomatic heeft één versienummer, zoals 1.2.2. De voettekst van elke pagina
+noemt het, met een link naar de pagina met wijzigingen. De verantwoording onder
+elk document noemt het ook, naast de versie van de regels.
+
+- Het eerste cijfer gaat omhoog bij een complete herbouw van de motor, of een
+  compleet nieuw ontwerp, zoals van 1.2.2 naar 2.0.
+- Het tweede cijfer gaat omhoog als er een formulier bij komt of verdwijnt, of
+  een groot nieuw onderdeel zoals de dossiers, zoals van 1.2.2 naar 1.3. Het
+  derde cijfer begint dan weer bij 0, maar dat laat je weg.
+- Het derde cijfer gaat omhoog bij elke andere wijziging, zoals van 1.2.2 naar
+  1.2.3.
+
+Na elke wijziging zet je bovenaan `wijzigingen/versies.php` een nieuwe
+versie, met de datum en in een paar korte zinnen wat er veranderd is. Meer hoeft
+niet: de voettekst, de pagina en de verantwoording lezen het daar.
 
 ## Draaien
 
@@ -131,7 +152,7 @@ een pull request. Anders botst de volgende update.
 1. Maak een map naast `src/`, met een `index.php` gelijk aan die van de andere
    formulieren.
 2. Zet de naam van de map in `config.php`, onder `formulieren`.
-3. Schrijf `definitie.php`, `vragen.php`, `vooraf.php`, `samenvatting.php` en
+3. Schrijf `definitie.php` (met de `bronnen`), `vragen.php`, `vooraf.php`, `samenvatting.php` en
    `regels.js`. De voordeur toont het formulier vanzelf.
 4. Teken eventueel een `icoon.svg`. Zonder icoon toont de voordeur alleen de
    tekst.
@@ -151,7 +172,8 @@ Alleen gegevens, geen code. De voordeur leest dit bestand ook.
 | `uitvoer` | Wat eruit komt: *advies* of *document*. Staat op de knoppen |
 | `download_uitleg` | De alinea onder de downloadknop |
 | `inladen` | Uitleg bij het inladen van een bestand |
-| `voet` | De voetregel |
+| `voet` | De voetregel: wat het document niet vervangt, en wat een eigen uitwerking is |
+| `bronnen` | De documenten waarop het formulier is gebaseerd, met versie en datum. Ze staan onder het formulier en in de verantwoording |
 | `stappen` | Per stap het stempel boven een sectie, zoals "Stap 1 · beschrijving" |
 | `route` | De vraag die bepaalt hoeveel stappen er zijn. Tot die beantwoord is, noemt de voortgang geen totaal |
 | `hoofdstuk_per_pagina` | In het `.odt`-bestand begint elk hoofdstuk op een nieuwe pagina |

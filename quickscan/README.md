@@ -1,4 +1,4 @@
-# IB & Privacy Quickscan
+# Quickscan 1.0: IB & Privacy op de BIO
 
 Een formulier van de [Compliancomatic](../README.md) dat de IB & Privacy
 Quickscan afneemt en er meteen een volledig advies uit rolt: welk

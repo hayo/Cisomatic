@@ -17,8 +17,11 @@ return [
     'download_uitleg' => 'Het document opent in Word, LibreOffice en Google Docs, met kopjes, lijsten en tabellen.',
     'inladen' => 'Een bestand van een eerdere sessie, of van de quickscan of de DPIA. Je browser leest het zelf, '
         . 'dus er gaat niets naar de server.',
-    'voet' => 'Gebaseerd op het Impact Assessment Mensenrechten en Algoritmes, versie 2 (2026), van de Universiteit '
-        . 'Utrecht en het ministerie van BZK. Dit document vervangt het oordeel van een jurist niet.',
+    'voet' => 'Dit document vervangt het oordeel van een jurist niet.',
+    'bronnen' => [
+        'Impact Assessment Mensenrechten en Algoritmes, versie 2 (2026), van de Universiteit Utrecht en het '
+            . 'ministerie van BZK',
+    ],
     'stappen' => [
         1 => 'Deel 1 · waarom',
         2 => 'Deel 2 · wat',
@@ -32,11 +35,11 @@ return [
     // De versie hoort bij het document waar het bestand vandaan komt.
     'overnemen' => [
         'quickscan' => [
-            'naam' => 'de quickscan',
+            'naam' => 'quickscan 1.0',
             'zet' => ['ia_reden' => 'quickscan'],
         ],
         'quickscan2' => [
-            'naam' => 'de quickscan voor de BIO2',
+            'naam' => 'quickscan 2.0',
             'zet' => ['ia_reden' => 'quickscan'],
         ],
         'dpia' => [

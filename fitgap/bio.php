@@ -619,5 +619,5 @@ function fg1_evalueer(array $a): array
 /** @return list<array<int,mixed>> */
 function fg1_document(array $a, array $u): array
 {
-    return fg_document($a, $u, 'Fit/gap BIO');
+    return fg_document($a, $u, 'Fit/gap 1.0');
 }

@@ -18,9 +18,13 @@ return [
     'download_uitleg' => 'Het rapport opent in Word, LibreOffice en Google Docs, met kopjes, lijsten en tabellen.',
     'inladen' => 'Een bestand van een eerdere scan, of van quickscan 2.0, de DPIA of de IAMA. Je browser leest het '
         . 'zelf, dus er gaat niets naar de server.',
-    'voet' => 'Gebaseerd op de Beslishulp AI verordening van het ministerie van BZK (versie van 14 september 2026), '
-        . 'met de datums die sinds juli 2026 in de AI verordening staan. De vragen over generatieve AI komen uit het '
-        . 'standpunt en de handreiking van BZK (januari 2025). Deze scan vervangt het oordeel van een jurist niet.',
+    'voet' => 'Deze scan vervangt het oordeel van een jurist niet.',
+    'bronnen' => [
+        'Beslishulp AI-verordening van het ministerie van BZK, versie 1.0.0 (14 september 2026)',
+        'AI-verordening (EU) 2024/1689, na de Digital Omnibus (in werking 27 juli 2026)',
+        'Overheidsbreed standpunt voor de inzet van generatieve AI (30 januari 2025)',
+        'Overheidsbrede handreiking verantwoorde inzet van generatieve AI (30 januari 2025)',
+    ],
     'stappen' => [
         1 => 'Deel 1 · de toepassing',
         2 => 'Deel 2 · de risicogroep',
@@ -34,7 +38,7 @@ return [
     // quickscan 2.0 de omschrijving ai_omschrijving.
     'overnemen' => [
         'quickscan2' => ['naam' => 'quickscan 2.0'],
-        'quickscan' => ['naam' => 'de quickscan'],
+        'quickscan' => ['naam' => 'quickscan 1.0'],
         'dpia' => ['naam' => 'de DPIA'],
         'iama' => ['naam' => 'de IAMA', 'als' => ['ia_doel' => 'ai_omschrijving']],
         'businesscase' => ['naam' => 'de business case', 'als' => ['bc_doel' => 'ai_omschrijving']],

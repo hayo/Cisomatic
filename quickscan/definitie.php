@@ -9,7 +9,7 @@
 declare(strict_types=1);
 
 return [
-    'titel' => 'IB & Privacy Quickscan',
+    'titel' => 'Quickscan 1.0: IB & Privacy op de BIO',
     'naam' => 'quickscan',
     'intro' => 'Vul dit in voordat je een project start. Je ziet dan meteen welke eisen er gelden en welke '
         . 'aanvullende analyses nodig zijn.',
@@ -17,7 +17,13 @@ return [
     'download_uitleg' => 'Het document opent in Word, LibreOffice en Google Docs, met kopjes en lijsten.',
     'inladen' => 'Heb je bij een vorige scan de antwoorden gedownload? Laad dat bestand dan hier in. Dat '
         . 'gebeurt in je eigen browser, dus er gaat niets naar de server.',
-    'voet' => 'Gebaseerd op de IB & Privacy Quickscan. Dit advies vervangt het oordeel van de beoordelaar niet.',
+    'voet' => 'Dit advies vervangt het oordeel van de beoordelaar niet.',
+    'bronnen' => [
+        'IB & Privacy Quickscan',
+        'BIO, versie 1',
+        'VIR-BI en ABRO',
+        'AVG, Archiefwet 2026 en AI-verordening',
+    ],
     'stappen' => [
         1 => 'Stap 1 · beschrijving door de behoeftesteller',
         2 => 'Stap 2 · weging en vaststelling door de beoordelaar',

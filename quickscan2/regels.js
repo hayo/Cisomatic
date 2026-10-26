@@ -319,8 +319,15 @@
             a.vertrouwelijkheid_bijstelling || afgeleideVertrouwelijkheid(a).niveau
         ];
         var zeerHoog = biv.filter(function (n) { return n === 'zh'; }).length;
-        bronnen.push([[0, 3, 3, 2][zeerHoog],
-            'Betrouwbaarheidseisen, ' + ['geen eis', 'één eis', 'twee eisen', 'alle drie'][zeerHoog] + ' Zeer hoog']);
+        var bovenZeerLaag = biv.some(function (n) { return n && n !== 'zl'; });
+        if (zeerHoog) {
+            bronnen.push([[0, 3, 3, 2][zeerHoog],
+                'Betrouwbaarheidseisen, ' + ['', 'één eis', 'twee eisen', 'alle drie'][zeerHoog] + ' Zeer hoog']);
+        } else if (bovenZeerLaag) {
+            bronnen.push([4, 'Betrouwbaarheidseisen, ten hoogste Hoog']);
+        } else {
+            bronnen.push([0, 'Betrouwbaarheidseisen, alle drie Zeer laag']);
+        }
 
         var niveaus = bronnen.map(function (b) { return b[0]; }).filter(Boolean);
         var niveau = niveaus.length ? Math.min.apply(null, niveaus) : 0;
@@ -333,8 +340,8 @@
             ? 'Het zwaarste niveau telt, dus de uitkomst is TBB ' + niveau + '.'
             : 'Niets haalt TBB 4, dus de uitkomst is geen TBB.');
         redenen.push(cruciaal
-            ? 'Bij TBB 1, 2 of 3 is het systeem cruciaal. Het komt op het overzicht van cruciale systemen van de '
-                + 'organisatie, en er volgt een volledige risicoanalyse.'
+            ? 'Bij TBB 1, 2 of 3 is het systeem cruciaal (regeling, artikel 4). Het komt op het overzicht van cruciale '
+                + 'systemen van de organisatie. Deze quickscan vraagt dan ook een volledige risicoanalyse.'
             : 'Het systeem is niet cruciaal. De basis van de BIO2 blijft gelden.');
 
         return {

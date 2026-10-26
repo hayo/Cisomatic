@@ -140,6 +140,24 @@ function q2_evalueer(array $a): array
         'label' => 'Elk netwerk en informatiesysteem',
         'gevolg' => 'de beheersmaatregelen uit ISO 27002 en de verplichte overheidsmaatregelen uit de BIO2',
     ];
+    $u['niveau_stappen'][] = [
+        'label' => 'Elk nieuw systeem en elke grote wijziging',
+        'gevolg' => 'een risicoafweging met de risicomanagementmethodiek van de organisatie (BIO2 5.08.01)',
+    ];
+
+    // Een afweging die de BIO2 zelf vraagt.
+    if (($a['leverancier_overstap'] ?? '') === 'vast') {
+        $u['niveau_stappen'][] = [
+            'label' => 'De organisatie zit vast aan de leverancier',
+            'gevolg' => 'vóór het contract een risicoafweging of die afhankelijkheid beheersbaar is (BIO2 5.20.06)',
+        ];
+        $u = q2_voeg_analyse_toe($u, 'Risicoafweging afhankelijkheid leverancier', 'De organisatie zit vast aan de '
+            . 'leverancier. De BIO2 vraagt vóór het contract te bepalen of die afhankelijkheid beheersbaar is '
+            . '(5.20.06).', 'CISO');
+    }
+
+    // Wanneer er een volledige risicoanalyse volgt, laat de BIO2 aan de methode van
+    // de organisatie (paragraaf 6.2). Dit zijn de drempels van deze quickscan.
 
     $aanvullend = [];
     if ($u['tbb']['cruciaal']) {
@@ -154,13 +172,13 @@ function q2_evalueer(array $a): array
     if ($strategischVitaal) {
         $aanvullend[] = ['Een (kritisch) strategisch proces op een vitaal systeem', 'Een (kritisch) strategisch proces in combinatie met een vitaal systeem.'];
     }
-    if (($a['leverancier_overstap'] ?? '') === 'vast') {
-        $aanvullend[] = ['De organisatie zit vast aan de leverancier', 'De afhankelijkheid van de leverancier is groot. De BIO2 vraagt vóór het contract te bepalen of die beheersbaar is.'];
-    }
-
     foreach ($aanvullend as [$label, $reden]) {
-        $u['niveau_stappen'][] = ['label' => $label, 'gevolg' => 'aanvullende maatregelen uit een volledige risicoanalyse'];
-        $u = q2_voeg_analyse_toe($u, 'Volledige risicoanalyse', $reden, 'CISO');
+        $u['niveau_stappen'][] = [
+            'label' => $label,
+            'gevolg' => 'aanvullende maatregelen uit een volledige risicoanalyse, volgens de methode van deze quickscan',
+        ];
+        $u = q2_voeg_analyse_toe($u, 'Volledige risicoanalyse', $reden . ' Deze quickscan vraagt dan een volledige '
+            . 'risicoanalyse. De BIO2 laat die keuze aan de organisatie.', 'CISO');
     }
 
     $u['niveau'] = $aanvullend === []
@@ -597,7 +615,7 @@ function q2_bio2_maatregelen(array $u, array $a): array
     $B = $u['biv']['b'];
 
     $m[] = 'Iedereen die met het systeem werkt, volgt binnen drie maanden na de start aantoonbaar een training '
-        . 'over informatiebeveiliging (BIO2 6.03.03).';
+        . 'over informatiebeveiliging (BIO2 6.03.02).';
     $m[] = sprintf(
         'De Recovery Time Objective is %s en de Recovery Point Objective is %s. Leg dit vast in de afspraken met '
         . 'de systeemeigenaar (BIO2 8.13.02).',
@@ -605,10 +623,10 @@ function q2_bio2_maatregelen(array $u, array $a): array
         $u['rpo']
     );
     $m[] = 'Maak reservekopieën die beschermd zijn tegen ransomware, bewaar ze op een andere locatie, en test het '
-        . 'herstel elk jaar (BIO2 8.13).';
+        . 'herstel elk jaar (BIO2 8.13.01, 8.13.03, 8.13.04).';
 
     if (in_array($B, ['m', 'h', 'zh'], true) || ($a['bedrijfskritisch'] ?? '') === 'ja') {
-        $m[] = 'Test het continuïteitsplan voor dit systeem elk jaar (BIO2 5.29.01).';
+        $m[] = 'Test het continuïteitsplan voor dit systeem elk jaar (BIO2 5.30.01).';
     }
 
     $m[] = 'Een kwetsbaarheid met een hoge kans op misbruik en een hoge schade wordt binnen een week verholpen of '
@@ -632,7 +650,7 @@ function q2_bio2_maatregelen(array $u, array $a): array
 
     if (in_array('beheerders', $inloggen, true)) {
         $m[] = 'Beoordeel de rechten van beheerders elk kwartaal, en alle andere rechten elk jaar. Houd in de '
-            . 'gaten wie accounts met extra rechten maakt of wijzigt (BIO2 5.18, 8.02.01).';
+            . 'gaten wie accounts met extra rechten maakt of wijzigt (BIO2 5.18.01, 5.18.02, 8.02.01).';
     }
 
     if (($a['logging'] ?? '') !== 'volledig') {
@@ -642,7 +660,7 @@ function q2_bio2_maatregelen(array $u, array $a): array
 
     if (($a['monitoring'] ?? '') !== 'ja') {
         $m[] = 'Sluit het systeem aan op de detectie en respons van de organisatie, bijvoorbeeld een SOC met een '
-            . 'SIEM (BIO2 8.16.02).';
+            . 'SIEM (BIO2 8.16.03).';
 
         if ($u['tbb']['cruciaal']) {
             $u['aandachtspunten'][] = 'Dit is een cruciaal systeem, maar aanvallen worden nog niet opgemerkt. '
@@ -652,9 +670,9 @@ function q2_bio2_maatregelen(array $u, array $a): array
 
     // ---- incidenten en de meldplicht -----------------------------------------
     if ($u['cbw']['waar']) {
-        $m[] = 'Neem het systeem op in de incidentprocedure. Een significant incident meldt de organisatie via '
-            . 'het NCSC: binnen 24 uur een eerste melding, binnen 72 uur een vervolgmelding, en binnen een maand '
-            . 'een eindverslag (BIO2 5.24.05).';
+        $m[] = 'Neem het systeem op in de incidentprocedure. Een significant incident meldt de organisatie bij het '
+            . 'CSIRT en de bevoegde autoriteit: binnen 24 uur een vroegtijdige waarschuwing, binnen 72 uur de '
+            . 'melding, en uiterlijk een maand daarna een eindverslag (BIO2 5.24.07, Cbw artikel 26 tot en met 29).';
     } else {
         $m[] = 'Neem het systeem op in de incidentprocedure van de organisatie (BIO2 5.24).';
     }
@@ -671,9 +689,9 @@ function q2_bio2_maatregelen(array $u, array $a): array
             . 'dat met internet.nl (BIO2 5.14.01).';
         $m[] = 'Voer bij elke nieuwe versie een pentest uit, waar het kan geautomatiseerd. Een bevinding met een '
             . 'hoog risico die niet anders op te lossen is, betekent: niet in productie. Test daarnaast elk jaar '
-            . 'op kwetsbaarheden (BIO2 8.08.03, 8.08.04).';
+            . 'op kwetsbaarheden (BIO2 8.08.04, 8.08.05).';
         $m[] = 'Zorg dat iedereen kwetsbaarheden kan melden, met een procedure voor Coordinated Vulnerability '
-            . 'Disclosure (BIO2 5.26.01).';
+            . 'Disclosure (BIO2 5.24.08).';
 
         if (array_intersect($onderdelen, ['website', 'api']) !== []) {
             $m[] = 'Neem het systeem, de IP adressen en de API’s op in de registratie van alles wat via internet '
@@ -687,9 +705,9 @@ function q2_bio2_maatregelen(array $u, array $a): array
             $m[] = 'Stel de standaarden voor mail in, zoals SPF, DKIM en DMARC, en controleer ze met internet.nl '
                 . '(BIO2 5.14.01).';
         }
-        if (in_array('domein', $onderdelen, true) && $u['cbw']['waar']) {
-            $m[] = 'Registreer de nieuwe domeinnaam ook bij het NCSC. Dat hoort bij de registratieplicht uit de '
-                . 'Cyberbeveiligingswet.';
+        if ($u['cbw']['waar']) {
+            $m[] = 'Komen er nieuwe IP-bereiken of contactgegevens bij, geef die dan binnen twee weken door voor het '
+                . 'nationale register (Cbw artikel 44).';
         }
     }
 
@@ -697,12 +715,13 @@ function q2_bio2_maatregelen(array $u, array $a): array
     if (in_array($u['biv']['v'], ['h', 'zh'], true) || $rubricering === 'dep-vertrouwelijk'
         || str_starts_with($rubricering, 'stg-')) {
         $m[] = 'Versleutel waar het kan met middelen die een positief inzetadvies hebben van het NBV van de '
-            . 'AIVD, en volg de adviezen van het NCSC over de sterkte (BIO2 8.21.04, 8.24).';
+            . 'AIVD, en volg de adviezen van het NCSC en het NBV over de sterkte (BIO2 8.21.04, 8.24.04).';
     }
 
     if (str_starts_with($rubricering, 'stg-')) {
         $m[] = 'Bepaal met het screeningsbeleid wie een VOG nodig heeft. Wie met staatsgeheime informatie werkt, '
-            . 'heeft een vertrouwensfunctie en krijgt een veiligheidsonderzoek (BIO2 6.01.01).';
+            . 'heeft een vertrouwensfunctie en krijgt een veiligheidsonderzoek (BIO2 6.01.01, Wet '
+            . 'veiligheidsonderzoeken).';
     } elseif ($u['biv']['v'] === 'zh') {
         $m[] = 'Bepaal met het screeningsbeleid wie een VOG nodig heeft (BIO2 6.01.01).';
     }
@@ -962,16 +981,23 @@ function q2_beslisboom_pad(array $a, array $u, array $ctx): array
     }
 
     $s[] = $stap(
+        'Zit de organisatie vast aan de leverancier?',
+        q2_antwoord_tekst('leverancier_overstap', $a),
+        'Vóór het contract een risicoafweging of de afhankelijkheid beheersbaar is (BIO2 5.20.06)',
+        ($a['leverancier_overstap'] ?? '') === 'vast'
+    );
+
+    $s[] = $stap(
         'Is er een hoog dreigingsprofiel?',
         $jaNee($ctx['dreigingHoog']) . ' (afgeleid uit de kenmerken van het systeem)',
-        'Volledige risicoanalyse en advies van de AIVD of de MIVD',
+        'Volledige risicoanalyse (methode van deze quickscan) en advies van de AIVD of de MIVD',
         $ctx['dreigingHoog']
     );
 
     $s[] = $stap(
         'Een (kritisch) strategisch proces op een vitaal systeem?',
         $jaNee($ctx['strategischVitaal']),
-        'Volledige risicoanalyse',
+        'Volledige risicoanalyse (methode van deze quickscan)',
         $ctx['strategischVitaal']
     );
 
@@ -1016,7 +1042,8 @@ function q2_beslisboom_pad(array $a, array $u, array $ctx): array
     $s[] = $stap(
         'Hoe zwaar zijn de te beschermen belangen?',
         q2_tbb_label($u['tbb']['niveau']),
-        'Cruciaal systeem: op het overzicht, en een volledige risicoanalyse',
+        'Cruciaal systeem: op het overzicht (regeling, artikel 4), en een volledige risicoanalyse (methode van deze '
+            . 'quickscan)',
         $u['tbb']['cruciaal']
     );
 
@@ -1300,8 +1327,8 @@ function q2_wegingen(array $a, array $u): array
         'label' => 'Dreigingsprofiel',
         'niveau' => ucfirst((string) $u['dreiging']['niveau']),
         'omschrijving' => $u['dreiging']['niveau'] === 'hoog'
-            ? 'Bescherming is nodig tegen inlichtingendiensten, terreurgroepen of georganiseerde criminaliteit. Dat '
-                . 'vraagt om een volledige risicoanalyse en om advies van de AIVD of de MIVD.'
+            ? 'Bescherming is nodig tegen inlichtingendiensten, terreurgroepen of georganiseerde criminaliteit. Deze '
+                . 'quickscan vraagt dan een volledige risicoanalyse en advies van de AIVD of de MIVD.'
             : 'Deze groepen vormen geen bijzondere bedreiging voor dit proces of systeem.',
         'motivatie' => $motivatie('dreiging_motivatie', 'dreiging'),
         'herkomst' => ($a['dreiging_verhoging'] ?? '') === 'hoog'

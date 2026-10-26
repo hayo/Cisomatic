@@ -1310,8 +1310,8 @@ function q2_sectie_belangen(): array
         'stap' => 2,
         'intro' => 'Hier rekent de tool uit hoe zwaar de belangen zijn die je beschermt. Dat heet het niveau '
             . 'van de te beschermen belangen (TBB). Het weegt zwaar, want bij TBB 1, 2 of 3 is het systeem '
-            . 'cruciaal. Dan volgt een volledige risicoanalyse, mag er geen publieke cloud komen, en kijkt de CIO '
-            . 'mee. Jij kiest alleen welke schade een incident kan geven.',
+            . 'cruciaal. Dan komt het op het overzicht van cruciale systemen, mag er geen publieke cloud komen, en '
+            . 'kijkt de CIO mee. Deze quickscan vraagt dan ook een volledige risicoanalyse. Jij kiest alleen welke schade een incident kan geven.',
         'vragen' => [
             [
                 'key' => 'tbb_soorten',

@@ -759,7 +759,8 @@ function q2_tbb_label(int $niveau): string
  * Het niveau van de te beschermen belangen, volgens bijlage 1 bij de
  * Cyberbeveiligingsregeling sector overheid. Drie bronnen tellen mee: de gekozen
  * schade, de rubricering en de betrouwbaarheidseisen (één eis Zeer hoog is
- * TBB 3, alle drie is TBB 2). Het zwaarste niveau telt. Bij TBB 3, 2 of 1 is het
+ * TBB 3, alle drie is TBB 2, en zonder Zeer hoog is één eis boven Zeer laag
+ * TBB 4). Het zwaarste niveau telt. Bij TBB 3, 2 of 1 is het
  * systeem een cruciaal netwerk en informatiesysteem.
  *
  * De redenen zijn de opbouw: per bron een regel met zijn niveau, dan de uitkomst
@@ -799,10 +800,15 @@ function q2_tbb(array $a, ?array $biv = null): array
     }
 
     $zeerHoog = count(array_filter($biv, static fn (string $n): bool => $n === 'zh'));
-    $bronnen[] = [
-        [0, 3, 3, 2][$zeerHoog],
-        'Betrouwbaarheidseisen, ' . ['geen eis', 'één eis', 'twee eisen', 'alle drie'][$zeerHoog] . ' Zeer hoog',
-    ];
+    $bovenZeerLaag = array_filter($biv, static fn (string $n): bool => !in_array($n, ['', 'zl'], true)) !== [];
+    $bronnen[] = match (true) {
+        $zeerHoog > 0 => [
+            [0, 3, 3, 2][$zeerHoog],
+            'Betrouwbaarheidseisen, ' . ['', 'één eis', 'twee eisen', 'alle drie'][$zeerHoog] . ' Zeer hoog',
+        ],
+        $bovenZeerLaag => [4, 'Betrouwbaarheidseisen, ten hoogste Hoog'],
+        default => [0, 'Betrouwbaarheidseisen, alle drie Zeer laag'],
+    };
 
     $niveaus = array_filter(array_column($bronnen, 0));
     $niveau = $niveaus === [] ? 0 : min($niveaus);
@@ -816,8 +822,8 @@ function q2_tbb(array $a, ?array $biv = null): array
         ? 'Niets haalt TBB 4, dus de uitkomst is geen TBB.'
         : 'Het zwaarste niveau telt, dus de uitkomst is TBB ' . $niveau . '.';
     $redenen[] = $cruciaal
-        ? 'Bij TBB 1, 2 of 3 is het systeem cruciaal. Het komt op het overzicht van cruciale systemen van de '
-            . 'organisatie, en er volgt een volledige risicoanalyse.'
+        ? 'Bij TBB 1, 2 of 3 is het systeem cruciaal (regeling, artikel 4). Het komt op het overzicht van cruciale '
+            . 'systemen van de organisatie. Deze quickscan vraagt dan ook een volledige risicoanalyse.'
         : 'Het systeem is niet cruciaal. De basis van de BIO2 blijft gelden.';
 
     return [
@@ -857,7 +863,8 @@ function q2_meldplicht(array $a, array $biv): array
         $scenarios[] = 'Misbruik van bedrijfsinformatie met een schade van meer dan 5 miljoen euro.';
     }
     if (str_starts_with((string) ($a['rubricering'] ?? ''), 'stg-')) {
-        $scenarios[] = 'Onbevoegden krijgen staatsgeheime informatie te zien.';
+        $scenarios[] = 'Onbevoegden krijgen informatie te zien van Staatsgeheim Confidentieel of hoger, of van NATO of '
+            . 'EU Confidential of hoger.';
     }
 
     return $scenarios;

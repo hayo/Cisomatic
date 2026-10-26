@@ -977,11 +977,14 @@
     padding-top: 1em;
 }
 
-#cisomatic > footer p {
+#cisomatic > footer :is(p, ul) {
     font-family: var(--font-ui);
     font-size: var(--ui-md);
     color: var(--muted);
 }
+
+#cisomatic > footer p:has(+ ul) { margin-bottom: 0.2em; }
+#cisomatic > footer ul { margin-top: 0; }
 
 #cisomatic [data-toast] {
     position: fixed;

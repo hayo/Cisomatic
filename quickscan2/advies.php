@@ -186,9 +186,26 @@ function q2_advies_bio2(array $u): array
     return [
         ['h2', 'Wat de BIO2 hier vraagt'],
         ['alinea', 'De BIO2 kent geen vaste beveiligingsniveaus meer. Elk systeem krijgt de maatregelen uit '
-            . 'ISO 27002 en de verplichte overheidsmaatregelen. Wat een risicoanalyse daarna nog aan risico '
-            . 'laat zien, vraagt om extra maatregelen. Deze quickscan is het begin van die analyse.'],
+            . 'ISO 27002 en de verplichte overheidsmaatregelen. Bij elk nieuw systeem en elke grote wijziging hoort '
+            . 'een risicoafweging, met de risicomanagementmethodiek van de organisatie (5.08.01). Die methode heeft '
+            . 'een quickscan die bepaalt of de basis genoeg is (paragraaf 6.2). Daarvoor is deze quickscan.'],
+        ['alinea', 'Wanneer er een volledige risicoanalyse volgt, schrijft de BIO2 niet voor. Deze quickscan vraagt '
+            . 'erom bij een cruciaal systeem, een eis Zeer hoog, een hoog dreigingsprofiel, of een (kritisch) '
+            . 'strategisch proces op een vitaal systeem. Heeft de organisatie andere drempels vastgesteld, dan gaan '
+            . 'die voor.'],
         ['term', 'Beveiligingsniveau', $u['niveau']],
+        ['alinea', 'De overheidsmaatregelen gelden altijd, ook als er geen volledige risicoanalyse nodig is. Een '
+            . 'risico bewust accepteren mag alleen bij de eigen maatregelen van de organisatie, en alleen na een '
+            . 'afweging die is vastgelegd.'],
+        ...(q2_heeft_analyse($u, 'Volledige risicoanalyse') ? [
+            ['h3', 'De volledige risicoanalyse'],
+            ['lijst', [
+                'Doe de analyse met de methode van de organisatie, bijvoorbeeld MAPGOOD, EBIOS of ISO 27005.',
+                'Betrek de proceseigenaar, de systeemeigenaar en de CISO.',
+                'Leg de uitkomst voor aan het management, met een plan om de risico’s te behandelen.',
+                'Zet de risico’s in het risicoregister, met een datum waarop ze behandeld zijn.',
+            ]],
+        ] : []),
         ['h3', 'Maatregelen die we zelf nemen'],
         ['lijst', $u['maatregelen']],
     ];
@@ -213,24 +230,28 @@ function q2_advies_cbw(array $a, array $u): array
     }
 
     $b[] = ['h3', 'Een significant incident melden'];
-    $b[] = ['alinea', 'Een significant incident meldt de organisatie bij het NCSC. Binnen 24 uur gaat er een '
-        . 'eerste melding uit, binnen 72 uur een vervolgmelding, en binnen een maand een eindverslag. Een '
-        . 'incident is significant als het de dienstverlening ernstig verstoort, of grote schade geeft aan '
-        . 'mensen of organisaties.'];
+    $b[] = ['alinea', 'Een significant incident meldt de organisatie bij het CSIRT en bij de minister van BZK, de '
+        . 'bevoegde autoriteit. Binnen 24 uur gaat er een vroegtijdige waarschuwing uit, binnen 72 uur de melding, '
+        . 'en uiterlijk een maand na de melding een eindverslag (Cyberbeveiligingswet, artikel 26, 27 en 29). Een '
+        . 'incident is significant als het de dienstverlening ernstig verstoort of grote financiële verliezen '
+        . 'geeft, of als het anderen aanzienlijke schade doet (artikel 25).'];
 
     if ($u['meldplicht'] === []) {
         $b[] = ['alinea', 'De tool ziet bij dit systeem geen incident dat vanzelf de drempels uit de regeling '
             . 'haalt. Een incident kan toch significant zijn. Beoordeel dat dan per geval.'];
     } else {
-        $b[] = ['alinea', 'Bij dit systeem liggen deze incidenten voor de hand. Ze halen de drempels uit de '
-            . 'regeling, dus ze moeten gemeld worden:'];
+        $b[] = ['alinea', 'Bij dit systeem liggen deze incidenten voor de hand. Ze halen de drempels uit artikel 6 '
+            . 'van de regeling, dus ze moeten gemeld worden:'];
         $b[] = ['lijst', $u['meldplicht']];
     }
+    $b[] = ['alinea', 'Gepland onderhoud is geen significant incident, ook niet als de dienst dan vier uur of langer '
+        . 'uitvalt.'];
 
-    if (in_array('domein', (array) ($a['internet_onderdelen'] ?? []), true)) {
+    if (q2_via_internet($a)) {
         $b[] = ['h3', 'Registreren'];
-        $b[] = ['alinea', 'De organisatie staat met haar domeinnamen geregistreerd bij het NCSC. Er komt een '
-            . 'domeinnaam bij, dus werk die registratie bij.'];
+        $b[] = ['alinea', 'De organisatie staat in het nationale register van de Cyberbeveiligingswet, met onder meer '
+            . 'haar IP-bereiken en contactgegevens. Verandert daar iets door dit systeem, geef dat dan binnen twee '
+            . 'weken door (artikel 44).'];
     }
 
     return $b;

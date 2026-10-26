@@ -7,17 +7,17 @@ of de Cyberbeveiligingswet geldt, hoe zwaar de te beschermen belangen zijn, wat
 het cloudbeleid van 2026 toelaat, welke overheidsmaatregelen uit de BIO2 hier
 gelden, en welke analyses nog nodig zijn.
 
-Het is een afsplitsing van de [eerste quickscan](../quickscan/README.md). De
+Het is een afsplitsing van [quickscan 1.0](../quickscan/README.md). De
 twee stappen, de ondergrens bij bijstellingen, "weet ik niet" met een aanname,
 de privacyvragen en het hoofdstuk over de Archiefwet werken hetzelfde; dat staat
 daar beschreven. Hier staat wat anders is.
 
-## Wat anders is dan de eerste quickscan
+## Wat anders is dan quickscan 1.0
 
-| Eerste quickscan (BIO 1) | Quickscan 2.0 (BIO2) |
+| Quickscan 1.0 (BIO 1) | Quickscan 2.0 (BIO2) |
 | --- | --- |
 | De eerste vraag: valt er iets te beschermen? Zo niet, dan stopt de scan | Die vraag is er niet. Wie de quickscan invult, doet dat omdat het moet, dus er valt altijd iets te beschermen |
-| Beveiligingsniveau BBN 1, 2 of 3 | Bestaat niet meer. Elk systeem krijgt de basis van de BIO2 (ISO 27002 plus de verplichte overheidsmaatregelen). Een volledige risicoanalyse volgt bij een cruciaal systeem, een eis Zeer hoog, een hoog dreigingsprofiel, een (kritisch) strategisch proces op een vitaal systeem, of een leverancier waar je aan vastzit |
+| Beveiligingsniveau BBN 1, 2 of 3 | Bestaat niet meer. Elk systeem krijgt de basis van de BIO2 (ISO 27002 plus de verplichte overheidsmaatregelen) en een risicoafweging. Zie [Risicoanalyse](#risicoanalyse) |
 | Geen wettelijk kader voor de beveiliging zelf | De Cyberbeveiligingswet: wel of geen essentiële entiteit, afgeleid uit de soort organisatie |
 | Geen te beschermen belangen | Zeven soorten schade uit bijlage 1 bij de Cyberbeveiligingsregeling sector overheid. Samen met de rubricering en de BIV-eisen geeft dat TBB 1 tot 4; bij TBB 1, 2 of 3 is het systeem cruciaal |
 | Geen meldplicht | Welke incidenten bij dit systeem de drempels uit artikel 6 van de regeling halen, en de termijnen van 24 uur, 72 uur en een maand |
@@ -32,7 +32,25 @@ daar beschreven. Hier staat wat anders is.
 | De CIO stelt mee vast | De proceseigenaar stelt vast, na advies van de CISO, en bij zware gevallen ook van de CIO. De BIO2 legt het risico bij de lijn |
 
 De sleutels van de vragen die in beide quickscans staan, zijn gelijk. Een
-bestand van de eerste quickscan laadt hier dus in, behalve de rubricering. De DPIA leest de bestanden van beide quickscans.
+bestand van quickscan 1.0 laadt hier dus in, behalve de rubricering. De DPIA leest de bestanden van beide quickscans.
+
+## Risicoanalyse
+
+Wat de teksten zeggen, en wat de tool zelf kiest:
+
+- **Altijd.** Bij elk nieuw systeem en elke grote wijziging een risicoafweging
+  met de risicomanagementmethodiek van de organisatie (BIO2 5.08.01). Die
+  methode heeft een quickscan die bepaalt of de basis genoeg is (BIO2,
+  paragraaf 6.2). Deze quickscan is daarvoor bedoeld.
+- **Uit de tekst.** Zit de organisatie vast aan de leverancier, dan vóór het
+  contract een risicoafweging of die afhankelijkheid beheersbaar is (BIO2
+  5.20.06). Een cruciaal systeem komt op het overzicht van cruciale systemen
+  (regeling, artikel 4).
+- **Methode van deze quickscan.** Een volledige risicoanalyse bij een cruciaal
+  systeem, een eis Zeer hoog, een hoog dreigingsprofiel, of een (kritisch)
+  strategisch proces op een vitaal systeem. De BIO2, de Cbw en de regeling
+  noemen geen drempel; ze laten die aan de organisatie. Het advies zegt dat er
+  ook bij. Andere drempels van de organisatie gaan voor.
 
 ## Te beschermen belangen
 
@@ -49,6 +67,8 @@ invuller hoe zwaar die schade is. Elke keuze heet naar de soort, zoals
 - de rubricering: Departementaal Vertrouwelijk is TBB 4, Staatsgeheim
   Confidentieel TBB 3, Geheim TBB 2, Zeer geheim TBB 1;
 - de BIV-eisen: één eis Zeer hoog is TBB 3, alle drie Zeer hoog is TBB 2.
+  Zonder Zeer hoog is één eis boven Zeer laag al TBB 4. Zo staat het in
+  bijlage 1: alleen Zeer laag, Zeer laag, Zeer laag haalt geen TBB.
 
 De redenen zijn de opbouw: per bron een regel met zijn niveau, dan de uitkomst
 en wat die betekent. Die opbouw staat in het uitkomstblok, als voorstel in de
@@ -79,14 +99,68 @@ De functies heten `q2_`. `regels.js` herhaalt de afleidingen uit
 
 - [BIO2, versie 1.3](https://www.bio-overheid.nl/bio2/bio-producten/baseline-informatiebeveiliging-overheid-2-bio2/)
   (9 januari 2026): de maatregelnummers in het advies verwijzen hiernaar.
-- [Cyberbeveiligingsregeling sector overheid](https://zoek.officielebekendmakingen.nl/stcrt-2026-27679.html)
-  (Stcrt. 2026, 27679): te beschermen belangen, cruciale systemen en de drempels
-  voor een significant incident.
+- [Cyberbeveiligingsregeling sector overheid](https://wetten.overheid.nl/BWBR0052963)
+  (Stcrt. 2026, 27679), geldend vanaf 15 augustus 2026: cruciale systemen
+  (artikel 4 en bijlage 1), de BIO2 als invulling van de zorgplicht (artikel 5)
+  en de drempels voor een significant incident (artikel 6).
+- [Cyberbeveiligingswet](https://wetten.overheid.nl/BWBR0052872), geldend vanaf
+  15 augustus 2026: essentiële entiteiten (artikel 5 en 8), de zorgplicht
+  (artikel 21), de meldplicht (artikel 25 tot en met 29) en het nationale
+  register (artikel 44).
 - [Verplichtingen uit de Cyberbeveiligingswet](https://www.digitaleoverheid.nl/overzicht-van-alle-onderwerpen/cyberbeveiligingswet/verplichtingen-cyberbeveiligingswet/)
   en het [toezicht door de RDI](https://www.rdi.nl/onderwerpen/digitale-weerbaarheid/cyberbeveiligingswet/sectoren-onder-toezicht/overheid).
   De wet geldt sinds 15 augustus 2026.
 - [Herziening rijksbreed cloudbeleid 2026](https://www.tweedekamer.nl/downloads/document?id=2026D35295)
   (3 juli 2026).
+- [Generieke Baselinetoets BIO2](https://www.bio-overheid.nl/bio2/bio-producten/generieke-baselinetoets-bio2/),
+  versie 3.2, met de gebruikershandleiding versie 1.2 (14 oktober 2026). Zie
+  hieronder.
+
+## Naast de baselinetoets BIO2
+
+De baselinetoets stelt dezelfde vraag als deze quickscan: volstaat de basis van
+de BIO2, of is een aanvullende risicoanalyse nodig? Hij is er voor elke
+overheid. Deze quickscan is er alleen voor het Rijk, en volgt daarom bijlage 1
+bij de regeling, de te beschermen belangen.
+
+Waar ze hetzelfde zeggen:
+
+- Staatsgeheim Confidentieel, Geheim of Zeer geheim: een volledige
+  risicoanalyse. In de toets is dat het vroege afkappunt, hier TBB 3 of zwaarder.
+- Een statelijke actor, of de hoogste impact: een volledige risicoanalyse. Hier
+  is dat het hoge dreigingsprofiel, of een eis Zeer hoog.
+
+In beide is dat een keuze van het instrument, geen drempel uit de BIO2.
+- De overheidsmaatregelen gelden altijd, ook bij een gunstige uitkomst. Alleen
+  bij eigen maatregelen mag een risico bewust geaccepteerd worden.
+- De te beschermen belangen uit bijlage 1, met dezelfde niveaus. Alleen bij de
+  betrouwbaarheidseisen wijkt tabblad 1b van de toets af van bijlage 1 (één eis
+  Zeer hoog TBB 3, meerdere TBB 2, alle drie TBB 1). Deze quickscan volgt
+  bijlage 1 van de regeling: één eis Zeer hoog TBB 3, alle drie TBB 2, en tot
+  en met Hoog TBB 4.
+
+Wat de toets anders doet:
+
+- Hij rekent met kans maal impact, op vijf niveaus. Deze quickscan kent geen
+  kans; het dreigingsprofiel neemt die plaats in.
+- Hij vraagt naar twintig soorten impact uit bijlage 2, voor decentrale
+  overheden. Het Rijk vult in de toets ook die in. Deze quickscan doet dat niet:
+  voor het Rijk geldt bijlage 1.
+- Met de werkwijze Basis is een impact Hoog op één aspect al genoeg voor een
+  aanvullende risicoanalyse. Zo geeft een RPO van vier uur of minder daar altijd
+  een analyse. Hier geeft de RPO alleen de eis aan de back-up. De tekst van de
+  BIO2, de Cbw en de regeling is leidend, en die noemen voor het Rijk zo'n
+  drempel niet. De BIO2 laat de RPO over aan een risicoafweging (8.13.02). In
+  de regeling maakt een RPO van vier uur een systeem alleen cruciaal bij een
+  decentrale overheid (bijlage 2, artikel 4, derde lid).
+- TBB 3 is in de toets impact Midden, en dan is een analyse alleen het
+  overwegen waard. De regeling zegt het anders: bij TBB 1, 2 of 3 is een
+  systeem van het Rijk cruciaal (artikel 4, tweede lid). Deze quickscan volgt
+  de regeling. Dat er bij een cruciaal systeem een volledige risicoanalyse
+  volgt, is een keuze van de tool; de regeling vraagt alleen een overzicht van
+  de cruciale systemen.
+- De ISMS-volwassenheid kan in de toets het advies een niveau hoger of lager
+  maken. Deze quickscan vraagt er niet naar.
 
 ## Beperkingen
 

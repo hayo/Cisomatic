@@ -58,7 +58,7 @@ function qs_advies_kop(array $a, array $u): array
     $beoordeeld = ($a['rol'] ?? 'behoeftesteller') === 'beoordelaar';
 
     $b = [
-        ['h1', 'IB & Privacy Quickscan: ' . ($a['projectnaam'] ?: 'naamloos project')],
+        ['h1', 'Quickscan 1.0: ' . ($a['projectnaam'] ?: 'naamloos project')],
         ['term', 'Ingevuld op', cm_datum_nl(new DateTimeImmutable('now'), true)],
         ['term', 'Ingevuld door', (string) ($a['aanvrager'] ?: 'onbekend')],
     ];

@@ -22,6 +22,11 @@ return [
         . 'niets naar de server.',
     'voet' => 'Voor projecten van het Rijk. De Europese drempel in dit formulier geldt in 2026 en 2027. Dit document '
         . 'vervangt het advies van je inkoopadviseur niet.',
+    'bronnen' => [
+        'De 5-poortentoets van een CIO-office, met eigen aanpassingen',
+        'Het organisatiebesluit met de taken van de organisatie',
+        'De Europese aanbestedingsdrempels voor de rijksoverheid in 2026 en 2027',
+    ],
     'stappen' => [
         1 => 'Toets 1 · nodig',
         2 => 'Toets 2 · zonder nieuw systeem',
@@ -34,8 +39,8 @@ return [
     'hoofdstuk_per_pagina' => true,
 
     'overnemen' => [
-        'quickscan2' => ['naam' => 'de quickscan voor de BIO2', 'overslaan' => $eigen],
-        'quickscan' => ['naam' => 'de quickscan', 'overslaan' => $eigen],
+        'quickscan2' => ['naam' => 'quickscan 2.0', 'overslaan' => $eigen],
+        'quickscan' => ['naam' => 'quickscan 1.0', 'overslaan' => $eigen],
         'dpia' => ['naam' => 'de DPIA', 'overslaan' => $eigen],
         'iama' => [
             'naam' => 'de IAMA',

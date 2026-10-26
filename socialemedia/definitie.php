@@ -17,8 +17,12 @@ return [
     'uitvoer' => 'document',
     'download_uitleg' => 'Het document opent in Word, LibreOffice en Google Docs, met kopjes, lijsten en tabellen.',
     'inladen' => 'Een bestand van een eerdere keer. Je browser leest het zelf, dus er gaat niets naar de server.',
-    'voet' => 'Gebaseerd op de rijksbrede platformkaders en de richtlijnen voor toetreding en vertrek. Stand van '
-        . 'oktober 2026. Dit document vervangt het advies van je CPO, CISO en CIO niet.',
+    'voet' => 'Stand van oktober 2026. Dit document vervangt het advies van je CPO, CISO en CIO niet.',
+    'bronnen' => [
+        'Rijksbrede platformkaders, versie 1.0 (1 oktober 2026), bij de notitie ‘Aanwezigheid Rijksoverheid '
+            . 'op sociale media’',
+        'Platformonafhankelijke richtlijnen voor toetreding en vertrek',
+    ],
     'stappen' => [
         1 => 'Het kanaal',
         2 => 'Stap 1 · doel en doelgroep',
