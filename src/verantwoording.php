@@ -6,7 +6,7 @@
  * voettekst, en voegt onderaan een hoofdstuk toe:
  *
  * - Over dit document: formulier, kenmerk, moment, opsteller, versie van de
- *   Cisomatic, versie van de regels en de grondslag
+ *   Cisomatic, versie van de regels, de bronnen en de voetregel
  * - Vaststelling: wie opstelt, beoordeelt en vaststelt, met ruimte voor een
  *   handtekening
  * - Alle antwoorden: elke vraag die van toepassing was, met het antwoord
@@ -102,7 +102,8 @@ function cm_verantwoording(array $a, array $u, string $vingerafdruk, string $ken
         ['term', 'Opgesteld door', trim((string) ($a['aanvrager'] ?? '')) ?: 'Niet ingevuld'],
         ['term', 'Versie van de Cisomatic', cm_versie()],
         ['term', 'Versie van de regels', cm_regelversie()],
-        ['term', 'Grondslag', (string) $formulier['voet']],
+        ['term', 'Gebaseerd op', implode('; ', $formulier['bronnen'])],
+        ['term', 'Let op', (string) $formulier['voet']],
         ['alinea', 'Het formulier rekent de uitkomst uit met vaste regels. Dezelfde antwoorden geven met dezelfde '
             . 'versie van de regels altijd dezelfde uitkomst.'],
         ...($vaststelling === [] ? [] : [

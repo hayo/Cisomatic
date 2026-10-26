@@ -108,6 +108,12 @@ $werkplek = cm_werkplek();
     <p data-toast role="status" hidden></p>
 
     <footer>
+        <p>Gebaseerd op:</p>
+        <ul>
+            <?php foreach ($formulier['bronnen'] as $bron): ?>
+                <li><?= h($bron) ?></li>
+            <?php endforeach; ?>
+        </ul>
         <p><?= h($formulier['voet']) ?></p>
         <p>Cisomatic <?= h(cm_versie()) ?> · <a href="<?= h(cm_wijzigingen_adres($formulier['id'])) ?>">Wat is er
            veranderd</a></p>

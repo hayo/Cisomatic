@@ -225,10 +225,11 @@ function q2_advies_cbw(array $a, array $u): array
     }
 
     $b[] = ['h3', 'Een significant incident melden'];
-    $b[] = ['alinea', 'Een significant incident meldt de organisatie bij het NCSC. Binnen 24 uur gaat er een '
-        . 'eerste melding uit, binnen 72 uur een vervolgmelding, en binnen een maand een eindverslag. Een '
-        . 'incident is significant als het de dienstverlening ernstig verstoort, of grote schade geeft aan '
-        . 'mensen of organisaties.'];
+    $b[] = ['alinea', 'Een significant incident meldt de organisatie bij het CSIRT en bij de minister van BZK, de '
+        . 'bevoegde autoriteit. Binnen 24 uur gaat er een vroegtijdige waarschuwing uit, binnen 72 uur de melding, '
+        . 'en uiterlijk een maand na de melding een eindverslag (Cyberbeveiligingswet, artikel 26, 27 en 29). Een '
+        . 'incident is significant als het de dienstverlening ernstig verstoort of grote financiële verliezen '
+        . 'geeft, of als het anderen aanzienlijke schade doet (artikel 25).'];
 
     if ($u['meldplicht'] === []) {
         $b[] = ['alinea', 'De tool ziet bij dit systeem geen incident dat vanzelf de drempels uit de regeling '
@@ -239,10 +240,11 @@ function q2_advies_cbw(array $a, array $u): array
         $b[] = ['lijst', $u['meldplicht']];
     }
 
-    if (in_array('domein', (array) ($a['internet_onderdelen'] ?? []), true)) {
+    if (q2_via_internet($a)) {
         $b[] = ['h3', 'Registreren'];
-        $b[] = ['alinea', 'De organisatie staat met haar domeinnamen geregistreerd bij het NCSC. Er komt een '
-            . 'domeinnaam bij, dus werk die registratie bij.'];
+        $b[] = ['alinea', 'De organisatie staat in het nationale register van de Cyberbeveiligingswet, met onder meer '
+            . 'haar IP-bereiken en contactgegevens. Verandert daar iets door dit systeem, geef dat dan binnen twee '
+            . 'weken door (artikel 44).'];
     }
 
     return $b;

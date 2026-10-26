@@ -18,8 +18,9 @@ declare(strict_types=1);
     <h1>Wat is er veranderd</h1>
     <p>Dit is versie <?= h($versies[0]['versie']) ?> van de Cisomatic. Hieronder staat per versie wat er veranderd
        is, de nieuwste bovenaan.</p>
-    <p>Het tweede cijfer gaat omhoog als er een formulier bij komt of verdwijnt. Het derde cijfer bij elke andere
-       wijziging.</p>
+    <p>Het eerste cijfer gaat omhoog als de Cisomatic helemaal opnieuw is gebouwd of ontworpen. Het tweede cijfer
+       als er een formulier bij komt of verdwijnt, of een groot nieuw onderdeel zoals de dossiers. Het derde cijfer
+       bij elke andere wijziging.</p>
 
     <?php foreach ($versies as $versie): ?>
         <section>

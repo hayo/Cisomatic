@@ -20,10 +20,15 @@ return [
     'download_uitleg' => 'Het rapport opent in Word, LibreOffice en Google Docs, met kopjes, lijsten en tabellen.',
     'inladen' => 'Een bestand van een eerder oordeel, of van de business case, quickscan 2.0, de DPIA of een andere '
         . 'scan van hetzelfde project. Je browser leest het zelf, dus er gaat niets naar de server.',
-    'voet' => 'Gebaseerd op het Besluit CIO-stelsel Rijksdienst 2026 en het toetskader projecten 2026 van het '
-        . 'Adviescollege ICT-toetsing. Informatiebeveiliging en privacy en duurzame toegankelijkheid zijn een eigen '
-        . 'uitwerking van het Kwaliteitskader CIO-oordelen. Het voorstel voor het oordeel is een hulpmiddel: het '
-        . 'oordeel zelf is van de CIO.',
+    'voet' => 'Informatiebeveiliging en privacy en duurzame toegankelijkheid zijn een eigen uitwerking van het '
+        . 'Kwaliteitskader CIO-oordelen. Het voorstel voor het oordeel is een hulpmiddel: het oordeel zelf is '
+        . 'van de CIO.',
+    'bronnen' => [
+        'Besluit CIO-stelsel Rijksdienst 2026',
+        'Toetskader projecten 2026 van het Adviescollege ICT-toetsing (juli 2026)',
+        'Kwaliteitskader CIO-oordelen van CIO Rijk (10 mei 2022), met een eigen uitwerking',
+        'Handboek Portfoliomanagement Rijk, voor de grens van 5 miljoen euro',
+    ],
     'stappen' => [
         1 => 'Deel 1 · het onderzoek',
         2 => 'Deel 2 · doel en sturing',

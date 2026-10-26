@@ -17,9 +17,11 @@ return [
     'download_uitleg' => 'Het rapport opent in Word, LibreOffice en Google Docs, met kopjes, lijsten en tabellen.',
     'inladen' => 'Een bestand van een eerdere scan, of van quickscan 2.0. Je browser leest het zelf, dus er gaat '
         . 'niets naar de server.',
-    'voet' => 'Gebaseerd op het Cloud Sovereignty Framework, versie 1.2.1 (oktober 2025), van de Europese Commissie. '
-        . 'De vragen, het label en wat per soort informatie nodig is, zijn een eigen vereenvoudiging. Deze scan '
+    'voet' => 'De vragen, het label en wat per soort informatie nodig is, zijn een eigen vereenvoudiging. Deze scan '
         . 'vervangt de beoordeling in een aanbesteding niet.',
+    'bronnen' => [
+        'Cloud Sovereignty Framework van de Europese Commissie, versie 1.2.1 (oktober 2025)',
+    ],
     'stappen' => [
         1 => 'Deel 1 · de leverancier',
         2 => 'Deel 2 · je data',

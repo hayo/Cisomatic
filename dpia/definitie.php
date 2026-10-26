@@ -18,8 +18,12 @@ return [
         . 'tabellen. Het schema van de gegevensstromen staat alleen op deze pagina. In het document staat de tabel.',
     'inladen' => 'Een bestand van de quickscan, of van een eerdere keer met deze DPIA. Je browser leest het '
         . 'zelf, dus er gaat niets naar de server.',
-    'voet' => 'Gebaseerd op het Model DPIA Rijksdienst. Dit document vervangt het oordeel van de functionaris '
-        . 'gegevensbescherming niet.',
+    'voet' => 'Dit document vervangt het oordeel van de functionaris gegevensbescherming niet.',
+    'bronnen' => [
+        'Model DPIA Rijksdienst',
+        'AVG',
+        'BIO en Archiefwet 2026',
+    ],
     'stappen' => [
         1 => 'Stap 1 · beschrijving door de opsteller',
         2 => 'Stap 2 · samen met de privacyfunctionaris',

@@ -271,7 +271,10 @@ const FG2_INTERNET = 'Alleen als niets van de dienst via internet bereikbaar is.
 /**
  * De overheidsmaatregelen uit de BIO2 die de opdrachtnemer raken. Een
  * certificaat voor ISO 27001 dekt ze niet af. Per maatregel: nummer, titel,
- * tekst, en eventueel wanneer hij niet van toepassing is.
+ * tekst, eventueel wanneer hij niet van toepassing is, en eventueel de sleutel
+ * van het antwoord. Die staat er bij een nummer dat is verbeterd: de sleutel
+ * blijft die van het oude nummer, zodat een eerder antwoordbestand blijft
+ * inladen.
  */
 const FG2_OVERHEID = [
     ['5.14.01', 'Internetstandaarden', 'De dienst voldoet aan de verplichte internetstandaarden van Forum '
@@ -285,33 +288,35 @@ const FG2_OVERHEID = [
         FG2_INTERNET],
     ['5.17.01', 'Multifactorauthenticatie', 'Multifactorauthenticatie staat aan voor de werkomgeving, voor accounts '
         . 'die via internet te bereiken zijn, en voor beheeraccounts.', ''],
-    ['5.18 en 8.02.01', 'Rechten beoordelen', 'De rechten van beheerders worden elk kwartaal beoordeeld, alle andere '
-        . 'rechten elk jaar. De opdrachtnemer houdt in de gaten wie accounts met extra rechten maakt of wijzigt.', ''],
-    ['5.26.01', 'Kwetsbaarheden melden', 'Iedereen kan een kwetsbaarheid in de dienst melden. Daarvoor is een '
-        . 'procedure voor Coordinated Vulnerability Disclosure.', ''],
+    ['5.18.01, 5.18.02 en 8.02.01', 'Rechten beoordelen', 'De rechten van beheerders worden elk kwartaal '
+        . 'beoordeeld, alle andere rechten elk jaar. De opdrachtnemer houdt in de gaten wie accounts met extra '
+        . 'rechten maakt of wijzigt.', '', 'fg_om_5_18'],
+    ['5.24.08', 'Kwetsbaarheden melden', 'Iedereen kan een kwetsbaarheid in de dienst melden. Daarvoor is een '
+        . 'procedure voor Coordinated Vulnerability Disclosure.', '', 'fg_om_5_26_01'],
     ['5.28.01', 'Bewijs bewaren', 'Alles over een beveiligingsincident, zoals logbestanden, wordt ten minste drie jaar '
         . 'bewaard.', ''],
-    ['5.29.01', 'Continuïteitsplan testen', 'Het continuïteitsplan voor de dienst wordt elk jaar getest.', ''],
+    ['5.30.01', 'Continuïteitsplan testen', 'Het continuïteitsplan voor de dienst wordt elk jaar getest.', '',
+        'fg_om_5_29_01'],
     ['6.01.01', 'Screening', 'Medewerkers worden gescreend volgens het screeningsbeleid van de opdrachtgever. Wie dat '
         . 'beleid aanwijst, heeft een VOG. Werkt iemand met staatsgeheime informatie, dan is dat een vertrouwensfunctie '
         . 'met een veiligheidsonderzoek.', ''],
-    ['6.03.03', 'Training', 'Iedereen die aan de dienst werkt, volgt binnen drie maanden na de start aantoonbaar een '
-        . 'training over informatiebeveiliging.', ''],
+    ['6.03.02', 'Training', 'Iedereen die aan de dienst werkt, volgt binnen drie maanden na de start aantoonbaar een '
+        . 'training over informatiebeveiliging.', '', 'fg_om_6_03_03'],
     ['8.08.01', 'Kwetsbaarheden verhelpen', 'Een kwetsbaarheid met een hoge kans op misbruik en een hoge schade wordt '
         . 'binnen een week verholpen of afgeschermd.', ''],
-    ['8.08.03 en 8.08.04', 'Pentests', 'Bij elke nieuwe versie is er een pentest, waar het kan geautomatiseerd. Een '
+    ['8.08.04 en 8.08.05', 'Pentests', 'Bij elke nieuwe versie is er een pentest, waar het kan geautomatiseerd. Een '
         . 'bevinding met een hoog risico die niet anders op te lossen is, gaat niet in productie. Daarnaast wordt de '
-        . 'dienst elk jaar op kwetsbaarheden getest.', FG2_INTERNET],
-    ['8.13 en 8.13.02', 'Back-ups en herstel', 'Reservekopieën zijn beschermd tegen ransomware, en staan op een andere '
-        . 'locatie. Het herstel wordt elk jaar getest. De hersteltijd (RTO) en het grootste verlies aan gegevens (RPO) '
-        . 'zijn afgesproken met de opdrachtgever.', ''],
+        . 'dienst elk jaar op kwetsbaarheden getest.', FG2_INTERNET, 'fg_om_8_08_03'],
+    ['8.13.01 tot en met 8.13.04', 'Back-ups en herstel', 'Reservekopieën zijn beschermd tegen ransomware, en '
+        . 'staan op een andere locatie. Het herstel wordt elk jaar getest. De hersteltijd (RTO) en het grootste '
+        . 'verlies aan gegevens (RPO) zijn afgesproken met de opdrachtgever.', '', 'fg_om_8_13'],
     ['8.15.01', 'Logging', 'Per gebeurtenis legt de dienst vast wat er gebeurde, waarop, met welk resultaat, vanaf '
         . 'waar, door wie en wanneer.', ''],
-    ['8.16.02', 'Detectie en respons', 'De dienst is aangesloten op detectie en respons, bijvoorbeeld een SOC met een '
-        . 'SIEM.', ''],
-    ['8.21.04 en 8.24', 'Versleuteling', 'Versleuteling gebeurt waar het kan met middelen die een positief inzetadvies '
-        . 'hebben van het NBV van de AIVD. De sterkte volgt de adviezen van het NCSC.', 'Alleen als er geen '
-        . 'gerubriceerde informatie in de dienst komt, en de vertrouwelijkheid niet hoog is.'],
+    ['8.16.03', 'Detectie en respons', 'De dienst is aangesloten op detectie en respons, bijvoorbeeld een SOC met een '
+        . 'SIEM.', '', 'fg_om_8_16_02'],
+    ['8.21.04 en 8.24.04', 'Versleuteling', 'Versleuteling gebeurt waar het kan met middelen die een positief '
+        . 'inzetadvies hebben van het NBV van de AIVD. De sterkte volgt de adviezen van het NCSC en het NBV.',
+        'Alleen als er geen gerubriceerde informatie in de dienst komt, en de vertrouwelijkheid niet hoog is.'],
 ];
 
 /** De eisen aan de keten: uit de BIO2, en bij de Cyberbeveiligingswet. Per eis: sleutel, nummer, titel, tekst. */
@@ -330,11 +335,11 @@ const FG2_KETEN = [
 
 const FG2_CBW = [
     ['fg_cbw_melding', 'Cbw 1', 'Informatie voor de melding', 'Bij een significant incident levert de opdrachtnemer '
-        . 'binnen 72 uur wat de opdrachtgever nodig heeft voor de vervolgmelding: een eerste beoordeling van de ernst '
-        . 'en de gevolgen, en waar het kan de kenmerken van de aanval.'],
+        . 'binnen 72 uur wat de opdrachtgever nodig heeft voor de melding: een eerste beoordeling van de ernst en de '
+        . 'gevolgen, en waar het kan de kenmerken van de aanval (Cbw artikel 27).'],
     ['fg_cbw_eindverslag', 'Cbw 2', 'Tussenstand en eindverslag', 'Op verzoek geeft de opdrachtnemer tussendoor de '
-        . 'stand van zaken. Binnen een maand levert hij wat nodig is voor het eindverslag: de oorzaak, de genomen '
-        . 'maatregelen en de gevolgen.'],
+        . 'stand van zaken. Uiterlijk een maand na de melding levert hij wat nodig is voor het eindverslag: de '
+        . 'oorzaak, de genomen maatregelen en de gevolgen (Cbw artikel 28 en 29).'],
     ['fg_cbw_keten', 'Cbw 3', 'Kwaliteit en veilig ontwikkelen', 'De opdrachtnemer geeft inzicht in de kwaliteit en de '
         . 'beveiliging van zijn producten, en in hoe hij veilig ontwikkelt. De opdrachtgever moet die risico’s in de '
         . 'keten meewegen.'],
@@ -344,24 +349,24 @@ const FG2_CBW = [
 ];
 
 /**
- * De zorgplicht uit artikel 21 van de Cyberbeveiligingswet, de onderdelen a tot
- * en met j, met de maatregelen uit de BIO2 die erbij horen. De koppeling komt uit
+ * De zorgplicht uit artikel 21, derde lid, van de Cyberbeveiligingswet, de
+ * onderdelen a tot en met j, met de maatregelen uit de BIO2 die erbij horen. De koppeling komt uit
  * tabel 4 van de generieke baselinetoets BIO2, versie 3.2.
  */
 const FG2_ZORGPLICHT = [
-    ['a', 'Risicoanalyse en beleid', ['5.1', '5.2', '5.7']],
+    ['a', 'Beleid voor risicoanalyse en beveiliging', ['5.1', '5.2', '5.7']],
     ['b', 'Incidenten behandelen', ['5.24', '5.25', '5.26', '5.27', '5.28', '8.15', '8.16']],
-    ['c', 'Continuïteit, back-ups en crisisbeheer', ['5.29', '5.30', '7.5', '7.11', '8.13', '8.14']],
-    ['d', 'De keten', ['5.19', '5.20', '5.21', '5.22', '5.23', '5.31']],
-    ['e', 'Netwerken en systemen beveiligen', ['5.6', '5.7', '5.14', '5.20', '7.1', '8.4', '8.8', '8.9', '8.11',
+    ['c', 'Continuïteit, back-ups, herstel en crisisbeheer', ['5.29', '5.30', '7.5', '7.11', '8.13', '8.14']],
+    ['d', 'De toeleveringsketen', ['5.19', '5.20', '5.21', '5.22', '5.23', '5.31']],
+    ['e', 'Verwerven, ontwikkelen en onderhouden, met kwetsbaarheden', ['5.6', '5.7', '5.14', '5.20', '7.1', '8.4', '8.8', '8.9', '8.11',
         '8.12', '8.20', '8.21', '8.25', '8.26', '8.27', '8.28', '8.29', '8.30', '8.31', '8.32', '8.33']],
     ['f', 'Beoordelen of de maatregelen werken', ['5.35', '5.36', '8.1', '8.22', '8.23']],
-    ['g', 'Bewustzijn en training', ['6.3', '6.8', '8.7']],
-    ['h', 'Cryptografie', ['8.24']],
-    ['i', 'Toegang en authenticatie', ['5.4', '5.9', '5.10', '5.11', '5.15', '5.16', '5.17', '5.18', '6.1', '6.2',
+    ['g', 'Cyberhygiëne en opleiding', ['6.3', '6.8', '8.7']],
+    ['h', 'Cryptografie en encryptie', ['8.24']],
+    ['i', 'Personeel, toegang en beheer van assets', ['5.4', '5.9', '5.10', '5.11', '5.15', '5.16', '5.17', '5.18', '6.1', '6.2',
         '6.4', '6.5', '6.6', '6.7', '7.3', '7.4', '7.5', '7.6', '7.7', '7.8', '7.9', '7.10', '7.12', '7.13', '7.14',
         '8.1', '8.2', '8.3', '8.6', '8.10', '8.17', '8.18', '8.19']],
-    ['j', 'Beveiligde communicatie', ['5.14', '8.5']],
+    ['j', 'Multifactorauthenticatie en beveiligde communicatie', ['5.14', '8.5']],
 ];
 
 /**
@@ -501,8 +506,8 @@ function fg2_delen(): array
                 . 'ze niet af. Daarom vul je ze altijd in. Het nummer is dat van de BIO2.',
             'lijst' => 'De overheidsmaatregelen uit de BIO2. Die vul je altijd in.',
             'normen' => array_map(
-                static fn (array $m): array => $eis(fg_sleutel('fg_om_', fg2_kort($m[0])), $m[0], $m[1], $m[2],
-                    ['nvt' => $m[3]]),
+                static fn (array $m): array => $eis($m[4] ?? fg_sleutel('fg_om_', fg2_kort($m[0])), $m[0], $m[1],
+                    $m[2], ['nvt' => $m[3]]),
                 FG2_OVERHEID
             ),
         ],
@@ -512,8 +517,8 @@ function fg2_delen(): array
             'titel' => 'Leveranciers en de keten',
             'stap' => 3,
             'intro' => 'De opdrachtgever blijft verantwoordelijk voor de risico’s in de keten. De BIO2 zet daarom eisen '
-                . 'in het contract. Valt de opdrachtgever onder de Cyberbeveiligingswet, dan meldt hij een significant '
-                . 'incident binnen 24 uur. Dat lukt alleen als de opdrachtnemer snel en volledig meldt.',
+                . 'in het contract. Valt de opdrachtgever onder de Cyberbeveiligingswet, dan waarschuwt hij bij een '
+                . 'significant incident binnen 24 uur. Dat lukt alleen als de opdrachtnemer snel en volledig meldt.',
             'lijst' => 'De eisen aan de keten. Die vul je altijd in.',
             'normen' => [
                 ...array_map(static fn (array $k): array => $eis(...$k) + ['kop' => 'Uit de BIO2'], FG2_KETEN),
@@ -539,10 +544,10 @@ function fg2_delen(): array
     ];
 }
 
-/** Het eerste nummer: "5.14.02 en 5.14.05" wordt "5.14.02". */
+/** Het eerste nummer: "5.14.02 en 5.14.05" en "5.18.01, 5.18.02" worden "5.14.02" en "5.18.01". */
 function fg2_kort(string $nummer): string
 {
-    return preg_split('/ (en|tot) /', $nummer)[0];
+    return preg_split('/ (en|tot) |, /', $nummer)[0];
 }
 
 /** @return array<string,mixed> */
@@ -564,8 +569,8 @@ function fg2_evalueer(array $a): array
         'De BIO2 bestaat uit ISO 27001, de maatregelen uit ISO 27002 en de verplichte overheidsmaatregelen. Een '
             . 'certificaat voor ISO 27001 dekt de maatregelen uit ISO 27002 af, maar niet de overheidsmaatregelen. Die '
             . 'staan daarom altijd in deze verklaring.',
-        $cbw === 'nee' ? '' : 'Een significant incident meldt de opdrachtgever binnen 24 uur, met een vervolgmelding '
-            . 'binnen 72 uur en een eindverslag binnen een maand. Dat lukt alleen als de opdrachtnemer snel en volledig '
+        $cbw === 'nee' ? '' : 'Bij een significant incident geeft de opdrachtgever binnen 24 uur een vroegtijdige '
+            . 'waarschuwing, binnen 72 uur de melding, en uiterlijk een maand daarna een eindverslag. Dat lukt alleen als de opdrachtnemer snel en volledig '
             . 'meldt.',
         ($a['fg_cbw_zelf'] ?? '') === 'ja' ? 'De opdrachtnemer valt zelf ook onder de Cyberbeveiligingswet of NIS2. Hij '
             . 'heeft dus een eigen zorgplicht en meldplicht. Dat vervangt de eisen in deze verklaring niet.' : '',
@@ -629,7 +634,7 @@ function fg2_document(array $a, array $u): array
 {
     $zorgplicht = ($a['fg_cbw'] ?? '') === 'nee' ? [] : [
         ['h2', 'De zorgplicht uit de Cyberbeveiligingswet'],
-        ['alinea', 'Artikel 21 van de Cyberbeveiligingswet noemt tien onderdelen van de zorgplicht. Hier staat per '
+        ['alinea', 'Artikel 21, derde lid, van de Cyberbeveiligingswet noemt tien onderdelen van de zorgplicht. Hier staat per '
             . 'onderdeel welke maatregelen uit de BIO2 erbij horen, en hoe de dienst daarvoor staat. De koppeling komt '
             . 'uit de generieke baselinetoets BIO2.'],
         ['tabel', [

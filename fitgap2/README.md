@@ -27,14 +27,14 @@ staat daar beschreven. Hier staat wat anders is.
 - **De keten.** Onafhankelijk bewijs (5.20.03 en 5.20.04), snel melden (5.20.05),
   een exit (5.20.06) en de eigen leveranciers (5.21.02 tot en met 5.21.04).
 - **De Cyberbeveiligingswet.** Valt de opdrachtgever onder de wet, of weet de
-  invuller dat niet, dan komen er vier eisen bij: informatie voor de
-  vervolgmelding binnen 72 uur, een tussenstand en het eindverslag binnen een
-  maand, inzicht in de kwaliteit en het veilig ontwikkelen, en medewerking aan
+  invuller dat niet, dan komen er vier eisen bij: informatie voor de melding
+  binnen 72 uur, een tussenstand, en het eindverslag uiterlijk een maand na de
+  melding, inzicht in de kwaliteit en het veilig ontwikkelen, en medewerking aan
   het toezicht. Ze volgen de meldtermijnen uit de wet, en de zorgplicht voor
   de keten.
 - **De zorgplicht.** Valt de opdrachtgever onder de wet, of weet de invuller
   dat niet, dan zet het document de tien onderdelen van de zorgplicht uit
-  artikel 21 in een tabel. Per onderdeel staan de maatregelen uit de BIO2 die
+  artikel 21, derde lid, in een tabel. Per onderdeel staan de maatregelen uit de BIO2 die
   erbij horen, en of de dienst daaraan voldoet. Er komen geen vragen bij: de
   stand volgt uit de antwoorden per maatregel. De koppeling komt uit tabel 4 van
   de generieke baselinetoets BIO2.
@@ -50,8 +50,11 @@ vraag in, uit `leverancier_cbw`.
 
 - [BIO2, versie 1.3](https://www.bio-overheid.nl/bio2/bio-producten/baseline-informatiebeveiliging-overheid-2-bio2/)
   (9 januari 2026): de nummers van de overheidsmaatregelen.
+- [Cyberbeveiligingswet](https://wetten.overheid.nl/BWBR0052872), geldend vanaf
+  15 augustus 2026: de zorgplicht (artikel 21) en de meldtermijnen (artikel 26
+  tot en met 29).
 - [Cyberbeveiligingsregeling sector overheid](https://zoek.officielebekendmakingen.nl/stcrt-2026-27679.html)
-  (Stcrt. 2026, 27679), en de meldtermijnen uit de Cyberbeveiligingswet.
+  (Stcrt. 2026, 27679).
 - [Herziening rijksbreed cloudbeleid 2026](https://www.tweedekamer.nl/downloads/document?id=2026D35295)
   (3 juli 2026).
 - [Generieke Baselinetoets BIO2](https://www.bio-overheid.nl/bio2/bio-producten/generieke-baselinetoets-bio2/),

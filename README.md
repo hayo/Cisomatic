@@ -88,16 +88,17 @@ formulier gebruikt de motor; de motor kent geen formulier bij naam.
 
 ## Versies
 
-De Cisomatic heeft één versienummer, zoals 1.1.2. De voettekst van elke pagina
+De Cisomatic heeft één versienummer, zoals 1.2.2. De voettekst van elke pagina
 noemt het, met een link naar de pagina met wijzigingen. De verantwoording onder
 elk document noemt het ook, naast de versie van de regels.
 
-- Het tweede cijfer gaat omhoog als er een formulier bij komt of verdwijnt,
-  zoals van 1.1.2 naar 1.2. Het derde cijfer begint dan weer bij 0, maar dat
-  laat je weg.
-- Het derde cijfer gaat omhoog bij elke andere wijziging, zoals van 1.1.2 naar
-  1.1.3.
-- Het eerste cijfer gaat alleen omhoog als je daar bewust voor kiest.
+- Het eerste cijfer gaat omhoog bij een complete herbouw van de motor, of een
+  compleet nieuw ontwerp, zoals van 1.2.2 naar 2.0.
+- Het tweede cijfer gaat omhoog als er een formulier bij komt of verdwijnt, of
+  een groot nieuw onderdeel zoals de dossiers, zoals van 1.2.2 naar 1.3. Het
+  derde cijfer begint dan weer bij 0, maar dat laat je weg.
+- Het derde cijfer gaat omhoog bij elke andere wijziging, zoals van 1.2.2 naar
+  1.2.3.
 
 Na elke wijziging zet je bovenaan `wijzigingen/versies.php` een nieuwe
 versie, met de datum en in een paar korte zinnen wat er veranderd is. Meer hoeft
@@ -151,7 +152,7 @@ een pull request. Anders botst de volgende update.
 1. Maak een map naast `src/`, met een `index.php` gelijk aan die van de andere
    formulieren.
 2. Zet de naam van de map in `config.php`, onder `formulieren`.
-3. Schrijf `definitie.php`, `vragen.php`, `vooraf.php`, `samenvatting.php` en
+3. Schrijf `definitie.php` (met de `bronnen`), `vragen.php`, `vooraf.php`, `samenvatting.php` en
    `regels.js`. De voordeur toont het formulier vanzelf.
 4. Teken eventueel een `icoon.svg`. Zonder icoon toont de voordeur alleen de
    tekst.
@@ -171,7 +172,8 @@ Alleen gegevens, geen code. De voordeur leest dit bestand ook.
 | `uitvoer` | Wat eruit komt: *advies* of *document*. Staat op de knoppen |
 | `download_uitleg` | De alinea onder de downloadknop |
 | `inladen` | Uitleg bij het inladen van een bestand |
-| `voet` | De voetregel |
+| `voet` | De voetregel: wat het document niet vervangt, en wat een eigen uitwerking is |
+| `bronnen` | De documenten waarop het formulier is gebaseerd, met versie en datum. Ze staan onder het formulier en in de verantwoording |
 | `stappen` | Per stap het stempel boven een sectie, zoals "Stap 1 · beschrijving" |
 | `route` | De vraag die bepaalt hoeveel stappen er zijn. Tot die beantwoord is, noemt de voortgang geen totaal |
 | `hoofdstuk_per_pagina` | In het `.odt`-bestand begint elk hoofdstuk op een nieuwe pagina |

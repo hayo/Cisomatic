@@ -84,6 +84,10 @@ De functies heten `q2_`. `regels.js` herhaalt de afleidingen uit
 - [Cyberbeveiligingsregeling sector overheid](https://zoek.officielebekendmakingen.nl/stcrt-2026-27679.html)
   (Stcrt. 2026, 27679): te beschermen belangen, cruciale systemen en de drempels
   voor een significant incident.
+- [Cyberbeveiligingswet](https://wetten.overheid.nl/BWBR0052872), geldend vanaf
+  15 augustus 2026: essentiële entiteiten (artikel 5 en 8), de zorgplicht
+  (artikel 21), de meldplicht (artikel 25 tot en met 29) en het nationale
+  register (artikel 44).
 - [Verplichtingen uit de Cyberbeveiligingswet](https://www.digitaleoverheid.nl/overzicht-van-alle-onderwerpen/cyberbeveiligingswet/verplichtingen-cyberbeveiligingswet/)
   en het [toezicht door de RDI](https://www.rdi.nl/onderwerpen/digitale-weerbaarheid/cyberbeveiligingswet/sectoren-onder-toezicht/overheid).
   De wet geldt sinds 15 augustus 2026.
@@ -119,10 +123,13 @@ Wat de toets anders doet:
   voor het Rijk geldt bijlage 1.
 - Met de werkwijze Basis is een impact Hoog op één aspect al genoeg voor een
   aanvullende risicoanalyse. Zo geeft een RPO van vier uur of minder daar altijd
-  een analyse. Hier geeft de RPO alleen de eis aan de back-up.
+  een analyse. Hier geeft de RPO alleen de eis aan de back-up. De tekst van de
+  BIO2 en de Cbw is leidend, en die noemen zo'n drempel niet: de BIO2 laat de
+  RPO over aan een risicoafweging (8.13.02).
 - TBB 3 is in de toets impact Midden, en dan is een analyse alleen het
   overwegen waard. Hier is het systeem bij TBB 3 cruciaal, en volgt altijd een
-  volledige risicoanalyse.
+  volledige risicoanalyse. De BIO2 en de Cbw noemen geen TBB; dat komt uit de
+  regeling. De tekst van de regeling zelf is nog niet naast de tool gelegd.
 - De ISMS-volwassenheid kan in de toets het advies een niveau hoger of lager
   maken. Deze quickscan vraagt er niet naar.
 

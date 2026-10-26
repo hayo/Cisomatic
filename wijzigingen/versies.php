@@ -14,7 +14,21 @@ declare(strict_types=1);
 
 return [
     [
-        'versie' => '1.1.2',
+        'versie' => '1.2.2',
+        'datum' => '2026-10-26',
+        'wijzigingen' => [
+            'Quickscan 2.0 en fit/gap 2.0 zijn nagelopen met de tekst van de BIO2, versie 1.3. Een aantal nummers '
+                . 'van overheidsmaatregelen is verbeterd, zoals 5.30.01 voor het testen van het continuïteitsplan en '
+                . '5.24.08 voor het melden van kwetsbaarheden. Antwoordbestanden van fit/gap 2.0 laden nog gewoon in.',
+            'Ze zijn ook nagelopen met de tekst van de Cyberbeveiligingswet. De meldplicht gebruikt nu de woorden en '
+                . 'artikelen van de wet: een vroegtijdige waarschuwing binnen 24 uur, de melding binnen 72 uur, en het '
+                . 'eindverslag uiterlijk een maand daarna. De registratie gaat over het nationale register.',
+            'Onder elk formulier en in de verantwoording van elk document staat nu op welke documenten het is '
+                . 'gebaseerd.',
+        ],
+    ],
+    [
+        'versie' => '1.2.1',
         'datum' => '2026-10-26',
         'wijzigingen' => [
             'De quickscan en de fit/gap voor de BIO 1 heten nu quickscan 1.0 en fit/gap 1.0. Quickscan 2.0 en '
@@ -29,7 +43,7 @@ return [
         ],
     ],
     [
-        'versie' => '1.1.1',
+        'versie' => '1.2',
         'datum' => '2026-10-15',
         'wijzigingen' => [
             'Dossiers: alle formulieren van een project bij elkaar. Een antwoord dat in meer formulieren terugkomt, '

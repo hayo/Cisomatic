@@ -22,6 +22,11 @@ return [
         . 'niets naar de server.',
     'voet' => 'Voor projecten van het Rijk. De Europese drempel in dit formulier geldt in 2026 en 2027. Dit document '
         . 'vervangt het advies van je inkoopadviseur niet.',
+    'bronnen' => [
+        'De 5-poortentoets van een CIO-office, met eigen aanpassingen',
+        'Het organisatiebesluit met de taken van de organisatie',
+        'De Europese aanbestedingsdrempels voor de rijksoverheid in 2026 en 2027',
+    ],
     'stappen' => [
         1 => 'Toets 1 · nodig',
         2 => 'Toets 2 · zonder nieuw systeem',

@@ -20,8 +20,12 @@ return [
     'download_uitleg' => 'Het document opent in Word, LibreOffice en Google Docs, met kopjes, lijsten en tabellen.',
     'inladen' => 'Een bestand van een eerdere keer, of van fit/gap 2.0. Je browser leest het zelf, dus er '
         . 'gaat niets naar de server.',
-    'voet' => 'Gebaseerd op de fit/gap analyse BIO, versie 1.05, met de normen uit de BIO, ISO 27017, ISO 27018 en '
-        . 'ISO/IEC 27701. De opdrachtgever beoordeelt de verklaring.',
+    'voet' => 'De opdrachtgever beoordeelt de verklaring.',
+    'bronnen' => [
+        'Fit/gap analyse BIO, versie 1.05',
+        'BIO, versie 1',
+        'ISO 27017, ISO 27018 en ISO/IEC 27701:2019',
+    ],
     'stappen' => [
         1 => 'Deel 1 · de dienst',
         2 => 'Deel 2 · de normen uit de BIO',

@@ -24,9 +24,16 @@ return [
     'download_uitleg' => 'Het document opent in Word, LibreOffice en Google Docs, met kopjes, lijsten en tabellen.',
     'inladen' => 'Een bestand van een eerdere keer, of van fit/gap 1.0. Je browser leest het zelf, dus er '
         . 'gaat niets naar de server.',
-    'voet' => 'Gebaseerd op de fit/gap analyse BIO, versie 1.05, bijgewerkt naar de BIO2 (versie 1.3), de '
-        . 'Cyberbeveiligingsregeling sector overheid en het rijksbrede cloudbeleid van 2026. De omschrijvingen van de '
-        . 'maatregelen uit ISO 27002 zijn een eigen samenvatting. De opdrachtgever beoordeelt de verklaring.',
+    'voet' => 'De omschrijvingen van de maatregelen uit ISO 27002 zijn een eigen samenvatting. De opdrachtgever '
+        . 'beoordeelt de verklaring.',
+    'bronnen' => [
+        'Fit/gap analyse BIO, versie 1.05',
+        'BIO2, versie 1.3 (9 januari 2026)',
+        'Cyberbeveiligingswet en Cyberbeveiligingsregeling sector overheid (Stcrt. 2026, 27679)',
+        'Herziening rijksbreed cloudbeleid 2026 (3 juli 2026)',
+        'Generieke Baselinetoets BIO2, versie 3.2 (14 oktober 2026), voor de koppeling van de zorgplicht',
+        'ISO 27017, ISO 27018 en ISO/IEC 27701:2019',
+    ],
     'stappen' => [
         1 => 'Deel 1 · de dienst',
         2 => 'Deel 2 · de maatregelen uit ISO 27002',

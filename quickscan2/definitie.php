@@ -17,8 +17,15 @@ return [
     'download_uitleg' => 'Het document opent in Word, LibreOffice en Google Docs, met kopjes, lijsten en tabellen.',
     'inladen' => 'Een bestand van een eerdere keer, of van quickscan 1.0. Je browser leest het zelf, dus '
         . 'er gaat niets naar de server.',
-    'voet' => 'Gebaseerd op de BIO2 (versie 1.3), de Cyberbeveiligingsregeling sector overheid en het rijksbrede '
-        . 'cloudbeleid van 2026. Dit advies vervangt het oordeel van de CISO niet.',
+    'voet' => 'Dit advies vervangt het oordeel van de CISO niet.',
+    'bronnen' => [
+        'BIO2, versie 1.3 (9 januari 2026)',
+        'Cyberbeveiligingswet (geldt sinds 15 augustus 2026)',
+        'Cyberbeveiligingsregeling sector overheid (Stcrt. 2026, 27679)',
+        'Herziening rijksbreed cloudbeleid 2026 (3 juli 2026)',
+        'Generieke Baselinetoets BIO2, versie 3.2 (14 oktober 2026), ter vergelijking',
+        'AVG, Archiefwet 2026 en AI-verordening',
+    ],
     'stappen' => [
         1 => 'Stap 1 · beschrijving door de behoeftesteller',
         2 => 'Stap 2 · weging door de beoordelaar',
