@@ -14,6 +14,17 @@ declare(strict_types=1);
 
 return [
     [
+        'versie' => '1.2.4',
+        'datum' => '2026-10-26',
+        'wijzigingen' => [
+            'Quickscan 2.0 zegt nu wat de BIO2 over de risicoanalyse zegt: bij elk nieuw systeem een risicoafweging '
+                . 'met de methode van de organisatie (5.08.01). Wanneer er een volledige risicoanalyse volgt, staat '
+                . 'erbij als keuze van deze quickscan.',
+            'Zit de organisatie vast aan de leverancier, dan vraagt quickscan 2.0 geen volledige risicoanalyse meer, '
+                . 'maar de risicoafweging vóór het contract die de BIO2 vraagt (5.20.06).',
+        ],
+    ],
+    [
         'versie' => '1.2.3',
         'datum' => '2026-10-26',
         'wijzigingen' => [

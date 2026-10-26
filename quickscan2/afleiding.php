@@ -823,7 +823,7 @@ function q2_tbb(array $a, ?array $biv = null): array
         : 'Het zwaarste niveau telt, dus de uitkomst is TBB ' . $niveau . '.';
     $redenen[] = $cruciaal
         ? 'Bij TBB 1, 2 of 3 is het systeem cruciaal (regeling, artikel 4). Het komt op het overzicht van cruciale '
-            . 'systemen van de organisatie, en er volgt een volledige risicoanalyse.'
+            . 'systemen van de organisatie. Deze quickscan vraagt dan ook een volledige risicoanalyse.'
         : 'Het systeem is niet cruciaal. De basis van de BIO2 blijft gelden.';
 
     return [

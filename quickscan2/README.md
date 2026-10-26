@@ -17,7 +17,7 @@ daar beschreven. Hier staat wat anders is.
 | Quickscan 1.0 (BIO 1) | Quickscan 2.0 (BIO2) |
 | --- | --- |
 | De eerste vraag: valt er iets te beschermen? Zo niet, dan stopt de scan | Die vraag is er niet. Wie de quickscan invult, doet dat omdat het moet, dus er valt altijd iets te beschermen |
-| Beveiligingsniveau BBN 1, 2 of 3 | Bestaat niet meer. Elk systeem krijgt de basis van de BIO2 (ISO 27002 plus de verplichte overheidsmaatregelen). Een volledige risicoanalyse volgt bij een cruciaal systeem, een eis Zeer hoog, een hoog dreigingsprofiel, een (kritisch) strategisch proces op een vitaal systeem, of een leverancier waar je aan vastzit |
+| Beveiligingsniveau BBN 1, 2 of 3 | Bestaat niet meer. Elk systeem krijgt de basis van de BIO2 (ISO 27002 plus de verplichte overheidsmaatregelen) en een risicoafweging. Zie [Risicoanalyse](#risicoanalyse) |
 | Geen wettelijk kader voor de beveiliging zelf | De Cyberbeveiligingswet: wel of geen essentiële entiteit, afgeleid uit de soort organisatie |
 | Geen te beschermen belangen | Zeven soorten schade uit bijlage 1 bij de Cyberbeveiligingsregeling sector overheid. Samen met de rubricering en de BIV-eisen geeft dat TBB 1 tot 4; bij TBB 1, 2 of 3 is het systeem cruciaal |
 | Geen meldplicht | Welke incidenten bij dit systeem de drempels uit artikel 6 van de regeling halen, en de termijnen van 24 uur, 72 uur en een maand |
@@ -33,6 +33,24 @@ daar beschreven. Hier staat wat anders is.
 
 De sleutels van de vragen die in beide quickscans staan, zijn gelijk. Een
 bestand van quickscan 1.0 laadt hier dus in, behalve de rubricering. De DPIA leest de bestanden van beide quickscans.
+
+## Risicoanalyse
+
+Wat de teksten zeggen, en wat de tool zelf kiest:
+
+- **Altijd.** Bij elk nieuw systeem en elke grote wijziging een risicoafweging
+  met de risicomanagementmethodiek van de organisatie (BIO2 5.08.01). Die
+  methode heeft een quickscan die bepaalt of de basis genoeg is (BIO2,
+  paragraaf 6.2). Deze quickscan is daarvoor bedoeld.
+- **Uit de tekst.** Zit de organisatie vast aan de leverancier, dan vóór het
+  contract een risicoafweging of die afhankelijkheid beheersbaar is (BIO2
+  5.20.06). Een cruciaal systeem komt op het overzicht van cruciale systemen
+  (regeling, artikel 4).
+- **Methode van deze quickscan.** Een volledige risicoanalyse bij een cruciaal
+  systeem, een eis Zeer hoog, een hoog dreigingsprofiel, of een (kritisch)
+  strategisch proces op een vitaal systeem. De BIO2, de Cbw en de regeling
+  noemen geen drempel; ze laten die aan de organisatie. Het advies zegt dat er
+  ook bij. Andere drempels van de organisatie gaan voor.
 
 ## Te beschermen belangen
 
@@ -107,10 +125,12 @@ bij de regeling, de te beschermen belangen.
 
 Waar ze hetzelfde zeggen:
 
-- Staatsgeheim Confidentieel, Geheim of Zeer geheim: altijd een volledige
+- Staatsgeheim Confidentieel, Geheim of Zeer geheim: een volledige
   risicoanalyse. In de toets is dat het vroege afkappunt, hier TBB 3 of zwaarder.
-- Een statelijke actor, of de hoogste impact: altijd een volledige
-  risicoanalyse. Hier is dat het hoge dreigingsprofiel, of een eis Zeer hoog.
+- Een statelijke actor, of de hoogste impact: een volledige risicoanalyse. Hier
+  is dat het hoge dreigingsprofiel, of een eis Zeer hoog.
+
+In beide is dat een keuze van het instrument, geen drempel uit de BIO2.
 - De overheidsmaatregelen gelden altijd, ook bij een gunstige uitkomst. Alleen
   bij eigen maatregelen mag een risico bewust geaccepteerd worden.
 - De te beschermen belangen uit bijlage 1, met dezelfde niveaus. Alleen bij de

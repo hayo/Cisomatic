@@ -186,8 +186,13 @@ function q2_advies_bio2(array $u): array
     return [
         ['h2', 'Wat de BIO2 hier vraagt'],
         ['alinea', 'De BIO2 kent geen vaste beveiligingsniveaus meer. Elk systeem krijgt de maatregelen uit '
-            . 'ISO 27002 en de verplichte overheidsmaatregelen. Wat een risicoanalyse daarna nog aan risico '
-            . 'laat zien, vraagt om extra maatregelen. Deze quickscan is het begin van die analyse.'],
+            . 'ISO 27002 en de verplichte overheidsmaatregelen. Bij elk nieuw systeem en elke grote wijziging hoort '
+            . 'een risicoafweging, met de risicomanagementmethodiek van de organisatie (5.08.01). Die methode heeft '
+            . 'een quickscan die bepaalt of de basis genoeg is (paragraaf 6.2). Daarvoor is deze quickscan.'],
+        ['alinea', 'Wanneer er een volledige risicoanalyse volgt, schrijft de BIO2 niet voor. Deze quickscan vraagt '
+            . 'erom bij een cruciaal systeem, een eis Zeer hoog, een hoog dreigingsprofiel, of een (kritisch) '
+            . 'strategisch proces op een vitaal systeem. Heeft de organisatie andere drempels vastgesteld, dan gaan '
+            . 'die voor.'],
         ['term', 'Beveiligingsniveau', $u['niveau']],
         ['alinea', 'De overheidsmaatregelen gelden altijd, ook als er geen volledige risicoanalyse nodig is. Een '
             . 'risico bewust accepteren mag alleen bij de eigen maatregelen van de organisatie, en alleen na een '

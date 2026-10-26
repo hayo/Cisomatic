@@ -341,7 +341,7 @@
             : 'Niets haalt TBB 4, dus de uitkomst is geen TBB.');
         redenen.push(cruciaal
             ? 'Bij TBB 1, 2 of 3 is het systeem cruciaal (regeling, artikel 4). Het komt op het overzicht van cruciale '
-                + 'systemen van de organisatie, en er volgt een volledige risicoanalyse.'
+                + 'systemen van de organisatie. Deze quickscan vraagt dan ook een volledige risicoanalyse.'
             : 'Het systeem is niet cruciaal. De basis van de BIO2 blijft gelden.');
 
         return {

@@ -140,6 +140,24 @@ function q2_evalueer(array $a): array
         'label' => 'Elk netwerk en informatiesysteem',
         'gevolg' => 'de beheersmaatregelen uit ISO 27002 en de verplichte overheidsmaatregelen uit de BIO2',
     ];
+    $u['niveau_stappen'][] = [
+        'label' => 'Elk nieuw systeem en elke grote wijziging',
+        'gevolg' => 'een risicoafweging met de risicomanagementmethodiek van de organisatie (BIO2 5.08.01)',
+    ];
+
+    // Een afweging die de BIO2 zelf vraagt.
+    if (($a['leverancier_overstap'] ?? '') === 'vast') {
+        $u['niveau_stappen'][] = [
+            'label' => 'De organisatie zit vast aan de leverancier',
+            'gevolg' => 'vóór het contract een risicoafweging of die afhankelijkheid beheersbaar is (BIO2 5.20.06)',
+        ];
+        $u = q2_voeg_analyse_toe($u, 'Risicoafweging afhankelijkheid leverancier', 'De organisatie zit vast aan de '
+            . 'leverancier. De BIO2 vraagt vóór het contract te bepalen of die afhankelijkheid beheersbaar is '
+            . '(5.20.06).', 'CISO');
+    }
+
+    // Wanneer er een volledige risicoanalyse volgt, laat de BIO2 aan de methode van
+    // de organisatie (paragraaf 6.2). Dit zijn de drempels van deze quickscan.
 
     $aanvullend = [];
     if ($u['tbb']['cruciaal']) {
@@ -154,13 +172,13 @@ function q2_evalueer(array $a): array
     if ($strategischVitaal) {
         $aanvullend[] = ['Een (kritisch) strategisch proces op een vitaal systeem', 'Een (kritisch) strategisch proces in combinatie met een vitaal systeem.'];
     }
-    if (($a['leverancier_overstap'] ?? '') === 'vast') {
-        $aanvullend[] = ['De organisatie zit vast aan de leverancier', 'De afhankelijkheid van de leverancier is groot. De BIO2 vraagt vóór het contract te bepalen of die beheersbaar is.'];
-    }
-
     foreach ($aanvullend as [$label, $reden]) {
-        $u['niveau_stappen'][] = ['label' => $label, 'gevolg' => 'aanvullende maatregelen uit een volledige risicoanalyse'];
-        $u = q2_voeg_analyse_toe($u, 'Volledige risicoanalyse', $reden, 'CISO');
+        $u['niveau_stappen'][] = [
+            'label' => $label,
+            'gevolg' => 'aanvullende maatregelen uit een volledige risicoanalyse, volgens de methode van deze quickscan',
+        ];
+        $u = q2_voeg_analyse_toe($u, 'Volledige risicoanalyse', $reden . ' Deze quickscan vraagt dan een volledige '
+            . 'risicoanalyse. De BIO2 laat die keuze aan de organisatie.', 'CISO');
     }
 
     $u['niveau'] = $aanvullend === []
@@ -963,16 +981,23 @@ function q2_beslisboom_pad(array $a, array $u, array $ctx): array
     }
 
     $s[] = $stap(
+        'Zit de organisatie vast aan de leverancier?',
+        q2_antwoord_tekst('leverancier_overstap', $a),
+        'Vóór het contract een risicoafweging of de afhankelijkheid beheersbaar is (BIO2 5.20.06)',
+        ($a['leverancier_overstap'] ?? '') === 'vast'
+    );
+
+    $s[] = $stap(
         'Is er een hoog dreigingsprofiel?',
         $jaNee($ctx['dreigingHoog']) . ' (afgeleid uit de kenmerken van het systeem)',
-        'Volledige risicoanalyse en advies van de AIVD of de MIVD',
+        'Volledige risicoanalyse (methode van deze quickscan) en advies van de AIVD of de MIVD',
         $ctx['dreigingHoog']
     );
 
     $s[] = $stap(
         'Een (kritisch) strategisch proces op een vitaal systeem?',
         $jaNee($ctx['strategischVitaal']),
-        'Volledige risicoanalyse',
+        'Volledige risicoanalyse (methode van deze quickscan)',
         $ctx['strategischVitaal']
     );
 
@@ -1017,7 +1042,8 @@ function q2_beslisboom_pad(array $a, array $u, array $ctx): array
     $s[] = $stap(
         'Hoe zwaar zijn de te beschermen belangen?',
         q2_tbb_label($u['tbb']['niveau']),
-        'Cruciaal systeem: op het overzicht, en een volledige risicoanalyse',
+        'Cruciaal systeem: op het overzicht (regeling, artikel 4), en een volledige risicoanalyse (methode van deze '
+            . 'quickscan)',
         $u['tbb']['cruciaal']
     );
 
@@ -1301,8 +1327,8 @@ function q2_wegingen(array $a, array $u): array
         'label' => 'Dreigingsprofiel',
         'niveau' => ucfirst((string) $u['dreiging']['niveau']),
         'omschrijving' => $u['dreiging']['niveau'] === 'hoog'
-            ? 'Bescherming is nodig tegen inlichtingendiensten, terreurgroepen of georganiseerde criminaliteit. Dat '
-                . 'vraagt om een volledige risicoanalyse en om advies van de AIVD of de MIVD.'
+            ? 'Bescherming is nodig tegen inlichtingendiensten, terreurgroepen of georganiseerde criminaliteit. Deze '
+                . 'quickscan vraagt dan een volledige risicoanalyse en advies van de AIVD of de MIVD.'
             : 'Deze groepen vormen geen bijzondere bedreiging voor dit proces of systeem.',
         'motivatie' => $motivatie('dreiging_motivatie', 'dreiging'),
         'herkomst' => ($a['dreiging_verhoging'] ?? '') === 'hoog'
