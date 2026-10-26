@@ -164,9 +164,9 @@ function q2_advies_uitkomst(array $a, array $u): array
     if ($u['analyses'] === []) {
         $b[] = ['alinea', 'Er zijn geen aanvullende analyses nodig. De basis van de BIO2 volstaat.'];
     } else {
-        $b[] = ['alinea', 'Zolang deze analyses of documenten ontbreken, kunnen er nog geen definitieve eisen '
-            . 'aan de leverancier en aan onszelf worden gesteld. Uitkomsten van analyses moeten eerst worden '
-            . 'omgezet naar eisen; documenten moeten eerst worden goedgekeurd.'];
+        $b[] = ['alinea', 'Zolang deze analyses of documenten ontbreken, zijn de eisen aan de leverancier en aan '
+            . 'onszelf nog niet definitief. De uitkomst van een analyse moet eerst een eis worden. Een document '
+            . 'moet eerst zijn goedgekeurd.'];
         $b[] = ['tabel', [
             'kop' => ['Analyse', 'Waarom', 'Beoordeling door'],
             'rijen' => array_map(
@@ -190,9 +190,9 @@ function q2_advies_bio2(array $u): array
             . 'een risicoafweging, met de risicomanagementmethodiek van de organisatie (5.08.01). Die methode heeft '
             . 'een quickscan die bepaalt of de basis genoeg is (paragraaf 6.2). Daarvoor is deze quickscan.'],
         ['alinea', 'Wanneer er een volledige risicoanalyse volgt, schrijft de BIO2 niet voor. Deze quickscan vraagt '
-            . 'erom bij een cruciaal systeem, een eis Zeer hoog, een hoog dreigingsprofiel, of een (kritisch) '
-            . 'strategisch proces op een vitaal systeem. Heeft de organisatie andere drempels vastgesteld, dan gaan '
-            . 'die voor.'],
+            . 'erom bij een cruciaal systeem, een eis Zeer hoog of een hoog dreigingsprofiel. Of bij een '
+            . '(kritisch) strategisch proces op een vitaal systeem. Heeft de organisatie andere drempels '
+            . 'vastgesteld, dan gelden die.'],
         ['term', 'Beveiligingsniveau', $u['niveau']],
         ['alinea', 'De overheidsmaatregelen gelden altijd, ook als er geen volledige risicoanalyse nodig is. Een '
             . 'risico bewust accepteren mag alleen bij de eigen maatregelen van de organisatie, en alleen na een '
@@ -230,11 +230,11 @@ function q2_advies_cbw(array $a, array $u): array
     }
 
     $b[] = ['h3', 'Een significant incident melden'];
-    $b[] = ['alinea', 'Een significant incident meldt de organisatie bij het CSIRT en bij de minister van BZK, de '
-        . 'bevoegde autoriteit. Binnen 24 uur gaat er een vroegtijdige waarschuwing uit, binnen 72 uur de melding, '
-        . 'en uiterlijk een maand na de melding een eindverslag (Cyberbeveiligingswet, artikel 26, 27 en 29). Een '
-        . 'incident is significant als het de dienstverlening ernstig verstoort of grote financiële verliezen '
-        . 'geeft, of als het anderen aanzienlijke schade doet (artikel 25).'];
+    $b[] = ['alinea', 'Een significant incident meldt de organisatie bij het CSIRT en bij de minister van BZK. '
+        . 'Binnen 24 uur gaat er een vroegtijdige waarschuwing uit, binnen 72 uur de melding. Het eindverslag '
+        . 'volgt uiterlijk een maand na de melding (Cyberbeveiligingswet, artikel 26, 27 en 29). Een incident is '
+        . 'significant als de dienst ernstig verstoord raakt of er veel geld verloren gaat. Of als anderen er '
+        . 'flinke schade van hebben (artikel 25).'];
 
     if ($u['meldplicht'] === []) {
         $b[] = ['alinea', 'De tool ziet bij dit systeem geen incident dat vanzelf de drempels uit de regeling '
@@ -300,9 +300,8 @@ function q2_advies_wegingen(array $u): array
 
     $b = [
         ['h2', 'De wegingen en waarom'],
-        ['alinea', 'Per weging staat hier het niveau, wat dat niveau betekent, waarom het zo is ingeschaald en '
-            . 'wie dat heeft bepaald. Zo is achteraf na te gaan hoe deze beoordeling tot stand is gekomen, en '
-            . 'of hij klopt.'],
+        ['alinea', 'Per weging staat hier het niveau, wat dat betekent, waarom het zo is ingeschaald, en wie dat '
+            . 'bepaalde. Zo kun je later nagaan hoe de beoordeling tot stand kwam, en of die klopt.'],
     ];
 
     foreach ($u['wegingen'] as $weging) {
@@ -331,11 +330,11 @@ function q2_advies_archief(array $a, array $u): array
     $toelichting = trim((string) ($a['bewaartermijn_toelichting'] ?? ''));
     $b = [
         ['h2', 'Zo richt je de archiefprocessen in'],
-        ['alinea', 'Alles wat in dit proces wordt opgemaakt of ontvangen valt onder de Archiefwet 2026, '
-            . 'ongeacht waar het staat of in welke vorm. Die wet brengt de overbrengingstermijn terug van '
-            . 'twintig naar tien jaar, dus wat vroeger een zorg voor later was, valt nu binnen de looptijd van '
-            . 'dit systeem. De volgende stappen horen bij de inrichting, en de meeste daarvan zijn goedkoper '
-            . 'als je ze vóór ingebruikname regelt dan erna.'],
+        ['alinea', 'Alles wat in dit proces wordt gemaakt of ontvangen, valt onder de Archiefwet 2026. Waar het '
+            . 'staat en in welke vorm, maakt niet uit. De wet brengt de overbrengingstermijn terug van twintig '
+            . 'naar tien jaar. Wat vroeger iets voor later was, valt nu binnen de looptijd van dit systeem. De '
+            . 'stappen hieronder horen bij de inrichting. De meeste zijn goedkoper als je ze regelt voordat het '
+            . 'systeem in gebruik gaat.'],
         ['term', 'Opgegeven bewaartermijn', q2_antwoord_tekst('bewaartermijn', $a)
             . ($toelichting === '' ? '' : ' (' . $toelichting . ')')],
     ];

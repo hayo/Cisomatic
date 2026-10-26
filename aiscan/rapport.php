@@ -33,7 +33,7 @@ function ai_rapport(array $a, array $u): array
 function ai_rapport_inleiding(array $a, array $u, string $naam): array
 {
     return [
-        ['h1', 'AI scan ' . $naam],
+        ['h1', 'AI-scan ' . $naam],
         ...array_map(static fn (string $term, string $tekst): array => ['term', $term, $tekst],
             array_keys(ai_kort($u)), array_values(ai_kort($u))),
         ['term', 'Datum', cm_datum_nl(new DateTimeImmutable('now'))],
@@ -52,7 +52,7 @@ function ai_kort(array $u): array
     $klasse = AI_KLASSEN[$u['klasse']];
 
     return array_filter([
-        'AI verordening' => $r['niet'] === '' ? 'Geldt' : 'Geldt niet',
+        'AI-verordening' => $r['niet'] === '' ? 'Geldt' : 'Geldt niet',
         'Waarom niet' => AI_NIET[$r['niet']] ?? '',
         'Rol' => ucfirst(cm_opsomming($r['rollen'])),
         'Soort' => AI_SOORTEN[$r['soort']] ?? '',
@@ -72,7 +72,7 @@ function ai_rapport_samenvatting(array $u): array
 
     return [
         ['h2', 'Samenvatting'],
-        ['alinea', 'Deze scan zoekt uit wat de AI verordening van de toepassing vraagt. Hij volgt de beslishulp van '
+        ['alinea', 'Deze scan zoekt uit wat de AI-verordening van de toepassing vraagt. Hij volgt de beslishulp van '
             . 'het ministerie van BZK.'],
         ...$termen,
         ['h3', 'Wat betekent dit?'],
@@ -85,11 +85,11 @@ function ai_rapport_samenvatting(array $u): array
 function ai_rapport_plichten(array $u): array
 {
     $b = [
-        ['h2', 'Wat de AI verordening vraagt'],
+        ['h2', 'Wat de AI-verordening vraagt'],
         ['alinea', $u['route']['niet'] === ''
             ? 'Dit zijn de plichten die bij jullie rol en de risicogroep horen. De nummers verwijzen naar de artikelen '
-                . 'van de AI verordening.'
-            : 'De AI verordening geldt niet. ' . AI_NIET[$u['route']['niet']]],
+                . 'van de AI-verordening.'
+            : 'De AI-verordening geldt niet. ' . AI_NIET[$u['route']['niet']]],
     ];
 
     foreach ($u['plichten'] as $plicht) {
@@ -164,9 +164,9 @@ function ai_rapport_bronnen(): array
 {
     return [
         ['h2', 'Over deze scan'],
-        ['alinea', 'De vragen over de AI verordening komen uit de Beslishulp AI verordening van het ministerie van BZK. '
+        ['alinea', 'De vragen over de AI-verordening komen uit de Beslishulp AI-verordening van het ministerie van BZK. '
             . 'Die staat in het Algoritmekader. Deze scan volgt de versie van 14 september 2026, in eenvoudige taal.'],
-        ['alinea', 'Sinds juli 2026 staan er andere datums in de AI verordening. De regels voor een hoog risico gaan '
+        ['alinea', 'Sinds juli 2026 staan er andere datums in de AI-verordening. De regels voor een hoog risico gaan '
             . 'daardoor later in. De scan gebruikt die nieuwe datums.'],
         ['alinea', 'De vragen over generatieve AI komen uit twee stukken van BZK, uit januari 2025. Het eerste is het '
             . 'overheidsbrede standpunt over generatieve AI. Daarnaast is er de handreiking voor verantwoorde inzet ervan.'],

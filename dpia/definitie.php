@@ -52,7 +52,7 @@ return [
             'naam' => 'de business case',
             'overslaan' => ['versie', 'versie_toelichting'],
         ],
-        'aiscan' => ['naam' => 'de AI scan', 'zet' => ['ai' => 'onderdeel']],
+        'aiscan' => ['naam' => 'de AI-scan', 'zet' => ['ai' => 'onderdeel']],
     ],
 
     // De DPIA heeft al een eigen vaststelling.

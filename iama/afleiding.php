@@ -4,8 +4,8 @@
  * Afleidingen: wat de tool uit de antwoorden haalt.
  *
  * Het IAMA is een gesprek, dus de tool rekent weinig. Hij vat samen wat de
- * AI verordening betekent, zet de actiepunten op een rij die uit de antwoorden
- * volgen, en noemt wat opvalt. De risicogroep zelf zoekt de AI scan uit.
+ * AI-verordening betekent, zet de actiepunten op een rij die uit de antwoorden
+ * volgen, en noemt wat opvalt. De risicogroep zelf zoekt de AI-scan uit.
  */
 
 declare(strict_types=1);
@@ -17,7 +17,7 @@ const IA_SESSIES = ['wat' => 1, 'hoe' => 2, 'alles' => 3];
 const IA_KERNTEAM = ['projectleider' => 'een projectleider', 'data_scientist' => 'een data scientist', 'jurist' => 'een jurist'];
 
 /**
- * Wat de AI verordening betekent, uit de antwoorden bij 1.3 en 4.2.1. Het
+ * Wat de AI-verordening betekent, uit de antwoorden bij 1.3 en 4.2.1. Het
  * niveau is dat van de motor, zodat de samenvatting het kleurt.
  *
  * @return array{klasse:string,label:string,niveau:string}
@@ -26,11 +26,11 @@ function ia_ai_klasse(array $a): array
 {
     return match (true) {
         !in_array($a['ia_ai_systeem'] ?? '', ['ja', 'twijfel'], true)
-            => ['klasse' => 'geen', 'label' => 'Geen AI systeem', 'niveau' => ''],
+            => ['klasse' => 'geen', 'label' => 'Geen AI-systeem', 'niveau' => ''],
         ($a['ia_verboden'] ?? '') === 'ja' => ['klasse' => 'verboden', 'label' => 'Verboden', 'niveau' => 'zh'],
         ($a['ia_hoog_risico'] ?? '') === 'ja' => ['klasse' => 'hoog', 'label' => 'Hoog risico', 'niveau' => 'h'],
         ($a['ia_hoog_risico'] ?? '') === 'nee' => ['klasse' => 'laag', 'label' => 'Geen hoog risico', 'niveau' => ''],
-        default => ['klasse' => 'open', 'label' => 'Nog niet bekend. De AI scan zoekt het uit.', 'niveau' => 'm'],
+        default => ['klasse' => 'open', 'label' => 'Nog niet bekend. De AI-scan zoekt het uit.', 'niveau' => 'm'],
     };
 }
 
@@ -74,17 +74,17 @@ function ia_actiepunten(array $a): array
 {
     $acties = [
         ($a['ia_ai_systeem'] ?? '') === 'twijfel' || ($a['ia_verboden'] ?? '') === 'onbekend'
-            ? 'Doe de AI scan in deze tool. Die zoekt uit of de AI verordening geldt, en wat die van jullie vraagt.'
+            ? 'Doe de AI-scan in deze tool. Die zoekt uit of de AI-verordening geldt, en wat die van jullie vraagt.'
             : '',
         ($a['ia_grondslag_taak'] ?? '') === 'onduidelijk'
             ? 'Stel vast op welke wettelijke grondslag het algoritme rust.' : '',
         ($a['ia_exit'] ?? '') === 'nee'
             ? 'Maak een exitstrategie: een plan om met het algoritme te stoppen.' : '',
         ($a['ia_hoog_risico'] ?? '') === 'ja'
-            ? 'Toets of het AI systeem voldoet aan de eisen die de AI verordening stelt bij een hoog risico.' : '',
+            ? 'Toets of het AI-systeem voldoet aan de eisen die de AI-verordening stelt bij een hoog risico.' : '',
         ($a['ia_hoog_risico'] ?? '') === 'ja'
             ? 'Meld de uitkomst van deze beoordeling bij de markttoezichthouder, zoals artikel 27 van de '
-                . 'AI verordening vraagt. Dat hoeft niet als het systeem alleen kritieke infrastructuur beheert.' : '',
+                . 'AI-verordening vraagt. Dat hoeft niet als het systeem alleen kritieke infrastructuur beheert.' : '',
         ($a['ia_dpia'] ?? '') === 'nodig'
             ? 'Maak een DPIA, en gebruik daarbij de antwoorden uit deze IAMA.' : '',
         in_array($a['ia_gelijke_behandeling'] ?? '', ['ja', 'misschien'], true)
@@ -148,7 +148,7 @@ function ia_blokkerend(array $a): array
     $punten = [];
 
     if (ia_ai_klasse($a)['klasse'] === 'verboden') {
-        $punten[] = 'De AI verordening verbiedt deze toepassing (artikel 5). Het algoritme mag niet worden gebruikt.';
+        $punten[] = 'De AI-verordening verbiedt deze toepassing (artikel 5). Het algoritme mag niet worden gebruikt.';
     }
 
     $gestopt = ia_gestopt($a);

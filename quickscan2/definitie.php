@@ -46,7 +46,7 @@ return [
             'zet' => ['cloud' => 'ja'],
         ],
         // En deze altijd over AI.
-        'aiscan' => ['naam' => 'de AI scan', 'zet' => ['ai' => 'onderdeel']],
+        'aiscan' => ['naam' => 'de AI-scan', 'zet' => ['ai' => 'onderdeel']],
     ],
 
     // Het advies zet de antwoorden zelf al in een hoofdstuk.

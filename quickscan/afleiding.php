@@ -104,12 +104,12 @@ function qs_afgeleide_integriteit(array $a): array
     $pg = qs_afgeleide_persoonsgegevens($a);
 
     // Harde ondergrens: dit staat letterlijk in de integriteitstabel van de
-    // quickscan, als gevolg van het AVG beginsel 'Juistheid'.
+    // quickscan, als gevolg van het AVG-beginsel 'Juistheid'.
     $ondergrens = qs_avg_minimum($pg['categorieen'], $pg['bijzonder']);
     $ondergrensReden = $ondergrens === 'zl'
         ? ''
         : sprintf(
-            'Het AVG beginsel ‘Juistheid’ legt bij deze persoonsgegevens een ondergrens van %s op.',
+            'Het AVG-beginsel ‘Juistheid’ legt bij deze persoonsgegevens een ondergrens van %s op.',
             cm_niveau_label($ondergrens)
         );
 
@@ -120,8 +120,8 @@ function qs_afgeleide_integriteit(array $a): array
     $voorstelReden = ($a['proces_classificatie'] ?? '') === ''
         ? ''
         : sprintf(
-            'Het proces is %s; als startwaarde stelt de tool daar %s bij voor. Dat is een voorstel, geen '
-            . 'regel uit de quickscan.',
+            'Het proces is %s. Als startwaarde stelt de tool daarom %s voor. Dat is een voorstel, geen regel uit de '
+                . 'quickscan.',
             mb_strtolower(qs_antwoord_tekst('proces_classificatie', $a), 'UTF-8'),
             cm_niveau_label($voorstel)
         );
@@ -169,7 +169,7 @@ function qs_afgeleide_vertrouwelijkheid(array $a): array
 
     if ($rubricering !== '') {
         $redenen[] = sprintf(
-            'De informatie is aangemerkt als ‘%s’; dat komt overeen met vertrouwelijkheid %s.',
+            'De informatie is aangemerkt als ‘%s’. Dat past bij vertrouwelijkheid %s.',
             qs_antwoord_tekst('rubricering', $a),
             cm_niveau_label($uitRubricering)
         );
@@ -192,9 +192,9 @@ function qs_afgeleide_vertrouwelijkheid(array $a): array
         && cm_niveau_rang($niveau) < cm_niveau_rang('h')) {
         $voorstel = 'h';
         $niveau = 'h';
-        $redenen[] = 'Het dreigingsprofiel is hoog. Informatie die bescherming nodig heeft tegen '
-            . 'inlichtingendiensten, terreurgroepen of georganiseerde criminaliteit kan niet '
-            . 'tegelijk laag vertrouwelijk zijn, dus stelt de tool Hoog voor.';
+        $redenen[] = 'Het dreigingsprofiel is hoog. Informatie die je moet beschermen tegen inlichtingendiensten, '
+            . 'terreurgroepen of georganiseerde misdaad, kan niet laag vertrouwelijk zijn. Daarom stelt de tool '
+            . 'Hoog voor.';
     }
 
     if ($redenen === []) {
@@ -335,8 +335,8 @@ function qs_motivatie_voorstel(string $voor, array $a): string
         );
 
         if (($a['systemen_afhankelijk'] ?? '') === 'veel') {
-            $tekst .= ' Een niveau hoger dan het procesbelang alleen, omdat veel processen of een '
-                . 'kritiek proces van dit systeem afhankelijk worden en daarmee de uitval erven.';
+            $tekst .= ' Dat is een niveau hoger dan het proces alleen vraagt. Veel processen, of een kritiek '
+                . 'proces, gaan van dit systeem afhangen. Valt het uit, dan vallen die ook uit.';
         }
 
         return $tekst;
@@ -420,7 +420,7 @@ function qs_abro_van_toepassing(array $a): array
         'waar' => $waar,
         'reden' => $waar
             ? 'Het proces is aangemerkt als kritisch strategisch, oftewel een maatschappelijk vitaal '
-                . 'proces. Daarmee is de ABRO quickscan nationale veiligheid bij inkoop en aanbesteden '
+                . 'proces. Daarmee is de ABRO-quickscan nationale veiligheid bij inkoop en aanbesteden '
                 . 'van toepassing.'
             : 'Het proces is niet aangemerkt als maatschappelijk vitaal.',
     ];
@@ -519,7 +519,7 @@ function qs_afgeleide_grootschaligheid(array $a): array
     if ($aantalRang === 3) {
         return [
             'uitkomst' => 'ja',
-            'redenen' => ['Er zijn meer dan 100.000 betrokkenen; dat is per definitie grootschalig.'],
+            'redenen' => ['Er zijn meer dan 100.000 betrokkenen. Dat is altijd grootschalig.'],
         ];
     }
 
@@ -535,8 +535,7 @@ function qs_afgeleide_grootschaligheid(array $a): array
         return [
             'uitkomst' => 'twijfel',
             'redenen' => ['Het gaat om ' . mb_strtolower($aantalTekst, 'UTF-8') . ' betrokkenen'
-                . $samen . '. Dat zit tegen grootschalig aan; de CPO bepaalt of een volledige DPIA '
-                . 'nodig is.'],
+                . $samen . '. Dat zit tegen grootschalig aan. De CPO bepaalt of een volledige DPIA nodig is.'],
         ];
     }
 
@@ -548,7 +547,7 @@ function qs_afgeleide_grootschaligheid(array $a): array
 }
 
 /**
- * Risicoklasse onder de AI verordening, afgeleid uit de aangevinkte
+ * Risicoklasse onder de AI-verordening, afgeleid uit de aangevinkte
  * toepassingsgebieden in plaats van uit een zelfinschatting.
  *
  * @return array{niveau:string,redenen:list<string>,label:string}
@@ -582,7 +581,7 @@ function qs_afgeleid_ai_risico(array $a): array
         return [
             'niveau' => 'onaanvaardbaar',
             'label' => 'Onaanvaardbaar risico',
-            'redenen' => ['De AI verordening verbiedt deze toepassing: ' . implode('; ', $verboden) . '.'],
+            'redenen' => ['De AI-verordening verbiedt deze toepassing: ' . implode('; ', $verboden) . '.'],
         ];
     }
 
@@ -591,7 +590,7 @@ function qs_afgeleid_ai_risico(array $a): array
         return [
             'niveau' => 'hoog',
             'label' => 'Hoog risico',
-            'redenen' => ['Dit valt onder de toepassingen met een hoog risico uit de AI verordening: '
+            'redenen' => ['Dit valt onder de toepassingen met een hoog risico uit de AI-verordening: '
                 . implode('; ', $hoog) . '.'],
         ];
     }
@@ -608,7 +607,7 @@ function qs_afgeleid_ai_risico(array $a): array
     return [
         'niveau' => 'minimaal',
         'label' => 'Minimaal risico',
-        'redenen' => ['Geen van de benoemde toepassingsgebieden van de AI verordening is aangevinkt. '
+        'redenen' => ['Geen van de benoemde toepassingsgebieden van de AI-verordening is aangevinkt. '
             . 'Controleer dit opnieuw zodra de inzet concreter wordt.'],
     ];
 }

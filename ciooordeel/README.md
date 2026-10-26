@@ -1,4 +1,4 @@
-# CIO oordeel
+# CIO-oordeel
 
 Een formulier van de [cisomatic](../README.md) voor de adviseur van een CIO
 office. Het bouwt het oordeel van de departementale CIO over een project met
@@ -79,7 +79,7 @@ kern (`co_kern`), zolang de adviseur die niet aanraakt.
 ## Overnemen
 
 Een bestand van de business case, quickscan 2.0, de DPIA, de
-soevereiniteitsscan, de AI scan of de IAMA vult de gedeelde sleutels in:
+soevereiniteitsscan, de AI-scan of de IAMA vult de gedeelde sleutels in:
 `projectnaam`, `organisatieonderdeel` en `proces_omschrijving`. `aanvrager` en
 `email` blijven leeg, want het oordeel is van de adviseur en niet van wie het
 andere formulier invulde.

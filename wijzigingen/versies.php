@@ -14,77 +14,77 @@ declare(strict_types=1);
 
 return [
     [
+        'versie' => '1.2.5',
+        'datum' => '2026-10-26',
+        'wijzigingen' => [
+            'Alle formulieren nog eens nagelezen. Lange zinnen zijn korter, en woorden als AI-scan, AI-verordening en '
+                . 'CIO-oordeel hebben nu een koppelteken.',
+        ],
+    ],
+    [
         'versie' => '1.2.4',
         'datum' => '2026-10-26',
         'wijzigingen' => [
-            'Quickscan 2.0 zegt nu wat de BIO2 over de risicoanalyse zegt: bij elk nieuw systeem een risicoafweging '
-                . 'met de methode van de organisatie (5.08.01). Wanneer er een volledige risicoanalyse volgt, staat '
-                . 'erbij als keuze van deze quickscan.',
-            'Zit de organisatie vast aan de leverancier, dan vraagt quickscan 2.0 geen volledige risicoanalyse meer, '
-                . 'maar de risicoafweging vóór het contract die de BIO2 vraagt (5.20.06).',
+            'Quickscan 2.0 volgt bij de risicoanalyse de tekst van de BIO2. Elk nieuw systeem krijgt een risicoafweging '
+                . '(5.08.01). Dat er soms een volledige analyse volgt, is een keuze van de quickscan zelf, en dat staat '
+                . 'er nu ook bij.',
+            'Zit je vast aan een leverancier? Dan vraagt de quickscan geen volledige analyse meer. Wel een afweging '
+                . 'vóór het contract, zoals de BIO2 vraagt (5.20.06).',
         ],
     ],
     [
         'versie' => '1.2.3',
         'datum' => '2026-10-26',
         'wijzigingen' => [
-            'Quickscan 2.0 is nagelopen met de tekst van de Cyberbeveiligingsregeling sector overheid. De regels voor '
-                . 'de te beschermen belangen en cruciale systemen klopten al. Het advies noemt nu artikel 4 en artikel 6, '
-                . 'NATO en EU Confidential bij de meldplicht, en dat gepland onderhoud geen significant incident is.',
+            'Quickscan 2.0 naast de Cyberbeveiligingsregeling gelegd. De te beschermen belangen klopten al. Bij de '
+                . 'meldplicht staan nu ook NATO en EU Confidential, en dat gepland onderhoud geen incident is.',
         ],
     ],
     [
         'versie' => '1.2.2',
         'datum' => '2026-10-26',
         'wijzigingen' => [
-            'Quickscan 2.0 en fit/gap 2.0 zijn nagelopen met de tekst van de BIO2, versie 1.3. Een aantal nummers '
-                . 'van overheidsmaatregelen is verbeterd, zoals 5.30.01 voor het testen van het continuïteitsplan en '
-                . '5.24.08 voor het melden van kwetsbaarheden. Antwoordbestanden van fit/gap 2.0 laden nog gewoon in.',
-            'Ze zijn ook nagelopen met de tekst van de Cyberbeveiligingswet. De meldplicht gebruikt nu de woorden en '
-                . 'artikelen van de wet: een vroegtijdige waarschuwing binnen 24 uur, de melding binnen 72 uur, en het '
-                . 'eindverslag uiterlijk een maand daarna. De registratie gaat over het nationale register.',
-            'Onder elk formulier en in de verantwoording van elk document staat nu op welke documenten het is '
-                . 'gebaseerd.',
+            'In quickscan 2.0 en fit/gap 2.0 klopten een paar nummers van BIO2-maatregelen niet. Het testen van het '
+                . 'continuïteitsplan is bijvoorbeeld 5.30.01, niet 5.29.01. Oude antwoordbestanden laden gewoon in.',
+            'De meldplicht gebruikt de woorden van de Cyberbeveiligingswet: binnen 24 uur een waarschuwing, binnen 72 '
+                . 'uur de melding, en een maand later het eindverslag.',
+            'Onder elk formulier staat op welke documenten het is gebaseerd.',
         ],
     ],
     [
         'versie' => '1.2.1',
         'datum' => '2026-10-26',
         'wijzigingen' => [
-            'De quickscan en de fit/gap voor de BIO 1 heten nu quickscan 1.0 en fit/gap 1.0. Quickscan 2.0 en '
-                . 'fit/gap 2.0 horen bij de BIO2.',
-            'Quickscan 2.0 is naast de generieke baselinetoets BIO2 gelegd. Een eis boven Zeer laag geeft nu TBB 4, '
-                . 'zoals bijlage 1 van de regeling zegt.',
-            'Het advies van quickscan 2.0 zegt dat de overheidsmaatregelen altijd gelden, en wat er bij een volledige '
-                . 'risicoanalyse moet gebeuren.',
-            'Het document van fit/gap 2.0 laat per onderdeel van de zorgplicht uit de Cyberbeveiligingswet zien hoe de '
-                . 'dienst ervoor staat.',
-            'Elke pagina noemt de versie, met een link naar deze pagina. Het document noemt de versie ook.',
+            'De oude quickscan en fit/gap heten nu quickscan 1.0 en fit/gap 1.0. Ze horen bij de BIO 1.',
+            'Quickscan 2.0 vergeleken met de generieke baselinetoets BIO2. Een systeem met een eis boven Zeer laag '
+                . 'krijgt nu TBB 4.',
+            'Fit/gap 2.0 laat per onderdeel van de zorgplicht zien hoe de dienst ervoor staat.',
+            'Onderaan elke pagina staat de versie, met een link naar deze lijst.',
         ],
     ],
     [
         'versie' => '1.2',
         'datum' => '2026-10-15',
         'wijzigingen' => [
-            'Dossiers: alle formulieren van een project bij elkaar. Een antwoord dat in meer formulieren terugkomt, '
-                . 'vul je één keer in.',
+            'Dossiers. Je bundelt de formulieren van een project, en een antwoord dat vaker terugkomt vul je één keer '
+                . 'in.',
         ],
     ],
     [
         'versie' => '1.1',
         'datum' => '2026-10-13',
         'wijzigingen' => [
-            'Nieuw: fit/gap 1.0 en fit/gap 2.0. De leverancier verklaart per norm of de dienst voldoet.',
-            'Elk document heeft een kenmerk, een vingerafdruk van de antwoorden en een hoofdstuk Verantwoording.',
+            'Nieuw: fit/gap 1.0 en fit/gap 2.0, voor de leverancier.',
+            'Elk document heeft een kenmerk en een hoofdstuk Verantwoording.',
             'De kanalenscan volgt de kaders van 1 oktober 2026.',
-            'Een icoon per formulier op de voordeur. Dezelfde code draait los en binnen een site.',
+            'Iconen op de voordeur.',
         ],
     ],
     [
         'versie' => '1.0',
         'datum' => '2026-10-01',
         'wijzigingen' => [
-            'De eerste versie: de formulieren, en van elk een document als .odt.',
+            'De eerste versie, met negen formulieren.',
         ],
     ],
 ];

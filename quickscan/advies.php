@@ -133,7 +133,7 @@ function qs_advies_uitkomst(array $a, array $u): array
         $kort[] = ['Dreigingsprofiel', ucfirst((string) $u['dreiging']['niveau'])];
 
         if (($u['ai_risico']['niveau'] ?? 'geen') !== 'geen') {
-            $kort[] = ['AI verordening', $u['ai_risico']['label']];
+            $kort[] = ['AI-verordening', $u['ai_risico']['label']];
         }
     }
 
@@ -172,9 +172,9 @@ function qs_advies_uitkomst(array $a, array $u): array
     if ($u['analyses'] === []) {
         $b[] = ['alinea', 'Er zijn geen aanvullende analyses nodig. De standaardmaatregelen volstaan.'];
     } else {
-        $b[] = ['alinea', 'Zolang deze analyses of documenten ontbreken, kunnen er nog geen definitieve eisen '
-            . 'aan de leverancier en aan onszelf worden gesteld. Uitkomsten van analyses moeten eerst worden '
-            . 'omgezet naar eisen; documenten moeten eerst worden goedgekeurd.'];
+        $b[] = ['alinea', 'Zolang deze analyses of documenten ontbreken, zijn de eisen aan de leverancier en aan '
+            . 'onszelf nog niet definitief. De uitkomst van een analyse moet eerst een eis worden. Een document '
+            . 'moet eerst zijn goedgekeurd.'];
         $b[] = ['tabel', [
             'kop' => ['Analyse', 'Waarom', 'Beoordeling door'],
             'rijen' => array_map(
@@ -196,7 +196,7 @@ function qs_advies_eisen(array $a, array $u): array
         ['lijst', [
             'Het toe te passen beveiligingsniveau is ' . $u['ib_niveau'] . '.',
             sprintf(
-                'De Recovery Time Objective is %s; die volgt rechtstreeks uit de beschikbaarheidseis %s.',
+                'De Recovery Time Objective is %s. Die volgt uit de beschikbaarheidseis %s.',
                 $u['rto'],
                 cm_niveau_label($u['biv']['b'])
             ),
@@ -237,9 +237,9 @@ function qs_advies_wegingen(array $u): array
 
     $b = [
         ['h2', 'De wegingen en waarom'],
-        ['alinea', 'Per weging staat hier het niveau, wat dat niveau volgens de quickscan betekent, waarom het '
-            . 'zo is ingeschaald en wie dat heeft bepaald. Zo is achteraf na te gaan hoe deze beoordeling tot '
-            . 'stand is gekomen, en of hij klopt.'],
+        ['alinea', 'Per weging staat hier het niveau, wat dat volgens de quickscan betekent, waarom het zo is '
+            . 'ingeschaald, en wie dat bepaalde. Zo kun je later nagaan hoe de beoordeling tot stand kwam, en of '
+            . 'die klopt.'],
     ];
 
     foreach ($u['wegingen'] as $weging) {
@@ -268,11 +268,11 @@ function qs_advies_archief(array $a, array $u): array
     $toelichting = trim((string) ($a['bewaartermijn_toelichting'] ?? ''));
     $b = [
         ['h2', 'Zo richt je de archiefprocessen in'],
-        ['alinea', 'Alles wat in dit proces wordt opgemaakt of ontvangen valt onder de Archiefwet 2026, '
-            . 'ongeacht waar het staat of in welke vorm. Die wet brengt de overbrengingstermijn terug van '
-            . 'twintig naar tien jaar, dus wat vroeger een zorg voor later was, valt nu binnen de looptijd van '
-            . 'dit systeem. De volgende stappen horen bij de inrichting, en de meeste daarvan zijn goedkoper '
-            . 'als je ze vóór ingebruikname regelt dan erna.'],
+        ['alinea', 'Alles wat in dit proces wordt gemaakt of ontvangen, valt onder de Archiefwet 2026. Waar het '
+            . 'staat en in welke vorm, maakt niet uit. De wet brengt de overbrengingstermijn terug van twintig '
+            . 'naar tien jaar. Wat vroeger iets voor later was, valt nu binnen de looptijd van dit systeem. De '
+            . 'stappen hieronder horen bij de inrichting. De meeste zijn goedkoper als je ze regelt voordat het '
+            . 'systeem in gebruik gaat.'],
         ['term', 'Opgegeven bewaartermijn', qs_antwoord_tekst('bewaartermijn', $a)
             . ($toelichting === '' ? '' : ' (' . $toelichting . ')')],
     ];

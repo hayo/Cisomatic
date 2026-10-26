@@ -94,8 +94,7 @@ $beoordeeld = ($antwoorden['rol'] ?? '') === 'beoordelaar';
     <?php if ($uitkomst['analyses'] === []): ?>
         <p>Geen. De standaardmaatregelen volstaan voor deze combinatie.</p>
     <?php else: ?>
-        <p>Zolang deze ontbreken, kunnen er nog geen definitieve eisen aan de leverancier worden
-           gesteld.</p>
+        <p>Zolang die ontbreken, zijn de eisen aan de leverancier nog niet definitief.</p>
         <ul>
             <?php foreach ($uitkomst['analyses'] as $analyse): ?>
                 <li>

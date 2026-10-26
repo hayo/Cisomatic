@@ -162,12 +162,12 @@
     function afgeleideIntegriteit(a) {
         var pg = persoonsgegevens(a);
 
-        // Harde ondergrens uit de quickscan zelf (AVG beginsel 'Juistheid').
+        // Harde ondergrens uit de quickscan zelf (AVG-beginsel 'Juistheid').
         var ondergrens = avgMinimum(pg.categorieen, pg.bijzonder);
         var redenen = [];
 
         if (ondergrens !== 'zl') {
-            redenen.push('Het AVG beginsel ‘Juistheid’ legt bij deze persoonsgegevens een '
+            redenen.push('Het AVG-beginsel ‘Juistheid’ legt bij deze persoonsgegevens een '
                 + 'ondergrens van ' + LABEL[ondergrens] + ' op.');
         }
 
@@ -285,7 +285,7 @@
         if (verboden.length) {
             return {
                 label: 'Onaanvaardbaar risico',
-                redenen: ['De AI verordening verbiedt deze toepassing: ' + verboden.join('; ') + '.'],
+                redenen: ['De AI-verordening verbiedt deze toepassing: ' + verboden.join('; ') + '.'],
                 zwaar: true
             };
         }
@@ -294,7 +294,7 @@
         if (hoog.length) {
             return {
                 label: 'Hoog risico',
-                redenen: ['Dit valt onder de toepassingen met een hoog risico uit de AI verordening: '
+                redenen: ['Dit valt onder de toepassingen met een hoog risico uit de AI-verordening: '
                     + hoog.join('; ') + '.'],
                 zwaar: true
             };
@@ -311,7 +311,7 @@
 
         return {
             label: 'Minimaal risico',
-            redenen: ['Geen van de benoemde toepassingsgebieden van de AI verordening is aangevinkt. '
+            redenen: ['Geen van de benoemde toepassingsgebieden van de AI-verordening is aangevinkt. '
                 + 'Controleer dit opnieuw zodra de inzet concreter wordt.'],
             zwaar: false
         };
@@ -418,7 +418,7 @@
             meldingen.push('Het dreigingsprofiel is nu ' + nu.dreiging + '.');
         }
         if (nu.ai !== vorige.ai) {
-            meldingen.push('AI verordening: ' + nu.ai + '.');
+            meldingen.push('AI-verordening: ' + nu.ai + '.');
         }
 
         vorige = nu;

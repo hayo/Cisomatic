@@ -7,7 +7,7 @@ moet gebeuren, en wanneer het klaar is. Het document is de officiële verklaring
 aan de opdrachtgever. De dienstverlening kan pas starten als de dienst aan alle
 normen voldoet.
 
-Het formulier volgt de fit/gap analyse BIO, versie 1.05, een spreadsheet. Er is
+Het formulier volgt de fit/gap-analyse BIO, versie 1.05, een spreadsheet. Er is
 ook een fit/gap voor de BIO2 en de Cyberbeveiligingswet, in
 [fitgap2](../fitgap2/README.md). Beide delen de code in deze map.
 

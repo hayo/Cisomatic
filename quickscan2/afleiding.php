@@ -104,12 +104,12 @@ function q2_afgeleide_integriteit(array $a): array
     $pg = q2_afgeleide_persoonsgegevens($a);
 
     // Harde ondergrens: dit staat letterlijk in de integriteitstabel van de
-    // quickscan, als gevolg van het AVG beginsel 'Juistheid'.
+    // quickscan, als gevolg van het AVG-beginsel 'Juistheid'.
     $ondergrens = q2_avg_minimum($pg['categorieen'], $pg['bijzonder']);
     $ondergrensReden = $ondergrens === 'zl'
         ? ''
         : sprintf(
-            'Het AVG beginsel ‘Juistheid’ legt bij deze persoonsgegevens een ondergrens van %s op.',
+            'Het AVG-beginsel ‘Juistheid’ legt bij deze persoonsgegevens een ondergrens van %s op.',
             cm_niveau_label($ondergrens)
         );
 
@@ -120,8 +120,8 @@ function q2_afgeleide_integriteit(array $a): array
     $voorstelReden = ($a['proces_classificatie'] ?? '') === ''
         ? ''
         : sprintf(
-            'Het proces is %s; als startwaarde stelt de tool daar %s bij voor. Dat is een voorstel, geen '
-            . 'regel uit de quickscan.',
+            'Het proces is %s. Als startwaarde stelt de tool daarom %s voor. Dat is een voorstel, geen regel uit de '
+                . 'quickscan.',
             mb_strtolower(q2_antwoord_tekst('proces_classificatie', $a), 'UTF-8'),
             cm_niveau_label($voorstel)
         );
@@ -169,7 +169,7 @@ function q2_afgeleide_vertrouwelijkheid(array $a): array
 
     if ($rubricering !== '') {
         $redenen[] = sprintf(
-            'De informatie is aangemerkt als ‘%s’; dat komt overeen met vertrouwelijkheid %s.',
+            'De informatie is aangemerkt als ‘%s’. Dat past bij vertrouwelijkheid %s.',
             q2_antwoord_tekst('rubricering', $a),
             cm_niveau_label($uitRubricering)
         );
@@ -192,9 +192,9 @@ function q2_afgeleide_vertrouwelijkheid(array $a): array
         && cm_niveau_rang($niveau) < cm_niveau_rang('h')) {
         $voorstel = 'h';
         $niveau = 'h';
-        $redenen[] = 'Het dreigingsprofiel is hoog. Informatie die bescherming nodig heeft tegen '
-            . 'inlichtingendiensten, terreurgroepen of georganiseerde criminaliteit kan niet '
-            . 'tegelijk laag vertrouwelijk zijn, dus stelt de tool Hoog voor.';
+        $redenen[] = 'Het dreigingsprofiel is hoog. Informatie die je moet beschermen tegen inlichtingendiensten, '
+            . 'terreurgroepen of georganiseerde misdaad, kan niet laag vertrouwelijk zijn. Daarom stelt de tool '
+            . 'Hoog voor.';
     }
 
     if ($redenen === []) {
@@ -338,8 +338,8 @@ function q2_motivatie_voorstel(string $voor, array $a): string
         );
 
         if (($a['systemen_afhankelijk'] ?? '') === 'veel') {
-            $tekst .= ' Een niveau hoger dan het procesbelang alleen, omdat veel processen of een '
-                . 'kritiek proces van dit systeem afhankelijk worden en daarmee de uitval erven.';
+            $tekst .= ' Dat is een niveau hoger dan het proces alleen vraagt. Veel processen, of een kritiek '
+                . 'proces, gaan van dit systeem afhangen. Valt het uit, dan vallen die ook uit.';
         }
 
         return $tekst;
@@ -427,7 +427,7 @@ function q2_abro_van_toepassing(array $a): array
         'waar' => $waar,
         'reden' => $waar
             ? 'Het proces is aangemerkt als kritisch strategisch, oftewel een maatschappelijk vitaal '
-                . 'proces. Daarmee is de ABRO quickscan nationale veiligheid bij inkoop en aanbesteden '
+                . 'proces. Daarmee is de ABRO-quickscan nationale veiligheid bij inkoop en aanbesteden '
                 . 'van toepassing.'
             : 'Het proces is niet aangemerkt als maatschappelijk vitaal.',
     ];
@@ -526,7 +526,7 @@ function q2_afgeleide_grootschaligheid(array $a): array
     if ($aantalRang === 3) {
         return [
             'uitkomst' => 'ja',
-            'redenen' => ['Er zijn meer dan 100.000 betrokkenen; dat is per definitie grootschalig.'],
+            'redenen' => ['Er zijn meer dan 100.000 betrokkenen. Dat is altijd grootschalig.'],
         ];
     }
 
@@ -542,8 +542,7 @@ function q2_afgeleide_grootschaligheid(array $a): array
         return [
             'uitkomst' => 'twijfel',
             'redenen' => ['Het gaat om ' . mb_strtolower($aantalTekst, 'UTF-8') . ' betrokkenen'
-                . $samen . '. Dat zit tegen grootschalig aan; de CPO bepaalt of een volledige DPIA '
-                . 'nodig is.'],
+                . $samen . '. Dat zit tegen grootschalig aan. De CPO bepaalt of een volledige DPIA nodig is.'],
         ];
     }
 
@@ -554,7 +553,7 @@ function q2_afgeleide_grootschaligheid(array $a): array
     ];
 }
 
-/** Of er AI in het systeem komt, nu of later. De AI scan zoekt dan de rest uit. */
+/** Of er AI in het systeem komt, nu of later. De AI-scan zoekt dan de rest uit. */
 function q2_met_ai(array $a): bool
 {
     return in_array($a['ai'] ?? '', ['mogelijk', 'onderdeel'], true);

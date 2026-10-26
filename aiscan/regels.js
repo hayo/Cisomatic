@@ -1,5 +1,5 @@
 /**
- * De regels van de AI scan, voor de motor in ../assets/app.js.
+ * De regels van de AI-scan, voor de motor in ../assets/app.js.
  *
  * - de beslishulp is een beslisboom: alleen de vragen op de route zijn te zien
  * - onder de vragen staat meteen of de AI-verordening geldt, en de risicogroep

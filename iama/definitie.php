@@ -51,7 +51,7 @@ return [
             'overslaan' => ['versie', 'versie_toelichting'],
             'als' => ['bc_probleem' => 'ia_aanleiding', 'bc_doel' => 'ia_doel'],
         ],
-        'aiscan' => ['naam' => 'de AI scan', 'als' => ['ai_omschrijving' => 'ia_doel']],
+        'aiscan' => ['naam' => 'de AI-scan', 'als' => ['ai_omschrijving' => 'ia_doel']],
     ],
 
     // Het rapport heeft al alle antwoorden en het besluit.

@@ -28,7 +28,7 @@ daar beschreven. Hier staat wat anders is.
 | Een motivatie voor het proces, en een voor het systeem | Eén motivatie voor allebei, en in het advies één weging |
 | Nauwelijks vragen over de techniek | Nieuwe sectie over bereikbaarheid, inloggen, MFA, logging en monitoring. Daaruit volgen de internetstandaarden, pentests, CVD, het Register Internetdomeinen Overheid en MFA (BIO2 5.14, 5.17, 8.08, 8.15, 8.16) |
 | Leveranciers: land en subverwerkers | Nieuwe sectie over de keten: onafhankelijk bewijs voor de hele dienst, meldtermijn, overstapbaarheid, en of de leverancier zelf onder de wet valt (BIO2 5.19 tot 5.23). De vraag naar subverwerkers staat hier één keer, en telt ook voor de privacy |
-| AI: een aankruislijst met de risicoklasse | Alleen of er AI in komt. Dan staat de [AI scan](../aiscan/README.md) bij de analyses, want die bepaalt de risicogroep en de plichten |
+| AI: een aankruislijst met de risicoklasse | Alleen of er AI in komt. Dan staat de [AI-scan](../aiscan/README.md) bij de analyses, want die bepaalt de risicogroep en de plichten |
 | De CIO stelt mee vast | De proceseigenaar stelt vast, na advies van de CISO, en bij zware gevallen ook van de CIO. De BIO2 legt het risico bij de lijn |
 
 De sleutels van de vragen die in beide quickscans staan, zijn gelijk. Een

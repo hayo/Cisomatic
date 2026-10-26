@@ -280,8 +280,8 @@ const FG2_OVERHEID = [
     ['5.14.01', 'Internetstandaarden', 'De dienst voldoet aan de verplichte internetstandaarden van Forum '
         . 'Standaardisatie. De opdrachtnemer meet dat met internet.nl.', FG2_INTERNET],
     ['5.14.02 en 5.14.05', 'Websites', 'Een website van de dienst gebruikt bij gevoelige gegevens ten minste een '
-        . 'OV-certificaat. De opdrachtnemer helpt de opdrachtgever om de website te registreren in het Register '
-        . 'Internetdomeinen Overheid, en dat elk half jaar actueel te houden.',
+        . 'OV-certificaat. De opdrachtnemer helpt de website te registreren in het Register Internetdomeinen '
+        . 'Overheid. Hij helpt ook om dat elk half jaar bij te werken.',
         'Alleen als de dienst geen website heeft.'],
     ['5.14.04', 'Overzicht van wat via internet bereikbaar is', 'De opdrachtnemer geeft de opdrachtgever een actueel '
         . 'overzicht van wat er van de dienst via internet bereikbaar is: systemen, IP-adressen en API’s.',
@@ -324,8 +324,8 @@ const FG2_KETEN = [
     ['fg_om_5_20_03', '5.20.03 en 5.20.04', 'Onafhankelijk bewijs', 'De opdrachtnemer toont elk jaar met een '
         . 'onafhankelijk onderzoek aan dat hij aan de eisen voldoet. Het onderzoek gaat over de hele dienst, ook over '
         . 'zijn eigen leveranciers. De opdrachtgever mag zelf een audit laten doen.'],
-    ['fg_om_5_20_05', '5.20.05', 'Snel melden', 'De opdrachtnemer meldt incidenten, datalekken en kwetsbaarheden die '
-        . 'de dienst raken zo snel, dat de opdrachtgever zelf binnen 24 uur kan melden. De termijn is enkele uren.'],
+    ['fg_om_5_20_05', '5.20.05', 'Snel melden', 'De opdrachtnemer meldt incidenten, datalekken en kwetsbaarheden in '
+        . 'de dienst zo snel, dat de opdrachtgever zelf binnen 24 uur kan melden. De termijn is enkele uren.'],
     ['fg_om_5_20_06', '5.20.06', 'Exit', 'Er is een uitgewerkte exitstrategie. Het contract noemt de situaties waarin '
         . 'het ontbonden kan worden.'],
     ['fg_om_5_21_02', '5.21.02 tot en met 5.21.04', 'Eigen leveranciers', 'De opdrachtnemer geeft inzicht in zijn '
@@ -335,8 +335,8 @@ const FG2_KETEN = [
 
 const FG2_CBW = [
     ['fg_cbw_melding', 'Cbw 1', 'Informatie voor de melding', 'Bij een significant incident levert de opdrachtnemer '
-        . 'binnen 72 uur wat de opdrachtgever nodig heeft voor de melding: een eerste beoordeling van de ernst en de '
-        . 'gevolgen, en waar het kan de kenmerken van de aanval (Cbw artikel 27).'],
+        . 'binnen 72 uur wat de opdrachtgever nodig heeft voor de melding. Dat is een eerste beoordeling van de '
+        . 'ernst en de gevolgen, en waar het kan de kenmerken van de aanval (Cbw artikel 27).'],
     ['fg_cbw_eindverslag', 'Cbw 2', 'Tussenstand en eindverslag', 'Op verzoek geeft de opdrachtnemer tussendoor de '
         . 'stand van zaken. Uiterlijk een maand na de melding levert hij wat nodig is voor het eindverslag: de '
         . 'oorzaak, de genomen maatregelen en de gevolgen (Cbw artikel 28 en 29).'],
@@ -560,7 +560,7 @@ function fg2_evalueer(array $a): array
         ['Cyberbeveiligingswet', match ($cbw) {
             'ja' => 'De opdrachtgever valt eronder',
             'nee' => 'De opdrachtgever valt er niet onder',
-            default => 'Niet bekend; de eisen gelden wel',
+            default => 'Niet bekend, maar de eisen gelden wel',
         }],
         ['Opdrachtnemer onder Cbw of NIS2', cm_antwoord_tekst('fg_cbw_zelf', $a)],
     ];
@@ -569,9 +569,9 @@ function fg2_evalueer(array $a): array
         'De BIO2 bestaat uit ISO 27001, de maatregelen uit ISO 27002 en de verplichte overheidsmaatregelen. Een '
             . 'certificaat voor ISO 27001 dekt de maatregelen uit ISO 27002 af, maar niet de overheidsmaatregelen. Die '
             . 'staan daarom altijd in deze verklaring.',
-        $cbw === 'nee' ? '' : 'Bij een significant incident geeft de opdrachtgever binnen 24 uur een vroegtijdige '
-            . 'waarschuwing, binnen 72 uur de melding, en uiterlijk een maand daarna een eindverslag. Dat lukt alleen als de opdrachtnemer snel en volledig '
-            . 'meldt.',
+        $cbw === 'nee' ? '' : 'Bij een significant incident waarschuwt de opdrachtgever binnen 24 uur. Binnen 72 '
+            . 'uur volgt de melding, en een maand later het eindverslag. Dat lukt alleen als de opdrachtnemer snel '
+            . 'en volledig meldt.',
         ($a['fg_cbw_zelf'] ?? '') === 'ja' ? 'De opdrachtnemer valt zelf ook onder de Cyberbeveiligingswet of NIS2. Hij '
             . 'heeft dus een eigen zorgplicht en meldplicht. Dat vervangt de eisen in deze verklaring niet.' : '',
     ]));

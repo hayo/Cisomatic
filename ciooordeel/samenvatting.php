@@ -18,7 +18,7 @@ $oordeel = CO_OORDELEN[$uitkomst['oordeel']];
 ?>
 <h2><?= h((string) ($antwoorden['projectnaam'] ?: 'Naamloos project')) ?></h2>
 <p>
-    CIO oordeel, opgesteld op <?= h(cm_datum_nl(new DateTimeImmutable('now'))) ?> door
+    CIO-oordeel, opgesteld op <?= h(cm_datum_nl(new DateTimeImmutable('now'))) ?> door
     <?= h((string) $antwoorden['aanvrager']) ?>.
 </p>
 

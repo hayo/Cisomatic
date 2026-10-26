@@ -82,7 +82,7 @@ Het formulier deelt sleutels met quickscan 2.0: `projectnaam`, `aanvrager`,
 `organisatieonderdeel`, `email`, `proces_omschrijving` en `inkoopvorm`. Na het
 besluit laadt het team hetzelfde bestand in de quickscan. De IAMA neemt ook het
 probleem en het doel over, via `als`: `bc_probleem` wordt `ia_aanleiding`, en
-`bc_doel` wordt `ia_doel`. De AI scan neemt `bc_doel` over als
+`bc_doel` wordt `ia_doel`. De AI-scan neemt `bc_doel` over als
 `ai_omschrijving`. De versie blijft overal staan.
 
 ## Het document

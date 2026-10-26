@@ -216,7 +216,7 @@ const CM_FASEN = [
     'toetsen' => [
         'titel' => 'Toetsen en inkoop',
         'intro' => 'Voldoet de dienst van een leverancier, en staat het project er goed voor? Deze vult een ander '
-            . 'in: de leverancier of het CIO office.',
+            . 'in: de leverancier of het CIO-office.',
     ],
     '' => [
         'titel' => 'Overige formulieren',

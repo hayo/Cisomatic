@@ -28,7 +28,7 @@ $niveaus = [
 <?php if ($uitkomst['klasse'] === 'verboden'): ?>
     <section class="melding" role="alert">
         <h3>Deze toepassing is verboden</h3>
-        <p><?= h(AI_KLASSEN['verboden']['uitleg']) ?> Dat staat in artikel 5 van de AI verordening.</p>
+        <p><?= h(AI_KLASSEN['verboden']['uitleg']) ?> Dat staat in artikel 5 van de AI-verordening.</p>
     </section>
 <?php elseif ($standpunt !== null && $standpunt['oordeel'] === 'nee'): ?>
     <section class="melding" role="alert">

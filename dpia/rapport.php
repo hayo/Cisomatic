@@ -498,8 +498,8 @@ function dp_rapport_risicos(array $a, array $u, string $naam): array
     return [
         ['h2', '3 Risico’s'],
         ['alinea', 'Dit hoofdstuk beschrijft en beoordeelt de risico’s van de verwerking voor de rechten en '
-            . 'vrijheden van de betrokkenen. Daarbij tellen de aard, de omvang, de context en de doelen van de '
-            . 'verwerking mee, zoals hoofdstuk 1 en 2 die beschrijven.'],
+            . 'vrijheden van de betrokkenen. Daarbij tellen de aard, de omvang, de context en de doelen mee, zoals '
+            . 'hoofdstuk 1 en 2 ze beschrijven.'],
         ['h3', '3.1 Toelichting'],
         ['alinea', sprintf('De verwerking %s gebruikt persoonsgegevens. Dat brengt risico’s mee voor de privacy '
             . 'van de betrokkenen, en voor de partijen die meedoen. Deze categorieën van risico’s worden '

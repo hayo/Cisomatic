@@ -304,9 +304,8 @@ function qs_cloud_eisen(
     $kernregel = match ($categorie) {
         'laag' => 'Categorie Laag: er mag gebruik worden gemaakt van alle clouddienstverleners, '
             . 'zolang dat niet in strijd is met wetten en regels.',
-        'midden' => 'Categorie Midden: de informatie mag alleen in de EER worden opgeslagen, óf in '
-            . 'een land waarvoor een adequaatheidsbesluit bestaat, óf op basis van een modelcontract '
-            . 'dat voldoet aan de AVG.',
+        'midden' => 'Categorie Midden. De informatie mag alleen in de EER staan, of in een land met een '
+            . 'adequaatheidsbesluit. Of er is een modelcontract dat voldoet aan de AVG.',
         'hoog' => 'Categorie Hoog: de data mogen alleen in de EER worden opgeslagen, óf in een land '
             . 'waarvoor een adequaatheidsbesluit bestaat.',
         'zeer-hoog' => 'Categorie Zeer hoog: er mag onder geen enkele voorwaarde gebruik worden '
@@ -337,21 +336,18 @@ function qs_cloud_eisen(
 
     if ($categorie === 'hoog') {
         if (in_array($cloudLocatie, ['modelcontract', 'buiten-eer', 'onbekend'], true)) {
-            $u['cloud_eisen'][] = 'De data staat niet aantoonbaar in de EER of in een land met '
-                . 'adequaatheidsbesluit. De CISO voert daarom een beoordeling uit op basis van de '
-                . 'criteria van C2000, en er dient een explain met minimaal een uitgevoerde DPIA aan de '
-                . 'CIO Rijk gestuurd te worden.';
+            $u['cloud_eisen'][] = 'Het is niet aangetoond dat de data in de EER staat, of in een land met een '
+                . 'adequaatheidsbesluit. De CISO beoordeelt het daarom met de criteria van C2000. Daarna gaat er '
+                . 'een explain naar de CIO Rijk, met ten minste een DPIA.';
         }
-        $u['cloud_eisen'][] = 'Voor alle data (inclusief reservekopieën, data in transit en data at rest) '
-            . 'wordt encryptie toegepast waarvan het sleutelbeheer binnen de eigen organisatie '
-            . 'plaatsvindt, of bij een contractant die niet de cloudleverancier is en niet onder de '
-            . 'CLOUD Act valt.';
+        $u['cloud_eisen'][] = 'Alle data wordt versleuteld, ook reservekopieën en data die onderweg is. De '
+            . 'organisatie beheert de sleutels zelf, of een andere partij doet dat. Die partij is niet de '
+            . 'cloudleverancier, en valt niet onder de CLOUD Act.';
     }
 
     if ($categorie === 'midden' && $cloudLocatie === 'buiten-eer') {
-        $u['cloud_eisen'][] = 'Er kan niet worden voldaan aan opslag binnen de EER, een '
-            . 'adequaatheidsbesluit of een modelcontract. De DPIA dient aan de CIO Rijk gestuurd te '
-            . 'worden.';
+        $u['cloud_eisen'][] = 'De data staat niet in de EER of in een land met een adequaatheidsbesluit, en er is '
+            . 'geen modelcontract. Stuur de DPIA naar de CIO Rijk.';
     }
 
     if (in_array($categorie, ['midden', 'hoog'], true)) {
@@ -480,11 +476,11 @@ function qs_analyses(array $u, array $a, array $ctx): array
         } elseif ($grootschalig['uitkomst'] === 'ja') {
             $u = $voegToe($u, 'DPIA', $grootschalig['redenen'][0] ?? 'Grootschalige verwerking.', 'CPO');
         } elseif ($grootschalig['uitkomst'] === 'twijfel') {
-            $u = $voegToe($u, 'DPIA pretoets', $grootschalig['redenen'][0] ?? '', 'CPO');
+            $u = $voegToe($u, 'DPIA-pretoets', $grootschalig['redenen'][0] ?? '', 'CPO');
         } elseif ($pgBijzonderNiveau !== 'nee') {
             $u = $voegToe(
                 $u,
-                'DPIA pretoets',
+                'DPIA-pretoets',
                 'Er worden bijzondere persoonsgegevens verwerkt, maar niet grootschalig. De CPO '
                 . 'bepaalt of een volledige DPIA nodig is.',
                 'CPO'
@@ -520,7 +516,7 @@ function qs_analyses(array $u, array $a, array $ctx): array
     }
 
     if (($a['ai_nieuw_algoritme'] ?? '') === 'ja') {
-        $u = $voegToe($u, 'IAMA', 'Het gaat om een nieuw algoritme of AI systeem.', 'CDO');
+        $u = $voegToe($u, 'IAMA', 'Het gaat om een nieuw algoritme of AI-systeem.', 'CDO');
     }
 
     if (in_array($ctx['aiRisico']['niveau'], ['hoog', 'onaanvaardbaar'], true)) {
@@ -562,7 +558,7 @@ function qs_wetgeving(array $u, array $a, string $rubricering, bool $heeftPg): a
         . 'vindbaar en leverbaar zijn';
 
     if (($a['ai'] ?? 'uitgesloten') !== 'uitgesloten') {
-        $u['wetgeving'][] = 'AI verordening, risicoklasse: '
+        $u['wetgeving'][] = 'AI-verordening, risicoklasse: '
             . mb_strtolower((string) ($u['ai_risico']['label'] ?? 'nog te bepalen'), 'UTF-8');
     }
 
@@ -592,7 +588,7 @@ function qs_wetgeving(array $u, array $a, string $rubricering, bool $heeftPg): a
         }
 
         if (($u['ai_risico']['niveau'] ?? '') === 'beperkt') {
-            $u['kaders'][] = 'Transparantieverplichting: maak kenbaar dat mensen met een AI systeem '
+            $u['kaders'][] = 'Transparantieverplichting: maak kenbaar dat mensen met een AI-systeem '
                 . 'te maken hebben, en merk gegenereerde inhoud als zodanig.';
         }
     }
@@ -663,7 +659,7 @@ function qs_eisen_en_maatregelen(array $u, array $a, bool $heeftPg, bool $heeftC
                 . 'CDO moet hierbij betrokken worden.';
         }
         if (($u['ai_risico']['niveau'] ?? '') === 'onaanvaardbaar') {
-            $u['blokkerend'][] = 'Deze toepassing van AI is verboden onder de AI verordening. '
+            $u['blokkerend'][] = 'Deze toepassing van AI is verboden onder de AI-verordening. '
                 . ($u['ai_risico']['redenen'][0] ?? '')
                 . ' Het voorstel kan in deze vorm niet doorgaan zonder herontwerp.';
         }
@@ -789,7 +785,7 @@ function qs_beslisboom_pad(array $a, array $u, array $ctx): array
         'antwoord' => $ctx['heeftPg'] ? 'Ja' : 'Nee',
         'gevolg' => $ctx['heeftPg']
             ? ($heeftAnalyse($u, 'DPIA') ? 'DPIA noodzakelijk'
-                : ($heeftAnalyse($u, 'DPIA pretoets') ? 'DPIA pretoets door de CPO' : 'Geen DPIA nodig'))
+                : ($heeftAnalyse($u, 'DPIA-pretoets') ? 'DPIA-pretoets door de CPO' : 'Geen DPIA nodig'))
             : 'Geen DPIA nodig',
         'geraakt' => $ctx['heeftPg'],
     ];
@@ -842,7 +838,7 @@ function qs_beslisboom_pad(array $a, array $u, array $ctx): array
                 . 'aantal, omvang, duur en bereik)',
             'gevolg' => $heeftAnalyse($u, 'DPIA')
                 ? 'DPIA noodzakelijk'
-                : ($heeftAnalyse($u, 'DPIA pretoets') ? 'DPIA pretoets door de CPO' : 'Geen gevolg'),
+                : ($heeftAnalyse($u, 'DPIA-pretoets') ? 'DPIA-pretoets door de CPO' : 'Geen gevolg'),
             'geraakt' => $u['grootschalig']['uitkomst'] !== 'nee',
         ];
 
@@ -866,7 +862,7 @@ function qs_beslisboom_pad(array $a, array $u, array $ctx): array
     ];
 
     $stappen[] = [
-        'vraag' => 'Gaat het om een nieuw algoritme of AI systeem?',
+        'vraag' => 'Gaat het om een nieuw algoritme of AI-systeem?',
         'antwoord' => ($a['ai'] ?? 'uitgesloten') === 'uitgesloten'
             ? 'AI is uitgesloten'
             : qs_antwoord_tekst('ai_nieuw_algoritme', $a),
@@ -880,7 +876,7 @@ function qs_beslisboom_pad(array $a, array $u, array $ctx): array
     $stappen[] = [
         'vraag' => 'Is het een maatschappelijk vitaal proces?',
         'antwoord' => ($u['abro']['waar'] ? 'Ja' : 'Nee') . ' (afgeleid uit de procesclassificatie)',
-        'gevolg' => $u['abro']['waar'] ? 'ABRO quickscan noodzakelijk' : 'Geen gevolg',
+        'gevolg' => $u['abro']['waar'] ? 'ABRO-quickscan noodzakelijk' : 'Geen gevolg',
         'geraakt' => $u['abro']['waar'],
     ];
 
@@ -925,13 +921,13 @@ function qs_uitzondering_geen_bescherming(array $u, array $a): array
 
     $u['maatregelen'] = [
         'Er gelden geen aanvullende beveiligingseisen zolang de uitzondering standhoudt.',
-        'Komt er tóch informatie in die bescherming nodig heeft (persoonsgegevens, geheime '
-            . 'informatie, of een proces dat niet meer zonder kan), vul de quickscan dan opnieuw in.',
+        'Komt er tóch informatie in die bescherming nodig heeft, vul de quickscan dan opnieuw in. Denk aan '
+            . 'persoonsgegevens, geheime informatie, of een proces dat niet meer zonder kan.',
     ];
 
     $u['aandachtspunten'] = [
-        'Dit is het uitzonderingsgeval "géén te beschermen informatie". De beoordelaar toetst de '
-            . 'opgegeven motivatie; houdt die geen stand, dan volgt alsnog de volledige scan.',
+        'Dit is het uitzonderingsgeval "géén te beschermen informatie". De beoordelaar toetst de motivatie. Houdt '
+            . 'die geen stand, dan volgt alsnog de hele scan.',
     ];
 
     $u['collegiaal_advies'] = ['CISO'];
@@ -965,24 +961,22 @@ function qs_privacy_checks(array $u, array $a, bool $heeftPg): array
     $grondslag = (string) ($a['pg_grondslag'] ?? '');
 
     if ($grondslag === 'gerechtvaardigd_belang') {
-        $u['blokkerend'][] = 'Als grondslag is gerechtvaardigd belang gekozen. Een overheidsorgaan '
-            . 'kan zich daar voor de uitvoering van zijn publieke taken niet op beroepen; de AVG '
-            . 'sluit dat uitdrukkelijk uit. Kies een andere grondslag (meestal een wettelijke '
-            . 'verplichting of een taak van algemeen belang), of onderbouw waarom deze verwerking '
-            . 'aantoonbaar buiten de publieke taak valt.';
+        $u['blokkerend'][] = 'Als grondslag is gerechtvaardigd belang gekozen. Daar kan een overheidsorgaan zich '
+            . 'bij zijn publieke taken niet op beroepen. Dat sluit de AVG uit. Kies een andere grondslag, meestal '
+            . 'een wettelijke verplichting of een taak van algemeen belang. Of onderbouw waarom deze verwerking '
+            . 'echt buiten de publieke taak valt.';
     }
 
     if ($grondslag === 'toestemming') {
-        $u['aandachtspunten'][] = 'De grondslag is toestemming. Die moet vrij te weigeren en net zo '
-            . 'makkelijk in te trekken zijn als te geven. Tussen overheid en burger is dat door de '
-            . 'ongelijke verhouding lastig hard te maken: ga na of een wettelijke taak hier niet de '
-            . 'juistere grondslag is, en zorg dat de dienst ook werkt als iemand weigert.';
+        $u['aandachtspunten'][] = 'De grondslag is toestemming. Iemand moet die vrij kunnen weigeren, en net zo '
+            . 'makkelijk kunnen intrekken als geven. Tussen overheid en burger is dat lastig, want de verhouding '
+            . 'is ongelijk. Ga na of een wettelijke taak hier niet beter past. En zorg dat de dienst ook werkt als '
+            . 'iemand weigert.';
     }
 
     if ($grondslag === 'onbekend') {
-        $u['blokkerend'][] = 'De grondslag voor de verwerking is nog niet bepaald. Zonder grondslag '
-            . 'mag er niet verwerkt worden; dit moet vaststaan voordat het project start. De CPO '
-            . 'helpt bij het bepalen ervan.';
+        $u['blokkerend'][] = 'De grondslag voor de verwerking is nog niet bepaald. Zonder grondslag mag je niet '
+            . 'verwerken. Die moet vaststaan voordat het project start. De CPO helpt daarbij.';
     }
 
     if (($a['pg_subsidiariteit'] ?? '') === 'kan_minder') {
@@ -1033,19 +1027,18 @@ function qs_archiefwet(array $u, array $a, bool $heeftPg, bool $heeftCloud): arr
 
     $stappen[] = [
         'titel' => 'Wijs de zorgdrager en de beheerder aan',
-        'tekst' => 'Het overheidsorgaan blijft onder de Archiefwet 2026 verantwoordelijk voor de '
-            . 'informatie, ook als een leverancier '
-            . 'het systeem draait. Leg vast wie binnen de organisatie die rol heeft, en leg in het '
-            . 'contract vast dat de leverancier het beheer uitvoert namens de zorgdrager en zelf geen '
-            . 'zeggenschap over bewaren of vernietigen krijgt.',
+        'tekst' => 'Het overheidsorgaan blijft onder de Archiefwet 2026 verantwoordelijk voor de informatie, ook '
+            . 'als een leverancier het systeem draait. Leg vast wie in de organisatie die rol heeft. Leg in het '
+            . 'contract vast dat de leverancier het beheer doet namens de zorgdrager. Over bewaren of vernietigen '
+            . 'beslist de leverancier niet.',
     ];
 
     $stappen[] = [
         'titel' => 'Zoek de categorie in de selectielijst op',
-        'tekst' => 'De vastgestelde selectielijst bepaalt per categorie informatie of die blijvend '
-            . 'bewaard wordt of na een termijn vernietigd. Bepaal onder welke categorie dit proces '
-            . 'valt voordat het systeem wordt ingericht: zonder die categorie kun je geen '
-            . 'bewaartermijn instellen en niet aantonen dat je aan de Archiefwet voldoet.',
+        'tekst' => 'De vastgestelde selectielijst bepaalt per categorie of informatie blijvend bewaard wordt, of na '
+            . 'een termijn vernietigd. Zoek de categorie van dit proces op voordat het systeem wordt ingericht. '
+            . 'Zonder categorie kun je geen bewaartermijn instellen, en kun je niet laten zien dat je aan de '
+            . 'Archiefwet voldoet.',
     ];
 
     $stappen[] = [
@@ -1057,17 +1050,17 @@ function qs_archiefwet(array $u, array $a, bool $heeftPg, bool $heeftCloud): arr
 
     $stappen[] = [
         'titel' => 'Richt de metagegevens in',
-        'tekst' => 'Leg bij elk stuk informatie vast wat het is, wie het heeft gemaakt of ontvangen, '
-            . 'wanneer, binnen welk proces, en welke bewaartermijn en waardering erbij horen. Binnen '
-            . 'de Rijksoverheid is MDTO het metagegevensschema daarvoor. Zonder metagegevens is '
-            . 'informatie later niet terug te vinden, niet te waarderen en niet over te brengen.',
+        'tekst' => 'Leg bij elk stuk informatie vast wat het is, wie het maakte of ontving, en wanneer. Leg ook '
+            . 'vast bij welk proces het hoort, en welke bewaartermijn en waardering erbij horen. Binnen de '
+            . 'Rijksoverheid is MDTO daarvoor het metagegevensschema. Zonder metagegevens vind je informatie later '
+            . 'niet terug, en kun je die niet waarderen of overbrengen.',
     ];
 
     $stappen[] = [
         'titel' => 'Kies bestandsformaten die je over tien jaar nog kunt openen',
-        'tekst' => 'Gebruik open, gedocumenteerde formaten zoals PDF/A, XML, CSV of JSON in plaats van '
-            . 'formaten die alleen de leverancier kan lezen. Spreek dit af voordat het systeem in '
-            . 'gebruik gaat; achteraf converteren kost meer en levert verlies op.',
+        'tekst' => 'Gebruik open, gedocumenteerde formaten zoals PDF/A, XML, CSV of JSON, en geen formaten die '
+            . 'alleen de leverancier kan lezen. Spreek dat af voordat het systeem in gebruik gaat. Achteraf '
+            . 'omzetten kost meer, en je verliest er altijd iets bij.',
     ];
 
     $stappen[] = [
@@ -1079,31 +1072,28 @@ function qs_archiefwet(array $u, array $a, bool $heeftPg, bool $heeftCloud): arr
 
     $stappen[] = [
         'titel' => 'Reken op de overbrengingstermijn van tien jaar',
-        'tekst' => 'De Archiefwet 2026 brengt de overbrengingstermijn terug van twintig naar tien '
-            . 'jaar. Informatie met de waardering "blijvend bewaren" gaat dus twee keer zo snel naar '
-            . 'het Nationaal Archief als onder de oude wet. Voor een systeem dat nu wordt ingekocht '
-            . 'betekent dat: de exportfunctie is geen probleem voor later meer, maar iets dat binnen de '
-            . 'looptijd van dit contract werkend moet zijn. Zorg dat het systeem een export mét '
-            . 'metagegevens kan leveren in een formaat dat het Nationaal Archief accepteert, en test '
-            . 'dat een keer voordat je het nodig hebt.',
+        'tekst' => 'De Archiefwet 2026 brengt de overbrengingstermijn terug van twintig naar tien jaar. Informatie '
+            . 'die blijvend bewaard wordt, gaat dus twee keer zo snel naar het Nationaal Archief. Voor een systeem '
+            . 'dat nu wordt ingekocht, moet de export daarom binnen de looptijd van het contract werken. Zorg dat '
+            . 'het systeem een export mét metagegevens kan maken, in een formaat dat het Nationaal Archief '
+            . 'accepteert. Test dat een keer voordat je het nodig hebt.',
     ];
 
     $stappen[] = [
         'titel' => 'Bepaal nu al wat straks openbaar wordt',
-        'tekst' => 'Bij overbrenging wordt informatie in beginsel openbaar, tenzij er een grond is om '
-            . 'de openbaarheid te beperken (bijvoorbeeld de bescherming van persoonsgegevens of van '
-            . 'de staat). Met een termijn van tien jaar is dat geen theoretische vraag meer. Leg per '
-            . 'informatiesoort vast of er een beperking nodig is en op welke grond, en zorg dat het '
-            . 'systeem die aantekening als metagegeven kan vasthouden.',
+        'tekst' => 'Bij overbrenging wordt informatie in principe openbaar. Dat kan anders als er een grond is om '
+            . 'dat te beperken, zoals de bescherming van persoonsgegevens of van de staat. Met een termijn van '
+            . 'tien jaar is dat geen vraag voor later meer. Leg per soort informatie vast of er een beperking '
+            . 'nodig is, en op welke grond. Zorg dat het systeem die aantekening als metagegeven kan bewaren.',
     ];
 
     if ($extern) {
         $stappen[] = [
             'titel' => 'Regel de exit voordat je begint',
-            'tekst' => 'Neem als contracteis op dat bij beëindiging alle informatie in een bruikbaar, '
-                . 'leveranciersonafhankelijk formaat wordt teruggeleverd, inclusief metagegevens, en '
-                . 'dat de leverancier daarna aantoonbaar al zijn kopieën vernietigt. Zonder deze '
-                . 'afspraak ben je bij een contractwissel je archief kwijt of zit je eraan vast.',
+            'tekst' => 'Zet in het contract dat de leverancier aan het eind alle informatie teruggeeft, met de '
+                . 'metagegevens, in een formaat dat elk systeem kan lezen. Daarna vernietigt hij aantoonbaar al '
+                . 'zijn kopieën. Zonder die afspraak ben je bij een nieuwe leverancier je archief kwijt, of zit je '
+                . 'vast aan de oude.',
         ];
     }
 
@@ -1120,14 +1110,13 @@ function qs_archiefwet(array $u, array $a, bool $heeftPg, bool $heeftCloud): arr
     // ---- concrete gevolgen van de gegeven antwoorden ----------------------
 
     if ($bewaartermijn === 'onbepaald') {
-        $u['blokkerend'][] = 'Er is nog geen bewaartermijn bepaald. Zonder termijn kun je niet '
-            . 'voldoen aan de AVG (niet langer bewaren dan nodig) en niet aan de Archiefwet 2026 '
-            . '(tijdig vernietigen of overbrengen). Bepaal eerst onder welke categorie van de '
-            . 'selectielijst dit proces valt.';
+        $u['blokkerend'][] = 'Er is nog geen bewaartermijn bepaald. Zonder termijn voldoe je niet aan de AVG, want '
+            . 'je mag niet langer bewaren dan nodig. Je voldoet ook niet aan de Archiefwet 2026, want je moet op '
+            . 'tijd vernietigen of overbrengen. Zoek eerst op onder welke categorie van de selectielijst dit '
+            . 'proces valt.';
     } elseif ($bewaartermijn === 'eigen') {
-        $u['aandachtspunten'][] = 'De bewaartermijn is zelf bepaald in plaats van uit de selectielijst '
-            . 'overgenomen. Controleer of er voor dit proces niet toch een categorie in de '
-            . 'selectielijst bestaat; die gaat voor.';
+        $u['aandachtspunten'][] = 'De bewaartermijn is zelf bepaald, en niet uit de selectielijst overgenomen. Kijk '
+            . 'of er voor dit proces toch een categorie in de selectielijst staat. Die gaat voor.';
     }
 
     if ($vernietiging === 'nee') {
@@ -1143,9 +1132,8 @@ function qs_archiefwet(array $u, array $a, bool $heeftPg, bool $heeftCloud): arr
     }
 
     if ($export === 'nee') {
-        $u['eisen_leverancier'][] = 'De leverancier levert een export van alle informatie inclusief '
-            . 'metagegevens, in een open en gedocumenteerd formaat, op elk moment tijdens en bij '
-            . 'beëindiging van het contract.';
+        $u['eisen_leverancier'][] = 'De leverancier levert op elk moment een export van alle informatie met de '
+            . 'metagegevens, in een open en gedocumenteerd formaat. Ook aan het eind van het contract.';
         $u['aandachtspunten'][] = 'De informatie is nu niet zonder de leverancier op te halen. Dat '
             . 'blokkeert overbrenging naar het Nationaal Archief, maakt verzoeken om informatie (Woo) moeilijker, en maakt '
             . 'een contractwissel riskant.';
@@ -1215,7 +1203,7 @@ function qs_wegingen(array $a, array $u): array
         'herkomst' => $voorstelB === $u['biv']['b']
             ? 'Voorstel van de tool, overgenomen door ' . $rol . '.'
             : sprintf(
-                'De tool stelde %s voor; %s koos %s.',
+                'De tool stelde %s voor, %s koos %s.',
                 cm_niveau_label($voorstelB),
                 $rol,
                 cm_niveau_label($u['biv']['b'])
@@ -1236,7 +1224,7 @@ function qs_wegingen(array $a, array $u): array
             'motivatie' => $mot['tekst'],
             'herkomst' => isset($u['biv_verhoogd'][$letter])
                 ? sprintf(
-                    'De tool leidde %s af; %s stelde bij naar %s.',
+                    'De tool leidde %s af, %s stelde bij naar %s.',
                     cm_niveau_label($afgeleid),
                     $rol,
                     cm_niveau_label($u['biv'][$letter])
@@ -1291,7 +1279,7 @@ function qs_wegingen(array $a, array $u): array
 
 /**
  * Welke andere formulieren deze quickscan voorstelt, voor het dossier. Per
- * formulier: of het voorgesteld is, en waarom. Een DPIA pretoets wijst ook
+ * formulier: of het voorgesteld is, en waarom. Een DPIA-pretoets wijst ook
  * naar de DPIA; die begint met de pretoets.
  *
  * @return array<string,array{voorgesteld:bool,reden:string}>
@@ -1305,16 +1293,16 @@ function qs_vervolg(array $a, array $u): array
     return [
         'dpia' => match (true) {
             isset($analyses['DPIA']) => ['voorgesteld' => true, 'reden' => $analyses['DPIA']],
-            isset($analyses['DPIA pretoets']) => ['voorgesteld' => true,
-                'reden' => 'Eerst een pretoets door de CPO. ' . $analyses['DPIA pretoets']],
+            isset($analyses['DPIA-pretoets']) => ['voorgesteld' => true,
+                'reden' => 'Eerst een pretoets door de CPO. ' . $analyses['DPIA-pretoets']],
             default => ['voorgesteld' => false, 'reden' => 'De quickscan vraagt geen DPIA.'],
         },
         'iama' => isset($analyses['IAMA'])
             ? ['voorgesteld' => true, 'reden' => $analyses['IAMA']]
             : ['voorgesteld' => false, 'reden' => 'De quickscan vraagt geen IAMA.'],
         'aiscan' => $ai
-            ? ['voorgesteld' => true, 'reden' => 'Er komt AI in het systeem, of dat is niet uitgesloten. De AI scan '
-                . 'zoekt uit wat de AI verordening dan vraagt.']
+            ? ['voorgesteld' => true, 'reden' => 'Er komt AI in het systeem, of dat is niet uitgesloten. De AI-scan '
+                . 'zoekt uit wat de AI-verordening dan vraagt.']
             : ['voorgesteld' => false, 'reden' => 'Er komt geen AI in het systeem.'],
         'soevereiniteit' => $cloud
             ? ['voorgesteld' => true, 'reden' => 'Het systeem gebruikt een clouddienst, of sluit die niet uit. De '

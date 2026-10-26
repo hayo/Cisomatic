@@ -187,12 +187,12 @@
     function afgeleideIntegriteit(a) {
         var pg = persoonsgegevens(a);
 
-        // Harde ondergrens uit de quickscan zelf (AVG beginsel 'Juistheid').
+        // Harde ondergrens uit de quickscan zelf (AVG-beginsel 'Juistheid').
         var ondergrens = avgMinimum(pg.categorieen, pg.bijzonder);
         var redenen = [];
 
         if (ondergrens !== 'zl') {
-            redenen.push('Het AVG beginsel ‘Juistheid’ legt bij deze persoonsgegevens een '
+            redenen.push('Het AVG-beginsel ‘Juistheid’ legt bij deze persoonsgegevens een '
                 + 'ondergrens van ' + LABEL[ondergrens] + ' op.');
         }
 

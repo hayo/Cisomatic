@@ -12,9 +12,9 @@ declare(strict_types=1);
         <ol class="route" aria-label="De route van een project">
             <li aria-current="step"><strong>Business case en intaketoets.</strong> Moeten we dit wel doen?</li>
             <li><strong>Quickscan.</strong> Wat vragen de BIO2 en de Cyberbeveiligingswet?</li>
-            <li><strong>DPIA, IAMA, AI scan of soevereiniteitsscan.</strong> Alleen als de quickscan zegt dat ze nodig
+            <li><strong>DPIA, IAMA, AI-scan of soevereiniteitsscan.</strong> Alleen als de quickscan zegt dat ze nodig
                 zijn.</li>
-            <li><strong>CIO oordeel.</strong> Bij een project van meer dan 5 miljoen euro.</li>
+            <li><strong>CIO-oordeel.</strong> Bij een project van meer dan 5 miljoen euro.</li>
         </ol>
         <p>Wat je hier invult, neemt het volgende formulier over. In een dossier gaat dat vanzelf. Anders download je
            aan het eind de antwoorden, en laad je dat bestand in op het volgende formulier.</p>

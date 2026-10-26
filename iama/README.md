@@ -35,7 +35,7 @@ ze de volgende keer weer in.
 | --- | --- |
 | Lege vakken per vraag | Een tekstvak per vraag; ja/nee-vragen zijn een keuze met een toelichting eronder |
 | Het icoon ‘art. 27 AI-verordening’ | Een zin in de hint, en ‘(artikel 27 AI-verordening)’ achter de kop in het document |
-| 1.3.1: is het een verboden AI-systeem? | Eerst: is het een AI-systeem? Dan 1.3.1 als keuze, met een verwijzing naar de [AI scan](../aiscan/README.md). Die zoekt de risicogroep uit, dus de IAMA heeft geen eigen aankruislijst |
+| 1.3.1: is het een verboden AI-systeem? | Eerst: is het een AI-systeem? Dan 1.3.1 als keuze, met een verwijzing naar de [AI-scan](../aiscan/README.md). Die zoekt de risicogroep uit, dus de IAMA heeft geen eigen aankruislijst |
 | 2.2A en 2.2B, sla over wat niet geldt | Het type bij 2.1.1 bepaalt welke van de twee verschijnt |
 | 2.5.1 alleen bij een externe partij | Een vraag wie het algoritme ontwikkelde; 2.5.1 verschijnt alleen bij een externe partij |
 | 4.3 tot en met 4.5 alleen als het nodig is | Eén vraag na 4.2 of ze nodig zijn |
@@ -65,9 +65,9 @@ opsteller, afdeling, e-mail en het proces bij 3.1.1. Een bestand van de DPIA doe
 Omgekeerd leest de DPIA een bestand van de IAMA in, met als aanleiding ‘uit de
 IAMA bleek dat een DPIA nodig is’.
 
-Een bestand van de AI scan neemt de omschrijving over als doel bij 1.1.2.
+Een bestand van de AI-scan neemt de omschrijving over als doel bij 1.1.2.
 Weet het team nog niet of het een AI-systeem is, of of het verboden is? Dan zet
-de tool de AI scan bij de actiepunten.
+de tool de AI-scan bij de actiepunten.
 
 ## Voorstellen
 

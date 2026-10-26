@@ -1,4 +1,4 @@
-# AI scan
+# AI-scan
 
 Een formulier van de [cisomatic](../README.md) dat uitzoekt wat de
 AI-verordening van een toepassing vraagt. Het volgt de

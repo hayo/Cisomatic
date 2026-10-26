@@ -1,7 +1,7 @@
 <?php
 
 /**
- * De vragenlijst van de AI scan: eerst de toepassing, dan de Beslishulp
+ * De vragenlijst van de AI-scan: eerst de toepassing, dan de Beslishulp
  * AI-verordening van BZK, dan het standpunt en de handreiking over
  * generatieve AI, en tot slot de uitkomst.
  *
@@ -178,11 +178,11 @@ function ai_sectie_toepassing(): array
     ];
 
     $soorten = [
-        'systeem' => ['label' => 'Een AI systeem', 'hint' => 'Het leert van data, of redeneert met de kennis van '
+        'systeem' => ['label' => 'Een AI-systeem', 'hint' => 'Het leert van data, of redeneert met de kennis van '
             . 'experts. Denk aan beeldherkenning, of een model dat een risico voorspelt.'],
-        'gpai_systeem' => ['label' => 'Een AI systeem voor algemene doeleinden', 'hint' => 'Het kan veel soorten '
+        'gpai_systeem' => ['label' => 'Een AI-systeem voor algemene doeleinden', 'hint' => 'Het kan veel soorten '
             . 'taken aan. Denk aan ChatGPT, Copilot of Le Chat.'],
-        'model' => ['label' => 'Alleen een AI model voor algemene doeleinden', 'hint' => 'Bijvoorbeeld een '
+        'model' => ['label' => 'Alleen een AI-model voor algemene doeleinden', 'hint' => 'Bijvoorbeeld een '
             . 'taalmodel dat jullie zelf trainen of aanbieden, zonder toepassing eromheen.'],
         'geen' => ['label' => 'Geen van deze', 'hint' => 'Bijvoorbeeld vaste rekenregels die mensen hebben bedacht, of '
             . 'een dashboard met cijfers.'],
@@ -191,7 +191,7 @@ function ai_sectie_toepassing(): array
 
     return [
         'id' => 'toepassing',
-        'titel' => 'Geldt de AI verordening?',
+        'titel' => 'Geldt de AI-verordening?',
         'stap' => 1,
         'intro' => 'Deze vragen komen uit de beslishulp. Na elk antwoord verschijnt de volgende vraag die voor jullie '
             . 'geldt.',
@@ -199,14 +199,14 @@ function ai_sectie_toepassing(): array
             ai_boomvraag('ai_algoritme', 'Zit er een algoritme in de toepassing?', 'Een algoritme is een reeks '
                 . 'stappen die een computer volgt. Zo komt hij tot een uitkomst, zoals een berekening of een advies.',
                 ai_janee()),
-            ai_boomvraag('ai_rol', 'Wie maakt de toepassing, en wie gebruikt hem?', 'De AI verordening kent twee '
+            ai_boomvraag('ai_rol', 'Wie maakt de toepassing, en wie gebruikt hem?', 'De AI-verordening kent twee '
                 . 'hoofdrollen. De aanbieder maakt een systeem, en de gebruiksverantwoordelijke gebruikt het.', $rollen),
             ai_boomvraag('ai_status', 'Is de toepassing al in gebruik?', 'Ook een proef telt als gebruik, als die '
                 . 'echte gevolgen heeft.', [
                     'gebruik' => ['label' => 'Ja, hij is al in gebruik'],
                     'ontwikkeling' => ['label' => 'Nee, hij is nog in ontwikkeling'],
                 ]),
-            ai_boomvraag('ai_soort', 'Wat voor toepassing is het?', 'De AI verordening kent drie soorten. Kies wat '
+            ai_boomvraag('ai_soort', 'Wat voor toepassing is het?', 'De AI-verordening kent drie soorten. Kies wat '
                 . 'het best past.', $soorten),
             ai_boomvraag('ai_regels', 'Werkt de toepassing alleen met vaste regels die mensen hebben bedacht?',
                 'Bijvoorbeeld de regel: wie minder verdient dan een grens, krijgt toeslag. Zulke regels komen niet uit '
@@ -229,7 +229,7 @@ function ai_sectie_toepassing(): array
                 'key' => 'ai_afgeleid_toepassing',
                 'type' => 'afgeleid',
                 'bron' => 'toepassing',
-                'label' => 'Geldt de AI verordening?',
+                'label' => 'Geldt de AI-verordening?',
                 'groepen' => ai_model(),
             ],
         ],
@@ -244,11 +244,11 @@ function ai_sectie_risico(): array
         'titel' => 'In welke risicogroep valt het?',
         'stap' => 2,
         'toon_als_uitkomst' => ['risico' => ['ja']],
-        'intro' => 'De AI verordening deelt toepassingen in naar hun risico. Hoe hoger het risico, hoe meer regels '
+        'intro' => 'De AI-verordening deelt toepassingen in naar hun risico. Hoe hoger het risico, hoe meer regels '
             . 'er gelden.',
         'vragen' => [
             ai_boomvraag('ai_systeemrisico', 'Is het model een van de allergrootste?', 'Het gaat om modellen die bij '
-                . 'de training meer dan 10²⁵ rekenstappen nodig hadden (FLOPs). De AI verordening spreekt dan van een '
+                . 'de training meer dan 10²⁵ rekenstappen nodig hadden (FLOPs). De AI-verordening spreekt dan van een '
                 . 'systeemrisico.', ai_janee()),
             [
                 'key' => 'ai_toepassing',
@@ -269,7 +269,7 @@ function ai_sectie_risico(): array
                 ]),
             ai_boomvraag('ai_bijlage1', 'Valt het systeem onder de Europese regels voor veilige producten?', 'Het '
                 . 'systeem is dan zelf zo’n product, of het zorgt voor de veiligheid ervan. Die producten staan in '
-                . 'bijlage I van de AI verordening.', [
+                . 'bijlage I van de AI-verordening.', [
                     'a' => ['label' => 'Ja, zoals machines, speelgoed, liften of medische hulpmiddelen'],
                     'b' => ['label' => 'Ja, zoals auto’s, vliegtuigen, schepen of treinen'],
                     'nee' => ['label' => 'Nee'],
@@ -387,7 +387,7 @@ function ai_sectie_handreiking(): array
         'intro' => 'De handreiking van BZK geeft tips voor goed gebruik van generatieve AI. Hier gaat het om de '
             . 'belangrijkste tips.',
         'vragen' => [
-            gai_vraag('gai_kennis', 'Krijgen de gebruikers uitleg of training over AI?', 'De AI verordening vraagt '
+            gai_vraag('gai_kennis', 'Krijgen de gebruikers uitleg of training over AI?', 'De AI-verordening vraagt '
                 . 'dat sinds februari 2025.', [
                     'ja' => ['label' => 'Ja'],
                     'gepland' => ['label' => 'Dat komt nog'],
@@ -449,7 +449,7 @@ function ai_sectie_uitkomst(): array
 // ---------------------------------------------------------------------------
 
 /**
- * Waar een AI systeem aan kan raken. Dezelfde sleutels als in de eerste
+ * Waar een AI-systeem aan kan raken. Dezelfde sleutels als in de eerste
  * quickscan, zodat een bestand daarvan dit alvast aanvinkt. Drie verboden en de
  * emotieherkenning staan alleen hier, want de beslishulp noemt ze wel. Het
  * begin van de sleutel geeft de groep.

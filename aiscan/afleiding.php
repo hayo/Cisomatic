@@ -16,8 +16,8 @@ declare(strict_types=1);
 /** Waarom de AI-verordening niet geldt. */
 const AI_NIET = [
     'algoritme' => 'Er zit geen algoritme in de toepassing.',
-    'rol' => 'Jullie hebben geen rol die de AI verordening kent.',
-    'ai' => 'De toepassing is geen AI systeem en geen AI model, zoals de AI verordening die bedoelt.',
+    'rol' => 'Jullie hebben geen rol die de AI-verordening kent.',
+    'ai' => 'De toepassing is geen AI-systeem en geen AI-model, zoals de AI-verordening die bedoelt.',
     'uitzondering' => 'Er geldt een uitzondering uit artikel 2.',
     'opensource' => 'De toepassing is open source, zonder hoog risico en zonder plicht tot transparantie. Daarvoor '
         . 'geldt een uitzondering uit artikel 2.',
@@ -26,7 +26,7 @@ const AI_NIET = [
 /** Wat dan nog geldt. */
 const AI_NIET_ADVIES = [
     'algoritme' => ['Houd je aan de andere wetten, zoals de AVG als er persoonsgegevens in de toepassing komen.'],
-    'rol' => ['Kijk goed na of jullie echt geen rol hebben. De AI verordening kent de aanbieder, de '
+    'rol' => ['Kijk goed na of jullie echt geen rol hebben. De AI-verordening kent de aanbieder, de '
         . 'gebruiksverantwoordelijke, de importeur en de distributeur.'],
     'ai' => ['Kijk of het algoritme veel invloed heeft op mensen. Dan hoort het in het Algoritmeregister. De '
         . 'Handreiking Algoritmeregister helpt daarbij.',
@@ -38,17 +38,17 @@ const AI_NIET_ADVIES = [
 ];
 
 const AI_SOORTEN = [
-    'systeem' => 'AI systeem',
-    'gpai_systeem' => 'AI systeem voor algemene doeleinden',
-    'model' => 'AI model voor algemene doeleinden',
+    'systeem' => 'AI-systeem',
+    'gpai_systeem' => 'AI-systeem voor algemene doeleinden',
+    'model' => 'AI-model voor algemene doeleinden',
 ];
 
 /** De uitkomst van de beslishulp, met de zwaarte voor de kleur op de pagina. */
 const AI_KLASSEN = [
-    'niet' => ['label' => 'De AI verordening geldt niet', 'niveau' => '',
+    'niet' => ['label' => 'De AI-verordening geldt niet', 'niveau' => '',
         'uitleg' => 'Andere regels blijven wel gelden, zoals de AVG.'],
     'verboden' => ['label' => 'Verboden', 'niveau' => 'zh',
-        'uitleg' => 'De AI verordening verbiedt deze toepassing. Hij mag niet worden gebruikt.'],
+        'uitleg' => 'De AI-verordening verbiedt deze toepassing. Hij mag niet worden gebruikt.'],
     'hoog' => ['label' => 'Hoog risico', 'niveau' => 'h',
         'uitleg' => 'Er gelden veel eisen, voor de aanbieder en voor de gebruiksverantwoordelijke.'],
     'systeemrisico' => ['label' => 'Model met een systeemrisico', 'niveau' => 'h',
@@ -58,7 +58,7 @@ const AI_KLASSEN = [
     'transparantie' => ['label' => 'Geen hoog risico, wel transparantie', 'niveau' => 'm',
         'uitleg' => 'Mensen moeten weten dat ze met AI te maken hebben.'],
     'laag' => ['label' => 'Geen hoog risico', 'niveau' => '',
-        'uitleg' => 'Er gelden maar weinig regels uit de AI verordening.'],
+        'uitleg' => 'Er gelden maar weinig regels uit de AI-verordening.'],
 ];
 
 /** De plichten per rol en risicogroep. De datums zet ai_plichten() erbij. */
@@ -79,7 +79,7 @@ const AI_PLICHTEN = [
             'Bewaar de documentatie (artikel 18), en de logs die het systeem zelf maakt (artikel 19).',
             'Laat het systeem beoordelen voordat het in gebruik gaat (artikel 43). Dat heet een '
                 . 'conformiteitsbeoordeling.',
-            'Stel een EU conformiteitsverklaring op (artikel 47), en zet de CE markering op het systeem (artikel 48).',
+            'Stel een EU-conformiteitsverklaring op (artikel 47), en zet de CE-markering op het systeem (artikel 48).',
             'Registreer het systeem in de databank van de EU (artikel 49).',
             'Zet de naam en het adres van de aanbieder op het systeem, of in de documentatie.',
             'Voldoet het systeem niet? Grijp dan in, en meld het (artikel 20).',
@@ -137,7 +137,7 @@ const AI_PLICHTEN = [
         'titel' => 'Importeur van een systeem met een hoog risico (artikel 23)',
         'punten' => [
             'Controleer of de aanbieder alles heeft gedaan, voordat het systeem op de markt komt. Denk aan de '
-                . 'conformiteitsbeoordeling, de documentatie, de CE markering, de EU conformiteitsverklaring en de '
+                . 'conformiteitsbeoordeling, de documentatie, de CE-markering, de EU-conformiteitsverklaring en de '
                 . 'gebruiksaanwijzing.',
             'Twijfel je of het systeem voldoet? Breng het dan niet op de markt. Is het gevaarlijk? Meld dat aan de '
                 . 'aanbieder en de toezichthouder.',
@@ -150,7 +150,7 @@ const AI_PLICHTEN = [
     'distributeur' => [
         'titel' => 'Distributeur van een systeem met een hoog risico (artikel 24)',
         'punten' => [
-            'Controleer of het systeem de CE markering heeft, met de EU conformiteitsverklaring en de '
+            'Controleer of het systeem de CE-markering heeft, met de EU-conformiteitsverklaring en de '
                 . 'gebruiksaanwijzing.',
             'Twijfel je of het systeem voldoet? Lever het dan niet. Is het gevaarlijk? Meld dat aan de aanbieder of de '
                 . 'importeur.',
@@ -169,7 +169,7 @@ const AI_PLICHTEN = [
 
 /** De voorwaarden uit het standpunt over generatieve AI. */
 const GAI_VOORWAARDEN = [
-    'wet' => 'Het voldoet aan de wet, zoals de AVG en de AI verordening',
+    'wet' => 'Het voldoet aan de wet, zoals de AVG en de AI-verordening',
     'doel' => 'Het doel is duidelijk',
     'risico' => 'Er is een risicoanalyse, met een gemengde groep',
     'beleid' => 'Het past in het beleid, en de juiste mensen beslissen',
@@ -187,7 +187,7 @@ const GAI_OORDELEN = [
 /** Tips uit de handreiking die altijd gelden. */
 const GAI_TIPS = [
     'Zet de toepassing in het Algoritmeregister. Beschrijf daar het doel, en voor wie de toepassing is.',
-    'Breng de beveiliging in kaart. Let ook op verstopte opdrachten in tekst die de AI leest (prompt injectie). De '
+    'Breng de beveiliging in kaart. Let ook op verstopte opdrachten in tekst die de AI leest (promptinjectie). De '
         . 'OWASP Top 10 voor taalmodellen helpt daarbij.',
     'Zorg dat medewerkers en burgers fouten en discriminatie kunnen melden.',
     'Bewaar belangrijke vragen en antwoorden. Dan kun je later nagaan hoe iets tot stand kwam.',
@@ -507,7 +507,7 @@ function gai_standpunt(array $a, array $r): array
             . 'voor één medewerker. Kies een dienst met een contract, of een model in eigen beheer.' : '',
         $verkenning ? 'Gebruik de AI alleen om te verkennen, zonder gevoelige gegevens. Voor echt gebruik is een '
             . 'contract nodig, of een model in eigen beheer.' : '',
-        $r['risico'] === 'verboden' ? 'De AI verordening verbiedt deze toepassing. Hij mag dus niet worden gebruikt.' : '',
+        $r['risico'] === 'verboden' ? 'De AI-verordening verbiedt deze toepassing. Hij mag dus niet worden gebruikt.' : '',
         $w('gai_persoonsgegevens') === 'ja' ? 'Doe een DPIA, of eerst een prescan DPIA. Dat moet altijd als er '
             . 'persoonsgegevens in de AI komen. De DPIA staat ook in deze tool.' : '',
         $open['noodzaak']['actie'] ?? '',
@@ -537,7 +537,7 @@ function gai_standpunt(array $a, array $r): array
     ];
 
     $tips = [
-        $w('gai_kennis') === 'ja' ? '' : 'Geef de gebruikers uitleg of training over AI. De AI verordening vraagt dat '
+        $w('gai_kennis') === 'ja' ? '' : 'Geef de gebruikers uitleg of training over AI. De AI-verordening vraagt dat '
             . 'ook (artikel 4).',
         $w('gai_mens') === 'altijd' ? '' : 'Laat een mens nakijken wat de AI maakt, voordat het wordt gebruikt. '
             . 'Generatieve AI kan fouten maken, en dingen verzinnen.',
@@ -567,7 +567,7 @@ function gai_standpunt(array $a, array $r): array
 /** @return list<string> */
 function ai_vervolg(array $a, array $r, ?array $gai): array
 {
-    $opnieuw = 'Doe de scan opnieuw als de toepassing verandert. Ook de AI verordening en de beslishulp veranderen nog.';
+    $opnieuw = 'Doe de scan opnieuw als de toepassing verandert. Ook de AI-verordening en de beslishulp veranderen nog.';
 
     if ($r['risico'] === 'verboden') {
         return ['Stop met de toepassing, of verander hem zo dat hij niet meer verboden is.', $opnieuw];

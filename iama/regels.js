@@ -1,7 +1,7 @@
 /**
  * De regels van het IAMA, voor de motor in ../assets/app.js.
  *
- * - bij vraag 4.2.1 stelt de tool nee voor, als het algoritme geen AI systeem is
+ * - bij vraag 4.2.1 stelt de tool nee voor, als het algoritme geen AI-systeem is
  * - bij 4.3 krijgt het veld voor een grondrecht de aangetaste grondrechten uit 4.1.2 als suggestie
  * - bij de balans neemt de tool de antwoorden bij 4.4.1 en 4.5.1 alvast over
  *

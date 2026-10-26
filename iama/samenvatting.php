@@ -48,7 +48,7 @@ $advies = ['niet' => 'h', 'voorwaarden' => 'm', 'inzetten' => 'l'];
         <dt>Algoritme</dt>
         <dd><?= h(cm_antwoord_tekst('ia_type', $antwoorden)) ?></dd>
 
-        <dt>AI verordening</dt>
+        <dt>AI-verordening</dt>
         <dd data-niveau="<?= h($uitkomst['ai']['niveau']) ?>"><?= h($uitkomst['ai']['label']) ?></dd>
 
         <dt>Wettelijke taak</dt>

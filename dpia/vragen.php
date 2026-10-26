@@ -467,7 +467,7 @@ function dp_informatiesoorten(): array
             'geboorte' => 'Geboortedatum of leeftijd',
             'functie' => 'Functie, afdeling of werkgever',
             'financieel' => 'Bankrekening, salaris of andere financiële gegevens',
-            'ip' => 'IP adres, nummer van een apparaat of van een cookie',
+            'ip' => 'IP-adres, nummer van een apparaat of van een cookie',
             'locatie' => 'Waar iemand is, of waar iemand heen reist',
             'gebruik' => 'Wat iemand doet in een systeem of op internet',
             'beeld' => 'Foto, video of geluidsopname van personen',

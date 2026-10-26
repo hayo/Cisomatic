@@ -247,7 +247,7 @@ function dp_kaderlijst(): array
             'toon_als' => ['informatie_soorten' => ['bsn']],
         ],
         [
-            'tekst' => 'AI verordening, omdat AI niet is uitgesloten',
+            'tekst' => 'AI-verordening, omdat AI niet is uitgesloten',
             'toon_als' => ['ai' => ['mogelijk', 'onderdeel']],
         ],
     ];

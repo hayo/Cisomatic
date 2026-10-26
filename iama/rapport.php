@@ -85,7 +85,7 @@ function ia_antwoord(array $vraag, array $a, array $u): array
     $key = $vraag['key'];
     $waarde = $a[$key] ?? '';
     $kop = empty($vraag['bij'])
-        ? [['h4', $vraag['label'] . (empty($vraag['art27']) ? '' : ' (artikel 27 AI verordening)')]]
+        ? [['h4', $vraag['label'] . (empty($vraag['art27']) ? '' : ' (artikel 27 AI-verordening)')]]
         : [];
 
     return match ($vraag['type']) {
@@ -179,8 +179,8 @@ function ia_rapport_inleiding(array $a, array $u, string $naam): array
                 2 => 'Tot nu toe is alles besproken tot en met vraag 4.1.',
                 default => 'Alle delen zijn besproken.',
             }],
-        ['alinea', 'Bij sommige vragen staat ‘artikel 27 AI verordening’. Die vragen horen bij de beoordeling van '
-            . 'grondrechten die de AI verordening vraagt voor een AI systeem met een hoog risico.'],
+        ['alinea', 'Bij sommige vragen staat ‘artikel 27 AI-verordening’. Die vragen horen bij de beoordeling van '
+            . 'grondrechten die de AI-verordening vraagt voor een AI-systeem met een hoog risico.'],
         ['h3', 'Versiebeheer'],
         ['tabel', [
             'kop' => ['Versie', 'Datum', 'Door', 'Toelichting'],

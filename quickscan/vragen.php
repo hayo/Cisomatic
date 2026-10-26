@@ -95,8 +95,8 @@ function qs_sectie_route(): array
                     ],
                     'beoordelaar' => [
                         'label' => 'Beoordelaar',
-                        'hint' => 'Je beoordeelt een ingevulde inventarisatie. Je mag de wegingen '
-                            . 'bijstellen, ook naar beneden, mits je motiveert waarom.',
+                        'hint' => 'Je beoordeelt een ingevulde inventarisatie. Je mag de wegingen bijstellen, ook '
+                            . 'naar beneden, als je uitlegt waarom.',
                     ],
                 ],
             ],
@@ -120,10 +120,9 @@ function qs_sectie_route(): array
                     ],
                     'nee' => [
                         'label' => 'Nee, er valt hier niets te beschermen',
-                        'hint' => 'Kies dit alleen als alle drie kloppen: er zitten geen '
-                            . 'persoonsgegevens in, alle informatie is openbaar of mag openbaar '
-                            . 'worden, én uitval heeft geen gevolgen voor de organisatie, burgers '
-                            . 'of gebruikers.',
+                        'hint' => 'Kies dit alleen als alle drie kloppen. Er zitten geen persoonsgegevens in. Alle '
+                            . 'informatie is openbaar, of mag openbaar worden. En uitval heeft geen gevolgen voor '
+                            . 'de organisatie, burgers of gebruikers.',
                     ],
                 ],
             ],
@@ -289,10 +288,9 @@ function qs_sectie_informatie(): array
                 'key' => 'informatie_soorten',
                 'type' => 'checkbox',
                 'label' => 'Welke soorten informatie worden verwerkt?',
-                'hint' => 'Kruis alles aan wat van toepassing kan zijn. Hieruit leiden we af of er '
-                    . 'persoonsgegevens in het spel zijn, hoeveel categorieën dat zijn en of er '
-                    . 'bijzondere gegevens bij zitten. Die vragen hoef je dus niet apart te '
-                    . 'beantwoorden.',
+                'hint' => 'Kruis alles aan wat erin kan komen. Daaruit leidt de tool af of er persoonsgegevens in '
+                    . 'zitten, hoeveel soorten, en of er bijzondere gegevens bij zijn. Die vragen hoef je dus niet '
+                    . 'apart te beantwoorden.',
                 'verplicht' => true,
                 'groepen' => qs_informatiegroepen(),
                 'opties' => qs_informatiesoorten(),
@@ -365,7 +363,7 @@ function qs_informatiesoorten(): array
             'geboorte' => 'Geboortedatum of leeftijd',
             'functie' => 'Functie, afdeling of werkgever',
             'financieel' => 'Bankrekening, salaris of andere financiële gegevens',
-            'ip' => 'IP adres, nummer van een apparaat of van een cookie',
+            'ip' => 'IP-adres, nummer van een apparaat of van een cookie',
             'locatie' => 'Waar iemand is, of waar iemand heen reist',
             'gebruik' => 'Wat iemand doet in een systeem of op internet',
             'beeld' => 'Foto, video of geluidsopname van personen',
@@ -651,8 +649,8 @@ function qs_sectie_archief(): array
                     ],
                     'onbepaald' => [
                         'label' => 'Nog niet bepaald',
-                        'hint' => 'Dan is dit het eerste dat geregeld moet worden: zonder termijn '
-                            . 'kun je niet voldoen aan de AVG en niet aan de Archiefwet.',
+                        'hint' => 'Dan moet dit als eerste geregeld worden. Zonder termijn voldoe je niet aan de '
+                            . 'AVG en niet aan de Archiefwet.',
                     ],
                 ],
             ],
@@ -737,7 +735,7 @@ function qs_sectie_ai(): array
                 'type' => 'checkbox',
                 'label' => 'Waar raakt die AI aan?',
                 'hint' => 'Vink alles aan wat van toepassing kan zijn. Hieruit volgt de risicoklasse '
-                    . 'onder de AI verordening. Niets aanvinken betekent: geen van deze.',
+                    . 'onder de AI-verordening. Niets aanvinken betekent: geen van deze.',
                 'toon_als' => ['ai' => ['mogelijk', 'onderdeel']],
                 'opties' => [
                     'verboden_scoring' => [
@@ -795,14 +793,14 @@ function qs_sectie_ai(): array
                 'key' => 'afgeleid_ai',
                 'type' => 'afgeleid',
                 'bron' => 'ai',
-                'label' => 'Risicoklasse onder de AI verordening',
+                'label' => 'Risicoklasse onder de AI-verordening',
                 'hint' => 'Volgt uit wat je hierboven hebt aangevinkt.',
                 'toon_als' => ['ai' => ['mogelijk', 'onderdeel']],
             ],
             [
                 'key' => 'ai_nieuw_algoritme',
                 'type' => 'radio',
-                'label' => 'Is dit algoritme of AI systeem nieuw voor de organisatie?',
+                'label' => 'Is dit algoritme of AI-systeem nieuw voor de organisatie?',
                 'hint' => 'Ook een bestaand product dat hier voor het eerst wordt ingezet is nieuw.',
                 'verplicht' => true,
                 'toon_als' => ['ai' => ['mogelijk', 'onderdeel']],
@@ -863,9 +861,9 @@ function qs_sectie_classificatie(): array
         'id'    => 'classificatie',
         'titel' => 'Hoe belangrijk zijn het proces en het systeem?',
         'stap' => 2,
-        'intro' => 'Kies wat het dichtst in de buurt komt; klap de uitleg open als je twijfelt. Deze '
-            . 'twee antwoorden bepalen een flink deel van de uitkomst: de beschikbaarheidseis, of de '
-            . 'ABRO geldt, en of er sprake is van materieel cloudgebruik.',
+        'intro' => 'Kies wat het dichtst in de buurt komt. Twijfel je, klap dan de uitleg open. Deze twee '
+            . 'antwoorden bepalen een groot deel van de uitkomst: de beschikbaarheidseis, of de ABRO geldt, en of '
+            . 'er materieel cloudgebruik is.',
         'toon_als' => qs_volledige_scan(),
         'vragen' => [
             [
@@ -996,8 +994,8 @@ function qs_sectie_biv(): array
                 'key' => 'beschikbaarheid_motivatie',
                 'type' => 'textarea',
                 'label' => 'Waarom dit niveau?',
-                'hint' => 'De tool vult alvast in waaróm hij dit voorstelt. Neem je het voorstel '
-                    . 'over, dan kun je dit laten staan; kies je iets anders, vervang het dan.',
+                'hint' => 'De tool schrijft alvast op waaróm hij dit voorstelt. Neem je het voorstel over, laat dit '
+                    . 'dan staan. Kies je iets anders, vervang het dan.',
                 'verplicht' => true,
                 'motivatie_voor' => 'beschikbaarheid',
                 'hoogte' => 3,
@@ -1014,9 +1012,9 @@ function qs_sectie_biv(): array
                 'key' => 'integriteit_bijstelling',
                 'type' => 'select',
                 'label' => 'Wil je die eis bijstellen?',
-                'hint' => 'Als behoeftesteller kun je alleen verhogen; de ondergrens komt uit de AVG '
-                    . 'en uit het belang van het proces. De beoordelaar mag ook naar beneden '
-                    . 'bijstellen, mits gemotiveerd.',
+                'hint' => 'Als behoeftesteller kun je de eis alleen hoger maken. De ondergrens komt uit de AVG en '
+                    . 'uit het belang van het proces. De beoordelaar mag de eis ook lager maken, als hij uitlegt '
+                    . 'waarom.',
                 'opties' => qs_bijstelling_opties(),
             ],
             [
@@ -1038,8 +1036,8 @@ function qs_sectie_biv(): array
                 'key' => 'vertrouwelijkheid_bijstelling',
                 'type' => 'select',
                 'label' => 'Wil je die eis bijstellen?',
-                'hint' => 'Als behoeftesteller kun je alleen verhogen. De beoordelaar mag ook naar '
-                    . 'beneden bijstellen, mits gemotiveerd.',
+                'hint' => 'Als behoeftesteller kun je de eis alleen hoger maken. De beoordelaar mag hem ook lager '
+                    . 'maken, als hij uitlegt waarom.',
                 'opties' => qs_bijstelling_opties(),
             ],
             [

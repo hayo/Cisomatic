@@ -8,7 +8,7 @@
  * uit deze definitie. De sleutels per vraag staan in ../README.md.
  *
  * Drie sleutels gebruikt alleen dit formulier, voor het document:
- * - 'art27': de vraag hoort bij artikel 27 van de AI verordening
+ * - 'art27': de vraag hoort bij artikel 27 van de AI-verordening
  * - 'bij': de vraag hoort bij de vraag ervoor en krijgt geen eigen kop
  * - 'opsomming': een tekstvak met één punt per regel wordt een lijst
  * Een sectie heeft een 'sessie': vanaf welke sessie hij meedoet.
@@ -16,7 +16,7 @@
 
 declare(strict_types=1);
 
-const IA_ART27 = 'Deze vraag hoort bij artikel 27 van de AI verordening.';
+const IA_ART27 = 'Deze vraag hoort bij artikel 27 van de AI-verordening.';
 
 /** @return list<array<string,mixed>> */
 function ia_secties(): array
@@ -136,7 +136,7 @@ function ia_sectie_over(): array
                         'label' => 'Het algoritme heeft direct gevolgen voor mensen of organisaties',
                         'hint' => 'Of het bepaalt hoe de overheid iemand indeelt. Dan heet het een impactvol algoritme.',
                     ],
-                    'hoog_risico' => ['label' => 'Het is een AI systeem met een hoog risico'],
+                    'hoog_risico' => ['label' => 'Het is een AI-systeem met een hoog risico'],
                     'quickscan' => ['label' => 'Uit de quickscan bleek dat een IAMA nodig is'],
                     'anders' => ['label' => 'Een andere reden'],
                 ],
@@ -213,7 +213,7 @@ function ia_sectie_doel(): array
 
 function ia_sectie_waarden(): array
 {
-    $hint = 'Noteer er hooguit zes, één per regel. Het CODIO waardenkader in de toelichting helpt daarbij.';
+    $hint = 'Noteer er hooguit zes, één per regel. Het CODIO-waardenkader in de toelichting helpt daarbij.';
 
     return [
         'id' => 'waarden',
@@ -241,7 +241,7 @@ function ia_sectie_grondslag(): array
         'stap' => 1,
         'sessie' => 1,
         'vragen' => [
-            ia_vraag('ia_ai_systeem', 'Is het algoritme een AI systeem?', 'Een AI systeem bepaalt zelf hoe het van '
+            ia_vraag('ia_ai_systeem', 'Is het algoritme een AI-systeem?', 'Een AI-systeem bepaalt zelf hoe het van '
                 . 'de invoer tot een uitkomst komt, bijvoorbeeld met machine learning. Vaste regels die mensen '
                 . 'hebben opgesteld, vallen daar meestal niet onder.', [
                 'type' => 'radio',
@@ -251,8 +251,8 @@ function ia_sectie_grondslag(): array
                     'twijfel' => ['label' => 'Dat weten we nog niet zeker'],
                 ],
             ]),
-            ia_vraag('ia_verboden', '1.3.1 Is het een verboden AI systeem?', 'Artikel 5 van de AI verordening noemt '
-                . 'wat verboden is. Een voorbeeld is mensen een score geven op hun gedrag. De AI scan in deze tool '
+            ia_vraag('ia_verboden', '1.3.1 Is het een verboden AI-systeem?', 'Artikel 5 van de AI-verordening noemt '
+                . 'wat verboden is. Een voorbeeld is mensen een score geven op hun gedrag. De AI-scan in deze tool '
                 . 'zoekt het voor je uit.', [
                 'type' => 'radio',
                 'toon_als' => $ai,
@@ -510,7 +510,7 @@ function ia_sectie_medewerker(): array
             ia_uitleg('ia_afwijken_toelichting'),
             ia_vraag('ia_geletterdheid', '3.2.3 Weten de medewerkers genoeg van AI om met het algoritme te werken? '
                 . 'Welke kennis en vaardigheden hebben ze nog nodig, en hoe krijgen ze die?', 'Dit heet ook '
-                . 'AI geletterdheid.'),
+                . 'AI-geletterdheid.'),
             ia_vraag('ia_kennisverlies', '3.2.4 Kunnen medewerkers door het algoritme kennis of vaardigheden '
                 . 'kwijtraken? Leg uit.'),
         ],
@@ -626,9 +626,9 @@ function ia_sectie_wetgeving(): array
         'toon_als' => ia_vanaf_sessie(3),
         'intro' => 'Voor deze vragen is juridisch uitzoekwerk nodig. Een jurist zoekt dit uit voor de sessie.',
         'vragen' => [
-            ia_janee('ia_hoog_risico', '4.2.1 Is het algoritme een AI systeem met een hoog risico?', 'De AI scan in '
+            ia_janee('ia_hoog_risico', '4.2.1 Is het algoritme een AI-systeem met een hoog risico?', 'De AI-scan in '
                 . 'deze tool zoekt dat voor je uit. Is het antwoord ja? Dan zet de tool bij de actiepunten dat je het '
-                . 'systeem toetst aan de eisen van de AI verordening.', [
+                . 'systeem toetst aan de eisen van de AI-verordening.', [
                 'voorstel' => true,
             ]),
             ia_vraag('ia_dpia', '4.2.2 Gebruikt het algoritme persoonsgegevens? Is een DPIA verplicht?', 'De '

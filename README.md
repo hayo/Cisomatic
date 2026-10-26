@@ -22,7 +22,7 @@ Er zijn nu elf formulieren:
   op de BIO 1. Welk beveiligingsniveau geldt, welke eisen, welke analyses.
 - **[dpia](dpia/README.md)**: een Data Protection Impact Assessment in de opbouw
   van het Model DPIA Rijksdienst.
-- **[aiscan](aiscan/README.md)**: de AI scan, op de Beslishulp AI-verordening van
+- **[aiscan](aiscan/README.md)**: de AI-scan, op de Beslishulp AI-verordening van
   BZK. Geldt de verordening, welke rol, welke risicogroep en welke plichten. Bij
   generatieve AI ook de toets aan het standpunt en de handreiking van BZK.
 - **[iama](iama/README.md)**: een Impact Assessment Mensenrechten en Algoritmes,
@@ -30,8 +30,8 @@ Er zijn nu elf formulieren:
 - **[soevereiniteit](soevereiniteit/README.md)**: de soevereiniteitsscan voor een
   clouddienst, op het Cloud Sovereignty Framework van de Europese Commissie. Een
   label van A tot E, en per thema of het hoog genoeg is voor de informatie.
-- **[ciooordeel](ciooordeel/README.md)**: het CIO oordeel, voor de adviseur van
-  het CIO office. Elf aandachtsgebieden uit het toetskader van het AcICT en het
+- **[ciooordeel](ciooordeel/README.md)**: het CIO-oordeel, voor de adviseur van
+  het CIO-office. Elf aandachtsgebieden uit het toetskader van het AcICT en het
   Kwaliteitskader CIO-oordelen, een voorstel voor het oordeel, en het rapport.
 - **[fitgap2](fitgap2/README.md)**: fit/gap 2.0, voor de BIO2 en de
   Cyberbeveiligingswet. De verklaring van een leverancier, per maatregel: voldoet
@@ -82,7 +82,7 @@ bewaard/                  opgeslagen documenten, als bewaren aan staat
 De motorfuncties heten `cm_`, die van de quickscan `qs_`, die van quickscan 2.0
 `q2_`, die van de DPIA `dp_`, die van de IAMA `ia_`, die van de business case
 `bc_`, die van de kanalenscan `sm_`, die van de soevereiniteitsscan `sv_`, die
-van de AI scan `ai_`, `gai_` voor generatieve AI, die van het CIO oordeel `co_`,
+van de AI-scan `ai_`, `gai_` voor generatieve AI, die van het CIO-oordeel `co_`,
 en die van de fit/gap `fg_`, met `fg1_` voor de BIO 1 en `fg2_` voor de BIO2. Een
 formulier gebruikt de motor; de motor kent geen formulier bij naam.
 
@@ -190,7 +190,7 @@ Alleen gegevens, geen code. De voordeur leest dit bestand ook.
 | `fase` | Optioneel: waar het formulier op de voordeur staat. `start`, `ontwerp` of `toetsen`; zonder fase komt het onder "Overige formulieren" |
 | `normenkader` | Optioneel: `bio2` of `bio`. Een dossier toont alleen de formulieren van zijn eigen normenkader |
 | `opvolger` | Optioneel: de nieuwere versie van dit formulier. De voordeur noemt het dan een eerdere versie, en een dossier wisselt ertussen als het normenkader verandert |
-| `dossier` | Optioneel: `false` als een ander het formulier invult, zoals de leverancier of het CIO office. Het hoort dan niet in een dossier |
+| `dossier` | Optioneel: `false` als een ander het formulier invult, zoals de leverancier of het CIO-office. Het hoort dan niet in een dossier |
 | `vervolg` | Optioneel: functie die van antwoorden en uitkomst zegt welke andere formulieren voorgesteld zijn, en waarom. Een dossier zet ze erbij |
 
 ### vragen.php
@@ -356,7 +356,7 @@ de fase `start` en de quickscan van dat normenkader. Een formulier opent dan met
   gedeeld antwoord.
 - **Voorstellen.** Een formulier met `vervolg` zegt na het versturen welke
   andere formulieren nodig zijn. De quickscans doen dat voor de DPIA, de IAMA,
-  de AI scan en de soevereiniteitsscan. Wat voorgesteld is, komt in het dossier,
+  de AI-scan en de soevereiniteitsscan. Wat voorgesteld is, komt in het dossier,
   tenzij iemand het er eerder uit haalde.
 - **Wat nog moet.** Per formulier toont het dossier of het niet begonnen, bezig,
   klaar of verouderd is, en hoeveel verplichte vragen al ingevuld zijn. Elk

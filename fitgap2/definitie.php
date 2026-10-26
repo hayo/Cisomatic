@@ -17,9 +17,9 @@ $eigen = ['aanvrager', 'email'];
 return [
     'titel' => 'Fit/gap 2.0: BIO2 en Cyberbeveiligingswet',
     'naam' => 'fit/gap',
-    'intro' => 'Voor de leverancier van een dienst. Laat per maatregel uit de BIO2 zien of de dienst voldoet, met de '
-        . 'eisen aan de keten uit de Cyberbeveiligingswet en het cloudbeleid. Het document is de verklaring aan de '
-        . 'opdrachtgever.',
+    'intro' => 'Voor de leverancier van een dienst. Laat per maatregel uit de BIO2 zien of de dienst voldoet. De '
+        . 'eisen aan de keten uit de Cyberbeveiligingswet en het cloudbeleid horen erbij. Het document is de '
+        . 'verklaring aan de opdrachtgever.',
     'uitvoer' => 'document',
     'download_uitleg' => 'Het document opent in Word, LibreOffice en Google Docs, met kopjes, lijsten en tabellen.',
     'inladen' => 'Een bestand van een eerdere keer, of van fit/gap 1.0. Je browser leest het zelf, dus er '

@@ -16,6 +16,6 @@ declare(strict_types=1);
         <ul>
             <li>het toelichtingsdocument bij het IAMA;</li>
             <li>de documentatie of de instructies voor gebruik van het algoritme;</li>
-            <li>het bestand van de quickscan, de DPIA of de AI scan, als je die al hebt.</li>
+            <li>het bestand van de quickscan, de DPIA of de AI-scan, als je die al hebt.</li>
         </ul>
     </section>

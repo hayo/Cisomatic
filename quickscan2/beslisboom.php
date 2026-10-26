@@ -310,14 +310,14 @@ function q2_cloudbeleid(array $u, array $a, array $pg): array
     }
 
     if ($vertrouwelijk && ($a['cloud_sleutels'] ?? '') === 'leverancier') {
-        $regels[] = 'Het gaat om vertrouwelijke gegevens. Beheer de sleutels daarom bij voorkeur zelf, of laat '
-            . 'dat doen door een andere partij die daarvoor gecertificeerd is, niet door de cloudleverancier.';
+        $regels[] = 'Het gaat om vertrouwelijke gegevens. Beheer de sleutels daarom het liefst zelf. Of laat het '
+            . 'doen door een andere partij die daarvoor gecertificeerd is, maar niet door de cloudleverancier.';
     }
 
     if ($u['materieel_cloudgebruik']['waar']) {
-        $regels[] = 'Maak een integrale risicoanalyse volgens het implementatiekader risicobeheersing '
-            . 'cloudgebruik. Weeg daarin ook de toegang van de leverancier tot de data, buitenlandse '
-            . 'jurisdictie, inmenging door een buitenlandse overheid en misbruik van afhankelijkheid.';
+        $regels[] = 'Maak een integrale risicoanalyse volgens het implementatiekader risicobeheersing cloudgebruik. '
+            . 'Kijk daarin ook naar de toegang van de leverancier tot de data, en naar recht van buiten de EU. '
+            . 'Kijk ook naar inmenging door een buitenlandse overheid, en naar misbruik van afhankelijkheid.';
         $regels[] = 'Maak een exitplan en toets het zelf. Het beschrijft een geplande overstap, en wat je doet '
             . 'als de dienst onverwacht wegvalt. Beoordeel het elk jaar opnieuw.';
         $regels[] = 'Meld het cloudgebruik vóór de implementatie bij CISO Rijk, met de risicoanalyse en het '
@@ -327,8 +327,8 @@ function q2_cloudbeleid(array $u, array $a, array $pg): array
     }
 
     if (!$extern) {
-        $regels[] = 'De cloud komt van een overheidsorganisatie. Het cloudbeleid geldt dan voor een deel; het '
-            . 'implementatiekader zegt welk deel.';
+        $regels[] = 'De cloud komt van een overheidsorganisatie. Het cloudbeleid geldt dan voor een deel. Welk '
+            . 'deel, staat in het implementatiekader.';
     }
 
     if ($u['dreiging']['niveau'] === 'hoog') {
@@ -445,7 +445,7 @@ function q2_analyses(array $u, array $a, bool $heeftPg, bool $dreigingHoog): arr
             || $u['materieel_cloudgebruik']['waar']) {
             $u = q2_voeg_analyse_toe(
                 $u,
-                'DPIA pretoets',
+                'DPIA-pretoets',
                 $u['materieel_cloudgebruik']['waar']
                     ? 'Er gaan persoonsgegevens naar de cloud, bij materieel cloudgebruik. Het cloudbeleid vraagt '
                         . 'dan een pretoets en een DPIA.'
@@ -484,21 +484,21 @@ function q2_analyses(array $u, array $a, bool $heeftPg, bool $dreigingHoog): arr
     }
 
     if (($a['ai_nieuw_algoritme'] ?? '') === 'ja') {
-        $u = q2_voeg_analyse_toe($u, 'IAMA', 'Het gaat om een nieuw algoritme of AI systeem.', 'CDO');
+        $u = q2_voeg_analyse_toe($u, 'IAMA', 'Het gaat om een nieuw algoritme of AI-systeem.', 'CDO');
     }
 
     if (q2_met_ai($a)) {
         $u = q2_voeg_analyse_toe(
             $u,
-            'AI scan',
-            'Er komt AI in het systeem. De AI scan zoekt uit of de AI verordening geldt, in welke risicogroep '
+            'AI-scan',
+            'Er komt AI in het systeem. De AI-scan zoekt uit of de AI-verordening geldt, in welke risicogroep '
                 . 'de AI valt, en wat jullie dan moeten doen.',
             'CDO'
         );
     }
 
     if ($u['abro']['waar']) {
-        $u = q2_voeg_analyse_toe($u, 'ABRO quickscan', $u['abro']['reden'], 'CISO');
+        $u = q2_voeg_analyse_toe($u, 'ABRO-quickscan', $u['abro']['reden'], 'CISO');
     }
 
     return $u;
@@ -542,7 +542,7 @@ function q2_wetgeving(array $u, array $a, bool $heeftPg, bool $heeftCloud): arra
     }
 
     if (q2_met_ai($a)) {
-        $u['wetgeving'][] = 'AI verordening: de AI scan bepaalt de risicogroep en de plichten';
+        $u['wetgeving'][] = 'AI-verordening: de AI-scan bepaalt de risicogroep en de plichten';
     }
 
     if (($a['gebruikers'] ?? '') === 'burgers') {
@@ -671,8 +671,8 @@ function q2_bio2_maatregelen(array $u, array $a): array
     // ---- incidenten en de meldplicht -----------------------------------------
     if ($u['cbw']['waar']) {
         $m[] = 'Neem het systeem op in de incidentprocedure. Een significant incident meldt de organisatie bij het '
-            . 'CSIRT en de bevoegde autoriteit: binnen 24 uur een vroegtijdige waarschuwing, binnen 72 uur de '
-            . 'melding, en uiterlijk een maand daarna een eindverslag (BIO2 5.24.07, Cbw artikel 26 tot en met 29).';
+            . 'CSIRT en de bevoegde autoriteit. Binnen 24 uur gaat er een vroegtijdige waarschuwing uit, binnen 72 '
+            . 'uur de melding, en een maand later het eindverslag (BIO2 5.24.07, Cbw artikel 26 tot en met 29).';
     } else {
         $m[] = 'Neem het systeem op in de incidentprocedure van de organisatie (BIO2 5.24).';
     }
@@ -694,12 +694,12 @@ function q2_bio2_maatregelen(array $u, array $a): array
             . 'Disclosure (BIO2 5.24.08).';
 
         if (array_intersect($onderdelen, ['website', 'api']) !== []) {
-            $m[] = 'Neem het systeem, de IP adressen en de API’s op in de registratie van alles wat via internet '
+            $m[] = 'Neem het systeem, de IP-adressen en de API’s op in de registratie van alles wat via internet '
                 . 'bereikbaar is (BIO2 5.14.04).';
         }
         if (in_array('website', $onderdelen, true)) {
             $m[] = 'Meld de website aan bij het Register Internetdomeinen Overheid, en houd dat elk half jaar '
-                . 'actueel. Gebruik voor gevoelige gegevens ten minste een OV certificaat (BIO2 5.14.02, 5.14.05).';
+                . 'actueel. Gebruik voor gevoelige gegevens ten minste een OV-certificaat (BIO2 5.14.02, 5.14.05).';
         }
         if (in_array('email', $onderdelen, true)) {
             $m[] = 'Stel de standaarden voor mail in, zoals SPF, DKIM en DMARC, en controleer ze met internet.nl '
@@ -714,8 +714,8 @@ function q2_bio2_maatregelen(array $u, array $a): array
     // ---- gevoelige informatie -----------------------------------------------------
     if (in_array($u['biv']['v'], ['h', 'zh'], true) || $rubricering === 'dep-vertrouwelijk'
         || str_starts_with($rubricering, 'stg-')) {
-        $m[] = 'Versleutel waar het kan met middelen die een positief inzetadvies hebben van het NBV van de '
-            . 'AIVD, en volg de adviezen van het NCSC en het NBV over de sterkte (BIO2 8.21.04, 8.24.04).';
+        $m[] = 'Versleutel waar het kan met middelen die een positief inzetadvies hebben van het NBV van de AIVD. '
+            . 'Volg voor de sterkte de adviezen van het NCSC en het NBV (BIO2 8.21.04, 8.24.04).';
     }
 
     if (str_starts_with($rubricering, 'stg-')) {
@@ -768,10 +768,10 @@ function q2_leveranciers(array $u, array $a, bool $heeftPg, bool $heeftCloud): a
             . 'deze risicoafweging (BIO2 5.19.01, 5.20.01).';
         $e[] = 'Sluit de algemene voorwaarden van de leverancier uit waar dat kan. Lukt dat niet, beoordeel dan de '
             . 'risico’s (BIO2 5.20.02).';
-        $e[] = 'De leverancier toont elk jaar met een onafhankelijk onderzoek aan dat hij aan de eisen voldoet, '
-            . 'voor de hele dienst en inclusief zijn eigen leveranciers. De organisatie mag zelf een audit laten '
-            . 'doen (BIO2 5.20.03, 5.20.04).';
-        $e[] = 'De leverancier meldt incidenten, datalekken en kwetsbaarheden die de dienst raken zo snel, dat de '
+        $e[] = 'De leverancier laat elk jaar met een onafhankelijk onderzoek zien dat hij aan de eisen voldoet. Het '
+            . 'onderzoek gaat over de hele dienst, ook over zijn eigen leveranciers. De organisatie mag zelf een '
+            . 'audit laten doen (BIO2 5.20.03, 5.20.04).';
+        $e[] = 'De leverancier meldt incidenten, datalekken en kwetsbaarheden in de dienst zo snel, dat de '
             . 'organisatie zelf binnen 24 uur kan melden. Spreek een termijn van enkele uren af (BIO2 5.20.05).';
         $e[] = 'Het contract bevat een uitgewerkte exitstrategie, en noemt de situaties waarin het ontbonden kan '
             . 'worden (BIO2 5.20.06).';
@@ -781,8 +781,8 @@ function q2_leveranciers(array $u, array $a, bool $heeftPg, bool $heeftCloud): a
                 . 'Hij legt hun dezelfde eisen op, en meldt wijzigingen in die keten (BIO2 5.21.02 tot en met 5.21.04).';
         }
 
-        $u['maatregelen'][] = 'Neem de leverancier en het contract op in de registratie van leveranciers, en '
-            . 'beoordeel elk jaar of hij nog aan de eisen voldoet (BIO2 5.22.01).';
+        $u['maatregelen'][] = 'Zet de leverancier en het contract in de registratie van leveranciers. Beoordeel elk '
+            . 'jaar of hij nog aan de eisen voldoet (BIO2 5.22.01).';
 
         if (in_array($a['leverancier_bewijs'] ?? '', ['deels', 'nee'], true)) {
             $u['aandachtspunten'][] = 'De leverancier kan nog niet met een onafhankelijk onderzoek voor de hele '
@@ -931,7 +931,7 @@ function q2_beslisboom_pad(array $a, array $u, array $ctx): array
         'Worden er persoonsgegevens verwerkt?',
         $jaNee($ctx['heeftPg']),
         q2_heeft_analyse($u, 'DPIA') ? 'DPIA noodzakelijk'
-            : (q2_heeft_analyse($u, 'DPIA pretoets') ? 'DPIA pretoets door de CPO' : 'Geen DPIA nodig'),
+            : (q2_heeft_analyse($u, 'DPIA-pretoets') ? 'DPIA-pretoets door de CPO' : 'Geen DPIA nodig'),
         $ctx['heeftPg']
     );
 
@@ -1005,7 +1005,7 @@ function q2_beslisboom_pad(array $a, array $u, array $ctx): array
         $s[] = $stap(
             'Is de verwerking grootschalig?',
             ucfirst((string) $u['grootschalig']['uitkomst']) . ' (afgeleid uit aantal, omvang, duur en bereik)',
-            q2_heeft_analyse($u, 'DPIA') ? 'DPIA noodzakelijk' : 'DPIA pretoets door de CPO',
+            q2_heeft_analyse($u, 'DPIA') ? 'DPIA noodzakelijk' : 'DPIA-pretoets door de CPO',
             $u['grootschalig']['uitkomst'] !== 'nee'
         );
 
@@ -1028,14 +1028,14 @@ function q2_beslisboom_pad(array $a, array $u, array $ctx): array
     $s[] = $stap(
         'Komt er AI in het systeem?',
         q2_antwoord_tekst('ai', $a),
-        'AI scan noodzakelijk' . (q2_heeft_analyse($u, 'IAMA') ? ' · IAMA noodzakelijk' : ''),
+        'AI-scan noodzakelijk' . (q2_heeft_analyse($u, 'IAMA') ? ' · IAMA noodzakelijk' : ''),
         q2_met_ai($a)
     );
 
     $s[] = $stap(
         'Is het een maatschappelijk vitaal proces?',
         $jaNee($u['abro']['waar']) . ' (afgeleid uit de procesclassificatie)',
-        'ABRO quickscan noodzakelijk',
+        'ABRO-quickscan noodzakelijk',
         $u['abro']['waar']
     );
 
@@ -1075,22 +1075,22 @@ function q2_privacy_checks(array $u, array $a, bool $heeftPg): array
     $grondslag = (string) ($a['pg_grondslag'] ?? '');
 
     if ($grondslag === 'gerechtvaardigd_belang') {
-        $u['blokkerend'][] = 'Als grondslag is gerechtvaardigd belang gekozen. Een overheidsorgaan kan zich daar '
-            . 'voor de uitvoering van zijn publieke taken niet op beroepen; de AVG sluit dat uitdrukkelijk uit. '
-            . 'Kies een andere grondslag (meestal een wettelijke verplichting of een taak van algemeen belang), of '
-            . 'onderbouw waarom deze verwerking aantoonbaar buiten de publieke taak valt.';
+        $u['blokkerend'][] = 'Als grondslag is gerechtvaardigd belang gekozen. Daar kan een overheidsorgaan zich '
+            . 'bij zijn publieke taken niet op beroepen. Dat sluit de AVG uit. Kies een andere grondslag, meestal '
+            . 'een wettelijke verplichting of een taak van algemeen belang. Of onderbouw waarom deze verwerking '
+            . 'echt buiten de publieke taak valt.';
     }
 
     if ($grondslag === 'toestemming') {
-        $u['aandachtspunten'][] = 'De grondslag is toestemming. Die moet vrij te weigeren en net zo makkelijk in te '
-            . 'trekken zijn als te geven. Tussen overheid en burger is dat door de ongelijke verhouding lastig hard '
-            . 'te maken: ga na of een wettelijke taak hier niet de juistere grondslag is, en zorg dat de dienst ook '
-            . 'werkt als iemand weigert.';
+        $u['aandachtspunten'][] = 'De grondslag is toestemming. Iemand moet die vrij kunnen weigeren, en net zo '
+            . 'makkelijk kunnen intrekken als geven. Tussen overheid en burger is dat lastig, want de verhouding '
+            . 'is ongelijk. Ga na of een wettelijke taak hier niet beter past. En zorg dat de dienst ook werkt als '
+            . 'iemand weigert.';
     }
 
     if ($grondslag === 'onbekend') {
-        $u['blokkerend'][] = 'De grondslag voor de verwerking is nog niet bepaald. Zonder grondslag mag er niet '
-            . 'verwerkt worden; dit moet vaststaan voordat het project start. De CPO helpt bij het bepalen ervan.';
+        $u['blokkerend'][] = 'De grondslag voor de verwerking is nog niet bepaald. Zonder grondslag mag je niet '
+            . 'verwerken. Die moet vaststaan voordat het project start. De CPO helpt daarbij.';
     }
 
     if (($a['pg_subsidiariteit'] ?? '') === 'kan_minder') {
@@ -1133,16 +1133,16 @@ function q2_archiefwet(array $u, array $a, bool $heeftPg, bool $heeftCloud): arr
         [
             'titel' => 'Wijs de zorgdrager en de beheerder aan',
             'tekst' => 'Het overheidsorgaan blijft onder de Archiefwet 2026 verantwoordelijk voor de informatie, '
-                . 'ook als een leverancier het systeem draait. Leg vast wie binnen de organisatie die rol heeft, '
-                . 'en leg in het contract vast dat de leverancier het beheer uitvoert namens de zorgdrager en zelf '
-                . 'geen zeggenschap over bewaren of vernietigen krijgt.',
+                . 'ook als een leverancier het systeem draait. Leg vast wie in de organisatie die rol heeft. Leg '
+                . 'in het contract vast dat de leverancier het beheer doet namens de zorgdrager. Over bewaren of '
+                . 'vernietigen beslist de leverancier niet.',
         ],
         [
             'titel' => 'Zoek de categorie in de selectielijst op',
-            'tekst' => 'De vastgestelde selectielijst bepaalt per categorie informatie of die blijvend bewaard '
-                . 'wordt of na een termijn vernietigd. Bepaal onder welke categorie dit proces valt voordat het '
-                . 'systeem wordt ingericht: zonder die categorie kun je geen bewaartermijn instellen en niet '
-                . 'aantonen dat je aan de Archiefwet voldoet. De BIO2 vraagt hetzelfde (5.33.01).',
+            'tekst' => 'De vastgestelde selectielijst bepaalt per categorie of informatie blijvend bewaard wordt, '
+                . 'of na een termijn vernietigd. Zoek de categorie van dit proces op voordat het systeem wordt '
+                . 'ingericht. Zonder categorie kun je geen bewaartermijn instellen, en kun je niet laten zien dat '
+                . 'je aan de Archiefwet voldoet. De BIO2 vraagt hetzelfde (5.33.01).',
         ],
         [
             'titel' => 'Zet de bewaartermijn in het systeem, niet in een document',
@@ -1151,16 +1151,16 @@ function q2_archiefwet(array $u, array $a, bool $heeftPg, bool $heeftCloud): arr
         ],
         [
             'titel' => 'Richt de metagegevens in',
-            'tekst' => 'Leg bij elk stuk informatie vast wat het is, wie het heeft gemaakt of ontvangen, wanneer, '
-                . 'binnen welk proces, en welke bewaartermijn en waardering erbij horen. Binnen de Rijksoverheid is '
-                . 'MDTO het metagegevensschema daarvoor. Zonder metagegevens is informatie later niet terug te '
-                . 'vinden, niet te waarderen en niet over te brengen.',
+            'tekst' => 'Leg bij elk stuk informatie vast wat het is, wie het maakte of ontving, en wanneer. Leg ook '
+                . 'vast bij welk proces het hoort, en welke bewaartermijn en waardering erbij horen. Binnen de '
+                . 'Rijksoverheid is MDTO daarvoor het metagegevensschema. Zonder metagegevens vind je informatie '
+                . 'later niet terug, en kun je die niet waarderen of overbrengen.',
         ],
         [
             'titel' => 'Kies bestandsformaten die je over tien jaar nog kunt openen',
-            'tekst' => 'Gebruik open, gedocumenteerde formaten zoals PDF/A, XML, CSV of JSON in plaats van formaten '
-                . 'die alleen de leverancier kan lezen. Spreek dit af voordat het systeem in gebruik gaat; achteraf '
-                . 'converteren kost meer en levert verlies op.',
+            'tekst' => 'Gebruik open, gedocumenteerde formaten zoals PDF/A, XML, CSV of JSON, en geen formaten die '
+                . 'alleen de leverancier kan lezen. Spreek dat af voordat het systeem in gebruik gaat. Achteraf '
+                . 'omzetten kost meer, en je verliest er altijd iets bij.',
         ],
         [
             'titel' => 'Zorg dat vernietigen ook echt gebeurt',
@@ -1171,28 +1171,27 @@ function q2_archiefwet(array $u, array $a, bool $heeftPg, bool $heeftCloud): arr
         [
             'titel' => 'Reken op de overbrengingstermijn van tien jaar',
             'tekst' => 'De Archiefwet 2026 brengt de overbrengingstermijn terug van twintig naar tien jaar. '
-                . 'Informatie met de waardering "blijvend bewaren" gaat dus twee keer zo snel naar het Nationaal '
-                . 'Archief als onder de oude wet. Voor een systeem dat nu wordt ingekocht betekent dat: de '
-                . 'exportfunctie moet binnen de looptijd van dit contract werken. Zorg dat het systeem een export '
-                . 'mét metagegevens kan leveren in een formaat dat het Nationaal Archief accepteert, en test dat '
-                . 'een keer voordat je het nodig hebt.',
+                . 'Informatie die blijvend bewaard wordt, gaat dus twee keer zo snel naar het Nationaal Archief. '
+                . 'Voor een systeem dat nu wordt ingekocht, moet de export daarom binnen de looptijd van het '
+                . 'contract werken. Zorg dat het systeem een export mét metagegevens kan maken, in een formaat dat '
+                . 'het Nationaal Archief accepteert. Test dat een keer voordat je het nodig hebt.',
         ],
         [
             'titel' => 'Bepaal nu al wat straks openbaar wordt',
-            'tekst' => 'Bij overbrenging wordt informatie in beginsel openbaar, tenzij er een grond is om de '
-                . 'openbaarheid te beperken (bijvoorbeeld de bescherming van persoonsgegevens of van de staat). '
-                . 'Leg per informatiesoort vast of er een beperking nodig is en op welke grond, en zorg dat het '
-                . 'systeem die aantekening als metagegeven kan vasthouden.',
+            'tekst' => 'Bij overbrenging wordt informatie in principe openbaar. Dat kan anders als er een grond is '
+                . 'om dat te beperken, zoals de bescherming van persoonsgegevens of van de staat. Leg per soort '
+                . 'informatie vast of er een beperking nodig is, en op welke grond. Zorg dat het systeem die '
+                . 'aantekening als metagegeven kan bewaren.',
         ],
     ];
 
     if ($extern) {
         $stappen[] = [
             'titel' => 'Regel de exit voordat je begint',
-            'tekst' => 'Neem als contracteis op dat bij beëindiging alle informatie in een bruikbaar, '
-                . 'leveranciersonafhankelijk formaat wordt teruggeleverd, inclusief metagegevens, en dat de '
-                . 'leverancier daarna aantoonbaar al zijn kopieën vernietigt. Zonder deze afspraak ben je bij een '
-                . 'contractwissel je archief kwijt of zit je eraan vast.',
+            'tekst' => 'Zet in het contract dat de leverancier aan het eind alle informatie teruggeeft, met de '
+                . 'metagegevens, in een formaat dat elk systeem kan lezen. Daarna vernietigt hij aantoonbaar al '
+                . 'zijn kopieën. Zonder die afspraak ben je bij een nieuwe leverancier je archief kwijt, of zit je '
+                . 'vast aan de oude.',
         ];
     }
 
@@ -1206,12 +1205,13 @@ function q2_archiefwet(array $u, array $a, bool $heeftPg, bool $heeftCloud): arr
     $u['archief'] = $stappen;
 
     if ($bewaartermijn === 'onbepaald') {
-        $u['blokkerend'][] = 'Er is nog geen bewaartermijn bepaald. Zonder termijn kun je niet voldoen aan de AVG '
-            . '(niet langer bewaren dan nodig) en niet aan de Archiefwet 2026 (tijdig vernietigen of overbrengen). '
-            . 'Bepaal eerst onder welke categorie van de selectielijst dit proces valt.';
+        $u['blokkerend'][] = 'Er is nog geen bewaartermijn bepaald. Zonder termijn voldoe je niet aan de AVG, want '
+            . 'je mag niet langer bewaren dan nodig. Je voldoet ook niet aan de Archiefwet 2026, want je moet op '
+            . 'tijd vernietigen of overbrengen. Zoek eerst op onder welke categorie van de selectielijst dit '
+            . 'proces valt.';
     } elseif ($bewaartermijn === 'eigen') {
-        $u['aandachtspunten'][] = 'De bewaartermijn is zelf bepaald in plaats van uit de selectielijst overgenomen. '
-            . 'Controleer of er voor dit proces niet toch een categorie in de selectielijst bestaat; die gaat voor.';
+        $u['aandachtspunten'][] = 'De bewaartermijn is zelf bepaald, en niet uit de selectielijst overgenomen. Kijk '
+            . 'of er voor dit proces toch een categorie in de selectielijst staat. Die gaat voor.';
     }
 
     if ($vernietiging === 'nee') {
@@ -1226,8 +1226,8 @@ function q2_archiefwet(array $u, array $a, bool $heeftPg, bool $heeftCloud): arr
     }
 
     if ($export === 'nee') {
-        $u['eisen_leverancier'][] = 'De leverancier levert een export van alle informatie inclusief metagegevens, in '
-            . 'een open en gedocumenteerd formaat, op elk moment tijdens en bij beëindiging van het contract.';
+        $u['eisen_leverancier'][] = 'De leverancier levert op elk moment een export van alle informatie met de '
+            . 'metagegevens, in een open en gedocumenteerd formaat. Ook aan het eind van het contract.';
         $u['aandachtspunten'][] = 'De informatie is nu niet zonder de leverancier op te halen. Dat blokkeert '
             . 'overbrenging naar het Nationaal Archief, maakt verzoeken om informatie (Woo) moeilijker, en maakt een contractwissel riskant.';
     } elseif ($export === 'eigen') {
@@ -1283,7 +1283,7 @@ function q2_wegingen(array $a, array $u): array
         'motivatie' => $motivatie('beschikbaarheid_motivatie', 'beschikbaarheid'),
         'herkomst' => $voorstelB === $u['biv']['b']
             ? 'Voorstel van de tool, overgenomen door ' . $rol . '.'
-            : sprintf('De tool stelde %s voor; %s koos %s.', cm_niveau_label($voorstelB), $rol, cm_niveau_label($u['biv']['b'])),
+            : sprintf('De tool stelde %s voor, %s koos %s.', cm_niveau_label($voorstelB), $rol, cm_niveau_label($u['biv']['b'])),
     ];
 
     foreach (['i' => 'integriteit', 'v' => 'vertrouwelijkheid'] as $letter => $naam) {
@@ -1296,7 +1296,7 @@ function q2_wegingen(array $a, array $u): array
             'omschrijving' => $toelichting[$u['biv'][$letter]] ?? '',
             'motivatie' => $motivatie($naam . '_motivatie', $naam),
             'herkomst' => isset($u['biv_verhoogd'][$letter])
-                ? sprintf('De tool leidde %s af; %s stelde bij naar %s.', cm_niveau_label($afgeleid), $rol, cm_niveau_label($u['biv'][$letter]))
+                ? sprintf('De tool leidde %s af, %s stelde bij naar %s.', cm_niveau_label($afgeleid), $rol, cm_niveau_label($u['biv'][$letter]))
                 : 'Afgeleid door de tool en overgenomen door ' . $rol . '.',
         ];
     }
@@ -1353,7 +1353,7 @@ function q2_wegingen(array $a, array $u): array
 
 /**
  * Welke andere formulieren deze quickscan voorstelt, voor het dossier. Per
- * formulier: of het voorgesteld is, en waarom. Een DPIA pretoets wijst ook
+ * formulier: of het voorgesteld is, en waarom. Een DPIA-pretoets wijst ook
  * naar de DPIA; die begint met de pretoets.
  *
  * @return array<string,array{voorgesteld:bool,reden:string}>
@@ -1366,15 +1366,15 @@ function q2_vervolg(array $a, array $u): array
     return [
         'dpia' => match (true) {
             isset($analyses['DPIA']) => ['voorgesteld' => true, 'reden' => $analyses['DPIA']],
-            isset($analyses['DPIA pretoets']) => ['voorgesteld' => true,
-                'reden' => 'Eerst een pretoets door de CPO. ' . $analyses['DPIA pretoets']],
+            isset($analyses['DPIA-pretoets']) => ['voorgesteld' => true,
+                'reden' => 'Eerst een pretoets door de CPO. ' . $analyses['DPIA-pretoets']],
             default => ['voorgesteld' => false, 'reden' => 'De quickscan vraagt geen DPIA.'],
         },
         'iama' => isset($analyses['IAMA'])
             ? ['voorgesteld' => true, 'reden' => $analyses['IAMA']]
             : ['voorgesteld' => false, 'reden' => 'De quickscan vraagt geen IAMA.'],
-        'aiscan' => isset($analyses['AI scan'])
-            ? ['voorgesteld' => true, 'reden' => $analyses['AI scan']]
+        'aiscan' => isset($analyses['AI-scan'])
+            ? ['voorgesteld' => true, 'reden' => $analyses['AI-scan']]
             : ['voorgesteld' => false, 'reden' => 'Er komt geen AI in het systeem.'],
         'soevereiniteit' => $cloud
             ? ['voorgesteld' => true, 'reden' => 'Het systeem gebruikt een clouddienst, of sluit die niet uit. De '

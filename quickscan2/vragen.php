@@ -494,7 +494,7 @@ function q2_informatiesoorten(): array
             'geboorte' => 'Geboortedatum of leeftijd',
             'functie' => 'Functie, afdeling of werkgever',
             'financieel' => 'Bankrekening, salaris of andere financiële gegevens',
-            'ip' => 'IP adres, nummer van een apparaat of van een cookie',
+            'ip' => 'IP-adres, nummer van een apparaat of van een cookie',
             'locatie' => 'Waar iemand is, of waar iemand heen reist',
             'gebruik' => 'Wat iemand doet in een systeem of op internet',
             'beeld' => 'Foto, video of geluidsopname van personen',
@@ -903,7 +903,7 @@ function q2_sectie_ai(): array
         'id'    => 'ai',
         'titel' => 'Komt er AI bij kijken?',
         'stap' => 1,
-        'intro' => 'Zit er AI in het systeem? Doe dan ook de AI scan. Die zoekt uit welke regels van de AI '
+        'intro' => 'Zit er AI in het systeem? Doe dan ook de AI-scan. Die zoekt uit welke regels van de AI '
             . 'verordening gelden. Ook "we sluiten het niet uit" telt hier mee.',
         'vragen' => [
             [

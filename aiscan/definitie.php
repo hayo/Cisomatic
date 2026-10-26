@@ -1,7 +1,7 @@
 <?php
 
 /**
- * De AI scan voor de motor: teksten, bestanden en de functies die de motor
+ * De AI-scan voor de motor: teksten, bestanden en de functies die de motor
  * aanroept. Alleen gegevens, geen code; de voordeur leest dit ook. Wat elke
  * sleutel doet, staat in ../README.md.
  */
@@ -9,9 +9,9 @@
 declare(strict_types=1);
 
 return [
-    'titel' => 'AI scan: wat vraagt de AI verordening?',
-    'naam' => 'AI scan',
-    'intro' => 'Geldt de AI verordening voor jullie toepassing? En wat moeten jullie dan doen? Deze scan zoekt het '
+    'titel' => 'AI-scan: wat vraagt de AI-verordening?',
+    'naam' => 'AI-scan',
+    'intro' => 'Geldt de AI-verordening voor jullie toepassing? En wat moeten jullie dan doen? Deze scan zoekt het '
         . 'uit, met de vragen van de beslishulp van BZK. Voor generatieve AI toetst hij ook het standpunt van de '
         . 'overheid.',
     'uitvoer' => 'rapport',

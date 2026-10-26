@@ -1,7 +1,7 @@
 <?php
 
 /**
- * De vragenlijst van het CIO oordeel: eerst het onderzoek, dan elf
+ * De vragenlijst van het CIO-oordeel: eerst het onderzoek, dan elf
  * aandachtsgebieden, dan het oordeel.
  *
  * De gebieden 1 tot en met 9 en hun toetsaspecten komen uit het toetskader
@@ -108,8 +108,8 @@ const CO_GEBIEDEN = [
             . 'samen ontworpen en getest te worden, vanuit de burger.',
         'aspecten' => [
             '' => [
-                ['De werkprocessen en de ICT oplossing passen bij elkaar.', ''],
-                ['Werkprocessen en ICT oplossing worden samen uitgewerkt en getest.', ''],
+                ['De werkprocessen en de ICT-oplossing passen bij elkaar.', ''],
+                ['Werkprocessen en ICT-oplossing worden samen uitgewerkt en getest.', ''],
                 ['De werkprocessen zijn ontworpen vanuit de burger.', ''],
                 ['Burgers en bedrijven kunnen volgen hoe een besluit tot stand komt.', ''],
                 ['Mensen kunnen ingrijpen als het systeem zelf een besluit neemt.',
@@ -142,7 +142,7 @@ const CO_GEBIEDEN = [
         'naam' => 'Architectuur en techniek', 'kort' => 'architectuur',
         'stap' => 3,
         'intro' => 'Kan het systeem wat het moet kunnen, en is het te bouwen? De architectuur moet passen bij de rest '
-            . 'van het ICT landschap. De techniek moet bewezen zijn, of eerst klein getest worden.',
+            . 'van het ICT-landschap. De techniek moet bewezen zijn, of eerst klein getest worden.',
         'aspecten' => [
             'Eisen' => [
                 ['De belangrijkste eisen zijn getoetst. Dat geldt voor de functies en voor eisen als snelheid en '
@@ -155,7 +155,7 @@ const CO_GEBIEDEN = [
                 ['Het project hergebruikt eerst wat er al is. Pas daarna koopt of bouwt het iets.', ''],
                 ['Het project gebruikt aantoonbaar de standaarden die ervoor gelden.',
                     'Zoals de open standaarden van het Forum Standaardisatie: pas toe of leg uit.'],
-                ['De architectuur past bij de oplossing, en bij de rest van het ICT landschap.',
+                ['De architectuur past bij de oplossing, en bij de rest van het ICT-landschap.',
                     'Bijvoorbeeld de NORA en de architectuur van het ministerie.'],
                 ['Het project heeft de voordelen en nadelen van generieke onderdelen afgewogen.',
                     'Zoals voorzieningen van Logius of van een shared service organisatie.'],
@@ -242,7 +242,7 @@ const CO_GEBIEDEN = [
                 ['Het gebruik van de cloud past bij het cloudbeleid van het Rijk, en een afwijking is gemeld.', '',
                     'eigen'],
                 ['Bij een algoritme of AI zijn de gevolgen voor mensen getoetst.',
-                    'Bijvoorbeeld met een IAMA of de AI scan. Het algoritmeregister hoort erbij.', 'eigen'],
+                    'Bijvoorbeeld met een IAMA of de AI-scan. Het algoritmeregister hoort erbij.', 'eigen'],
                 ['Afspraken over beveiliging en privacy staan in het contract met de leverancier.',
                     'Zoals een verwerkersovereenkomst, en de inkoopvoorwaarden voor beveiliging van het Rijk.', 'eigen'],
             ],
@@ -300,7 +300,7 @@ const CO_OORDELEN = [
     ],
 ];
 
-/** De stukken die het CIO office voor een oordeel vraagt. De eerste drie zijn het minimum. */
+/** De stukken die het CIO-office voor een oordeel vraagt. De eerste drie zijn het minimum. */
 const CO_STUKKEN = [
     'businesscase' => ['label' => 'Business case'],
     'planning' => ['label' => 'Planning'],
@@ -496,7 +496,7 @@ function co_sectie_onderzoek(): array
             [
                 'key' => 'co_aanleiding',
                 'type' => 'checkbox',
-                'label' => 'Waarom is er een CIO oordeel nodig?',
+                'label' => 'Waarom is er een CIO-oordeel nodig?',
                 'hint' => 'Kies alles wat geldt.',
                 'verplicht' => true,
                 'opties' => [
@@ -713,7 +713,7 @@ function co_sectie_oordeel(): array
                 'key' => 'co_opvolging',
                 'type' => 'textarea',
                 'label' => 'Welke afspraken zijn er over de opvolging?',
-                'hint' => 'Bijvoorbeeld: de opdrachtgever reageert binnen 30 dagen, en het CIO office kijkt over een '
+                'hint' => 'Bijvoorbeeld: de opdrachtgever reageert binnen 30 dagen, en het CIO-office kijkt over een '
                     . 'half jaar opnieuw.',
                 'optioneel' => true,
                 'hoogte' => 3,

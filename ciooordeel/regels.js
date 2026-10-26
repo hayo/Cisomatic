@@ -1,5 +1,5 @@
 /**
- * De regels van het CIO oordeel, voor de motor in ../assets/app.js.
+ * De regels van het CIO-oordeel, voor de motor in ../assets/app.js.
  *
  * - elke regel van een aspect toont zijn oordeel, in de kleur van het niveau
  * - onder elk gebied staat het risico van dat gebied

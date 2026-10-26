@@ -1,9 +1,9 @@
 <?php
 
 /**
- * Het rapport: het CIO oordeel als blokken.
+ * Het rapport: het CIO-oordeel als blokken.
  *
- * De opbouw volgt een CIO oordeel: eerst de kern, dan wat goed gaat, wat beter
+ * De opbouw volgt een CIO-oordeel: eerst de kern, dan wat goed gaat, wat beter
  * kan en de aanbevelingen. Daarna elk gebied als hoofdstuk, het onderzoek, de
  * opvolging, en hoe het voorstel tot stand kwam. Een blok is [soort, inhoud];
  * zie ../README.md.
@@ -30,7 +30,7 @@ function co_rapport(array $a, array $u): array
 function co_rapport_inleiding(array $a, array $u, string $naam): array
 {
     return [
-        ['h1', 'CIO oordeel ' . $naam],
+        ['h1', 'CIO-oordeel ' . $naam],
         ['term', 'Oordeel', CO_OORDELEN[$u['oordeel']]['label']],
         ['term', 'Onderdeel', (string) $a['organisatieonderdeel']],
         ['term', 'Opdrachtgever', (string) $a['co_opdrachtgever']],
@@ -188,7 +188,7 @@ function co_rapport_werkwijze(): array
 {
     return [
         ['h2', 'Zo komt het voorstel tot stand'],
-        ['alinea', 'Voor een project met een grote ICT component is een positief CIO oordeel nodig. Dat staat in '
+        ['alinea', 'Voor een project met een grote ICT-component is een positief CIO-oordeel nodig. Dat staat in '
             . 'artikel 5 van het Besluit CIO-stelsel Rijksdienst 2026. Wijkt het ministerie af van een negatief '
             . 'oordeel, dan moet de SG uitleggen waarom.'],
         ['alinea', 'De gebieden 1 tot en met 9 komen uit het toetskader projecten 2026 van het Adviescollege '
