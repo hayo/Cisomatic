@@ -16,9 +16,10 @@ declare(strict_types=1);
 <article id="cisomatic" lang="nl" data-wijzigingen>
     <p><a href="<?= h($voordeur) ?>">&larr; Naar de formulieren</a></p>
     <h1>Wat is er veranderd</h1>
-    <p>Dit is versie <?= h($versies[0]['versie']) ?> van de Cisomatic. Het nieuwste staat bovenaan.</p>
-    <p>Het eerste cijfer gaat omhoog als de Cisomatic helemaal opnieuw gebouwd is. Het tweede als er een formulier
-       bij komt of af gaat, of iets groots zoals de dossiers. Het derde bij al het andere.</p>
+    <p>Dit is versie <?= h($versies[0]['versie']) ?> van de Cisomatic. De nieuwste wijzigingen staan bovenaan.</p>
+    <p>Het eerste cijfer gaat omhoog als de Cisomatic helemaal opnieuw is gebouwd. Het tweede cijfer gaat omhoog
+       bij een nieuw formulier, een formulier dat verdwijnt, of een groot nieuw onderdeel zoals de dossiers. Het
+       derde cijfer gaat omhoog bij alle andere wijzigingen.</p>
 
     <?php foreach ($versies as $versie): ?>
         <section>
