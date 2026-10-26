@@ -88,18 +88,18 @@ formulier gebruikt de motor; de motor kent geen formulier bij naam.
 
 ## Versies
 
-De Cisomatic heeft één versienummer, zoals 1.3. De voettekst van elke pagina
+De Cisomatic heeft één versienummer, zoals 1.1.2. De voettekst van elke pagina
 noemt het, met een link naar de pagina met wijzigingen. De verantwoording onder
 elk document noemt het ook, naast de versie van de regels.
 
-- Het eerste cijfer gaat omhoog als een antwoordbestand van een eerdere versie
-  niet meer goed inlaadt, bijvoorbeeld omdat een sleutel een andere naam kreeg.
-- Het tweede cijfer gaat omhoog bij elke andere grote wijziging: een nieuw
-  formulier, nieuwe vragen, of een andere uitkomst bij dezelfde antwoorden.
-- Kleine verbeteringen, zoals een tekst die duidelijker wordt, krijgen geen
-  nieuw nummer.
+- Het tweede cijfer gaat omhoog als er een formulier bij komt of verdwijnt,
+  zoals van 1.1.2 naar 1.2. Het derde cijfer begint dan weer bij 0, maar dat
+  laat je weg.
+- Het derde cijfer gaat omhoog bij elke andere wijziging, zoals van 1.1.2 naar
+  1.1.3.
+- Het eerste cijfer gaat alleen omhoog als je daar bewust voor kiest.
 
-Na een grote wijziging zet je bovenaan `wijzigingen/versies.php` een nieuwe
+Na elke wijziging zet je bovenaan `wijzigingen/versies.php` een nieuwe
 versie, met de datum en in een paar korte zinnen wat er veranderd is. Meer hoeft
 niet: de voettekst, de pagina en de verantwoording lezen het daar.
 

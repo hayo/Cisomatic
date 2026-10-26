@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 return [
     [
-        'versie' => '1.3',
+        'versie' => '1.1.2',
         'datum' => '2026-10-26',
         'wijzigingen' => [
             'De quickscan en de fit/gap voor de BIO 1 heten nu quickscan 1.0 en fit/gap 1.0. Quickscan 2.0 en '
@@ -29,7 +29,7 @@ return [
         ],
     ],
     [
-        'versie' => '1.2',
+        'versie' => '1.1.1',
         'datum' => '2026-10-15',
         'wijzigingen' => [
             'Dossiers: alle formulieren van een project bij elkaar. Een antwoord dat in meer formulieren terugkomt, '
