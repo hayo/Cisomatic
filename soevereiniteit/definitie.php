@@ -35,7 +35,7 @@ return [
             'naam' => 'quickscan 2.0',
             'als' => ['cloud_jurisdictie' => 'sv_buitenlandse_wet'],
         ],
-        'quickscan' => ['naam' => 'de quickscan'],
+        'quickscan' => ['naam' => 'quickscan 1.0'],
         'businesscase' => ['naam' => 'de business case'],
         'dpia' => ['naam' => 'de DPIA'],
         'iama' => ['naam' => 'de IAMA'],

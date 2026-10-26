@@ -1,4 +1,4 @@
-# Fit/gap BIO
+# Fit/gap 1.0: BIO
 
 Een formulier van de [cisomatic](../README.md) voor de leverancier van een
 dienst. De leverancier, de opdrachtnemer, verklaart per norm of de dienst

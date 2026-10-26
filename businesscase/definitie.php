@@ -34,8 +34,8 @@ return [
     'hoofdstuk_per_pagina' => true,
 
     'overnemen' => [
-        'quickscan2' => ['naam' => 'de quickscan voor de BIO2', 'overslaan' => $eigen],
-        'quickscan' => ['naam' => 'de quickscan', 'overslaan' => $eigen],
+        'quickscan2' => ['naam' => 'quickscan 2.0', 'overslaan' => $eigen],
+        'quickscan' => ['naam' => 'quickscan 1.0', 'overslaan' => $eigen],
         'dpia' => ['naam' => 'de DPIA', 'overslaan' => $eigen],
         'iama' => [
             'naam' => 'de IAMA',

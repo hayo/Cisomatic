@@ -15,7 +15,7 @@ declare(strict_types=1);
 /** @var array<string,list<array<string,mixed>>> $fasen */
 
 $titels = array_column($formulieren, 'titel', 'id');
-$kaderUitleg = ['bio2' => 'Met quickscan 2.0.', 'bio' => 'Met de eerdere quickscan, voor wie nog met de BIO werkt.'];
+$kaderUitleg = ['bio2' => 'Met quickscan 2.0.', 'bio' => 'Met quickscan 1.0, voor wie nog met de BIO werkt.'];
 
 ?>
 <article id="cisomatic" lang="nl" data-kiezer>

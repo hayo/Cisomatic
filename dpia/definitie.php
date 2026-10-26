@@ -30,12 +30,12 @@ return [
     // De quickscan kent ook een rol, maar die betekent daar iets anders.
     'overnemen' => [
         'quickscan' => [
-            'naam' => 'de quickscan',
+            'naam' => 'quickscan 1.0',
             'overslaan' => ['rol'],
             'zet' => ['aanleiding' => 'quickscan'],
         ],
         'quickscan2' => [
-            'naam' => 'de quickscan voor de BIO2',
+            'naam' => 'quickscan 2.0',
             'overslaan' => ['rol'],
             'zet' => ['aanleiding' => 'quickscan'],
         ],

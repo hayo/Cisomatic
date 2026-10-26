@@ -9,7 +9,7 @@
 declare(strict_types=1);
 
 return [
-    'titel' => 'IB & Privacy Quickscan',
+    'titel' => 'Quickscan 1.0: IB & Privacy op de BIO',
     'naam' => 'quickscan',
     'intro' => 'Vul dit in voordat je een project start. Je ziet dan meteen welke eisen er gelden en welke '
         . 'aanvullende analyses nodig zijn.',

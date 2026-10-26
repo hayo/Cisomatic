@@ -12,14 +12,14 @@ Er zijn nu elf formulieren:
   vóór alles. Vijf toetsen: is het nodig, kan het zonder nieuw systeem, is er al
   iets, is het jullie taak, en kunnen jullie het dragen? Met een advies aan het
   MT over het risico.
-- **[quickscan2](quickscan2/README.md)**: de quickscan voor de BIO2 en de
+- **[quickscan2](quickscan2/README.md)**: quickscan 2.0, voor de BIO2 en de
   Cyberbeveiligingswet, voor ministeries, diensten en agentschappen. Te
   beschermen belangen, cloudbeleid 2026, BIO2-maatregelen, analyses.
 - **[socialemedia](socialemedia/README.md)**: de kanalenscan voor sociale media,
   voor het Rijk. Volgt één kanaal door de hele cyclus: starten, de jaarlijkse
   toets, en vertrekken. Levert een comply or explain, of een exitplan.
-- **[quickscan](quickscan/README.md)**: de IB & Privacy Quickscan, op de BIO 1.
-  Welk beveiligingsniveau geldt, welke eisen, welke analyses.
+- **[quickscan](quickscan/README.md)**: quickscan 1.0, de IB & Privacy Quickscan
+  op de BIO 1. Welk beveiligingsniveau geldt, welke eisen, welke analyses.
 - **[dpia](dpia/README.md)**: een Data Protection Impact Assessment in de opbouw
   van het Model DPIA Rijksdienst.
 - **[aiscan](aiscan/README.md)**: de AI scan, op de Beslishulp AI-verordening van
@@ -33,12 +33,12 @@ Er zijn nu elf formulieren:
 - **[ciooordeel](ciooordeel/README.md)**: het CIO oordeel, voor de adviseur van
   het CIO office. Elf aandachtsgebieden uit het toetskader van het AcICT en het
   Kwaliteitskader CIO-oordelen, een voorstel voor het oordeel, en het rapport.
-- **[fitgap2](fitgap2/README.md)**: de fit/gap voor de BIO2 en de
+- **[fitgap2](fitgap2/README.md)**: fit/gap 2.0, voor de BIO2 en de
   Cyberbeveiligingswet. De verklaring van een leverancier, per maatregel: voldoet
   de dienst, hoe, en zo niet, wat er nog moet gebeuren en wanneer. Met de eisen
   aan de keten, het cloudbeleid, en ISO 27017, 27018 en 27701.
-- **[fitgap](fitgap/README.md)**: dezelfde fit/gap op de BIO 1, met de normen
-  die bij het vastgestelde beveiligingsniveau horen.
+- **[fitgap](fitgap/README.md)**: fit/gap 1.0, dezelfde fit/gap op de BIO 1,
+  met de normen die bij het vastgestelde beveiligingsniveau horen.
 
 Plain PHP, geen Composer, geen build, geen afhankelijkheden.
 

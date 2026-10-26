@@ -82,7 +82,7 @@ systeem tekst, beeld of geluid maakt.
 
 De omschrijving `ai_omschrijving` heet in quickscan 2.0 en de DPIA hetzelfde,
 dus die gaat vanzelf mee. De aankruislijst `ai_toepassing` deelt deze scan alleen
-nog met de eerste quickscan. De IAMA
+nog met quickscan 1.0. De IAMA
 neemt de omschrijving ook over als doel. Quickscan 2.0 en de DPIA zetten bij een
 bestand van deze scan de vraag of er AI is op ja.
 

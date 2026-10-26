@@ -7,14 +7,14 @@ of de Cyberbeveiligingswet geldt, hoe zwaar de te beschermen belangen zijn, wat
 het cloudbeleid van 2026 toelaat, welke overheidsmaatregelen uit de BIO2 hier
 gelden, en welke analyses nog nodig zijn.
 
-Het is een afsplitsing van de [eerste quickscan](../quickscan/README.md). De
+Het is een afsplitsing van [quickscan 1.0](../quickscan/README.md). De
 twee stappen, de ondergrens bij bijstellingen, "weet ik niet" met een aanname,
 de privacyvragen en het hoofdstuk over de Archiefwet werken hetzelfde; dat staat
 daar beschreven. Hier staat wat anders is.
 
-## Wat anders is dan de eerste quickscan
+## Wat anders is dan quickscan 1.0
 
-| Eerste quickscan (BIO 1) | Quickscan 2.0 (BIO2) |
+| Quickscan 1.0 (BIO 1) | Quickscan 2.0 (BIO2) |
 | --- | --- |
 | De eerste vraag: valt er iets te beschermen? Zo niet, dan stopt de scan | Die vraag is er niet. Wie de quickscan invult, doet dat omdat het moet, dus er valt altijd iets te beschermen |
 | Beveiligingsniveau BBN 1, 2 of 3 | Bestaat niet meer. Elk systeem krijgt de basis van de BIO2 (ISO 27002 plus de verplichte overheidsmaatregelen). Een volledige risicoanalyse volgt bij een cruciaal systeem, een eis Zeer hoog, een hoog dreigingsprofiel, een (kritisch) strategisch proces op een vitaal systeem, of een leverancier waar je aan vastzit |
@@ -32,7 +32,7 @@ daar beschreven. Hier staat wat anders is.
 | De CIO stelt mee vast | De proceseigenaar stelt vast, na advies van de CISO, en bij zware gevallen ook van de CIO. De BIO2 legt het risico bij de lijn |
 
 De sleutels van de vragen die in beide quickscans staan, zijn gelijk. Een
-bestand van de eerste quickscan laadt hier dus in, behalve de rubricering. De DPIA leest de bestanden van beide quickscans.
+bestand van quickscan 1.0 laadt hier dus in, behalve de rubricering. De DPIA leest de bestanden van beide quickscans.
 
 ## Te beschermen belangen
 

@@ -1,14 +1,14 @@
 # Fit/gap 2.0: BIO2 en Cyberbeveiligingswet
 
 Een formulier van de [cisomatic](../README.md) voor de leverancier van een
-dienst. Het is de [fit/gap voor de BIO 1](../fitgap/README.md), bijgewerkt naar
+dienst. Het is [fit/gap 1.0](../fitgap/README.md), bijgewerkt naar
 de BIO2 en de Cyberbeveiligingswet. De vragen per norm, de certificaten, de
 normen voor cloud en privacy, de uitkomst en het document werken hetzelfde; dat
 staat daar beschreven. Hier staat wat anders is.
 
-## Wat anders is dan de BIO 1
+## Wat anders is dan fit/gap 1.0
 
-| Fit/gap BIO 1 | Fit/gap 2.0 |
+| Fit/gap 1.0 | Fit/gap 2.0 |
 | --- | --- |
 | Beveiligingsniveau BBN 1, 2 of 3, met een eigen niveau voor B en I | Bestaat niet meer. Elke maatregel geldt |
 | 112 normen uit ISO 27002:2013, in 14 hoofdstukken | 93 maatregelen uit ISO 27002:2022, in 4 thema's. Het formulier deelt ze op in 12 stappen |

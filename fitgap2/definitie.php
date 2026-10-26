@@ -22,7 +22,7 @@ return [
         . 'opdrachtgever.',
     'uitvoer' => 'document',
     'download_uitleg' => 'Het document opent in Word, LibreOffice en Google Docs, met kopjes, lijsten en tabellen.',
-    'inladen' => 'Een bestand van een eerdere keer, of van de fit/gap voor de BIO 1. Je browser leest het zelf, dus er '
+    'inladen' => 'Een bestand van een eerdere keer, of van fit/gap 1.0. Je browser leest het zelf, dus er '
         . 'gaat niets naar de server.',
     'voet' => 'Gebaseerd op de fit/gap analyse BIO, versie 1.05, bijgewerkt naar de BIO2 (versie 1.3), de '
         . 'Cyberbeveiligingsregeling sector overheid en het rijksbrede cloudbeleid van 2026. De omschrijvingen van de '
@@ -38,13 +38,13 @@ return [
     'hoofdstuk_per_pagina' => true,
 
     'overnemen' => [
-        'fitgap' => ['naam' => 'de fit/gap voor de BIO 1'],
+        'fitgap' => ['naam' => 'fit/gap 1.0'],
         'quickscan2' => [
-            'naam' => 'de quickscan voor de BIO2',
+            'naam' => 'quickscan 2.0',
             'overslaan' => $eigen,
             'als' => ['leverancier_cbw' => 'fg_cbw_zelf'],
         ],
-        'quickscan' => ['naam' => 'de quickscan', 'overslaan' => $eigen],
+        'quickscan' => ['naam' => 'quickscan 1.0', 'overslaan' => $eigen],
         'businesscase' => ['naam' => 'de business case', 'overslaan' => $eigen],
     ],
 

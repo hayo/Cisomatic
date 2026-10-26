@@ -32,11 +32,11 @@ return [
     // De versie hoort bij het document waar het bestand vandaan komt.
     'overnemen' => [
         'quickscan' => [
-            'naam' => 'de quickscan',
+            'naam' => 'quickscan 1.0',
             'zet' => ['ia_reden' => 'quickscan'],
         ],
         'quickscan2' => [
-            'naam' => 'de quickscan voor de BIO2',
+            'naam' => 'quickscan 2.0',
             'zet' => ['ia_reden' => 'quickscan'],
         ],
         'dpia' => [

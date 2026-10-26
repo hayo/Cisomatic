@@ -34,7 +34,7 @@ return [
     // quickscan 2.0 de omschrijving ai_omschrijving.
     'overnemen' => [
         'quickscan2' => ['naam' => 'quickscan 2.0'],
-        'quickscan' => ['naam' => 'de quickscan'],
+        'quickscan' => ['naam' => 'quickscan 1.0'],
         'dpia' => ['naam' => 'de DPIA'],
         'iama' => ['naam' => 'de IAMA', 'als' => ['ia_doel' => 'ai_omschrijving']],
         'businesscase' => ['naam' => 'de business case', 'als' => ['bc_doel' => 'ai_omschrijving']],

@@ -15,7 +15,7 @@ return [
         . 'dan meteen wat de BIO2, de Cyberbeveiligingswet en het cloudbeleid vragen.',
     'uitvoer' => 'advies',
     'download_uitleg' => 'Het document opent in Word, LibreOffice en Google Docs, met kopjes, lijsten en tabellen.',
-    'inladen' => 'Een bestand van een eerdere keer, of van de eerste quickscan. Je browser leest het zelf, dus '
+    'inladen' => 'Een bestand van een eerdere keer, of van quickscan 1.0. Je browser leest het zelf, dus '
         . 'er gaat niets naar de server.',
     'voet' => 'Gebaseerd op de BIO2 (versie 1.3), de Cyberbeveiligingsregeling sector overheid en het rijksbrede '
         . 'cloudbeleid van 2026. Dit advies vervangt het oordeel van de CISO niet.',
@@ -28,7 +28,7 @@ return [
     // De eerste quickscan kent staatsgeheim als één keuze; die kiest de invuller hier opnieuw.
     'overnemen' => [
         'quickscan' => [
-            'naam' => 'de eerste quickscan',
+            'naam' => 'quickscan 1.0',
             'overslaan' => ['rubricering'],
         ],
         'businesscase' => ['naam' => 'de business case'],
