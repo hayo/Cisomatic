@@ -189,6 +189,18 @@ function q2_advies_bio2(array $u): array
             . 'ISO 27002 en de verplichte overheidsmaatregelen. Wat een risicoanalyse daarna nog aan risico '
             . 'laat zien, vraagt om extra maatregelen. Deze quickscan is het begin van die analyse.'],
         ['term', 'Beveiligingsniveau', $u['niveau']],
+        ['alinea', 'De overheidsmaatregelen gelden altijd, ook als er geen volledige risicoanalyse nodig is. Een '
+            . 'risico bewust accepteren mag alleen bij de eigen maatregelen van de organisatie, en alleen na een '
+            . 'afweging die is vastgelegd.'],
+        ...(q2_heeft_analyse($u, 'Volledige risicoanalyse') ? [
+            ['h3', 'De volledige risicoanalyse'],
+            ['lijst', [
+                'Doe de analyse met de methode van de organisatie, bijvoorbeeld MAPGOOD, EBIOS of ISO 27005.',
+                'Betrek de proceseigenaar, de systeemeigenaar en de CISO.',
+                'Leg de uitkomst voor aan het management, met een plan om de risico’s te behandelen.',
+                'Zet de risico’s in het risicoregister, met een datum waarop ze behandeld zijn.',
+            ]],
+        ] : []),
         ['h3', 'Maatregelen die we zelf nemen'],
         ['lijst', $u['maatregelen']],
     ];

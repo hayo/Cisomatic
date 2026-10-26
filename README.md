@@ -53,7 +53,7 @@ assets/app.css            vormgeving van voordeur en formulieren, op tokens
 assets/standalone.css     de huisstijl: de tokens en een basis voor de pagina
 assets/app.js             de motor in de browser: stappen, zichtbaarheid, rijen, bewaren, inladen
 assets/dossier.js         de dossiers: op de voordeur, en wat een formulier uit een dossier haalt
-src/bootstrap.php         laadt alles; cm_config(), cm_asset(), cm_formulier(), cm_werkplek(), cm_verwerk(), cm_kiezer()
+src/bootstrap.php         laadt alles; cm_config(), cm_asset(), cm_formulier(), cm_werkplek(), cm_verwerk(), cm_kiezer(), cm_versie(), cm_wijzigingen()
 src/helpers.php           escapen, niveaus, datum, opsommingen, bestandsnaam
 src/antwoorden.php        inlezen en controleren
 src/formulier.php         formulier naar HTML
@@ -65,6 +65,9 @@ src/pagina.php            de inhoud: formulier of resultaat, als <article>
 src/resultaat.php         de pagina na het versturen
 src/kiezer.php            de voordeur als <article>: de fasen, en de plek voor de dossiers
 src/document.php          html, head en body eromheen, met app.css en standalone.css
+src/wijzigingen.php       de pagina met wijzigingen, als <article>
+wijzigingen/versies.php   de versies, de nieuwste bovenaan; de bovenste is de versie die draait
+wijzigingen/index.php     de pagina met wijzigingen; de voettekst van elke pagina linkt ernaar
 bewaard/                  opgeslagen documenten, als bewaren aan staat
 
 <formulier>/index.php         roept de motor aan met de naam van de map
@@ -82,6 +85,23 @@ De motorfuncties heten `cm_`, die van de quickscan `qs_`, die van quickscan 2.0
 van de AI scan `ai_`, `gai_` voor generatieve AI, die van het CIO oordeel `co_`,
 en die van de fit/gap `fg_`, met `fg1_` voor de BIO 1 en `fg2_` voor de BIO2. Een
 formulier gebruikt de motor; de motor kent geen formulier bij naam.
+
+## Versies
+
+De Cisomatic heeft één versienummer, zoals 1.3. De voettekst van elke pagina
+noemt het, met een link naar de pagina met wijzigingen. De verantwoording onder
+elk document noemt het ook, naast de versie van de regels.
+
+- Het eerste cijfer gaat omhoog als een antwoordbestand van een eerdere versie
+  niet meer goed inlaadt, bijvoorbeeld omdat een sleutel een andere naam kreeg.
+- Het tweede cijfer gaat omhoog bij elke andere grote wijziging: een nieuw
+  formulier, nieuwe vragen, of een andere uitkomst bij dezelfde antwoorden.
+- Kleine verbeteringen, zoals een tekst die duidelijker wordt, krijgen geen
+  nieuw nummer.
+
+Na een grote wijziging zet je bovenaan `wijzigingen/versies.php` een nieuwe
+versie, met de datum en in een paar korte zinnen wat er veranderd is. Meer hoeft
+niet: de voettekst, de pagina en de verantwoording lezen het daar.
 
 ## Draaien
 

@@ -109,6 +109,8 @@ $werkplek = cm_werkplek();
 
     <footer>
         <p><?= h($formulier['voet']) ?></p>
+        <p>Cisomatic <?= h(cm_versie()) ?> · <a href="<?= h(cm_wijzigingen_adres($formulier['id'])) ?>">Wat is er
+           veranderd</a></p>
     </footer>
 </article>
 <?php if ($werkplek === null): ?>

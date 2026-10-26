@@ -32,6 +32,12 @@ staat daar beschreven. Hier staat wat anders is.
   maand, inzicht in de kwaliteit en het veilig ontwikkelen, en medewerking aan
   het toezicht. Ze volgen de meldtermijnen uit de wet, en de zorgplicht voor
   de keten.
+- **De zorgplicht.** Valt de opdrachtgever onder de wet, of weet de invuller
+  dat niet, dan zet het document de tien onderdelen van de zorgplicht uit
+  artikel 21 in een tabel. Per onderdeel staan de maatregelen uit de BIO2 die
+  erbij horen, en of de dienst daaraan voldoet. Er komen geen vragen bij: de
+  stand volgt uit de antwoorden per maatregel. De koppeling komt uit tabel 4 van
+  de generieke baselinetoets BIO2.
 - **Het cloudbeleid.** Bij elke cloud: data in de EER of Zwitserland, geen
   leveranciers uit uitgesloten landen, en openheid over recht van buiten de EU.
   Bij vertrouwelijke gegevens ook versleuteling en eigen sleutels.
@@ -48,6 +54,9 @@ vraag in, uit `leverancier_cbw`.
   (Stcrt. 2026, 27679), en de meldtermijnen uit de Cyberbeveiligingswet.
 - [Herziening rijksbreed cloudbeleid 2026](https://www.tweedekamer.nl/downloads/document?id=2026D35295)
   (3 juli 2026).
+- [Generieke Baselinetoets BIO2](https://www.bio-overheid.nl/bio2/bio-producten/generieke-baselinetoets-bio2/),
+  versie 3.2 (14 oktober 2026): de koppeling van de zorgplicht aan de
+  maatregelen.
 
 Dezelfde bronnen als [quickscan 2.0](../quickscan2/README.md). De teksten van de
 overheidsmaatregelen volgen die van de quickscan.
@@ -58,6 +67,8 @@ overheidsmaatregelen volgen die van de quickscan.
   samenvatting in gewone taal. De tekst van de norm zelf is niet openbaar.
 - De overheidsmaatregelen zijn een selectie: de maatregelen die de leverancier
   raken. Het is geen volledige verklaring van toepasselijkheid.
+- De tabel met de zorgplicht laat zien hoe de maatregelen ervoor staan. Of de
+  opdrachtgever daarmee aan de zorgplicht voldoet, beoordeelt die zelf.
 - De vier eisen bij de Cyberbeveiligingswet zijn een eigen uitwerking van wat
   de opdrachtgever van de keten nodig heeft. De wet zelf legt ze niet op aan de
   leverancier.

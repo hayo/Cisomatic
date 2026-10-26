@@ -49,6 +49,8 @@ invuller hoe zwaar die schade is. Elke keuze heet naar de soort, zoals
 - de rubricering: Departementaal Vertrouwelijk is TBB 4, Staatsgeheim
   Confidentieel TBB 3, Geheim TBB 2, Zeer geheim TBB 1;
 - de BIV-eisen: één eis Zeer hoog is TBB 3, alle drie Zeer hoog is TBB 2.
+  Zonder Zeer hoog is één eis boven Zeer laag al TBB 4. Zo staat het in
+  bijlage 1: alleen Zeer laag, Zeer laag, Zeer laag haalt geen TBB.
 
 De redenen zijn de opbouw: per bron een regel met zijn niveau, dan de uitkomst
 en wat die betekent. Die opbouw staat in het uitkomstblok, als voorstel in de
@@ -87,6 +89,42 @@ De functies heten `q2_`. `regels.js` herhaalt de afleidingen uit
   De wet geldt sinds 15 augustus 2026.
 - [Herziening rijksbreed cloudbeleid 2026](https://www.tweedekamer.nl/downloads/document?id=2026D35295)
   (3 juli 2026).
+- [Generieke Baselinetoets BIO2](https://www.bio-overheid.nl/bio2/bio-producten/generieke-baselinetoets-bio2/),
+  versie 3.2, met de gebruikershandleiding versie 1.2 (14 oktober 2026). Zie
+  hieronder.
+
+## Naast de baselinetoets BIO2
+
+De baselinetoets stelt dezelfde vraag als deze quickscan: volstaat de basis van
+de BIO2, of is een aanvullende risicoanalyse nodig? Hij is er voor elke
+overheid. Deze quickscan is er alleen voor het Rijk, en volgt daarom bijlage 1
+bij de regeling, de te beschermen belangen.
+
+Waar ze hetzelfde zeggen:
+
+- Staatsgeheim Confidentieel, Geheim of Zeer geheim: altijd een volledige
+  risicoanalyse. In de toets is dat het vroege afkappunt, hier TBB 3 of zwaarder.
+- Een statelijke actor, of de hoogste impact: altijd een volledige
+  risicoanalyse. Hier is dat het hoge dreigingsprofiel, of een eis Zeer hoog.
+- De overheidsmaatregelen gelden altijd, ook bij een gunstige uitkomst. Alleen
+  bij eigen maatregelen mag een risico bewust geaccepteerd worden.
+- De te beschermen belangen uit bijlage 1, met dezelfde niveaus.
+
+Wat de toets anders doet:
+
+- Hij rekent met kans maal impact, op vijf niveaus. Deze quickscan kent geen
+  kans; het dreigingsprofiel neemt die plaats in.
+- Hij vraagt naar twintig soorten impact uit bijlage 2, voor decentrale
+  overheden. Het Rijk vult in de toets ook die in. Deze quickscan doet dat niet:
+  voor het Rijk geldt bijlage 1.
+- Met de werkwijze Basis is een impact Hoog op één aspect al genoeg voor een
+  aanvullende risicoanalyse. Zo geeft een RPO van vier uur of minder daar altijd
+  een analyse. Hier geeft de RPO alleen de eis aan de back-up.
+- TBB 3 is in de toets impact Midden, en dan is een analyse alleen het
+  overwegen waard. Hier is het systeem bij TBB 3 cruciaal, en volgt altijd een
+  volledige risicoanalyse.
+- De ISMS-volwassenheid kan in de toets het advies een niveau hoger of lager
+  maken. Deze quickscan vraagt er niet naar.
 
 ## Beperkingen
 

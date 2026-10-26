@@ -99,6 +99,7 @@ $kaderUitleg = ['bio2' => 'Met quickscan 2.0.', 'bio' => 'Met quickscan 1.0, voo
         <p>Je antwoorden kun je als bestand downloaden. Een ander formulier leest dat bestand ook in, en vult dan
            alvast in wat het al weet. Een dossier bewaar je als projectbestand: één bestand met alle formulieren
            van het project.</p>
+        <p>Cisomatic <?= h(cm_versie()) ?> · <a href="<?= h(cm_wijzigingen_adres()) ?>">Wat is er veranderd</a></p>
     </footer>
 </article>
 <script type="application/json" id="cisomatic-formulieren"><?= json_encode(

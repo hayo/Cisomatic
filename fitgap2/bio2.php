@@ -344,6 +344,27 @@ const FG2_CBW = [
 ];
 
 /**
+ * De zorgplicht uit artikel 21 van de Cyberbeveiligingswet, de onderdelen a tot
+ * en met j, met de maatregelen uit de BIO2 die erbij horen. De koppeling komt uit
+ * tabel 4 van de generieke baselinetoets BIO2, versie 3.2.
+ */
+const FG2_ZORGPLICHT = [
+    ['a', 'Risicoanalyse en beleid', ['5.1', '5.2', '5.7']],
+    ['b', 'Incidenten behandelen', ['5.24', '5.25', '5.26', '5.27', '5.28', '8.15', '8.16']],
+    ['c', 'Continuïteit, back-ups en crisisbeheer', ['5.29', '5.30', '7.5', '7.11', '8.13', '8.14']],
+    ['d', 'De keten', ['5.19', '5.20', '5.21', '5.22', '5.23', '5.31']],
+    ['e', 'Netwerken en systemen beveiligen', ['5.6', '5.7', '5.14', '5.20', '7.1', '8.4', '8.8', '8.9', '8.11',
+        '8.12', '8.20', '8.21', '8.25', '8.26', '8.27', '8.28', '8.29', '8.30', '8.31', '8.32', '8.33']],
+    ['f', 'Beoordelen of de maatregelen werken', ['5.35', '5.36', '8.1', '8.22', '8.23']],
+    ['g', 'Bewustzijn en training', ['6.3', '6.8', '8.7']],
+    ['h', 'Cryptografie', ['8.24']],
+    ['i', 'Toegang en authenticatie', ['5.4', '5.9', '5.10', '5.11', '5.15', '5.16', '5.17', '5.18', '6.1', '6.2',
+        '6.4', '6.5', '6.6', '6.7', '7.3', '7.4', '7.5', '7.6', '7.7', '7.8', '7.9', '7.10', '7.12', '7.13', '7.14',
+        '8.1', '8.2', '8.3', '8.6', '8.10', '8.17', '8.18', '8.19']],
+    ['j', 'Beveiligde communicatie', ['5.14', '8.5']],
+];
+
+/**
  * Het rijksbrede cloudbeleid van 2026. Per eis: sleutel, nummer, titel,
  * tekst, en of hij alleen bij vertrouwelijke gegevens geldt.
  */
@@ -556,8 +577,68 @@ function fg2_evalueer(array $a): array
     return $u;
 }
 
+/**
+ * De maatregel uit ISO 27002 waar een nummer bij hoort: "6.01.01" en "6.1" worden
+ * allebei "6.1". Een eis zonder zo'n nummer, zoals "Cbw 1", geeft null.
+ */
+function fg2_maatregel(string $nummer): ?string
+{
+    return preg_match('/^(\d+)\.(\d+)/', fg2_kort($nummer), $m) ? (int) $m[1] . '.' . (int) $m[2] : null;
+}
+
+/**
+ * Per onderdeel van de zorgplicht: hoe de dienst ervoor staat, uit de antwoorden
+ * bij de maatregelen die erbij horen.
+ *
+ * @return list<list<string>>
+ */
+function fg2_zorgplicht(array $u): array
+{
+    $iso = isset($u['afgedekt']['fg_iso27001']);
+    $rijen = [];
+
+    foreach (FG2_ZORGPLICHT as [$letter, $naam, $maatregelen]) {
+        $telling = ['ja' => 0, 'nee' => 0, 'nvt' => 0, '' => 0];
+        foreach ($u['delen'] as $id => $deel) {
+            // Alleen de BIO2 zelf: ISO 27017 en 27018 hebben eigen nummers.
+            if (!isset(FG2_DELEN[$id]) && !in_array($id, ['overheid', 'keten'], true)) {
+                continue;
+            }
+            foreach ($deel['normen'] as $norm) {
+                if (in_array(fg2_maatregel((string) $norm['nummer']), $maatregelen, true)) {
+                    $telling[$norm['status']]++;
+                }
+            }
+        }
+
+        $stand = match (true) {
+            $telling['nee'] > 0 => 'Voldoet nog niet: ' . fg_aantal($telling['nee'], 'maatregel', 'maatregelen'),
+            $telling[''] > 0 => 'Nog niet alles ingevuld',
+            $telling['ja'] + $telling['nvt'] === 0 => $iso ? 'Valt onder ISO 27001' : 'Geen maatregelen ingevuld',
+            default => $iso ? 'Voldoet, deels via ISO 27001' : 'Voldoet',
+        };
+
+        $rijen[] = [$letter . '. ' . $naam, implode(', ', $maatregelen), $stand];
+    }
+
+    return $rijen;
+}
+
 /** @return list<array<int,mixed>> */
 function fg2_document(array $a, array $u): array
 {
-    return fg_document($a, $u, 'Fit/gap BIO2 en Cbw');
+    $zorgplicht = ($a['fg_cbw'] ?? '') === 'nee' ? [] : [
+        ['h2', 'De zorgplicht uit de Cyberbeveiligingswet'],
+        ['alinea', 'Artikel 21 van de Cyberbeveiligingswet noemt tien onderdelen van de zorgplicht. Hier staat per '
+            . 'onderdeel welke maatregelen uit de BIO2 erbij horen, en hoe de dienst daarvoor staat. De koppeling komt '
+            . 'uit de generieke baselinetoets BIO2.'],
+        ['tabel', [
+            'kop' => ['Onderdeel', 'Maatregelen', 'Stand'],
+            'rijen' => fg2_zorgplicht($u),
+            'breedtes' => [5.6, 6, 5],
+            'rijkop' => true,
+        ]],
+    ];
+
+    return fg_document($a, $u, 'Fit/gap BIO2 en Cbw', $zorgplicht);
 }

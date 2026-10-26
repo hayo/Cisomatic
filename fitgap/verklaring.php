@@ -670,11 +670,13 @@ function fg_afgedekt_zinnen(array $u): array
 
 /**
  * Het document: de titelpagina, de uitkomst, wat nog moet gebeuren, wat de
- * verklaring dekt, alle normen, de bijlagen en de handtekeningen.
+ * verklaring dekt, alle normen, de bijlagen en de handtekeningen. Een
+ * formulier kan in $naUitkomst eigen hoofdstukken achter de uitkomst zetten.
  *
+ * @param list<array<int,mixed>> $naUitkomst
  * @return list<array<int,mixed>>
  */
-function fg_document(array $a, array $u, string $titel): array
+function fg_document(array $a, array $u, string $titel, array $naUitkomst = []): array
 {
     $naam = trim((string) ($a['projectnaam'] ?? '')) ?: 'Naamloze dienst';
 
@@ -688,6 +690,7 @@ function fg_document(array $a, array $u, string $titel): array
         ['term', 'Opgesteld door', (string) ($a['aanvrager'] ?? '')],
         ...(($a['email'] ?? '') === '' ? [] : [['term', 'Contact', (string) $a['email']]]),
         ...fg_document_uitkomst($a, $u),
+        ...$naUitkomst,
         ...fg_document_gaten($u),
         ...fg_document_reikwijdte($a, $u),
         ...fg_document_normen($u),

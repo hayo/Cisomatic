@@ -319,8 +319,15 @@
             a.vertrouwelijkheid_bijstelling || afgeleideVertrouwelijkheid(a).niveau
         ];
         var zeerHoog = biv.filter(function (n) { return n === 'zh'; }).length;
-        bronnen.push([[0, 3, 3, 2][zeerHoog],
-            'Betrouwbaarheidseisen, ' + ['geen eis', 'één eis', 'twee eisen', 'alle drie'][zeerHoog] + ' Zeer hoog']);
+        var bovenZeerLaag = biv.some(function (n) { return n && n !== 'zl'; });
+        if (zeerHoog) {
+            bronnen.push([[0, 3, 3, 2][zeerHoog],
+                'Betrouwbaarheidseisen, ' + ['', 'één eis', 'twee eisen', 'alle drie'][zeerHoog] + ' Zeer hoog']);
+        } else if (bovenZeerLaag) {
+            bronnen.push([4, 'Betrouwbaarheidseisen, ten hoogste Hoog']);
+        } else {
+            bronnen.push([0, 'Betrouwbaarheidseisen, alle drie Zeer laag']);
+        }
 
         var niveaus = bronnen.map(function (b) { return b[0]; }).filter(Boolean);
         var niveau = niveaus.length ? Math.min.apply(null, niveaus) : 0;

@@ -278,3 +278,41 @@ function cm_dossier_formulieren(array $formulieren): array
         'href' => $f['href'],
     ], $formulieren);
 }
+
+/**
+ * De versies uit wijzigingen/versies.php, de nieuwste eerst.
+ *
+ * @return list<array{versie:string,datum:string,wijzigingen:list<string>}>
+ */
+function cm_versies(): array
+{
+    static $versies = null;
+
+    return $versies ??= require CM_ROOT . '/wijzigingen/versies.php';
+}
+
+/** De versie die nu draait: de bovenste uit wijzigingen/versies.php. */
+function cm_versie(): string
+{
+    return cm_versies()[0]['versie'];
+}
+
+/** Het adres van de pagina met wijzigingen, ook vanaf een formulier of die pagina zelf. */
+function cm_wijzigingen_adres(?string $vanaf = null): string
+{
+    [$basis, $staart] = cm_adres($vanaf);
+
+    return $basis . '/wijzigingen' . $staart;
+}
+
+/** De pagina met wijzigingen: per versie wat er veranderd is. */
+function cm_wijzigingen(?bool $zelfstandig = null): void
+{
+    $versies = cm_versies();
+    $voordeur = cm_voordeur('wijzigingen');
+
+    $titel = 'Wat is er veranderd · Cisomatic';
+    $inhoud = __DIR__ . '/wijzigingen.php';
+
+    require ($zelfstandig ?? cm_zelfstandig()) ? __DIR__ . '/document.php' : $inhoud;
+}
