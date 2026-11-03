@@ -22,8 +22,9 @@ return [
             'De letters zitten in het document. LibreOffice toont ze ook als ze niet op je computer staan.',
             'De kanalenscan sociale media heeft een vragenlijst als .odt, om op papier of in Word in te vullen. De '
                 . 'link staat boven het formulier.',
-            'In de vragenlijst staat bij elke vraag wanneer hij geldt. Per platform zie je wat binnen het kader '
-                . 'valt. Met een lijst punten bepaal je zelf de uitkomst.',
+            'In de vragenlijst is elke vraag een blok met een nummer. Bovenaan staat de vraag, en wanneer hij geldt. '
+                . 'Daaronder vul je in.',
+            'Per platform zie je wat binnen het kader valt. Met de punten in stap 4 bepaal je zelf de uitkomst.',
         ],
     ],
     [

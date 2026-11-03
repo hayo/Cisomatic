@@ -74,7 +74,7 @@ const CM_ODT_STIJLEN = '<?xml version="1.0" encoding="UTF-8"?>' . "\n"
  <style:paragraph-properties fo:margin-bottom="0.12cm"/>
 </style:style>
 <style:style style:name="Quotations" style:family="paragraph" style:parent-style-name="Text_20_body" style:class="html">
- <style:paragraph-properties fo:margin-top="0.1cm" fo:margin-bottom="0.35cm" fo:padding="0.2cm" fo:background-color="{vlak}" fo:border-left="2.5pt solid {kleur}" fo:border-right="none" fo:border-top="none" fo:border-bottom="none"/>
+ <style:paragraph-properties fo:keep-with-next="always" fo:margin-top="0.1cm" fo:margin-bottom="0.35cm" fo:padding="0.2cm" fo:background-color="{vlak}" fo:border-left="2.5pt solid {kleur}" fo:border-right="none" fo:border-top="none" fo:border-bottom="none"/>
 </style:style>
 <style:style style:name="Horizontal_20_Line" style:display-name="Horizontal Line" style:family="paragraph" style:parent-style-name="Standard" style:class="html">
  <style:paragraph-properties fo:margin-top="0.1cm" fo:margin-bottom="0.35cm" fo:padding="0cm" fo:border-bottom="0.5pt solid #bfbfbf" fo:border-left="none" fo:border-right="none" fo:border-top="none"/>
@@ -92,22 +92,38 @@ const CM_ODT_STIJLEN = '<?xml version="1.0" encoding="UTF-8"?>' . "\n"
  <style:paragraph-properties fo:margin-top="0cm" fo:margin-bottom="0cm" fo:line-height="100%"/>
  <style:text-properties style:font-name="{woordmerk}" fo:font-size="13pt" fo:font-style="italic" fo:color="#000000"/>
 </style:style>
-<style:style style:name="Vraag" style:family="paragraph" style:parent-style-name="Text_20_body" style:class="text">
- <style:paragraph-properties fo:margin-top="0.45cm" fo:margin-bottom="0.1cm" fo:keep-with-next="always"/>
- <style:text-properties fo:font-weight="bold"/>
-</style:style>
 <style:style style:name="Noot" style:family="paragraph" style:parent-style-name="Text_20_body" style:class="text">
  <style:paragraph-properties fo:margin-bottom="0.12cm" fo:keep-with-next="always"/>
  <style:text-properties fo:font-size="9.5pt" fo:color="#4d4d4d"/>
 </style:style>
-<style:style style:name="Keuze" style:family="paragraph" style:parent-style-name="Text_20_body" style:class="list">
- <style:paragraph-properties fo:margin-bottom="0.08cm" fo:keep-together="always" fo:keep-with-next="always"/>
-</style:style>
-<style:style style:name="Laatste_20_keuze" style:display-name="Laatste keuze" style:family="paragraph" style:parent-style-name="Keuze" style:class="list">
- <style:paragraph-properties fo:keep-with-next="auto"/>
-</style:style>
 <style:style style:name="Bijzin" style:family="text">
  <style:text-properties fo:font-weight="normal" fo:font-size="9.5pt" fo:color="#4d4d4d"/>
+</style:style>
+<style:style style:name="Vraagnummer" style:family="paragraph" style:parent-style-name="Standard" style:class="extra">
+ <style:paragraph-properties fo:text-align="center" fo:margin-top="0cm" fo:margin-bottom="0cm"/>
+ <style:text-properties fo:font-size="12pt" fo:font-weight="bold" fo:color="#ffffff"/>
+</style:style>
+<style:style style:name="Vraagtekst" style:family="paragraph" style:parent-style-name="Standard" style:class="extra">
+ <style:paragraph-properties fo:margin-top="0cm" fo:margin-bottom="0.05cm"/>
+ <style:text-properties fo:font-weight="bold"/>
+</style:style>
+<style:style style:name="Blokuitleg" style:family="paragraph" style:parent-style-name="Standard" style:class="extra">
+ <style:paragraph-properties fo:margin-top="0.05cm" fo:margin-bottom="0cm"/>
+ <style:text-properties fo:font-size="9pt" fo:color="#3d3d3d"/>
+</style:style>
+<style:style style:name="Hokje" style:family="paragraph" style:parent-style-name="Standard" style:class="extra">
+ <style:paragraph-properties fo:text-align="center" fo:margin-top="0cm" fo:margin-bottom="0cm"/>
+ <style:text-properties fo:font-size="13pt" fo:color="{kleur}"/>
+</style:style>
+<style:style style:name="Keuzetekst" style:family="paragraph" style:parent-style-name="Standard" style:class="extra">
+ <style:paragraph-properties fo:margin-top="0cm" fo:margin-bottom="0cm"/>
+ <style:text-properties fo:font-size="10.5pt"/>
+</style:style>
+<style:style style:name="Keuzeuitleg" style:family="paragraph" style:parent-style-name="Keuzetekst" style:class="extra">
+ <style:text-properties fo:font-size="9pt" fo:color="#4d4d4d"/>
+</style:style>
+<style:style style:name="Kolomkop" style:family="paragraph" style:parent-style-name="Keuzetekst" style:class="extra">
+ <style:text-properties fo:font-size="9pt" fo:font-weight="bold"/>
 </style:style>
 <style:style style:name="Footer" style:family="paragraph" style:parent-style-name="Standard" style:class="extra">
  <style:paragraph-properties><style:tab-stops><style:tab-stop style:position="16.6cm" style:type="right"/></style:tab-stops></style:paragraph-properties>
@@ -141,14 +157,6 @@ const CM_ODT_STIJLEN = '<?xml version="1.0" encoding="UTF-8"?>' . "\n"
   </style:list-level-properties>
  </text:list-level-style-bullet>
 </text:list-style>
-<text:list-style style:name="Hokjes">
- <text:list-level-style-bullet text:level="1" text:bullet-char="☐">
-  <style:list-level-properties text:list-level-position-and-space-mode="label-alignment">
-   <style:list-level-label-alignment text:label-followed-by="listtab" text:list-tab-stop-position="0.7cm" fo:text-indent="-0.7cm" fo:margin-left="0.7cm"/>
-  </style:list-level-properties>
-  <style:text-properties fo:font-size="120%"/>
- </text:list-level-style-bullet>
-</text:list-style>
 <text:list-style style:name="Nummering">
  <text:list-level-style-number text:level="1" style:num-suffix="." style:num-format="1">
   <style:list-level-properties text:list-level-position-and-space-mode="label-alignment">
@@ -170,6 +178,16 @@ const CM_ODT_INHOUDSTIJLEN = '<style:style style:name="Titelpagina" style:family
     . '<style:style style:name="Hoofdstuk" style:family="paragraph" style:parent-style-name="Heading_20_1">'
     . '<style:paragraph-properties fo:break-before="page" fo:margin-top="0cm"/><style:text-properties fo:font-size="16pt"/></style:style>'
     . '<style:style style:name="Tabel" style:family="table"><style:table-properties style:width="16.6cm" table:align="margins" fo:margin-top="0.1cm" fo:margin-bottom="0.4cm"/></style:style>'
+    . '<style:style style:name="Vraagblok" style:family="table"><style:table-properties style:width="16.6cm" '
+    . 'table:align="margins" fo:margin-top="0.35cm" fo:margin-bottom="0.15cm" style:may-break-between-rows="false"/></style:style>'
+    . '<style:style style:name="Vraagblok_breekbaar" style:family="table"><style:table-properties style:width="16.6cm" '
+    . 'table:align="margins" fo:margin-top="0.35cm" fo:margin-bottom="0.15cm"/></style:style>'
+    . '<style:style style:name="Nummercel" style:family="table-cell"><style:table-cell-properties fo:padding="0.15cm" '
+    . 'fo:border="0.75pt solid {kleur}" fo:background-color="{kleur}"/></style:style>'
+    . '<style:style style:name="Vraagcel" style:family="table-cell"><style:table-cell-properties fo:padding="0.15cm" '
+    . 'fo:border="0.75pt solid {kleur}" fo:background-color="{vlak}"/></style:style>'
+    . '<style:style style:name="Invulcel" style:family="table-cell"><style:table-cell-properties fo:padding="0.12cm" '
+    . 'style:vertical-align="middle" fo:border="0.75pt solid {kleur}" fo:background-color="#ffffff"/></style:style>'
     . '<style:style style:name="Rij" style:family="table-row"><style:table-row-properties fo:keep-together="always"/></style:style>'
     . '<style:style style:name="Cel" style:family="table-cell"><style:table-cell-properties fo:padding="0.1cm" fo:border="0.5pt solid #bfbfbf"/></style:style>'
     . '<style:style style:name="Kopcel" style:family="table-cell"><style:table-cell-properties fo:padding="0.1cm" fo:border="0.5pt solid #bfbfbf" fo:background-color="{vlak}"/></style:style>';
@@ -225,12 +243,8 @@ function cm_odt(array $blokken, string $auteur = '', string $kenmerk = ''): stri
             'lijn' => '<text:p text:style-name="Horizontal_20_Line"/>',
             'tabel' => cm_odt_tabel($blok[1], ++$tabellen, $kolomstijlen),
             'schema' => '',
-            'vraag' => '<text:p text:style-name="Vraag">' . cm_odt_tekst(($blok[1] === '' ? '' : $blok[1] . '. ') . $blok[2])
-                . (($blok[3] ?? '') === '' ? '' : ' <text:span text:style-name="Bijzin">' . cm_odt_tekst($blok[3]) . '</text:span>')
-                . '</text:p>',
             'noot' => '<text:p text:style-name="Noot">' . cm_odt_tekst($blok[1]) . '</text:p>',
-            'keuzes' => cm_odt_keuzes($blok[1]),
-            'vak' => cm_odt_vak((int) $blok[1], ++$tabellen, $kolomstijlen),
+            'vraagblok' => cm_odt_vraagblok($blok[1], ++$tabellen, $kolomstijlen),
             default => '<text:p text:style-name="Text_20_body">' . cm_odt_tekst($blok[1]) . '</text:p>',
         };
     }
@@ -486,41 +500,75 @@ function cm_odt_lijst(array $items, string $stijl): string
 }
 
 /**
- * Keuzes om aan te kruisen: elk een hokje, met de uitleg in kleinere letters
- * eronder.
+ * Een vraag als blok, om in te vullen. Bovenaan de vraag in een gekleurde balk,
+ * met het nummer in een eigen vak links. Wat erbij hoort, zoals wanneer de
+ * vraag geldt, staat in die balk. Daaronder, in wit, wat je invult: een rij per
+ * keuze met een hokje, een leeg vak, of een tabel met een hokje per rij.
  *
- * @param list<array{0:string,1?:string}> $keuzes label en uitleg
+ * De eerste kolom is altijd 1 cm: het nummer, en daaronder de hokjes. Een
+ * blok breekt niet over twee pagina's, behalve een tabel; die herhaalt dan
+ * de vraag bovenaan de volgende pagina.
+ *
+ * @param array{nr:string,vraag:string,bijzin?:string,noten?:list<string>,keuzes?:list<array{0:string,1?:string}>,vak?:int,tabel?:array{kop:list<string>,rijen:list<list<string|list<string>>>,breedtes:list<float>}} $v
  */
-function cm_odt_keuzes(array $keuzes): string
+function cm_odt_vraagblok(array $v, int $nummer, string &$stijlen): string
 {
-    $out = '<text:list text:style-name="Hokjes">';
+    $naam = 'Vraagblok' . $nummer;
+    $breedtes = [1.0, ...($v['tabel']['breedtes'] ?? [15.6])];
+    $p = static fn (string $stijl, string $tekst): string => '<text:p text:style-name="' . $stijl . '">'
+        . cm_odt_tekst($tekst) . '</text:p>';
+    $cel = static fn (string $stijl, string $inhoud, int $span = 1): string => '<table:table-cell table:style-name="'
+        . $stijl . '" office:value-type="string"' . ($span > 1 ? ' table:number-columns-spanned="' . $span . '"' : '')
+        . '>' . $inhoud . '</table:table-cell>' . str_repeat('<table:covered-table-cell/>', $span - 1);
+    $hokje = $cel('Invulcel', $p('Hokje', '☐'));
 
-    // De keuzes blijven bij elkaar op een pagina; pas na de laatste mag de pagina breken.
-    foreach (array_values($keuzes) as $i => $keuze) {
-        $stijl = $i === count($keuzes) - 1 ? 'Laatste_20_keuze' : 'Keuze';
-        $out .= '<text:list-item><text:p text:style-name="' . $stijl . '">' . cm_odt_tekst($keuze[0])
-            . (($keuze[1] ?? '') === '' ? '' : '<text:line-break/><text:span text:style-name="Bijzin">'
-                . cm_odt_tekst($keuze[1]) . '</text:span>')
-            . '</text:p></text:list-item>';
+    $out = '<table:table table:name="' . $naam . '" table:style-name="'
+        . (isset($v['tabel']) ? 'Vraagblok_breekbaar' : 'Vraagblok') . '">';
+    foreach ($breedtes as $i => $breedte) {
+        $stijlen .= '<style:style style:name="' . $naam . '.K' . $i . '" style:family="table-column">'
+            . '<style:table-column-properties style:column-width="' . $breedte . 'cm"/></style:style>';
+        $out .= '<table:table-column table:style-name="' . $naam . '.K' . $i . '"/>';
     }
 
-    return $out . '</text:list>';
-}
+    $vraag = '<text:p text:style-name="Vraagtekst">' . cm_odt_tekst($v['vraag'])
+        . (($v['bijzin'] ?? '') === '' ? '' : ' <text:span text:style-name="Bijzin">' . cm_odt_tekst($v['bijzin'])
+            . '</text:span>') . '</text:p>'
+        . implode('', array_map(static fn (string $n): string => $p('Blokuitleg', $n), $v['noten'] ?? []));
 
-/**
- * Een leeg vak om in te schrijven, zo hoog als het aantal regels. Een tabel
- * met één cel, zodat het vak meegroeit als je typt, ook in Word.
- */
-function cm_odt_vak(int $regels, int $nummer, string &$stijlen): string
-{
-    $naam = 'Vak' . $nummer;
-    $stijlen .= '<style:style style:name="' . $naam . '.R" style:family="table-row"><style:table-row-properties '
-        . 'style:min-row-height="' . sprintf('%.2Fcm', 0.25 + 0.55 * max(1, $regels)) . '"/></style:style>';
+    $kop = '<table:table-row>' . $cel('Nummercel', $p('Vraagnummer', $v['nr'])) . $cel('Vraagcel', $vraag, count($breedtes) - 1)
+        . '</table:table-row>';
 
-    return '<table:table table:name="' . $naam . '" table:style-name="Tabel"><table:table-column/>'
-        . '<table:table-row table:style-name="' . $naam . '.R"><table:table-cell table:style-name="Cel" '
-        . 'office:value-type="string"><text:p text:style-name="Table_20_Contents"/></table:table-cell>'
-        . '</table:table-row></table:table>';
+    if (isset($v['tabel'])) {
+        $kop .= '<table:table-row>' . $cel('Invulcel', '<text:p text:style-name="Kolomkop"/>')
+            . implode('', array_map(static fn (string $k): string => $cel('Invulcel', $p('Kolomkop', $k)), $v['tabel']['kop']))
+            . '</table:table-row>';
+    }
+
+    $out .= '<table:table-header-rows>' . $kop . '</table:table-header-rows>';
+
+    foreach ($v['keuzes'] ?? [] as $keuze) {
+        $out .= '<table:table-row table:style-name="Rij">' . $hokje . $cel('Invulcel', $p('Keuzetekst', $keuze[0])
+            . (($keuze[1] ?? '') === '' ? '' : $p('Keuzeuitleg', $keuze[1]))) . '</table:table-row>';
+    }
+
+    foreach ($v['tabel']['rijen'] ?? [] as $rij) {
+        $out .= '<table:table-row table:style-name="Rij">' . $hokje;
+        foreach (array_values($rij) as $i => $inhoud) {
+            $regels = (array) $inhoud;
+            $out .= $cel('Invulcel', $p('Keuzetekst', (string) array_shift($regels))
+                . implode('', array_map(static fn (string $r): string => $p('Keuzeuitleg', $r), $regels)));
+        }
+        $out .= '</table:table-row>';
+    }
+
+    if (isset($v['vak'])) {
+        $stijlen .= '<style:style style:name="' . $naam . '.R" style:family="table-row"><style:table-row-properties '
+            . 'style:min-row-height="' . sprintf('%.2Fcm', 0.3 + 0.55 * max(1, (int) $v['vak'])) . '"/></style:style>';
+        $out .= '<table:table-row table:style-name="' . $naam . '.R">' . $cel('Invulcel', '<text:p text:style-name="Keuzetekst"/>', 2)
+            . '</table:table-row>';
+    }
+
+    return $out . '</table:table>';
 }
 
 /**

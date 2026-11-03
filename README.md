@@ -249,8 +249,8 @@ Wat in beide staat, pas je in beide aan.
 `alinea`, `term` (label en tekst), `lijst`, `genummerd`, `citaat`, `lijn`,
 `tabel` (met `kop`, `rijen`, `breedtes` in centimeters en `rijkop`) en `schema`
 (stromen en een onderschrift, alleen op de pagina). De vragenlijst gebruikt er
-nog vier, alleen in het `.odt`-bestand: `vraag` (nummer, vraag en een bijzin),
-`noot`, `keuzes` (label en uitleg, met een hokje) en `vak` (een aantal regels). `src/opmaak.php` maakt er
+nog twee, alleen in het `.odt`-bestand: `noot` (kleine grijze tekst) en
+`vraagblok`, een vraag als blok om in te vullen. Zie Vragenlijst als .odt. `src/opmaak.php` maakt er
 HTML van, `src/odt.php` het `.odt`-bestand, zodat die twee niet uit elkaar lopen.
 
 Het `.odt`-bestand krijgt een vaste opbouw. De `h1` en alles tot de eerste `h2`
@@ -418,16 +418,21 @@ verdwijnt na stap 1, net als de inleiding. Nu heeft alleen de kanalenscan een
 vragenlijst.
 
 `src/vragenlijst.php` maakt hem uit de secties, dus hij loopt niet achter op het
-formulier. Elke vraag krijgt een nummer. Waar het formulier een vraag of sectie
-verbergt, zegt de vragenlijst wanneer hij geldt: "Alleen als je bij vraag 2
-‘Een ander kanaal’ koos." Bij de vraag uit `route` staat een tabel met de delen
-die je per keuze invult. Keuzes krijgen een hokje, open vragen een vak dat
-meegroeit, met de hoogte uit `hoogte`.
+formulier. Elke vraag is een blok (`vraagblok`, een tabel): links het nummer
+in een blauw vak, rechts in een lichtblauwe balk de vraag, met wat erbij hoort.
+Waar het formulier een vraag of sectie verbergt, staat in die balk wanneer hij
+geldt: "Alleen als je bij vraag 2 ‘Een ander kanaal’ koos." Daaronder, in wit,
+wat je invult: een rij per keuze met een hokje, een leeg vak dat meegroeit (met
+de hoogte uit `hoogte`), of een tabel met een hokje per rij. Bij de vraag uit
+`route` zegt elke keuze welke delen je daarna invult. Een blok breekt niet over
+twee pagina's, behalve een tabel; die herhaalt dan de vraag.
 
 Wat het formulier uitrekent, kan papier niet. Daarom kan de functie uit
-`vragenlijst` aanvullen: blokken op de titelpagina, blokken in plaats van de
-keuzes of een uitkomstblok, teksten voor `toon_als_uitkomst`, en bijlagen. Een
-uitkomstblok zonder aanvulling slaat de vragenlijst over. De vragenlijst wordt
+`vragenlijst` aanvullen: blokken op de titelpagina, per vraag een ander
+antwoord (`antwoord`, met `keuzes` of `tabel`) en extra uitleg in het blok
+(`noten`), blokken in plaats van een uitkomstblok, teksten voor
+`toon_als_uitkomst`, en bijlagen. Een uitkomstblok zonder aanvulling slaat de
+vragenlijst over. De vragenlijst wordt
 niet ingelezen: wie het document wil, neemt de antwoorden over in het
 formulier.
 

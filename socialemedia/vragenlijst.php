@@ -33,7 +33,7 @@ function sm_vragenlijst(callable $nr): array
     };
     $vraag = static fn (string $key): string => ucfirst($nr($key));
 
-    $tabel = static fn (string $key, string $ruimte): array => ['blokken' => [sm_vragenlijst_tabel(
+    $tabel = static fn (string $key, string $ruimte): array => ['antwoord' => ['tabel' => sm_vragenlijst_tabel(
         sm_toets_opties($key),
         $ruimte
     )]];
@@ -75,10 +75,10 @@ function sm_vragenlijst(callable $nr): array
                 . 'voor de uitkomst. Wat het kader per platform zegt, staat in bijlage A.'],
         ],
         'vragen' => [
-            'sm_platform' => ['na' => [['noot', 'Bij elk platform staat het advies uit het kader in het kort. Wat '
-                . 'het kader verder zegt, staat in bijlage A.']]],
-            'sm_accounttype' => ['na' => [['noot', 'Een bewindspersoon mag niet op elk platform. De eisen aan zo’n '
-                . 'account staan in bijlage B.']]],
+            'sm_platform' => ['noten' => ['Bij elk platform staat het advies uit het kader in het kort. Wat '
+                . 'het kader verder zegt, staat in bijlage A.']],
+            'sm_accounttype' => ['noten' => ['Een bewindspersoon mag niet op elk platform. De eisen aan zo’n '
+                . 'account staan in bijlage B.']],
             'sm_doelen' => $tabel('sm_doelen', 'doelen'),
             'sm_vormen' => $tabel('sm_vormen', 'vormen'),
             'sm_betaald' => $tabel('sm_betaald', 'betaald'),
@@ -94,15 +94,31 @@ function sm_vragenlijst(callable $nr): array
                 . 'voordat je de vragen hieronder beantwoordt.']]],
             'sm_uitkomst' => ['blokken' => [
                 ['h3', 'Bepaal de uitkomst'],
-                ['alinea', 'Loop de punten hieronder na, van boven naar beneden. Kruis aan wat geldt.'],
-                ['h4', 'Niet inzetten, als een van deze punten geldt'],
-                ['keuzes', array_map(static fn (string $t): array => [$t], $niet)],
-                ['h4', 'Anders een explain, als een van deze punten geldt'],
-                ['keuzes', array_map(static fn (string $t): array => [$t], $explain)],
-                ['h4', 'Geldt geen van de punten?'],
-                ['alinea', 'Dan is het comply. ' . sm_tekst('comply')],
-                ['vraag', '', 'De uitkomst', 'kies één'],
-                ['keuzes', array_map(static fn (array $u): array => [$u['label']], array_values(SM_UITKOMSTEN))],
+                ['alinea', 'Het formulier rekent de uitkomst uit. Hier doe je dat zelf, in drie blokken: A, B en C. '
+                    . 'Kruis in A en B aan wat geldt.'],
+                ['vraagblok', [
+                    'nr' => 'A',
+                    'vraag' => 'Niet inzetten',
+                    'bijzin' => 'kruis aan wat geldt',
+                    'noten' => ['Geldt een van deze punten, dan is de uitkomst niet inzetten.'],
+                    'keuzes' => array_map(static fn (string $t): array => [$t], $niet),
+                ]],
+                ['vraagblok', [
+                    'nr' => 'B',
+                    'vraag' => 'Explain',
+                    'bijzin' => 'kruis aan wat geldt',
+                    'noten' => ['Geldt niets bij A, maar wel een van deze punten? Dan is de uitkomst explain. Neem de '
+                        . 'punten over bij ' . $nr('sm_afwijking') . '.'],
+                    'keuzes' => array_map(static fn (string $t): array => [$t], $explain),
+                ]],
+                ['vraagblok', [
+                    'nr' => 'C',
+                    'vraag' => 'De uitkomst',
+                    'bijzin' => 'kies één',
+                    'noten' => ['Iets aangekruist bij A: niet inzetten. Anders iets bij B: explain. Niets aangekruist: '
+                        . 'comply. ' . sm_tekst('comply')],
+                    'keuzes' => array_map(static fn (array $u): array => [$u['label']], array_values(SM_UITKOMSTEN)),
+                ]],
             ]],
             'sm_exit_advies' => ['blokken' => [
                 ['h3', 'Het advies over je vertrek'],
@@ -147,30 +163,38 @@ function sm_vragenlijst(callable $nr): array
 }
 
 /**
- * Keuzes met per platform of ze binnen het kader vallen. Een hokje voor de
- * keuze, en een kolom per platform met een kader.
+ * Keuzes met per platform of ze binnen het kader vallen: de keuze, en een
+ * kolom per platform met een kader. Het hokje zet de motor ervoor.
  *
  * @param array<string,array{label:string,hint?:string}> $opties
- * @return array<int,mixed>
+ * @return array{kop:list<string>,rijen:list<list<string|list<string>>>,breedtes:list<float>}
  */
 function sm_vragenlijst_tabel(array $opties, string $ruimte): array
 {
     $kaders = array_filter(sm_kaders(), static fn (array $k): bool => $k[$ruimte] !== null);
-    $kort = static fn (string $k, array $kader): string => $k === 'mastodon' ? 'Mastodon' : $kader['naam'];
+    // Smalle kolommen: lange namen mogen afbreken, met een zacht afbreekstreepje.
+    $kort = static fn (string $k, array $kader): string => [
+        'facebook' => "Face\u{00AD}book",
+        'instagram' => "Insta\u{00AD}gram",
+        'mastodon' => "Masto\u{00AD}don",
+        'youtube' => "You\u{00AD}Tube",
+        'linkedin' => "Linked\u{00AD}In",
+    ][$k] ?? $kader['naam'];
 
     $rijen = [];
     foreach ($opties as $waarde => $optie) {
         $rijen[] = [
-            array_values(array_filter(['☐ ' . $optie['label'], (string) ($optie['hint'] ?? '')])),
+            array_values(array_filter([$optie['label'], (string) ($optie['hint'] ?? '')])),
             ...array_map(static fn (array $k): string => in_array($waarde, $k[$ruimte], true) ? 'ja' : '–', $kaders),
         ];
     }
 
-    $breedte = round(12.1 / count($kaders), 2);
+    // De motor zet er een kolom van 1 cm met de hokjes voor; samen 16,6 cm.
+    $breedte = 1.45;
 
-    return ['tabel', [
-        'kop' => ['Kruis aan', ...array_map($kort, array_keys($kaders), $kaders)],
+    return [
+        'kop' => ['Keuze', ...array_map($kort, array_keys($kaders), $kaders)],
         'rijen' => $rijen,
-        'breedtes' => [16.6 - $breedte * count($kaders), ...array_fill(0, count($kaders), $breedte)],
-    ]];
+        'breedtes' => [round(15.6 - $breedte * count($kaders), 2), ...array_fill(0, count($kaders), $breedte)],
+    ];
 }

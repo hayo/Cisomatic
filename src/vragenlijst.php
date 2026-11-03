@@ -5,17 +5,20 @@
  * of in Word of LibreOffice, bijvoorbeeld samen met collega's.
  *
  * De vragenlijst komt uit dezelfde secties als het formulier, dus hij loopt
- * nooit achter. Elke vraag krijgt een nummer. Waar het formulier een vraag
- * verbergt, zegt de vragenlijst wanneer hij geldt. Keuzes krijgen een hokje,
- * open vragen een vak dat meegroeit.
+ * nooit achter. Elke vraag is een blok met een nummer: bovenaan de vraag, met
+ * wat erbij hoort, en daaronder wat je invult. Waar het formulier een vraag
+ * verbergt, zegt het blok wanneer hij geldt. Keuzes krijgen een hokje, open
+ * vragen een vak dat meegroeit.
  *
  * Wat het formulier uitrekent, kan de vragenlijst niet. Daarom kan een
  * formulier met 'vragenlijst' in zijn definitie een functie noemen die
  * aanvult. Die krijgt een functie mee die het nummer van een vraag geeft, en
  * levert een array met:
  * - inleiding: blokken voor de titelpagina
- * - vragen: per sleutel 'blokken' in plaats van de keuzes of het uitkomstblok,
- *   en 'na' voor blokken na de vraag
+ * - vragen: per sleutel 'antwoord' in plaats van de keuzes of het vak (met
+ *   'keuzes' of 'tabel', zie cm_odt_vraagblok()), 'noten' voor extra uitleg in
+ *   het blok, 'blokken' in plaats van een uitkomstblok, en 'na' voor blokken
+ *   na de vraag
  * - uitkomsten: per naam en waarde van toon_als_uitkomst een tekst, die na
  *   "Alleen als" komt
  * - bijlagen: blokken aan het eind
@@ -55,9 +58,11 @@ function cm_vragenlijst(): array
         ['term', 'Versie', 'Cisomatic ' . cm_versie() . ', ' . cm_datum_nl(new DateTimeImmutable('now'))],
         ['h3', 'Zo vul je dit in'],
         ['lijst', [
+            'Elke vraag is een blok met een nummer. In de blauwe balk staat de vraag, met wat erbij hoort. Wat je '
+                . 'invult, staat eronder in wit.',
             'Kies je een antwoord, zet dan een kruis in het hokje. In Word of LibreOffice zet je een X in de plaats '
                 . 'van het hokje.',
-            'Schrijf een open antwoord in het vak eronder. Het vak groeit mee als je typt.',
+            'Schrijf een open antwoord in het witte vak. Het vak groeit mee als je typt.',
             'Bij sommige vragen staat wanneer ze gelden. Geldt een vraag niet voor jou, sla hem dan over. Hetzelfde '
                 . 'geldt voor hele delen.',
             'Bij "mag leeg" hoef je niets in te vullen.',
@@ -138,40 +143,43 @@ function cm_vragenlijst_vraag(array $vraag, array $nummers, array $extra, array 
     $leeg = !empty($vraag['optioneel']) || (empty($vraag['verplicht']) && empty($vraag['verplicht_als'])
         && empty($vraag['verplicht_als_uitkomst']));
 
-    $blokken = [
-        ['vraag', (string) $nummers[$key], $vraag['label'], implode(', ', array_filter([$soort, $leeg ? 'mag leeg' : '']))],
-        ...$voorwaarde,
-        ...($hint === '' ? [] : [['noot', $hint]]),
-    ];
-
-    $blokken = [...$blokken, ...($eigen['blokken'] ?? match ($vraag['type']) {
-        'radio', 'checkbox', 'select' => [['keuzes', array_map(
-            static fn (array $o): array => [$o['label'], (string) ($o['hint'] ?? '')],
-            array_values($vraag['opties'])
-        )]],
-        'text', 'email' => [['vak', 1]],
-        'textarea' => [['vak', (int) ($vraag['hoogte'] ?? 3)]],
-        default => [['vak', 4]],
-    })];
-
-    // De route: welke delen je invult bij elke keuze.
-    if ($key === (cm_formulier()['route'] ?? '')) {
-        $blokken[] = cm_vragenlijst_route($vraag, $delen);
+    // Bij de vraag die de route bepaalt, zegt elke keuze welke delen je daarna invult.
+    $route = $key === (cm_formulier()['route'] ?? '') ? cm_vragenlijst_route($vraag, $delen) : [];
+    $keuzes = [];
+    foreach ($vraag['opties'] ?? [] as $waarde => $optie) {
+        $keuzes[] = [$optie['label'], trim(($optie['hint'] ?? '') . (isset($route[$waarde]) ? ' ' . $route[$waarde] : ''))];
     }
 
-    return [...$blokken, ...($eigen['na'] ?? [])];
+    $blok = [
+        'nr' => (string) $nummers[$key],
+        'vraag' => $vraag['label'],
+        'bijzin' => implode(', ', array_filter([$soort, $leeg ? 'mag leeg' : ''])),
+        'noten' => array_values(array_filter([
+            $voorwaarde === [] ? '' : '→ ' . $voorwaarde[0][1],
+            $hint,
+            ...($eigen['noten'] ?? []),
+        ])),
+        ...($eigen['antwoord'] ?? match ($vraag['type']) {
+            'radio', 'checkbox', 'select' => ['keuzes' => $keuzes],
+            'text', 'email' => ['vak' => 1],
+            'textarea' => ['vak' => (int) ($vraag['hoogte'] ?? 3)],
+            default => ['vak' => 4],
+        }),
+    ];
+
+    return [['vraagblok', $blok], ...($eigen['na'] ?? [])];
 }
 
 /**
- * Bij de vraag die de route bepaalt: per keuze de delen die je invult. Een
- * deel dat ook van een andere vraag afhangt, krijgt "soms".
+ * Bij de vraag die de route bepaalt: per keuze een zin met de delen die je
+ * daarna invult. Een deel dat ook van een andere vraag afhangt, krijgt "soms".
  *
  * @param array<string,int> $delen
- * @return array<int,mixed>
+ * @return array<string,string> waarde => zin
  */
 function cm_vragenlijst_route(array $vraag, array $delen): array
 {
-    $rijen = [];
+    $zinnen = [];
     $secties = array_column(cm_secties(), null, 'id');
 
     foreach ($vraag['opties'] as $waarde => $optie) {
@@ -188,10 +196,10 @@ function cm_vragenlijst_route(array $vraag, array $delen): array
             $wel[] = $deel . ($soms ? ' (soms)' : '');
         }
 
-        $rijen[] = [$optie['label'], cm_opsomming($wel)];
+        $zinnen[(string) $waarde] = '→ Je vult de delen ' . cm_opsomming($wel) . ' in.';
     }
 
-    return ['tabel', ['kop' => ['Kies je', 'Dan vul je deze delen in'], 'rijen' => $rijen, 'breedtes' => [8.3, 8.3]]];
+    return $zinnen;
 }
 
 /**
