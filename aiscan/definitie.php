@@ -51,7 +51,8 @@ return [
     // Op de voordeur: de fase waarin je dit invult.
     'fase' => 'ontwerp',
 
-    'bestanden' => ['vragen.php', 'afleiding.php', 'rapport.php'],
+    'bestanden' => ['vragen.php', 'afleiding.php', 'rapport.php', 'vragenlijst.php'],
+    'vragenlijst' => 'ai_vragenlijst',
     'secties' => 'ai_secties',
     'uitkomst' => 'ai_uitkomst',
     'evalueer' => 'ai_evalueer',

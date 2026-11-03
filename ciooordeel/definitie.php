@@ -55,7 +55,8 @@ return [
     'fase' => 'toetsen',
     'dossier' => false,
 
-    'bestanden' => ['vragen.php', 'afleiding.php', 'rapport.php'],
+    'bestanden' => ['vragen.php', 'afleiding.php', 'rapport.php', 'vragenlijst.php'],
+    'vragenlijst' => 'co_vragenlijst',
     'secties' => 'co_secties',
     'evalueer' => 'co_evalueer',
     'document' => 'co_rapport',

@@ -75,6 +75,7 @@ huisstijl/                het lint en de lettertypen van de Rijkshuisstijl, voor
 <formulier>/index.php         roept de motor aan met de naam van de map
 <formulier>/definitie.php     teksten, bestanden en de functies die de motor aanroept
 <formulier>/vragen.php        de vragenlijst
+<formulier>/vragenlijst.php   optioneel: wat de vragenlijst als .odt extra krijgt
 <formulier>/vooraf.php        "Voor je begint", boven het formulier
 <formulier>/samenvatting.php  de uitkomst in het kort, boven het document
 <formulier>/regels.js         wat het formulier in de browser uitrekent
@@ -194,7 +195,7 @@ Alleen gegevens, geen code. De voordeur leest dit bestand ook.
 | `opvolger` | Optioneel: de nieuwere versie van dit formulier. De voordeur noemt het dan een eerdere versie, en een dossier wisselt ertussen als het normenkader verandert |
 | `dossier` | Optioneel: `false` als een ander het formulier invult, zoals de leverancier of het CIO-office. Het hoort dan niet in een dossier |
 | `vervolg` | Optioneel: functie die van antwoorden en uitkomst zegt welke andere formulieren voorgesteld zijn, en waarom. Een dossier zet ze erbij |
-| `vragenlijst` | Optioneel: functie die de vragenlijst als `.odt` aanvult. Met deze sleutel staat er boven het formulier een link naar de vragenlijst. Zie Vragenlijst als .odt |
+| `vragenlijst` | Optioneel: functie die de vragenlijst als `.odt` aanvult, of `false` voor geen vragenlijst. Zie Vragenlijst als .odt |
 
 ### vragen.php
 
@@ -411,30 +412,47 @@ het klembord als opgemaakte tekst.
 
 ## Vragenlijst als .odt
 
-Een formulier met `vragenlijst` in zijn definitie heeft een link boven het
-formulier: de hele vragenlijst als `.odt` (`?vragenlijst=odt`). Die is om
-buiten de webapp in te vullen, op papier of in Word of LibreOffice. De link
-verdwijnt na stap 1, net als de inleiding. Nu heeft alleen de kanalenscan een
-vragenlijst.
+Elk formulier heeft een link boven het formulier: de hele vragenlijst als
+`.odt` (`?vragenlijst=odt`). Die is om buiten de webapp in te vullen, op papier
+of in Word of LibreOffice. De link verdwijnt na stap 1, net als de inleiding.
+Met `'vragenlijst' => false` in de definitie heeft een formulier er geen.
 
 `src/vragenlijst.php` maakt hem uit de secties, dus hij loopt niet achter op het
 formulier. Elke vraag is een blok (`vraagblok`, een tabel): links het nummer
 in een blauw vak, rechts in een lichtblauwe balk de vraag, met wat erbij hoort.
 Waar het formulier een vraag of sectie verbergt, staat in die balk wanneer hij
 geldt: "Alleen als je bij vraag 2 ‘Een ander kanaal’ koos." Daaronder, in wit,
-wat je invult: een rij per keuze met een hokje, een leeg vak dat meegroeit (met
-de hoogte uit `hoogte`), of een tabel met een hokje per rij. Bij de vraag uit
-`route` zegt elke keuze welke delen je daarna invult. Een blok breekt niet over
-twee pagina's, behalve een tabel; die herhaalt dan de vraag.
+wat je invult:
 
-Wat het formulier uitrekent, kan papier niet. Daarom kan de functie uit
-`vragenlijst` aanvullen: blokken op de titelpagina, per vraag een ander
-antwoord (`antwoord`, met `keuzes` of `tabel`) en extra uitleg in het blok
-(`noten`), blokken in plaats van een uitkomstblok, teksten voor
-`toon_als_uitkomst`, en bijlagen. Een uitkomstblok zonder aanvulling slaat de
-vragenlijst over. De vragenlijst wordt
-niet ingelezen: wie het document wil, neemt de antwoorden over in het
-formulier.
+- een rij per keuze met een hokje, met de `groep` van een optie als tussenkop
+  en de `uitleg` eronder
+- een leeg vak dat meegroeit, met de hoogte uit `hoogte`
+- bij `maatregelen` een tabel met drie hokjes per maatregel
+- bij `rijen` een tabel met de kolommen en vijf lege rijen; de keuzes van een
+  kolom met een keuzelijst staan in de balk
+
+Vragen met dezelfde `groep`, zoals de vragen bij één risico of één aspect,
+staan samen in één blok, onder een donkere kop met de tussenkop van de groep.
+Bij de vraag uit `route` zegt elke keuze welke delen je daarna invult. Een los
+blok breekt niet over twee pagina's. Een groep of een tabel wel; die herhaalt
+dan de kop. Een uitkomstblok met een vaste `lijst` wordt een opsomming, met
+bij elk punt wanneer het geldt.
+
+Wat het formulier uitrekent, kan papier niet. Daarom kan een formulier in
+`vragenlijst` een functie noemen die aanvult. Die krijgt een functie mee die
+het nummer van een vraag geeft ("vraag 7"), en geeft terug:
+
+| Sleutel | Betekenis |
+| --- | --- |
+| `inleiding` | Blokken op de titelpagina |
+| `vragen` | Per sleutel: `antwoord` (met `keuzes` of `tabel`) in plaats van de keuzes of het vak, `noten` voor extra uitleg in de balk, `volgende` voor een pijl achter een keuze (waarde => tekst), `blokken` in plaats van een uitkomstblok, en `na` voor blokken na de vraag |
+| `uitkomsten` | Wanneer een vraag met `toon_als_uitkomst` geldt, als tekst na "Alleen als". Een lijst per naam en waarde, of een functie met de naam en de waarden. Een lege tekst laat de voorwaarde weg |
+| `bijlagen` | Blokken aan het eind |
+
+Een uitkomstblok zonder aanvulling slaat de vragenlijst over: wat het formulier
+uitrekent, staat in het document. De kanalenscan, de AI-scan, de DPIA en het
+CIO-oordeel vullen aan. De vragenlijst wordt niet ingelezen: wie het document
+wil, neemt de antwoorden over in het formulier.
 
 ## Instellingen
 

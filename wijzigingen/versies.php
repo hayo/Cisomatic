@@ -14,6 +14,17 @@ declare(strict_types=1);
 
 return [
     [
+        'versie' => '1.3.1',
+        'datum' => '2026-11-03',
+        'wijzigingen' => [
+            'Elk formulier heeft nu een vragenlijst als .odt, om op papier of in Word in te vullen. De link staat '
+                . 'boven het formulier.',
+            'Vragen die bij elkaar horen, zoals de vragen bij één risico, staan in de vragenlijst samen in één blok.',
+            'In de AI-scan staat bij elke vraag wanneer hij geldt, en bij welk antwoord de scan stopt.',
+            'In het CIO-oordeel staat bij de vraag naar het oordeel hoe het formulier een oordeel voorstelt.',
+        ],
+    ],
+    [
         'versie' => '1.3',
         'datum' => '2026-11-03',
         'wijzigingen' => [

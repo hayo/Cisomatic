@@ -92,3 +92,10 @@ wat goed gaat (aspecten op orde met een bevinding), wat beter kan, de
 aanbevelingen en wat niet te beoordelen was. Daarna elk gebied met alle
 aspecten, het onderzoek, de opvolging met ruimte voor de reactie van de
 opdrachtgever, en hoe het voorstel tot stand komt.
+
+## De vragenlijst als .odt
+
+`vragenlijst.php` zet bij de vraag naar het oordeel hoe het formulier een
+oordeel voorstelt, en zegt wanneer je moet uitleggen waarom je afwijkt. De
+regel staat dus ook daar, in woorden. Verandert `co_voorstel()`, loop dan ook
+`vragenlijst.php` na.

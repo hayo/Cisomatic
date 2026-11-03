@@ -93,6 +93,7 @@ definitie.php     teksten, het overnemen, en de functies voor de motor
 vragen.php        de vragenlijst, de rollen en de aankruislijst
 afleiding.php     de route, de plichten, de toets aan het standpunt
 rapport.php       het rapport als blokken
+vragenlijst.php   de boom in woorden, voor de vragenlijst als .odt
 vooraf.php        "Voor je begint"
 samenvatting.php  de scan in het kort
 regels.js         de route en de uitkomst tijdens het invullen

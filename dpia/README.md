@@ -120,6 +120,7 @@ vragen.php        de vragenlijst
 risicos.php       standaardrisico's, categorieën, tolerantiematrix
 afleiding.php     uitkomsten, groepen, doorgifte, de stand van een risicoregel, aandachtspunten
 rapport.php       het document als blokken
+vragenlijst.php   wanneer een vraag geldt, en de matrix voor de omvang, voor de vragenlijst als .odt
 vooraf.php        "Voor je begint"
 samenvatting.php  de DPIA in het kort, en wat eerst geregeld moet zijn
 regels.js         voorstellen, uitkomsten, risicoregels en suggesties in de browser

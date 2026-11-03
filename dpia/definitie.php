@@ -61,7 +61,8 @@ return [
     // Op de voordeur: de fase waarin je dit invult.
     'fase' => 'ontwerp',
 
-    'bestanden' => ['risicos.php', 'vragen.php', 'afleiding.php', 'rapport.php'],
+    'bestanden' => ['risicos.php', 'vragen.php', 'afleiding.php', 'rapport.php', 'vragenlijst.php'],
+    'vragenlijst' => 'dp_vragenlijst',
     'secties' => 'dp_secties',
     'uitkomst' => 'dp_uitkomst',
     'evalueer' => 'dp_evalueer',

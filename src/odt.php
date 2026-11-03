@@ -111,6 +111,14 @@ const CM_ODT_STIJLEN = '<?xml version="1.0" encoding="UTF-8"?>' . "\n"
  <style:paragraph-properties fo:margin-top="0.05cm" fo:margin-bottom="0cm"/>
  <style:text-properties fo:font-size="9pt" fo:color="#3d3d3d"/>
 </style:style>
+<style:style style:name="Groepkop" style:family="paragraph" style:parent-style-name="Standard" style:class="extra">
+ <style:paragraph-properties fo:margin-top="0cm" fo:margin-bottom="0cm"/>
+ <style:text-properties fo:font-size="11.5pt" fo:font-weight="bold" fo:color="#ffffff"/>
+</style:style>
+<style:style style:name="Groepuitleg" style:family="paragraph" style:parent-style-name="Standard" style:class="extra">
+ <style:paragraph-properties fo:margin-top="0.06cm" fo:margin-bottom="0cm"/>
+ <style:text-properties fo:font-size="9pt" fo:color="#ffffff"/>
+</style:style>
 <style:style style:name="Hokje" style:family="paragraph" style:parent-style-name="Standard" style:class="extra">
  <style:paragraph-properties fo:text-align="center" fo:margin-top="0cm" fo:margin-bottom="0cm"/>
  <style:text-properties fo:font-size="13pt" fo:color="{kleur}"/>
@@ -188,6 +196,10 @@ const CM_ODT_INHOUDSTIJLEN = '<style:style style:name="Titelpagina" style:family
     . 'fo:border="0.75pt solid {kleur}" fo:background-color="{vlak}"/></style:style>'
     . '<style:style style:name="Invulcel" style:family="table-cell"><style:table-cell-properties fo:padding="0.12cm" '
     . 'style:vertical-align="middle" fo:border="0.75pt solid {kleur}" fo:background-color="#ffffff"/></style:style>'
+    . '<style:style style:name="Groepkopcel" style:family="table-cell"><style:table-cell-properties fo:padding="0.18cm" '
+    . 'fo:border="0.75pt solid {kleur}" fo:background-color="{kleur}"/></style:style>'
+    . '<style:style style:name="Groepcel" style:family="table-cell"><style:table-cell-properties fo:padding="0.1cm" '
+    . 'fo:border="0.75pt solid {kleur}" fo:background-color="#f3f6f9"/></style:style>'
     . '<style:style style:name="Rij" style:family="table-row"><style:table-row-properties fo:keep-together="always"/></style:style>'
     . '<style:style style:name="Cel" style:family="table-cell"><style:table-cell-properties fo:padding="0.1cm" fo:border="0.5pt solid #bfbfbf"/></style:style>'
     . '<style:style style:name="Kopcel" style:family="table-cell"><style:table-cell-properties fo:padding="0.1cm" fo:border="0.5pt solid #bfbfbf" fo:background-color="{vlak}"/></style:style>';
@@ -505,16 +517,37 @@ function cm_odt_lijst(array $items, string $stijl): string
  * vraag geldt, staat in die balk. Daaronder, in wit, wat je invult: een rij per
  * keuze met een hokje, een leeg vak, of een tabel met een hokje per rij.
  *
- * De eerste kolom is altijd 1 cm: het nummer, en daaronder de hokjes. Een
- * blok breekt niet over twee pagina's, behalve een tabel; die herhaalt dan
- * de vraag bovenaan de volgende pagina.
+ * Vragen die bij elkaar horen, zoals de vragen bij één risico, staan samen in
+ * één blok onder een donkere kop: 'kop' met 'titel' en 'noten', en de vragen
+ * in 'delen'. Zo'n blok mag over twee pagina's lopen en herhaalt dan de kop.
+ * Een losse vraag breekt niet, behalve een tabel; die herhaalt de vraag.
  *
- * @param array{nr:string,vraag:string,bijzin?:string,noten?:list<string>,keuzes?:list<array{0:string,1?:string}>,vak?:int,tabel?:array{kop:list<string>,rijen:list<list<string|list<string>>>,breedtes:list<float>}} $v
+ * De eerste kolom is 1,2 cm: het nummer, en daaronder de hokjes. Keuzes zijn
+ * een lijst met eerst het label en dan regels uitleg; met 'kop' een tussenkop
+ * over de hele breedte, met 'los' een regel zonder hokje. Een tabel heeft
+ * 'kop', 'rijen' en 'breedtes' (de verhouding van de kolommen), en optioneel
+ * 'voor' (wat in de eerste kolom staat in plaats van een hokje) en 'hoogte'
+ * (van elke rij, in cm). Een cel met alleen '☐' wordt een hokje. Een tabel kan
+ * alleen in een losse vraag.
+ *
+ * @param array<string,mixed> $v een vraag (nr, vraag, bijzin, noten, en keuzes, vak of tabel), of kop en delen
  */
 function cm_odt_vraagblok(array $v, int $nummer, string &$stijlen): string
 {
     $naam = 'Vraagblok' . $nummer;
-    $breedtes = [1.0, ...($v['tabel']['breedtes'] ?? [15.6])];
+    $delen = $v['delen'] ?? [$v];
+    $tabel = count($delen) === 1 ? ($delen[0]['tabel'] ?? null) : null;
+    $breedtes = [1.2];
+    if ($tabel === null) {
+        $breedtes[] = 15.4;
+    } else {
+        $som = array_sum($tabel['breedtes']);
+        foreach ($tabel['breedtes'] as $b) {
+            $breedtes[] = round($b * 15.4 / $som, 2);
+        }
+    }
+    $breed = count($breedtes) - 1;
+
     $p = static fn (string $stijl, string $tekst): string => '<text:p text:style-name="' . $stijl . '">'
         . cm_odt_tekst($tekst) . '</text:p>';
     $cel = static fn (string $stijl, string $inhoud, int $span = 1): string => '<table:table-cell table:style-name="'
@@ -522,50 +555,88 @@ function cm_odt_vraagblok(array $v, int $nummer, string &$stijlen): string
         . '>' . $inhoud . '</table:table-cell>' . str_repeat('<table:covered-table-cell/>', $span - 1);
     $hokje = $cel('Invulcel', $p('Hokje', '☐'));
 
+    // Een cel met tekst: de eerste regel gewoon, de rest kleiner. Alleen een hokje staat in het midden.
+    $tekst = static function (string|array $inhoud) use ($p): string {
+        $regels = array_values(array_filter((array) $inhoud, 'is_string'));
+        if ($regels === ['☐']) {
+            return $p('Hokje', '☐');
+        }
+
+        // Een regel met hokjes, zoals "☐ Is er al   ☐ Komt er", is om in te vullen en blijft groot.
+        return $p('Keuzetekst', (string) array_shift($regels)) . implode('', array_map(
+            static fn (string $r): string => $p(str_starts_with($r, '☐') ? 'Keuzetekst' : 'Keuzeuitleg', $r),
+            $regels
+        ));
+    };
+
+    $balk = static fn (array $d): string => '<table:table-row>' . $cel('Nummercel', $p('Vraagnummer', (string) $d['nr']))
+        . $cel('Vraagcel', '<text:p text:style-name="Vraagtekst">' . cm_odt_tekst($d['vraag'])
+            . (($d['bijzin'] ?? '') === '' ? '' : ' <text:span text:style-name="Bijzin">' . cm_odt_tekst($d['bijzin'])
+                . '</text:span>') . '</text:p>'
+            . implode('', array_map(static fn (string $n): string => $p('Blokuitleg', $n), $d['noten'] ?? [])), $breed)
+        . '</table:table-row>';
+
     $out = '<table:table table:name="' . $naam . '" table:style-name="'
-        . (isset($v['tabel']) ? 'Vraagblok_breekbaar' : 'Vraagblok') . '">';
+        . (isset($v['delen']) || $tabel !== null ? 'Vraagblok_breekbaar' : 'Vraagblok') . '">';
     foreach ($breedtes as $i => $breedte) {
         $stijlen .= '<style:style style:name="' . $naam . '.K' . $i . '" style:family="table-column">'
             . '<style:table-column-properties style:column-width="' . $breedte . 'cm"/></style:style>';
         $out .= '<table:table-column table:style-name="' . $naam . '.K' . $i . '"/>';
     }
 
-    $vraag = '<text:p text:style-name="Vraagtekst">' . cm_odt_tekst($v['vraag'])
-        . (($v['bijzin'] ?? '') === '' ? '' : ' <text:span text:style-name="Bijzin">' . cm_odt_tekst($v['bijzin'])
-            . '</text:span>') . '</text:p>'
-        . implode('', array_map(static fn (string $n): string => $p('Blokuitleg', $n), $v['noten'] ?? []));
-
-    $kop = '<table:table-row>' . $cel('Nummercel', $p('Vraagnummer', $v['nr'])) . $cel('Vraagcel', $vraag, count($breedtes) - 1)
-        . '</table:table-row>';
-
-    if (isset($v['tabel'])) {
-        $kop .= '<table:table-row>' . $cel('Invulcel', '<text:p text:style-name="Kolomkop"/>')
-            . implode('', array_map(static fn (string $k): string => $cel('Invulcel', $p('Kolomkop', $k)), $v['tabel']['kop']))
-            . '</table:table-row>';
+    // De rijen die bovenaan een volgende pagina terugkomen: de kop van een
+    // groep, of bij een losse vraag de vraag en de kop van de tabel.
+    if (isset($v['kop'])) {
+        $out .= '<table:table-header-rows><table:table-row>' . $cel('Groepkopcel', $p('Groepkop', $v['kop']['titel'])
+            . implode('', array_map(static fn (string $n): string => $p('Groepuitleg', $n), $v['kop']['noten'] ?? [])),
+            $breed + 1) . '</table:table-row></table:table-header-rows>';
+    } else {
+        $kop = $balk($delen[0]);
+        if ($tabel !== null) {
+            $kop .= '<table:table-row>' . $cel('Invulcel', '<text:p text:style-name="Kolomkop"/>')
+                . implode('', array_map(static fn (string $k): string => $cel('Invulcel', $p('Kolomkop', $k)), $tabel['kop']))
+                . '</table:table-row>';
+        }
+        $out .= '<table:table-header-rows>' . $kop . '</table:table-header-rows>';
     }
 
-    $out .= '<table:table-header-rows>' . $kop . '</table:table-header-rows>';
+    foreach ($delen as $d => $deel) {
+        if (isset($v['kop'])) {
+            $out .= $balk($deel);
+        }
 
-    foreach ($v['keuzes'] ?? [] as $keuze) {
-        $out .= '<table:table-row table:style-name="Rij">' . $hokje . $cel('Invulcel', $p('Keuzetekst', $keuze[0])
-            . (($keuze[1] ?? '') === '' ? '' : $p('Keuzeuitleg', $keuze[1]))) . '</table:table-row>';
+        foreach ($deel['keuzes'] ?? [] as $keuze) {
+            $out .= match (true) {
+                isset($keuze['kop']) => '<table:table-row>' . $cel('Groepcel', $p('Kolomkop', $keuze['kop']), $breed + 1),
+                !empty($keuze['los']) => '<table:table-row table:style-name="Rij">' . $cel('Invulcel', $tekst($keuze), $breed + 1),
+                default => '<table:table-row table:style-name="Rij">' . $hokje . $cel('Invulcel', $tekst($keuze), $breed),
+            } . '</table:table-row>';
+        }
+
+        if (isset($deel['vak'])) {
+            $rij = $naam . '.R' . $d;
+            $stijlen .= '<style:style style:name="' . $rij . '" style:family="table-row"><style:table-row-properties '
+                . 'style:min-row-height="' . sprintf('%.2Fcm', 0.3 + 0.55 * max(1, (int) $deel['vak'])) . '"/></style:style>';
+            $out .= '<table:table-row table:style-name="' . $rij . '">'
+                . $cel('Invulcel', '<text:p text:style-name="Keuzetekst"/>', $breed + 1) . '</table:table-row>';
+        }
     }
 
-    foreach ($v['tabel']['rijen'] ?? [] as $rij) {
-        $out .= '<table:table-row table:style-name="Rij">' . $hokje;
-        foreach (array_values($rij) as $i => $inhoud) {
-            $regels = (array) $inhoud;
-            $out .= $cel('Invulcel', $p('Keuzetekst', (string) array_shift($regels))
-                . implode('', array_map(static fn (string $r): string => $p('Keuzeuitleg', $r), $regels)));
+    // Voor elke rij van een tabel staat een hokje, of wat 'voor' zegt: één tekst, of een lijst per rij.
+    if (isset($tabel['hoogte'])) {
+        $stijlen .= '<style:style style:name="' . $naam . '.T" style:family="table-row"><style:table-row-properties '
+            . 'style:min-row-height="' . sprintf('%.2Fcm', (float) $tabel['hoogte']) . '" fo:keep-together="always"/>'
+            . '</style:style>';
+    }
+    foreach ($tabel['rijen'] ?? [] as $r => $rij) {
+        $voor = $tabel['voor'] ?? '☐';
+        $voor = is_array($voor) ? (string) ($voor[$r] ?? '') : $voor;
+        $out .= '<table:table-row table:style-name="' . (isset($tabel['hoogte']) ? $naam . '.T' : 'Rij') . '">'
+            . $cel('Invulcel', $voor === '☐' ? $p('Hokje', '☐') : $p('Kolomkop', $voor));
+        foreach (array_values($rij) as $inhoud) {
+            $out .= $cel('Invulcel', $tekst($inhoud));
         }
         $out .= '</table:table-row>';
-    }
-
-    if (isset($v['vak'])) {
-        $stijlen .= '<style:style style:name="' . $naam . '.R" style:family="table-row"><style:table-row-properties '
-            . 'style:min-row-height="' . sprintf('%.2Fcm', 0.3 + 0.55 * max(1, (int) $v['vak'])) . '"/></style:style>';
-        $out .= '<table:table-row table:style-name="' . $naam . '.R">' . $cel('Invulcel', '<text:p text:style-name="Keuzetekst"/>', 2)
-            . '</table:table-row>';
     }
 
     return $out . '</table:table>';

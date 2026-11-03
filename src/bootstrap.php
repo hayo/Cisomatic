@@ -137,8 +137,8 @@ function cm_verwerk(string $id, ?bool $zelfstandig = null): void
     $opgeslagen = null;
     $opslagFout = null;
 
-    // De hele vragenlijst, om buiten de webapp in te vullen. Alleen bij een formulier dat er een heeft.
-    if (isset($_GET['vragenlijst']) && isset($formulier['vragenlijst'])) {
+    // De hele vragenlijst, om buiten de webapp in te vullen. Elk formulier heeft er een, behalve met 'vragenlijst' => false.
+    if (isset($_GET['vragenlijst']) && ($formulier['vragenlijst'] ?? true) !== false) {
         cm_stuur_vragenlijst();
     }
 
