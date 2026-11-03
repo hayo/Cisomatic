@@ -3,8 +3,8 @@
 /**
  * Het document als OpenDocument-tekst (.odt), zonder PHP-extensies.
  *
- * Een .odt is een zip met een handvol XML-bestanden. De zip schrijven we zelf
- * en ongecomprimeerd, met alleen pack() en crc32(). Word, LibreOffice en Google
+ * Een .odt is een zip met een handvol XML-bestanden. De zip schrijven we zelf,
+ * met pack() en crc32(), en gzdeflate() als die er is. Word, LibreOffice en Google
  * Docs openen het met echte kopjes, lijsten en tabellen.
  */
 
@@ -21,26 +21,31 @@ const CM_ODT_NS = 'xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.
     . 'xmlns:xlink="http://www.w3.org/1999/xlink" '
     . 'xmlns:dc="http://purl.org/dc/elements/1.1/" office:version="1.2"';
 
-const CM_ODT_FONTS = '<office:font-face-decls>'
-    . '<style:font-face style:name="Calibri" svg:font-family="Calibri" style:font-family-generic="swiss" style:font-pitch="variable"/>'
-    . '</office:font-face-decls>';
-
 const CM_ODT_MANIFEST = '<?xml version="1.0" encoding="UTF-8"?>' . "\n"
     . '<manifest:manifest xmlns:manifest="urn:oasis:names:tc:opendocument:xmlns:manifest:1.0" manifest:version="1.2">'
     . '<manifest:file-entry manifest:full-path="/" manifest:version="1.2" manifest:media-type="application/vnd.oasis.opendocument.text"/>'
     . '<manifest:file-entry manifest:full-path="content.xml" manifest:media-type="text/xml"/>'
     . '<manifest:file-entry manifest:full-path="styles.xml" manifest:media-type="text/xml"/>'
     . '<manifest:file-entry manifest:full-path="meta.xml" manifest:media-type="text/xml"/>'
+    . '<manifest:file-entry manifest:full-path="settings.xml" manifest:media-type="text/xml"/>'
     . '%s</manifest:manifest>';
+
+// LibreOffice houdt de ingesloten lettertypen dan ook na opslaan in het bestand.
+const CM_ODT_INSTELLINGEN = '<?xml version="1.0" encoding="UTF-8"?>' . "\n"
+    . '<office:document-settings xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" '
+    . 'xmlns:config="urn:oasis:names:tc:opendocument:xmlns:config:1.0" office:version="1.2"><office:settings>'
+    . '<config:config-item-set config:name="ooo:configuration-settings">'
+    . '<config:config-item config:name="EmbedFonts" config:type="boolean">%s</config:config-item>'
+    . '</config:config-item-set></office:settings></office:document-settings>';
 
 // Stijlnamen volgen LibreOffice ("Heading_20_1" is "Heading 1"), zodat Word en
 // LibreOffice ze als hun eigen kopjes herkennen en de navigatie ze toont.
 const CM_ODT_STIJLEN = '<?xml version="1.0" encoding="UTF-8"?>' . "\n"
-    . '<office:document-styles ' . CM_ODT_NS . '>' . CM_ODT_FONTS . <<<'XML'
+    . '<office:document-styles ' . CM_ODT_NS . '>{lettertypen}' . <<<'XML'
 <office:styles>
 <style:default-style style:family="paragraph">
  <style:paragraph-properties style:writing-mode="lr-tb"/>
- <style:text-properties style:font-name="Calibri" fo:font-size="11pt" fo:language="nl" fo:country="NL" fo:color="#1f1f1f"/>
+ <style:text-properties style:font-name="{letter}" fo:font-size="11pt" fo:language="nl" fo:country="NL" fo:color="#1f1f1f"/>
 </style:default-style>
 <style:style style:name="Standard" style:family="paragraph" style:class="text"/>
 <style:style style:name="Text_20_body" style:display-name="Text body" style:family="paragraph" style:parent-style-name="Standard" style:class="text">
@@ -48,11 +53,11 @@ const CM_ODT_STIJLEN = '<?xml version="1.0" encoding="UTF-8"?>' . "\n"
 </style:style>
 <style:style style:name="Title" style:family="paragraph" style:parent-style-name="Standard" style:next-style-name="Text_20_body" style:class="chapter">
  <style:paragraph-properties fo:margin-bottom="0.4cm"/>
- <style:text-properties fo:font-size="22pt" fo:font-weight="bold" fo:color="#1f3864"/>
+ <style:text-properties fo:font-size="22pt" fo:font-weight="bold" fo:color="{kleur}"/>
 </style:style>
 <style:style style:name="Heading" style:family="paragraph" style:parent-style-name="Standard" style:next-style-name="Text_20_body" style:class="text">
  <style:paragraph-properties fo:margin-top="0.5cm" fo:margin-bottom="0.15cm" fo:keep-with-next="always"/>
- <style:text-properties fo:font-weight="bold" fo:color="#1f3864"/>
+ <style:text-properties fo:font-weight="bold" fo:color="{kleur}"/>
 </style:style>
 <style:style style:name="Heading_20_1" style:display-name="Heading 1" style:family="paragraph" style:parent-style-name="Heading" style:next-style-name="Text_20_body" style:default-outline-level="1" style:class="text">
  <style:paragraph-properties fo:margin-top="0.7cm"/>
@@ -69,7 +74,7 @@ const CM_ODT_STIJLEN = '<?xml version="1.0" encoding="UTF-8"?>' . "\n"
  <style:paragraph-properties fo:margin-bottom="0.12cm"/>
 </style:style>
 <style:style style:name="Quotations" style:family="paragraph" style:parent-style-name="Text_20_body" style:class="html">
- <style:paragraph-properties fo:margin-top="0.1cm" fo:margin-bottom="0.35cm" fo:padding="0.2cm" fo:background-color="#eef2f6" fo:border-left="2.5pt solid #1f3864" fo:border-right="none" fo:border-top="none" fo:border-bottom="none"/>
+ <style:paragraph-properties fo:margin-top="0.1cm" fo:margin-bottom="0.35cm" fo:padding="0.2cm" fo:background-color="{vlak}" fo:border-left="2.5pt solid {kleur}" fo:border-right="none" fo:border-top="none" fo:border-bottom="none"/>
 </style:style>
 <style:style style:name="Horizontal_20_Line" style:display-name="Horizontal Line" style:family="paragraph" style:parent-style-name="Standard" style:class="html">
  <style:paragraph-properties fo:margin-top="0.1cm" fo:margin-bottom="0.35cm" fo:padding="0cm" fo:border-bottom="0.5pt solid #bfbfbf" fo:border-left="none" fo:border-right="none" fo:border-top="none"/>
@@ -83,6 +88,27 @@ const CM_ODT_STIJLEN = '<?xml version="1.0" encoding="UTF-8"?>' . "\n"
  <style:text-properties fo:font-weight="bold"/>
 </style:style>
 <style:style style:name="Header" style:family="paragraph" style:parent-style-name="Standard" style:class="extra"/>
+<style:style style:name="Woordmerk" style:family="paragraph" style:parent-style-name="Standard" style:class="extra">
+ <style:paragraph-properties fo:margin-top="0cm" fo:margin-bottom="0cm" fo:line-height="100%"/>
+ <style:text-properties style:font-name="{woordmerk}" fo:font-size="13pt" fo:font-style="italic" fo:color="#000000"/>
+</style:style>
+<style:style style:name="Vraag" style:family="paragraph" style:parent-style-name="Text_20_body" style:class="text">
+ <style:paragraph-properties fo:margin-top="0.45cm" fo:margin-bottom="0.1cm" fo:keep-with-next="always"/>
+ <style:text-properties fo:font-weight="bold"/>
+</style:style>
+<style:style style:name="Noot" style:family="paragraph" style:parent-style-name="Text_20_body" style:class="text">
+ <style:paragraph-properties fo:margin-bottom="0.12cm" fo:keep-with-next="always"/>
+ <style:text-properties fo:font-size="9.5pt" fo:color="#4d4d4d"/>
+</style:style>
+<style:style style:name="Keuze" style:family="paragraph" style:parent-style-name="Text_20_body" style:class="list">
+ <style:paragraph-properties fo:margin-bottom="0.08cm" fo:keep-together="always" fo:keep-with-next="always"/>
+</style:style>
+<style:style style:name="Laatste_20_keuze" style:display-name="Laatste keuze" style:family="paragraph" style:parent-style-name="Keuze" style:class="list">
+ <style:paragraph-properties fo:keep-with-next="auto"/>
+</style:style>
+<style:style style:name="Bijzin" style:family="text">
+ <style:text-properties fo:font-weight="normal" fo:font-size="9.5pt" fo:color="#4d4d4d"/>
+</style:style>
 <style:style style:name="Footer" style:family="paragraph" style:parent-style-name="Standard" style:class="extra">
  <style:paragraph-properties><style:tab-stops><style:tab-stop style:position="16.6cm" style:type="right"/></style:tab-stops></style:paragraph-properties>
  <style:text-properties fo:font-size="8.5pt" fo:color="#7f7f7f"/>
@@ -115,6 +141,14 @@ const CM_ODT_STIJLEN = '<?xml version="1.0" encoding="UTF-8"?>' . "\n"
   </style:list-level-properties>
  </text:list-level-style-bullet>
 </text:list-style>
+<text:list-style style:name="Hokjes">
+ <text:list-level-style-bullet text:level="1" text:bullet-char="☐">
+  <style:list-level-properties text:list-level-position-and-space-mode="label-alignment">
+   <style:list-level-label-alignment text:label-followed-by="listtab" text:list-tab-stop-position="0.7cm" fo:text-indent="-0.7cm" fo:margin-left="0.7cm"/>
+  </style:list-level-properties>
+  <style:text-properties fo:font-size="120%"/>
+ </text:list-level-style-bullet>
+</text:list-style>
 <text:list-style style:name="Nummering">
  <text:list-level-style-number text:level="1" style:num-suffix="." style:num-format="1">
   <style:list-level-properties text:list-level-position-and-space-mode="label-alignment">
@@ -136,8 +170,9 @@ const CM_ODT_INHOUDSTIJLEN = '<style:style style:name="Titelpagina" style:family
     . '<style:style style:name="Hoofdstuk" style:family="paragraph" style:parent-style-name="Heading_20_1">'
     . '<style:paragraph-properties fo:break-before="page" fo:margin-top="0cm"/><style:text-properties fo:font-size="16pt"/></style:style>'
     . '<style:style style:name="Tabel" style:family="table"><style:table-properties style:width="16.6cm" table:align="margins" fo:margin-top="0.1cm" fo:margin-bottom="0.4cm"/></style:style>'
+    . '<style:style style:name="Rij" style:family="table-row"><style:table-row-properties fo:keep-together="always"/></style:style>'
     . '<style:style style:name="Cel" style:family="table-cell"><style:table-cell-properties fo:padding="0.1cm" fo:border="0.5pt solid #bfbfbf"/></style:style>'
-    . '<style:style style:name="Kopcel" style:family="table-cell"><style:table-cell-properties fo:padding="0.1cm" fo:border="0.5pt solid #bfbfbf" fo:background-color="#e9eef4"/></style:style>';
+    . '<style:style style:name="Kopcel" style:family="table-cell"><style:table-cell-properties fo:padding="0.1cm" fo:border="0.5pt solid #bfbfbf" fo:background-color="{vlak}"/></style:style>';
 
 /**
  * Het document begint met een titelpagina: de titel en wat er vóór het eerste
@@ -152,6 +187,7 @@ function cm_odt(array $blokken, string $auteur = '', string $kenmerk = ''): stri
     $apart = !empty(cm_formulier()['hoofdstuk_per_pagina']);
     $titel = cm_documenttitel($blokken);
     $logo = cm_odt_logo();
+    $huisstijl = cm_odt_huisstijl();
     $body = '';
     $kolomstijlen = '';
     $tabellen = 0;
@@ -189,6 +225,12 @@ function cm_odt(array $blokken, string $auteur = '', string $kenmerk = ''): stri
             'lijn' => '<text:p text:style-name="Horizontal_20_Line"/>',
             'tabel' => cm_odt_tabel($blok[1], ++$tabellen, $kolomstijlen),
             'schema' => '',
+            'vraag' => '<text:p text:style-name="Vraag">' . cm_odt_tekst(($blok[1] === '' ? '' : $blok[1] . '. ') . $blok[2])
+                . (($blok[3] ?? '') === '' ? '' : ' <text:span text:style-name="Bijzin">' . cm_odt_tekst($blok[3]) . '</text:span>')
+                . '</text:p>',
+            'noot' => '<text:p text:style-name="Noot">' . cm_odt_tekst($blok[1]) . '</text:p>',
+            'keuzes' => cm_odt_keuzes($blok[1]),
+            'vak' => cm_odt_vak((int) $blok[1], ++$tabellen, $kolomstijlen),
             default => '<text:p text:style-name="Text_20_body">' . cm_odt_tekst($blok[1]) . '</text:p>',
         };
     }
@@ -209,20 +251,28 @@ function cm_odt(array $blokken, string $auteur = '', string $kenmerk = ''): stri
         . '</office:meta></office:document-meta>';
 
     $content = '<?xml version="1.0" encoding="UTF-8"?>' . "\n"
-        . '<office:document-content ' . CM_ODT_NS . '>' . CM_ODT_FONTS
-        . '<office:automatic-styles>' . CM_ODT_INHOUDSTIJLEN . $kolomstijlen . '</office:automatic-styles>'
+        . '<office:document-content ' . CM_ODT_NS . '>' . $huisstijl['decls']
+        . '<office:automatic-styles>' . strtr(CM_ODT_INHOUDSTIJLEN, $huisstijl['tokens']) . $kolomstijlen
+        . '</office:automatic-styles>'
         . '<office:body><office:text>' . $body . '</office:text></office:body>'
         . '</office:document-content>';
+
+    $extra = $huisstijl['bestanden'] + ($logo === null ? [] : [$logo['pad'] => [$logo['mime'], $logo['data']]]);
+    $manifest = '';
+    foreach ($extra as $pad => [$mime]) {
+        $manifest .= '<manifest:file-entry manifest:full-path="' . $pad . '" manifest:media-type="' . $mime . '"/>';
+    }
 
     // ODF eist 'mimetype' als eerste bestand, ongecomprimeerd.
     return cm_zip([
         'mimetype' => 'application/vnd.oasis.opendocument.text',
-        'META-INF/manifest.xml' => sprintf(CM_ODT_MANIFEST, $logo === null ? '' : '<manifest:file-entry manifest:full-path="'
-            . $logo['pad'] . '" manifest:media-type="' . $logo['mime'] . '"/>'),
+        'META-INF/manifest.xml' => sprintf(CM_ODT_MANIFEST, $manifest),
         'meta.xml' => $meta,
-        'styles.xml' => CM_ODT_STIJLEN . cm_odt_opmaak($kenmerk === '' ? $titel : $titel . ' · ' . $kenmerk, $logo),
+        'settings.xml' => sprintf(CM_ODT_INSTELLINGEN, $huisstijl['bestanden'] === [] ? 'false' : 'true'),
+        'styles.xml' => strtr(CM_ODT_STIJLEN, $huisstijl['tokens'])
+            . cm_odt_opmaak($kenmerk === '' ? $titel : $titel . ' · ' . $kenmerk, $logo),
         'content.xml' => $content,
-        ...($logo === null ? [] : [$logo['pad'] => $logo['data']]),
+        ...array_map(static fn (array $bestand): string => $bestand[1], $extra),
     ]);
 }
 
@@ -258,7 +308,7 @@ function cm_odt_inhoud(array $inhoud): string
  * Het logo uit config.php, of null. Een logo dat niet te lezen is, stopt het
  * document: een stil ontbrekend logo valt pas op als het document al weg is.
  *
- * @return array{pad:string,mime:string,data:string,breedte:float,hoogte:float,x:float}|null
+ * @return array{pad:string,mime:string,data:string,breedte:float,hoogte:float,x:float,woordmerk:string}|null
  */
 function cm_odt_logo(): ?array
 {
@@ -285,6 +335,68 @@ function cm_odt_logo(): ?array
         'hoogte' => $breedte * $info[1] / $info[0],
         // Het midden van het lint komt op het midden van de pagina.
         'x' => 10.5 - (float) ($logo['midden'] ?? $breedte / 2),
+        'woordmerk' => (string) ($logo['woordmerk'] ?? ''),
+    ];
+}
+
+/**
+ * De huisstijl uit config.php: de letter, de kleuren, en de lettertypen die
+ * in het bestand meegaan. Zonder huisstijl Calibri en donkerblauw, zonder
+ * ingesloten lettertypen. Een lettertype dat niet te lezen is, stopt het
+ * document, net als bij het logo.
+ *
+ * @return array{decls:string,tokens:array<string,string>,bestanden:array<string,array{0:string,1:string}>}
+ */
+function cm_odt_huisstijl(): array
+{
+    $stijl = cm_config()['huisstijl'] ?? null;
+    $letter = (string) ($stijl['tekst'] ?? 'Calibri');
+    $faces = '';
+    $bestanden = [];
+    $naam = static fn (string $n): string => cm_odt_tekst(str_contains($n, ' ') ? "'" . $n . "'" : $n);
+
+    foreach (($stijl['lettertypen'] ?? []) as $familie => $paden) {
+        $bronnen = '';
+
+        foreach ($paden as $pad) {
+            $soort = strtolower(pathinfo($pad, PATHINFO_EXTENSION));
+
+            if (!is_file($pad) || !in_array($soort, ['ttf', 'otf'], true)) {
+                throw new RuntimeException('Het lettertype ' . $pad . ' bestaat niet, of is geen .ttf of .otf.');
+            }
+
+            $binnen = 'Fonts/' . basename($pad);
+            $bestanden[$binnen] = ['application/x-font-' . $soort, (string) file_get_contents($pad)];
+            $bronnen .= '<svg:font-face-uri xlink:href="' . cm_odt_tekst($binnen) . '" xlink:type="simple">'
+                . '<svg:font-face-format svg:string="' . ($soort === 'ttf' ? 'truetype' : 'opentype') . '"/>'
+                . '</svg:font-face-uri>';
+        }
+
+        $faces .= '<style:font-face style:name="' . cm_odt_tekst((string) $familie) . '" svg:font-family="'
+            . $naam((string) $familie) . '" style:font-family-generic="' . ($familie === $letter ? 'swiss' : 'roman')
+            . '" style:font-pitch="variable"><svg:font-face-src>' . $bronnen . '</svg:font-face-src></style:font-face>';
+    }
+
+    $woordmerk = (string) ($stijl['woordmerk'] ?? $letter);
+    foreach (array_unique([$letter, $woordmerk]) as $los) {
+        if (!isset($stijl['lettertypen'][$los])) {
+            $faces .= '<style:font-face style:name="' . cm_odt_tekst($los) . '" svg:font-family="' . $naam($los)
+                . '" style:font-family-generic="swiss" style:font-pitch="variable"/>';
+        }
+    }
+
+    $decls = '<office:font-face-decls>' . $faces . '</office:font-face-decls>';
+
+    return [
+        'decls' => $decls,
+        'tokens' => [
+            '{lettertypen}' => $decls,
+            '{letter}' => cm_odt_tekst($letter),
+            '{woordmerk}' => cm_odt_tekst($woordmerk),
+            '{kleur}' => cm_odt_tekst((string) ($stijl['kleur'] ?? '#1f3864')),
+            '{vlak}' => cm_odt_tekst((string) ($stijl['vlak'] ?? '#e9eef4')),
+        ],
+        'bestanden' => $bestanden,
     ];
 }
 
@@ -303,15 +415,18 @@ function cm_odt_opmaak(string $titel, ?array $logo): string
     $grafisch = '';
 
     if ($logo !== null) {
-        $kop = '<style:header><text:p text:style-name="Header"><draw:frame draw:style-name="Logo" draw:name="Logo" '
+        $kop = '<style:header><text:p text:style-name="' . ($logo['woordmerk'] === '' ? 'Header' : 'Kopregel')
+            . '"><draw:frame draw:style-name="Logo" draw:name="Logo" '
             . 'text:anchor-type="paragraph" svg:x="' . $cm($logo['x']) . '" svg:y="0cm" svg:width="' . $cm($logo['breedte'])
             . '" svg:height="' . $cm($logo['hoogte']) . '" draw:z-index="0"><draw:image xlink:href="' . $logo['pad']
-            . '" xlink:type="simple" xlink:show="embed" xlink:actuate="onLoad"/></draw:frame></text:p></style:header>';
+            . '" xlink:type="simple" xlink:show="embed" xlink:actuate="onLoad"/></draw:frame>'
+            . cm_odt_tekst($logo['woordmerk']) . '</text:p></style:header>';
         $kopstijl = '<style:header-style><style:header-footer-properties fo:min-height="' . $cm($logo['hoogte'])
             . '" fo:margin-bottom="0.8cm"/></style:header-style>';
         $grafisch = '<style:style style:name="Logo" style:family="graphic"><style:graphic-properties style:wrap="none" '
             . 'style:vertical-pos="from-top" style:vertical-rel="page" style:horizontal-pos="from-left" '
-            . 'style:horizontal-rel="page" fo:border="none" fo:padding="0cm"/></style:style>';
+            . 'style:horizontal-rel="page" fo:border="none" fo:padding="0cm"/></style:style>'
+            . cm_odt_woordmerkstijl($logo);
     }
 
     $voet = '<style:footer><text:p text:style-name="Footer">' . cm_odt_tekst($titel) . '<text:tab/>Pagina '
@@ -328,6 +443,26 @@ function cm_odt_opmaak(string $titel, ?array $logo): string
         . '<style:master-page style:name="Titel" style:display-name="Titelpagina" style:page-layout-name="pm1" '
         . 'style:next-style-name="Standard">' . $kop . '</style:master-page>'
         . '</office:master-styles></office:document-styles>';
+}
+
+/**
+ * De tekst naast het lint, zoals in het Rijkslogo: links uitgelijnd tegen de
+ * rechterkant van het lint, op ongeveer twee derde van de hoogte. Het is de
+ * gewone regel van de koptekst, met een inspringing en ruimte erboven. Het
+ * lint staat los op de pagina en duwt niets opzij. Zo houdt ook Word het
+ * woordmerk op zijn plek.
+ *
+ * @param array{breedte:float,hoogte:float,x:float,woordmerk:string} $logo
+ */
+function cm_odt_woordmerkstijl(array $logo): string
+{
+    if ($logo['woordmerk'] === '') {
+        return '';
+    }
+
+    return '<style:style style:name="Kopregel" style:family="paragraph" style:parent-style-name="Woordmerk">'
+        . '<style:paragraph-properties fo:margin-left="' . sprintf('%.3Fcm', $logo['x'] + $logo['breedte'] + 0.2 - 2.2)
+        . '" fo:margin-top="' . sprintf('%.3Fcm', $logo['hoogte'] * 0.6) . '"/></style:style>';
 }
 
 /** Platte tekst als veilige XML. Stuurtekens uit een geplakt antwoord maken het bestand anders onleesbaar. */
@@ -348,6 +483,44 @@ function cm_odt_lijst(array $items, string $stijl): string
     }
 
     return $out . '</text:list>';
+}
+
+/**
+ * Keuzes om aan te kruisen: elk een hokje, met de uitleg in kleinere letters
+ * eronder.
+ *
+ * @param list<array{0:string,1?:string}> $keuzes label en uitleg
+ */
+function cm_odt_keuzes(array $keuzes): string
+{
+    $out = '<text:list text:style-name="Hokjes">';
+
+    // De keuzes blijven bij elkaar op een pagina; pas na de laatste mag de pagina breken.
+    foreach (array_values($keuzes) as $i => $keuze) {
+        $stijl = $i === count($keuzes) - 1 ? 'Laatste_20_keuze' : 'Keuze';
+        $out .= '<text:list-item><text:p text:style-name="' . $stijl . '">' . cm_odt_tekst($keuze[0])
+            . (($keuze[1] ?? '') === '' ? '' : '<text:line-break/><text:span text:style-name="Bijzin">'
+                . cm_odt_tekst($keuze[1]) . '</text:span>')
+            . '</text:p></text:list-item>';
+    }
+
+    return $out . '</text:list>';
+}
+
+/**
+ * Een leeg vak om in te schrijven, zo hoog als het aantal regels. Een tabel
+ * met één cel, zodat het vak meegroeit als je typt, ook in Word.
+ */
+function cm_odt_vak(int $regels, int $nummer, string &$stijlen): string
+{
+    $naam = 'Vak' . $nummer;
+    $stijlen .= '<style:style style:name="' . $naam . '.R" style:family="table-row"><style:table-row-properties '
+        . 'style:min-row-height="' . sprintf('%.2Fcm', 0.25 + 0.55 * max(1, $regels)) . '"/></style:style>';
+
+    return '<table:table table:name="' . $naam . '" table:style-name="Tabel"><table:table-column/>'
+        . '<table:table-row table:style-name="' . $naam . '.R"><table:table-cell table:style-name="Cel" '
+        . 'office:value-type="string"><text:p text:style-name="Table_20_Contents"/></table:table-cell>'
+        . '</table:table-row></table:table>';
 }
 
 /**
@@ -383,7 +556,7 @@ function cm_odt_tabel(array $tabel, int $nummer, string &$kolomstijlen): string
     }
 
     foreach ($tabel['rijen'] as $rij) {
-        $out .= '<table:table-row>';
+        $out .= '<table:table-row table:style-name="Rij">';
         foreach (array_values($rij) as $i => $inhoud) {
             $out .= $cel($inhoud, $i === 0 && !empty($tabel['rijkop']));
         }
@@ -394,7 +567,9 @@ function cm_odt_tabel(array $tabel, int $nummer, string &$kolomstijlen): string
 }
 
 /**
- * Een zip met alle bestanden ongecomprimeerd, in de gegeven volgorde.
+ * Een zip met de bestanden in de gegeven volgorde. Heeft PHP zlib, wat bijna
+ * altijd zo is, dan wordt alles behalve 'mimetype' gecomprimeerd; dat scheelt
+ * veel bij de lettertypen. Zonder zlib blijft alles ongecomprimeerd.
  *
  * @param array<string,string> $bestanden naam => inhoud
  */
@@ -409,11 +584,13 @@ function cm_zip(array $bestanden): string
     foreach ($bestanden as $naam => $inhoud) {
         $crc = crc32($inhoud);
         $grootte = strlen($inhoud);
+        $methode = $naam !== 'mimetype' && function_exists('gzdeflate') ? 8 : 0;
+        $data = $methode === 8 ? (string) gzdeflate($inhoud, 6) : $inhoud;
 
-        $register .= pack('VvvvvvvVVVvvvvvVV', 0x02014b50, 20, 20, 0, 0, $tijd, $datum, $crc,
-            $grootte, $grootte, strlen($naam), 0, 0, 0, 0, 0, strlen($archief)) . $naam;
-        $archief .= pack('VvvvvvVVVvv', 0x04034b50, 20, 0, 0, $tijd, $datum, $crc,
-            $grootte, $grootte, strlen($naam), 0) . $naam . $inhoud;
+        $register .= pack('VvvvvvvVVVvvvvvVV', 0x02014b50, 20, 20, 0, $methode, $tijd, $datum, $crc,
+            strlen($data), $grootte, strlen($naam), 0, 0, 0, 0, 0, strlen($archief)) . $naam;
+        $archief .= pack('VvvvvvVVVvv', 0x04034b50, 20, 0, $methode, $tijd, $datum, $crc,
+            strlen($data), $grootte, strlen($naam), 0) . $naam . $data;
     }
 
     return $archief . $register . pack('VvvvvVVv', 0x06054b50, 0, 0,

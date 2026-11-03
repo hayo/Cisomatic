@@ -58,7 +58,8 @@ src/helpers.php           escapen, niveaus, datum, opsommingen, bestandsnaam
 src/antwoorden.php        inlezen en controleren
 src/formulier.php         formulier naar HTML
 src/opmaak.php            documentblokken naar HTML, en het schema als SVG
-src/odt.php               documentblokken naar .odt; de zip zonder extensies
+src/odt.php               documentblokken naar .odt; de zip zonder extensies, met de lettertypen en het logo
+src/vragenlijst.php       de hele vragenlijst als .odt, om buiten de webapp in te vullen
 src/opslag.php            wegschrijven naar 'bewaar_map', als dat aan staat
 src/verantwoording.php    kenmerk, vingerafdruk en het hoofdstuk Verantwoording onder elk document
 src/pagina.php            de inhoud: formulier of resultaat, als <article>
@@ -69,6 +70,7 @@ src/wijzigingen.php       de pagina met wijzigingen, als <article>
 wijzigingen/versies.php   de versies, de nieuwste bovenaan; de bovenste is de versie die draait
 wijzigingen/index.php     de pagina met wijzigingen; de voettekst van elke pagina linkt ernaar
 bewaard/                  opgeslagen documenten, als bewaren aan staat
+huisstijl/                het lint en de lettertypen van de Rijkshuisstijl, voor het .odt-bestand
 
 <formulier>/index.php         roept de motor aan met de naam van de map
 <formulier>/definitie.php     teksten, bestanden en de functies die de motor aanroept
@@ -192,6 +194,7 @@ Alleen gegevens, geen code. De voordeur leest dit bestand ook.
 | `opvolger` | Optioneel: de nieuwere versie van dit formulier. De voordeur noemt het dan een eerdere versie, en een dossier wisselt ertussen als het normenkader verandert |
 | `dossier` | Optioneel: `false` als een ander het formulier invult, zoals de leverancier of het CIO-office. Het hoort dan niet in een dossier |
 | `vervolg` | Optioneel: functie die van antwoorden en uitkomst zegt welke andere formulieren voorgesteld zijn, en waarom. Een dossier zet ze erbij |
+| `vragenlijst` | Optioneel: functie die de vragenlijst als `.odt` aanvult. Met deze sleutel staat er boven het formulier een link naar de vragenlijst. Zie Vragenlijst als .odt |
 
 ### vragen.php
 
@@ -245,7 +248,9 @@ Wat in beide staat, pas je in beide aan.
 `document` levert blokken: `[soort, inhoud]`. Soorten: `h1` tot en met `h4`,
 `alinea`, `term` (label en tekst), `lijst`, `genummerd`, `citaat`, `lijn`,
 `tabel` (met `kop`, `rijen`, `breedtes` in centimeters en `rijkop`) en `schema`
-(stromen en een onderschrift, alleen op de pagina). `src/opmaak.php` maakt er
+(stromen en een onderschrift, alleen op de pagina). De vragenlijst gebruikt er
+nog vier, alleen in het `.odt`-bestand: `vraag` (nummer, vraag en een bijzin),
+`noot`, `keuzes` (label en uitleg, met een hokje) en `vak` (een aantal regels). `src/opmaak.php` maakt er
 HTML van, `src/odt.php` het `.odt`-bestand, zodat die twee niet uit elkaar lopen.
 
 Het `.odt`-bestand krijgt een vaste opbouw. De `h1` en alles tot de eerste `h2`
@@ -292,6 +297,10 @@ formulier in zijn eigen README. Alleen `organisatie` in `config.php` is van éé
 organisatie: de taken uit haar besluit, en de diensten die daaruit volgen. De
 business case biedt ze aan als keuzes. Zet de sleutel op `null` voor een
 organisatie zonder lijst; dan vraagt het formulier om een toelichting.
+
+De pagina's zijn neutraal. Het `.odt`-bestand krijgt wel de Rijkshuisstijl: het
+lint, het woordmerk en de letters, via `logo` en `huisstijl` in `config.php`.
+Zet die twee op `null` voor een neutraal document.
 
 ## Opmaak
 
@@ -400,13 +409,47 @@ alles opnieuw uit en levert een `.odt` op, dus er wordt tussen twee verzoeken
 niets bewaard. Dat werkt ook zonder JavaScript. "Kopieer" zet het document op
 het klembord als opgemaakte tekst.
 
+## Vragenlijst als .odt
+
+Een formulier met `vragenlijst` in zijn definitie heeft een link boven het
+formulier: de hele vragenlijst als `.odt` (`?vragenlijst=odt`). Die is om
+buiten de webapp in te vullen, op papier of in Word of LibreOffice. De link
+verdwijnt na stap 1, net als de inleiding. Nu heeft alleen de kanalenscan een
+vragenlijst.
+
+`src/vragenlijst.php` maakt hem uit de secties, dus hij loopt niet achter op het
+formulier. Elke vraag krijgt een nummer. Waar het formulier een vraag of sectie
+verbergt, zegt de vragenlijst wanneer hij geldt: "Alleen als je bij vraag 2
+‘Een ander kanaal’ koos." Bij de vraag uit `route` staat een tabel met de delen
+die je per keuze invult. Keuzes krijgen een hokje, open vragen een vak dat
+meegroeit, met de hoogte uit `hoogte`.
+
+Wat het formulier uitrekent, kan papier niet. Daarom kan de functie uit
+`vragenlijst` aanvullen: blokken op de titelpagina, blokken in plaats van de
+keuzes of een uitkomstblok, teksten voor `toon_als_uitkomst`, en bijlagen. Een
+uitkomstblok zonder aanvulling slaat de vragenlijst over. De vragenlijst wordt
+niet ingelezen: wie het document wil, neemt de antwoorden over in het
+formulier.
+
 ## Instellingen
 
 Met `logo` staat er een beeld bovenaan elke pagina van het `.odt`-bestand,
 tegen de bovenrand. `midden` zet het lint van een rijkslogo op het midden van
-de pagina. Het logo staat standaard uit. Op een openbare installatie laat wie
-het Rijkslogo aanzet elke bezoeker documenten met dat logo maken. Zet het dus
-alleen aan op een eigen installatie binnen het Rijk.
+de pagina. `woordmerk` zet er een tekst naast, zoals "Rijksoverheid" of de naam
+van een ministerie. Het staat aan, met het lint uit `huisstijl/`.
+
+`huisstijl` geeft het `.odt`-bestand zijn letters en kleuren. De lettertypen
+gaan in het bestand mee, dus LibreOffice toont ze ook op een computer zonder
+die letters. Word leest geen lettertypen uit een `.odt`; staat de letter niet
+op de computer, dan kiest Word een andere. Kan PHP comprimeren (zlib), dan
+blijft het bestand klein. Anders is het een paar honderd kB groter.
+
+Het lint en de lettertypen Rijks Sans en RijksoverheidSerif vallen onder het
+auteursrechtelijk voorbehoud van de Rijksoverheid (Stcrt. 2008, nr. 115). Ze
+zijn alleen voor gebruik door of voor de Rijksoverheid. Wie de Cisomatic buiten
+het Rijk gebruikt, zet `logo` en `huisstijl` op `null` en haalt `huisstijl/`
+weg. De lettertypen in `huisstijl/` zijn vaste snitten, gemaakt uit de
+variabele webletters, met alleen de Latijnse tekens.
 
 `config.php` heeft geen geheimen. `bewaar_map` staat op `null`: de server
 bewaart niets. Zet je hem op een map,

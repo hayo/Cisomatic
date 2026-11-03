@@ -42,7 +42,8 @@ return [
     // Op de voordeur: de fase waarin je dit invult.
     'fase' => 'ontwerp',
 
-    'bestanden' => ['kaders.php', 'vragen.php', 'exit.php', 'afleiding.php', 'advies.php'],
+    'bestanden' => ['kaders.php', 'vragen.php', 'exit.php', 'afleiding.php', 'advies.php', 'vragenlijst.php'],
+    'vragenlijst' => 'sm_vragenlijst',
     'secties' => 'sm_secties',
     'evalueer' => 'sm_evalueer',
     'document' => 'sm_document',

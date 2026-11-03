@@ -19,6 +19,7 @@ require_once __DIR__ . '/opmaak.php';
 require_once __DIR__ . '/odt.php';
 require_once __DIR__ . '/opslag.php';
 require_once __DIR__ . '/verantwoording.php';
+require_once __DIR__ . '/vragenlijst.php';
 
 /** @return array<string,mixed> */
 function cm_config(): array
@@ -135,6 +136,11 @@ function cm_verwerk(string $id, ?bool $zelfstandig = null): void
     $blokken = null;
     $opgeslagen = null;
     $opslagFout = null;
+
+    // De hele vragenlijst, om buiten de webapp in te vullen. Alleen bij een formulier dat er een heeft.
+    if (isset($_GET['vragenlijst']) && isset($formulier['vragenlijst'])) {
+        cm_stuur_vragenlijst();
+    }
 
     if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
         // De downloadknop stuurt de antwoorden terug als JSON. De server rekent alles

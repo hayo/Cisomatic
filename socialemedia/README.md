@@ -158,6 +158,25 @@ Vier punten in de brontekst zijn niet eenduidig. De tool kiest zo:
 - YouTube noemt corporate communicatie en crisiscommunicatie bij de doelen. De
   tool behandelt ze als vormen.
 
+## De vragenlijst als .odt
+
+Boven het formulier staat een link naar de hele vragenlijst als `.odt`. De motor
+maakt hem uit de secties (zie de README van de Cisomatic). `vragenlijst.php`
+vult aan wat het formulier anders uitrekent:
+
+- Bij de vragen over doelen, vormen, adverteren en contact een tabel met per
+  platform een kolom. "ja" betekent: past binnen het kader. Die tabellen komen
+  uit `kaders.php`.
+- In stap 4 de punten voor de uitkomst: eerst niet inzetten, dan explain, anders
+  comply. De zinnen komen uit `SM_TEKSTEN`, met de nummers van de vragen ervoor.
+- Bij het vertrek de punten van het advies, met de zinnen uit `SM_EXIT_TEKSTEN`.
+- Als bijlage de kaders per platform, en de eisen aan een account van een
+  bewindspersoon.
+
+De rekenregel staat zo op drie plekken: in PHP, in `regels.js` en in woorden in
+`vragenlijst.php`. Verandert `sm_evalueer()` of `sm_exit_advies()`, loop dan
+ook `vragenlijst.php` na.
+
 ## regels.js
 
 `regels.js` rekent tijdens het invullen hetzelfde uit als `sm_evalueer()` en
@@ -178,6 +197,7 @@ afleiding.php     de toets, de afwijkingen en de uitkomst
 advies.php        het comply or explain document als blokken
 vooraf.php        "Voor je begint"
 samenvatting.php  de uitkomst in het kort
+vragenlijst.php   wat de vragenlijst als .odt erbij krijgt
 regels.js         dezelfde afleiding in de browser
 ```
 

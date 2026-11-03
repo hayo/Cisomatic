@@ -14,6 +14,19 @@ declare(strict_types=1);
 
 return [
     [
+        'versie' => '1.3',
+        'datum' => '2026-11-03',
+        'wijzigingen' => [
+            'Alle documenten hebben nu de Rijkshuisstijl: het lint met het woordmerk, de letter Rijks Sans en de '
+                . 'kleuren van het Rijk.',
+            'De letters zitten in het document. LibreOffice toont ze ook als ze niet op je computer staan.',
+            'De kanalenscan sociale media heeft een vragenlijst als .odt, om op papier of in Word in te vullen. De '
+                . 'link staat boven het formulier.',
+            'In de vragenlijst staat bij elke vraag wanneer hij geldt. Per platform zie je wat binnen het kader '
+                . 'valt. Met een lijst punten bepaal je zelf de uitkomst.',
+        ],
+    ],
+    [
         'versie' => '1.2.5',
         'datum' => '2026-10-26',
         'wijzigingen' => [

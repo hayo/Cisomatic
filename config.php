@@ -31,8 +31,38 @@ return [
     // 'breedte' => 5.5]. De breedte is in centimeters. 'midden' is de afstand
     // van de linkerrand van het beeld tot het midden van het lint, ook in
     // centimeters; dat punt komt op het midden van de pagina. Zonder 'midden'
-    // staat het hele beeld in het midden. Bij null heeft het document geen logo.
-    'logo' => null,
+    // staat het hele beeld in het midden. Met 'woordmerk' staat er een tekst
+    // rechts naast het beeld, in de letter 'woordmerk' van de huisstijl. Bij
+    // null heeft het document geen logo.
+    'logo' => [
+        'bestand' => __DIR__ . '/huisstijl/rijkslint.png',
+        'breedte' => 1.6,
+        'woordmerk' => 'Rijksoverheid',
+    ],
+
+    // De huisstijl van het .odt-bestand. De lettertypen gaan mee in het bestand,
+    // zodat LibreOffice ze toont, ook als ze niet op de computer staan. Word
+    // leest ze niet uit een .odt; daar is de letter er alleen als hij op de
+    // computer staat. Per lettertype de bestanden: TrueType of OpenType, met de
+    // gewone, vette en cursieve snit. 'tekst' is de letter van het document,
+    // 'woordmerk' die naast het logo. 'kleur' geldt voor de titel en de koppen,
+    // 'vlak' voor de kopcellen van tabellen en voor citaten. Bij null krijgt het
+    // document Calibri en donkerblauw.
+    'huisstijl' => [
+        'lettertypen' => [
+            'Rijks Sans' => [
+                __DIR__ . '/huisstijl/RijksSans-Regular.ttf',
+                __DIR__ . '/huisstijl/RijksSans-Bold.ttf',
+                __DIR__ . '/huisstijl/RijksSans-Italic.ttf',
+                __DIR__ . '/huisstijl/RijksSans-BoldItalic.ttf',
+            ],
+            'RijksoverheidSerif' => [__DIR__ . '/huisstijl/RijksoverheidSerif-Italic.ttf'],
+        ],
+        'tekst' => 'Rijks Sans',
+        'woordmerk' => 'RijksoverheidSerif',
+        'kleur' => '#154273',
+        'vlak' => '#e3e9f0',
+    ],
 
     // De organisatie waarvoor de business case toetst of iets haar taak is. De
     // taken staan in 'besluit'; de diensten eronder volgen daaruit. Bij null

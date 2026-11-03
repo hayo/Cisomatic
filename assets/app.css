@@ -375,7 +375,8 @@
 #cisomatic .buiten-stap { display: none; }
 
 #cisomatic[data-na-eerste-stap] > h1 + p,
-#cisomatic[data-na-eerste-stap] > :is(.vooraf, [data-eerder], details) { display: none; }
+#cisomatic[data-na-eerste-stap] > :is(.vooraf, [data-eerder], [data-vragenlijst], details) { display: none; }
+#cisomatic > [data-vragenlijst] { color: var(--muted); }
 
 #cisomatic [data-sectie] > details {
     border-top: 0.07em solid var(--line);
