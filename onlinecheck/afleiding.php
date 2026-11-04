@@ -21,8 +21,24 @@ declare(strict_types=1);
 
 const OC_UITKOMSTEN = [
     'comply' => ['label' => 'Voldoet', 'niveau' => 'l'],
-    'explain' => ['label' => 'Uitleg nodig', 'niveau' => 'm'],
+    'explain' => ['label' => 'Voldoet niet', 'niveau' => 'm'],
 ];
+
+/** De titel van het document en van de check op één A4. */
+const OC_TITEL = 'Pas toe of leg uit - social media';
+
+/** De vier vragen van de uitleg, uit de notitie. Voor het formulier, het document en het A4. */
+const OC_UITLEG = [
+    'oc_afwijking' => 'Waarop wijk je af?',
+    'oc_noodzaak' => 'Waarom is dit kanaal nodig (doelgroep)?',
+    'oc_alternatief' => 'Waarom voldoet een minder risicovol kanaal niet?',
+    'oc_maatregelen' => 'Welke maatregelen neem je tegen de risico’s?',
+];
+
+/** Wat er daarna met het formulier gebeurt. Onderaan het document en het A4. */
+const OC_BESTUURSRAAD = 'De directeur Communicatie stelt dit formulier vast, na advies van de CPO, de CISO en waar '
+    . 'nodig de CIO. Daarna gaat het naar de bestuursraad van de eigen organisatie. De bestuursraad toetst het elk '
+    . 'jaar, en herijkt het waar nodig.';
 
 /**
  * Waarom een platform altijd uitleg vraagt, in het kort. Uit de notitie; de

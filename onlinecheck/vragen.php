@@ -40,8 +40,8 @@ function oc_sectie_kanaal(): array
             [
                 'key' => 'projectnaam',
                 'type' => 'text',
-                'label' => 'Om welk kanaal gaat het?',
-                'hint' => 'Bijvoorbeeld "Instagram van de Belastingdienst". De naam komt terug in de bestandsnaam.',
+                'label' => 'Welk platform en welke accountnaam?',
+                'hint' => 'Bijvoorbeeld "Instagram, @belastingdienst". De naam komt terug in de bestandsnaam.',
                 'verplicht' => true,
             ],
             [
@@ -138,8 +138,7 @@ function oc_sectie_besluit(): array
         'id' => 'besluit',
         'titel' => 'Voldoet het kanaal?',
         'stap' => 3,
-        'intro' => 'Voldoet het kanaal niet, dan leg je uit waarom jullie het toch nodig hebben. In de notitie heet dat '
-            . 'een explain.',
+        'intro' => 'Voldoet het kanaal niet, dan leg je uit waarom jullie het toch nodig hebben.',
         'vragen' => [
             [
                 'key' => 'oc_uitkomst',
@@ -150,7 +149,7 @@ function oc_sectie_besluit(): array
             [
                 'key' => 'oc_afwijking',
                 'type' => 'textarea',
-                'label' => 'Waarvan wijk je af?',
+                'label' => OC_UITLEG['oc_afwijking'],
                 'hint' => 'De check vult in wat niet voldoet. Vul aan waar nodig.',
                 'motivatie_voor' => 'afwijking',
                 'toon_als_uitkomst' => $explain,
@@ -160,8 +159,8 @@ function oc_sectie_besluit(): array
             [
                 'key' => 'oc_noodzaak',
                 'type' => 'textarea',
-                'label' => 'Waarom is dit kanaal nodig?',
-                'hint' => 'Noem de doelgroep, en laat zien dat je die hier echt bereikt.',
+                'label' => OC_UITLEG['oc_noodzaak'],
+                'hint' => 'Laat zien dat je de doelgroep hier echt bereikt.',
                 'toon_als_uitkomst' => $explain,
                 'verplicht_als_uitkomst' => $explain,
                 'hoogte' => 3,
@@ -169,7 +168,7 @@ function oc_sectie_besluit(): array
             [
                 'key' => 'oc_alternatief',
                 'type' => 'textarea',
-                'label' => 'Waarom volstaat een minder risicovol kanaal niet?',
+                'label' => OC_UITLEG['oc_alternatief'],
                 'hint' => 'Zoals je eigen site, een nieuwsbrief, social.overheid.nl, of een platform dat in beginsel '
                     . 'inzetbaar is.',
                 'toon_als_uitkomst' => $explain,
@@ -179,7 +178,7 @@ function oc_sectie_besluit(): array
             [
                 'key' => 'oc_maatregelen',
                 'type' => 'textarea',
-                'label' => 'Welke maatregelen neem je tegen de risico’s?',
+                'label' => OC_UITLEG['oc_maatregelen'],
                 'toon_als_uitkomst' => $explain,
                 'verplicht_als_uitkomst' => $explain,
                 'hoogte' => 2,

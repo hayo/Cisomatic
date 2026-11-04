@@ -2,7 +2,7 @@
  * De regels van de Online communicatie check, voor de motor in ../assets/app.js.
  *
  * - wat het kader van het gekozen platform eist
- * - de uitkomst: voldoet, of uitleg nodig (comply of explain)
+ * - de uitkomst: voldoet of voldoet niet (comply of explain)
  * - bij uitleg de afwijkingen, voorgevuld
  *
  * Spiegelt oc_evalueer() in afleiding.php; PHP rekent bij het versturen alles

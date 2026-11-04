@@ -3,7 +3,8 @@
 Een formulier van de [Cisomatic](../README.md) voor de adviseur sociale media.
 Het toetst snel of één kanaal voldoet aan wat het rijksbrede kader eist. Zo
 niet, dan leg je uit waarom jullie het toch gebruiken. In de notitie heet dat
-comply or explain; de check zegt het in het Nederlands.
+comply or explain; de check zegt het in het Nederlands. Het document en het A4
+heten "Pas toe of leg uit - social media" (`OC_TITEL`).
 
 De check gaat over compliance, niet over advies. Doelen en doelgroep vraagt hij
 niet: of een platform geschikt is voor een doel, is een keuze van de
@@ -34,10 +35,14 @@ check stelt daar geen voorwaarden. Voor de andere platforms:
 | TikTok nooit op een toestel van het Rijk | Verboden. Staat onder "Let op", want uitleg maakt het niet goed |
 | Gedragsbeïnvloeding op TikTok alleen met advertenties | "Gedragsbeïnvloeding middels betaalde inzet". Staat onder "Let op" |
 
-Klopt alles, dan voldoet het kanaal. Anders is uitleg nodig. De check vraagt
-dan wat de notitie voorschrijft: waarvan je afwijkt (de check vult dat voor),
-waarom het kanaal nodig is, waarom een minder risicovol kanaal niet volstaat,
-en welke maatregelen je neemt.
+De uitkomst is "Voldoet" of "Voldoet niet". Voldoet het kanaal niet, dan vraagt
+de check wat de notitie voorschrijft (`OC_UITLEG`): waarop je afwijkt (de check
+vult dat voor), waarom het kanaal nodig is, waarom een minder risicovol kanaal
+niet voldoet, en welke maatregelen je neemt.
+
+Onderaan het document en het A4 staat dat de directeur Communicatie het
+formulier vaststelt, en dat het daarna naar de bestuursraad gaat
+(`OC_BESTUURSRAAD`).
 
 De check kent geen "niet inzetten". De directeur Communicatie beslist. Intern
 heten de uitkomsten `comply` en `explain`.
@@ -74,10 +79,11 @@ voor wie op papier of in Word wil werken. De motor maakt hem niet uit de
 secties: met `'vragenlijst_blad' => true` in de definitie neemt hij het blad
 uit `oc_vragenlijst()` over, zonder titelpagina en inhoudsopgave.
 
-Op het blad staat een tabel met per platform of uitleg altijd nodig is, of
-dienstverlening en veilig contact mogen, en waarom. Het basiskanaal staat
-bovenaan. Daaronder de voorwaarden als korte zinnen waar ja goed is, de regel in één zin, en vier vakken voor de
-uitleg. Verandert `oc_evalueer()`, loop dan ook `vragenlijst.php` na. Komt er
+Op het blad staat eerst het kanaal: platform en accountnaam als tekst. Dan een
+tabel met per platform of uitleg altijd nodig is, of dienstverlening en veilig
+contact mogen, en waarom; het basiskanaal staat bovenaan. Daaronder de
+voorwaarden als korte zinnen waar ja goed is, de uitkomst met de regel in één
+zin, en de vier vragen van de uitleg onder elkaar. Verandert `oc_evalueer()`, loop dan ook `vragenlijst.php` na. Komt er
 een platform bij, kijk dan of het blad nog op één pagina past.
 
 ## regels.js

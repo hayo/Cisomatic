@@ -20,7 +20,8 @@ function oc_document(array $a, array $u): array
     $vrij = static fn (string $key): string => implode(' ', cm_regels((string) ($a[$key] ?? '')));
 
     $kop = [
-        ['h1', 'Online communicatie check: ' . ($a['projectnaam'] ?: 'naamloos')],
+        ['h1', OC_TITEL],
+        ['term', 'Platform en account', (string) ($a['projectnaam'] ?: 'onbekend')],
         ['term', 'Platform', $kader['naam']],
         ['term', 'Kader', $u['inzet']['label']],
         ['term', 'Ingevuld door', (string) ($a['aanvrager'] ?: 'onbekend')],
@@ -35,14 +36,14 @@ function oc_document(array $a, array $u): array
     $kop[] = ['term', 'Herzien uiterlijk', cm_datum_nl($u['herziening'])];
 
     $uitleg = $u['uitkomst'] === 'explain' ? [
-        ['h2', '2. Uitleg (explain)'],
-        ['h3', 'Waarvan wordt afgeweken'],
+        ['h2', '2. Uitleg'],
+        ['h3', OC_UITLEG['oc_afwijking']],
         ['lijst', cm_regels((string) ($a['oc_afwijking'] ?? ''))],
-        ['h3', 'Waarom dit kanaal nodig is'],
+        ['h3', OC_UITLEG['oc_noodzaak']],
         ['alinea', $vrij('oc_noodzaak')],
-        ['h3', 'Waarom een minder risicovol kanaal niet volstaat'],
+        ['h3', OC_UITLEG['oc_alternatief']],
         ['alinea', $vrij('oc_alternatief')],
-        ['h3', 'Maatregelen tegen de risico’s'],
+        ['h3', OC_UITLEG['oc_maatregelen']],
         ['lijst', cm_regels((string) ($a['oc_maatregelen'] ?? ''))],
     ] : [];
 
@@ -62,10 +63,7 @@ function oc_document(array $a, array $u): array
         ...$uitleg,
 
         ['h2', ($uitleg === [] ? '2' : '3') . '. Vervolg'],
-        ['genummerd', [
-            'De directeur Communicatie stelt dit vast, na advies van de CPO, de CISO en waar nodig de CIO.',
-            'De bestuursraad toetst het elk jaar. De volgende keer is uiterlijk ' . cm_datum_nl($u['herziening']) . '.',
-        ]],
+        ['alinea', OC_BESTUURSRAAD . ' De volgende keer is uiterlijk ' . cm_datum_nl($u['herziening']) . '.'],
 
         ['h2', 'Bijlage: de risico’s van ' . $kader['naam']],
         ['alinea', 'Uit het rijksbrede kader. Gebruik ze bij de maatregelen.'],
