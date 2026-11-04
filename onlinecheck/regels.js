@@ -50,22 +50,22 @@
         return data().teksten[sleutel].replace('{naam}', naam || '').replace('{grond}', grond || '').trim();
     }
 
-    /** Spiegelt oc_eigen_geldt() en oc_contact_geldt(). */
+    /** Spiegelt oc_voorwaarden_gelden(): niet op het basiskanaal. */
     function geldt(a) {
-        return a.sm_platform !== 'mastodon';
+        return !(kader(a) || {}).basis;
     }
 
     /** Spiegelt oc_compleet(). */
     function compleet(a) {
         return !!a.sm_platform
-            && !!a.sm_doorverwijzen
-            && (!geldt(a) || (!!a.oc_contact && !!a.sm_eigen_kanalen));
+            && (!geldt(a) || (!!a.oc_contact && !!a.sm_eigen_kanalen && !!a.sm_doorverwijzen));
     }
 
-    /** Wat het kader over het platform zegt. Spiegelt de regel 'Platform' in oc_document(). */
+    /** Spiegelt oc_platform_tekst(). */
     function platformTekst(k) {
         if (k.inzet === 'geen') { return tekst('geen_kader', k.naam); }
-        return k.explain ? tekst('explain', k.naam, k.grond) : tekst('inzetbaar', k.naam);
+        if (k.explain) { return tekst('explain', k.naam, k.grond); }
+        return k.basis ? tekst('basis', k.naam) : tekst('inzetbaar', k.naam);
     }
 
     /** Spiegelt oc_evalueer(). */
@@ -73,13 +73,13 @@
         var k = kader(a) || data().kaders.anders;
         var naam = k.naam;
         var eigen = geldt(a) ? (a.sm_eigen_kanalen || '') : '';
-        var contact = geldt(a) && a.oc_contact === 'ja' && !k.contact;
+        var contact = geldt(a) && a.oc_contact === 'ja';
 
         var afwijkingen = [
-            k.inzet === 'geen' || k.explain ? platformTekst(k) : '',
+            k.explain ? platformTekst(k) : '',
             contact ? tekst('contact', naam) : '',
             eigen === 'deels' ? tekst('eigen_deels') : (eigen === 'nee' ? tekst('eigen_nee') : ''),
-            a.sm_doorverwijzen === 'nee' ? tekst('doorverwijzen', naam) : ''
+            geldt(a) && a.sm_doorverwijzen === 'nee' ? tekst('doorverwijzen', naam) : ''
         ].filter(Boolean);
 
         var uitkomst = !compleet(a) ? '' : (afwijkingen.length ? 'explain' : 'comply');

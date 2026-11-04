@@ -19,8 +19,9 @@ return [
         'wijzigingen' => [
             'Nieuw: de Online communicatie check. Daarmee toets je snel of een kanaal op sociale media voldoet aan het '
                 . 'rijksbrede kader. Zo niet, dan leg je uit waarom jullie het toch gebruiken.',
-            'De check toetst alleen wat het kader eist: het platform, dienstverlening en veilig contact, en twee '
-                . 'voorwaarden. Advies over doelen en doelgroep geeft hij niet.',
+            'De check toetst alleen wat het kader eist: het platform en drie voorwaarden. Advies over doelen en '
+                . 'doelgroep geeft hij niet.',
+            'social.overheid.nl is het basiskanaal. Daar mag alles, dus daar gelden geen voorwaarden.',
             'De check is er ook als .odt op één A4, met per platform wat het kader eist.',
             'De kanalenscan blijft, voor een grondige toets en voor starten en stoppen op een platform.',
         ],

@@ -6,7 +6,7 @@
  * over ('vragenlijst_blad' in de definitie). Zo past alles op één pagina:
  * - het kanaal
  * - het platform, in een tabel met wat het kader per platform eist
- * - de voorwaarden, als zinnen waar ja goed is
+ * - de voorwaarden, als zinnen waar ja goed is. Niet op het basiskanaal
  * - de uitkomst, met de regel in één zin, en bij uitleg de vier vragen uit de
  *   notitie
  *
@@ -16,8 +16,8 @@
 
 declare(strict_types=1);
 
-/** De volgorde van de platforms: eerst wat in beginsel inzetbaar is, dan waar uitleg altijd nodig is. */
-const OC_KOLOMMEN = ['instagram', 'youtube', 'linkedin', 'mastodon', 'facebook', 'x', 'tiktok', 'anders'];
+/** De volgorde van de platforms: het basiskanaal, wat in beginsel inzetbaar is, en waar uitleg altijd nodig is. */
+const OC_KOLOMMEN = ['mastodon', 'instagram', 'youtube', 'linkedin', 'facebook', 'x', 'tiktok', 'anders'];
 
 /** Waarom uitleg altijd nodig is, kort genoeg voor de tabel op het A4. */
 const OC_GRONDEN_KORT = [
@@ -36,7 +36,6 @@ function oc_vragenlijst(callable $nr): array
     $kaders = sm_kaders();
     $ruim = "\u{00A0}\u{00A0}\u{00A0}\u{00A0}";
     $hokjes = static fn (array $labels): string => implode($ruim, array_map(static fn (string $l): string => '☐ ' . $l, $labels));
-    $mastodon = $kaders['mastodon']['naam'];
 
     return ['blad' => [
         ['h1', 'Online communicatie check'],
@@ -61,15 +60,14 @@ function oc_vragenlijst(callable $nr): array
 
         ['vraagblok', [
             'nr' => '3',
-            'vraag' => 'Klopt dit voor het kanaal?',
+            'vraag' => 'Voldoet het kanaal aan de voorwaarden?',
             'bijzin' => 'kies per regel',
+            'noten' => ['Sla deze vraag over bij het basiskanaal. Daar mag alles.'],
             'keuzes' => [
-                ['los' => true, $hokjes(['Ja', 'Nee']) . $ruim . 'Je gebruikt het kanaal niet voor dienstverlening of '
-                    . 'veilig contact. Niet nodig op ' . $mastodon . '.'],
-                ['los' => true, $hokjes(['Ja', 'Nee']) . $ruim . 'Alles staat ook op een eigen kanaal van de overheid. '
-                    . 'Niet nodig op ' . $mastodon . '.'],
-                ['los' => true, $hokjes(['Ja', 'Nee']) . $ruim . 'Je wijst mensen op de risico’s van contact, en '
-                    . 'verwijst door naar een kanaal van de overheid.'],
+                ['los' => true, $hokjes(['Ja', 'Nee']) . $ruim . 'Geen dienstverlening of veilig contact.'],
+                ['los' => true, $hokjes(['Ja', 'Nee']) . $ruim . 'Alles staat ook op een eigen kanaal van de overheid.'],
+                ['los' => true, $hokjes(['Ja', 'Nee']) . $ruim . 'Mensen worden gewezen op de risico’s van contact, en '
+                    . 'doorverwezen.'],
             ],
         ]],
 
@@ -77,8 +75,8 @@ function oc_vragenlijst(callable $nr): array
             'nr' => '4',
             'vraag' => 'De uitkomst:' . $ruim . $hokjes(array_column(OC_UITKOMSTEN, 'label')),
             'noten' => [
-                'Het kanaal voldoet als bij vraag 2 ‘Altijd uitleg’ nee is, en bij vraag 3 alles ja. Anders is uitleg '
-                    . 'nodig: beantwoord a tot en met d.',
+                'Het kanaal voldoet bij het basiskanaal, of als bij vraag 2 ‘Altijd uitleg’ nee is en bij vraag 3 '
+                    . 'alles ja. Anders is uitleg nodig: beantwoord a tot en met d.',
             ],
             'tabel' => [
                 'kop' => [
@@ -119,8 +117,8 @@ function oc_vragenlijst_platforms(array $kaders): array
         $rijen[] = [
             $naam,
             $kader['explain'] ? 'Ja' : 'Nee',
-            oc_contact_mag($kader) ? 'Mag' : 'Mag niet',
-            trim((OC_GRONDEN_KORT[$k] ?? '') . ' ' . implode(' ', $extra)),
+            oc_basis($kader) ? 'Mag' : 'Mag niet',
+            oc_basis($kader) ? 'Basiskanaal van de overheid: alles mag.' : trim((OC_GRONDEN_KORT[$k] ?? '') . ' ' . implode(' ', $extra)),
         ];
     }
 

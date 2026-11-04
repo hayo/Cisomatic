@@ -84,22 +84,20 @@ function oc_sectie_kanaal(): array
 
 function oc_sectie_voorwaarden(): array
 {
-    $nietMastodon = ['sm_platform' => oc_platforms_behalve('mastodon')];
-
     return [
         'id' => 'voorwaarden',
         'titel' => 'De voorwaarden',
         'stap' => 2,
-        'intro' => 'Wat het kader voor elk platform eist.',
+        'toon_als' => ['sm_platform' => oc_platforms_met_voorwaarden()],
+        'intro' => 'Het kader stelt drie voorwaarden. Behalve op social.overheid.nl: dat is het basiskanaal van de '
+            . 'overheid, en daar mag alles.',
         'vragen' => [
             [
                 'key' => 'oc_contact',
                 'type' => 'radio',
                 'label' => 'Gebruik je het kanaal voor dienstverlening of veilig contact?',
-                'hint' => 'Iemand helpen met een eigen vraag, aanvraag of zaak, vaak met persoonsgegevens. Dat mag '
-                    . 'alleen op social.overheid.nl.',
-                'verplicht_als' => $nietMastodon,
-                'toon_als' => $nietMastodon,
+                'hint' => 'Iemand helpen met een eigen vraag, aanvraag of zaak, vaak met persoonsgegevens.',
+                'verplicht' => true,
                 'opties' => [
                     'nee' => ['label' => 'Nee'],
                     'ja' => ['label' => 'Ja'],
@@ -110,8 +108,7 @@ function oc_sectie_voorwaarden(): array
                 'type' => 'radio',
                 'label' => 'Staat alles wat je hier plaatst ook op een eigen kanaal van de overheid?',
                 'hint' => 'Zoals je eigen site of social.overheid.nl. Dit kanaal komt erbij, niet in plaats daarvan.',
-                'verplicht_als' => $nietMastodon,
-                'toon_als' => $nietMastodon,
+                'verplicht' => true,
                 'opties' => [
                     'ja' => ['label' => 'Ja, alles'],
                     'deels' => ['label' => 'Voor een deel'],
@@ -122,8 +119,7 @@ function oc_sectie_voorwaarden(): array
                 'key' => 'sm_doorverwijzen',
                 'type' => 'radio',
                 'label' => 'Wijs je mensen op de risico’s van contact via dit platform, en verwijs je door?',
-                'hint' => 'Naar een kanaal van de overheid. Dat geldt ook als je zelf geen vragen beantwoordt. Op '
-                    . 'social.overheid.nl gaat het om vragen met privacygevoelige gegevens.',
+                'hint' => 'Naar een kanaal van de overheid. Dat geldt ook als je zelf geen vragen beantwoordt.',
                 'verplicht' => true,
                 'opties' => [
                     'ja' => ['label' => 'Ja'],
@@ -199,8 +195,8 @@ function oc_sectie_besluit(): array
     ];
 }
 
-/** Alle platforms behalve deze, voor toon_als. @return list<string> */
-function oc_platforms_behalve(string ...$uit): array
+/** De platforms waar de voorwaarden gelden: alle behalve het basiskanaal. @return list<string> */
+function oc_platforms_met_voorwaarden(): array
 {
-    return array_values(array_diff(array_keys(sm_kaders()), $uit));
+    return array_keys(array_filter(sm_kaders(), static fn (array $k): bool => !oc_basis($k)));
 }

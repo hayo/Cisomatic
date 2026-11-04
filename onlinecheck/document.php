@@ -51,12 +51,12 @@ function oc_document(array $a, array $u): array
         ['citaat', implode(' ', $u['redenen'])],
 
         ['h2', '1. Voorwaarden'],
-        ['term', 'Platform', $kader['explain']
-            ? ($kader['inzet'] === 'geen' ? oc_tekst('geen_kader', $kader['naam']) : oc_tekst('explain', $kader['naam'], OC_GRONDEN[$kader['id']] ?? ''))
-            : oc_tekst('inzetbaar', $kader['naam'])],
-        ...(oc_contact_geldt($a) ? [['term', 'Dienstverlening of veilig contact', $t('oc_contact')]] : []),
-        ...(oc_eigen_geldt($a) ? [['term', 'Ook op een eigen kanaal', $t('sm_eigen_kanalen')]] : []),
-        ['term', 'Wijst op risico’s en verwijst door', $t('sm_doorverwijzen')],
+        ['term', 'Platform', oc_platform_tekst($kader)],
+        ...(oc_voorwaarden_gelden($a) ? [
+            ['term', 'Dienstverlening of veilig contact', $t('oc_contact')],
+            ['term', 'Ook op een eigen kanaal', $t('sm_eigen_kanalen')],
+            ['term', 'Wijst op risico’s en verwijst door', $t('sm_doorverwijzen')],
+        ] : []),
         ...($u['let_op'] === [] ? [] : [['h3', 'Let op'], ['lijst', $u['let_op']]]),
 
         ...$uitleg,

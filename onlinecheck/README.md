@@ -21,13 +21,16 @@ werven op social.overheid.nl ("door het beperkte bereik (nog) niet geschikt").
 De check houdt alleen over wat juridisch of om veiligheid niet mag, of alleen
 onder voorwaarden:
 
+social.overheid.nl is het basiskanaal van de overheid. Daar mag alles, dus de
+check stelt daar geen voorwaarden. Voor de andere platforms:
+
 | Eis | Grond in de notitie |
 | --- | --- |
 | Facebook, X en TikTok vragen altijd uitleg | DPIA en HRIA (Facebook), de DSA (Meta, X, TikTok), nationale veiligheid (TikTok) |
 | Een platform zonder kader vraagt altijd uitleg | Geen kader, dus de risico's zijn niet bekend |
-| Dienstverlening en veilig contact alleen op social.overheid.nl | "Ongeschikt voor veilig contact met de overheid", "niet geschikt voor dienstverlening": persoonsgegevens |
+| Geen dienstverlening of veilig contact | "Ongeschikt voor veilig contact met de overheid", "niet geschikt voor dienstverlening": persoonsgegevens |
 | Alles staat ook op een eigen kanaal van de overheid | "Inzet is altijd aanvullend op eigen overheidskanalen" |
-| Je wijst mensen op de risico's, en verwijst door | "Gebruikers actief attenderen op de risico's en doorverwijzen". Op social.overheid.nl bij privacygevoelige vragen |
+| Je wijst mensen op de risico's, en verwijst door | "Gebruikers actief attenderen op de risico's en doorverwijzen" |
 | TikTok nooit op een toestel van het Rijk | Verboden. Staat onder "Let op", want uitleg maakt het niet goed |
 | Gedragsbeïnvloeding op TikTok alleen met advertenties | "Gedragsbeïnvloeding middels betaalde inzet". Staat onder "Let op" |
 
@@ -45,8 +48,8 @@ De check leest de kaders uit `../socialemedia/kaders.php`, dezelfde als de
 kanalenscan. Hij gebruikt:
 
 - `explain`: altijd uitleg
-- `contact`: dienstverlening en veilig contact mogen waar `persoonlijk` erin
-  staat. Dat is alleen social.overheid.nl.
+- `contact`: waar `persoonlijk` erin staat, is het basiskanaal (`oc_basis()`).
+  Dat is alleen social.overheid.nl. Daar gelden de voorwaarden niet.
 - `toestel`: de app mag niet op een toestel van het Rijk
 - `betaald` en `doelen`: staat `gedrag` alleen bij `betaald`, dan mag
   gedragsbeïnvloeding alleen met advertenties
@@ -72,8 +75,8 @@ secties: met `'vragenlijst_blad' => true` in de definitie neemt hij het blad
 uit `oc_vragenlijst()` over, zonder titelpagina en inhoudsopgave.
 
 Op het blad staat een tabel met per platform of uitleg altijd nodig is, of
-dienstverlening en veilig contact mogen, en waarom. Daaronder de voorwaarden
-als zinnen waar ja goed is, de regel in één zin, en vier vakken voor de
+dienstverlening en veilig contact mogen, en waarom. Het basiskanaal staat
+bovenaan. Daaronder de voorwaarden als korte zinnen waar ja goed is, de regel in één zin, en vier vakken voor de
 uitleg. Verandert `oc_evalueer()`, loop dan ook `vragenlijst.php` na. Komt er
 een platform bij, kijk dan of het blad nog op één pagina past.
 

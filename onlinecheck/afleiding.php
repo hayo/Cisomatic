@@ -3,15 +3,16 @@
 /**
  * Wat de check uitrekent. Alleen wat juridisch telt, geen advies:
  * - Facebook, X, TikTok en een platform zonder kader vragen altijd uitleg
- * - dienstverlening en veilig contact mogen alleen op social.overheid.nl
- * - alles staat ook op een eigen kanaal van de overheid
- * - je wijst mensen op de risico's van contact, en verwijst door
- * Klopt alles, dan voldoet het kanaal. Anders is uitleg nodig: de explain uit
+ * - de voorwaarden: geen dienstverlening of veilig contact, alles ook op een
+ *   eigen kanaal van de overheid, en mensen wijzen op de risico's van contact
+ *   en doorverwijzen
+ * social.overheid.nl is het basiskanaal van de overheid. Daar mag alles, dus
+ * daar gelden de voorwaarden niet. Klopt alles, dan voldoet het kanaal. Anders is uitleg nodig: de explain uit
  * de notitie.
  *
  * De kaders komen uit ../socialemedia/kaders.php, dezelfde als die van de
- * kanalenscan. Dienstverlening en veilig contact mogen waar het kader
- * 'persoonlijk' bij 'contact' heeft. regels.js rekent hetzelfde uit tijdens het
+ * kanalenscan. Het basiskanaal is het kanaal waar het kader 'persoonlijk' bij
+ * 'contact' heeft: daar mogen ook dienstverlening en veilig contact. regels.js rekent hetzelfde uit tijdens het
  * invullen, met de gegevens van oc_regelgegevens(). PHP blijft de bron van
  * waarheid.
  */
@@ -41,12 +42,13 @@ const OC_TEKSTEN = [
     'comply' => 'Het kanaal voldoet aan het rijksbrede kader.',
     'inzetbaar' => '{naam} is in beginsel inzetbaar. Uitleg is alleen nodig als het kanaal niet aan de voorwaarden '
         . 'voldoet.',
+    'basis' => '{naam} is het basiskanaal van de overheid. Daar mag alles.',
     'explain' => '{naam} is in beginsel niet inzetbaar. Daarom moet je altijd uitleggen waarom jullie het gebruiken. '
         . '{grond}',
     'geen_kader' => 'Voor {naam} is er geen rijksbreed kader. Daarom moet je altijd uitleggen waarom jullie het '
         . 'gebruiken.',
-    'contact' => 'Jullie gebruiken {naam} voor dienstverlening of veilig contact. Dat mag alleen op social.overheid.nl, '
-        . 'omdat het om persoonsgegevens gaat.',
+    'contact' => 'Jullie gebruiken {naam} voor dienstverlening of veilig contact. Dat mag niet, omdat het om '
+        . 'persoonsgegevens gaat.',
     'eigen_deels' => 'Niet alles wat jullie hier plaatsen, staat ook op een eigen kanaal van de overheid.',
     'eigen_nee' => 'Wat jullie hier plaatsen, staat niet op een eigen kanaal van de overheid.',
     'doorverwijzen' => 'Jullie wijzen mensen niet op de risico’s van contact via {naam}, en verwijzen niet door.',
@@ -74,8 +76,8 @@ function oc_kader(array $a): ?array
     return $kader + ['explain' => false, 'toestel' => false, 'id' => $k];
 }
 
-/** Of dienstverlening en veilig contact op dit platform mogen. */
-function oc_contact_mag(array $kader): bool
+/** Of dit het basiskanaal is, waar alles mag: ook dienstverlening en veilig contact. */
+function oc_basis(array $kader): bool
 {
     return in_array('persoonlijk', (array) ($kader['contact'] ?? []), true);
 }
@@ -87,25 +89,26 @@ function oc_gedrag_betaald(array $kader): bool
         && !in_array('gedrag', $kader['doelen'], true);
 }
 
-/** Of de vraag naar eigen kanalen geldt. Op social.overheid.nl zit je al op een eigen kanaal. */
-function oc_eigen_geldt(array $a): bool
+/** Of de voorwaarden gelden. Niet op het basiskanaal. */
+function oc_voorwaarden_gelden(array $a): bool
 {
-    return ($a['sm_platform'] ?? '') !== 'mastodon';
-}
+    $kader = oc_kader($a);
 
-/** Of de vraag naar dienstverlening en veilig contact geldt. Op social.overheid.nl mag het. */
-function oc_contact_geldt(array $a): bool
-{
-    return ($a['sm_platform'] ?? '') !== 'mastodon';
+    return $kader === null || !oc_basis($kader);
 }
 
 /** Of alles beantwoord is wat de uitkomst bepaalt. */
 function oc_compleet(array $a): bool
 {
-    return (string) ($a['sm_platform'] ?? '') !== ''
-        && (string) ($a['sm_doorverwijzen'] ?? '') !== ''
-        && (!oc_contact_geldt($a) || (string) ($a['oc_contact'] ?? '') !== '')
-        && (!oc_eigen_geldt($a) || (string) ($a['sm_eigen_kanalen'] ?? '') !== '');
+    if ((string) ($a['sm_platform'] ?? '') === '') {
+        return false;
+    }
+
+    return !oc_voorwaarden_gelden($a) || array_reduce(
+        ['oc_contact', 'sm_eigen_kanalen', 'sm_doorverwijzen'],
+        static fn (bool $ok, string $key): bool => $ok && (string) ($a[$key] ?? '') !== '',
+        true
+    );
 }
 
 /**
@@ -118,16 +121,15 @@ function oc_evalueer(array $a): array
 {
     $kader = oc_kader($a) ?? sm_kaders()['anders'] + ['explain' => true, 'toestel' => false, 'id' => 'anders'];
     $naam = $kader['naam'];
-    $eigen = oc_eigen_geldt($a) ? (string) ($a['sm_eigen_kanalen'] ?? '') : '';
-    $contact = oc_contact_geldt($a) && ($a['oc_contact'] ?? '') === 'ja' && !oc_contact_mag($kader);
+    $gelden = oc_voorwaarden_gelden($a);
+    $eigen = $gelden ? (string) ($a['sm_eigen_kanalen'] ?? '') : '';
+    $contact = $gelden && ($a['oc_contact'] ?? '') === 'ja';
 
     $afwijkingen = array_values(array_filter([
-        $kader['inzet'] === 'geen'
-            ? oc_tekst('geen_kader', $naam)
-            : ($kader['explain'] ? oc_tekst('explain', $naam, OC_GRONDEN[$kader['id']] ?? '') : ''),
+        $kader['explain'] ? oc_platform_tekst($kader) : '',
         $contact ? oc_tekst('contact', $naam) : '',
         $eigen === 'deels' ? oc_tekst('eigen_deels') : ($eigen === 'nee' ? oc_tekst('eigen_nee') : ''),
-        ($a['sm_doorverwijzen'] ?? '') === 'nee' ? oc_tekst('doorverwijzen', $naam) : '',
+        $gelden && ($a['sm_doorverwijzen'] ?? '') === 'nee' ? oc_tekst('doorverwijzen', $naam) : '',
     ]));
 
     $uitkomst = match (true) {
@@ -158,6 +160,17 @@ function oc_evalueer(array $a): array
     ];
 }
 
+/** Wat het kader over het platform zegt, in één zin. */
+function oc_platform_tekst(array $kader): string
+{
+    return match (true) {
+        $kader['inzet'] === 'geen' => oc_tekst('geen_kader', $kader['naam']),
+        (bool) $kader['explain'] => oc_tekst('explain', $kader['naam'], OC_GRONDEN[$kader['id']] ?? ''),
+        oc_basis($kader) => oc_tekst('basis', $kader['naam']),
+        default => oc_tekst('inzetbaar', $kader['naam']),
+    };
+}
+
 /** Voor toon_als_uitkomst en verplicht_als_uitkomst. */
 function oc_uitkomst(string $naam, array $a): string
 {
@@ -180,7 +193,7 @@ function oc_regelgegevens(): array
             'explain' => !empty($kader['explain']),
             'toestel' => !empty($kader['toestel']),
             'grond' => OC_GRONDEN[$k] ?? '',
-            'contact' => oc_contact_mag($kader),
+            'basis' => oc_basis($kader),
             'gedrag' => oc_gedrag_betaald($kader),
         ];
     }
