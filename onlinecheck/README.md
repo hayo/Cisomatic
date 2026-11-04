@@ -84,6 +84,10 @@ is invulbaar: elk antwoord is een formulierveld (`cm_odt_veld()`), met de
 sleutel van het formulier als naam. Dat werkt in LibreOffice; Word kent die
 velden niet goed.
 
+De vraag of het kanaal voldoet, linkt naar de platformkaders (`OC_KADERS_URL`
+in `afleiding.php`). Dat is nog een voorlopig adres; zet het goede erin zodra
+de kaders online staan.
+
 ## regels.js
 
 `regels.js` rekent tijdens het invullen hetzelfde uit als `oc_evalueer()`: wat

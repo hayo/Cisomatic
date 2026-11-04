@@ -548,13 +548,19 @@ function cm_odt_veld(string $soort, string $naam, float $breedte, float $hoogte 
         'breedte' => $breedte, 'hoogte' => $hoogte] + $opties)) . "\u{E001}";
 }
 
+/** Een link in een tekst, zoals in een vraagblok. cm_odt() maakt er een gewone link van. */
+function cm_odt_link(string $tekst, string $url): string
+{
+    return "\u{E000}" . base64_encode((string) json_encode(['soort' => 'link', 'tekst' => $tekst, 'url' => $url])) . "\u{E001}";
+}
+
 // De opmaak van een invulveld: in de regel, midden op de tekst.
 const CM_ODT_VELDSTIJL = '<style:style style:name="Veld" style:family="graphic"><style:graphic-properties '
     . 'style:vertical-pos="middle" style:vertical-rel="text" fo:margin-left="0.05cm" fo:margin-right="0.05cm"/>'
     . '</style:style>';
 
 /**
- * Zet de invulvelden van cm_odt_veld() om. Geeft de tekst terug met de velden
+ * Zet de invulvelden van cm_odt_veld() en de links van cm_odt_link() om. Geeft de tekst terug met de velden
  * erin, en het formulier dat bovenaan de tekst hoort (leeg zonder velden).
  *
  * @return array{0:string,1:string}
@@ -565,6 +571,10 @@ function cm_odt_velden(string $body): array
     $n = 0;
     $body = (string) preg_replace_callback('/\x{E000}([A-Za-z0-9+\/=]+)\x{E001}/u', static function (array $m) use (&$controls, &$n): string {
         $v = json_decode((string) base64_decode($m[1]), true);
+        if ($v['soort'] === 'link') {
+            return '<text:a xlink:type="simple" xlink:href="' . cm_odt_tekst((string) $v['url']) . '">'
+                . cm_odt_tekst((string) $v['tekst']) . '</text:a>';
+        }
         $id = 'veld' . ++$n;
         $naam = cm_odt_tekst((string) $v['naam']);
         $kenmerk = ' form:name="' . $naam . '" form:id="' . $id . '" xml:id="' . $id . '"';

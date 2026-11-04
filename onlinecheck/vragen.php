@@ -136,7 +136,7 @@ function oc_sectie_besluit(): array
 
     return [
         'id' => 'besluit',
-        'titel' => 'Voldoet het kanaal?',
+        'titel' => 'Voldoet het kanaal aan de platformkaders?',
         'stap' => 3,
         'intro' => 'Voldoet het kanaal niet, dan leg je uit waarom jullie het toch nodig hebben.',
         'vragen' => [

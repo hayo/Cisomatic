@@ -24,6 +24,9 @@ const OC_UITKOMSTEN = [
     'explain' => ['label' => 'Voldoet niet', 'niveau' => 'm'],
 ];
 
+/** Waar de platformkaders staan. Nog in te vullen: de kaders komen nog online. */
+const OC_KADERS_URL = 'https://example.org/platformkaders';
+
 /** De titel van het document en van de check op één A4. */
 const OC_TITEL = 'Pas toe of leg uit - social media';
 

@@ -467,7 +467,8 @@ Zo'n blad kan invulvelden hebben. `cm_odt_veld()` zet een veld in een tekst:
 `tekst` (één regel), `vak` (meer regels) of `keuze` (een rondje; keuzes met
 dezelfde naam sluiten elkaar uit). Geef de sleutel van de vraag als naam. Het
 `.odt`-bestand krijgt dan echte formuliervelden, die je in LibreOffice invult.
-Word kent die velden niet goed.
+Word kent die velden niet goed. `cm_odt_link()` zet op dezelfde manier een link
+in een tekst.
 
 Een uitkomstblok zonder aanvulling slaat de vragenlijst over: wat het formulier
 uitrekent, staat in het document. De kanalenscan, de AI-scan, de DPIA en het

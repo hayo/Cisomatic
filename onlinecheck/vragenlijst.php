@@ -42,7 +42,8 @@ function oc_vragenlijst(callable $nr): array
 
         ['vraagblok', [
             'nr' => '2',
-            'vraag' => 'Voldoet het kanaal?' . $ruim . $keuze('ja', 'Ja') . $keuze('nee', 'Nee'),
+            'vraag' => 'Voldoet het kanaal aan de ' . cm_odt_link('platformkaders', OC_KADERS_URL) . '?' . $ruim
+                . $keuze('ja', 'Ja') . $keuze('nee', 'Nee'),
             'noten' => ['Voldoet het niet, beantwoord dan a tot en met d.'],
             'tabel' => [
                 'kop' => ['Vraag', 'Uitleg'],
