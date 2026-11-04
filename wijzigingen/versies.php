@@ -17,12 +17,11 @@ return [
         'versie' => '1.4',
         'datum' => '2026-11-04',
         'wijzigingen' => [
-            'Nieuw: de Online communicatie check. Daarmee toets je snel of een kanaal op sociale media binnen het '
-                . 'rijksbrede kader past. Het kanaal voldoet, of je legt uit waarom jullie het toch gebruiken.',
-            'De check vraagt alleen het platform, de doelen en twee voorwaarden.',
-            'Alleen wat het kader bij ‘niet’ zet, vraagt om uitleg. Noemt het kader een doel niet, dan mag het.',
-            'De vijftien doelen uit de notitie zijn samengevoegd tot twaalf. De uitkomst blijft daardoor gelijk.',
-            'De check is er ook als .odt op één A4. Daarop zie je per platform welke doelen binnen het kader vallen.',
+            'Nieuw: de Online communicatie check. Daarmee toets je snel of een kanaal op sociale media voldoet aan het '
+                . 'rijksbrede kader. Zo niet, dan leg je uit waarom jullie het toch gebruiken.',
+            'De check toetst alleen wat het kader eist: het platform, dienstverlening en veilig contact, en twee '
+                . 'voorwaarden. Advies over doelen en doelgroep geeft hij niet.',
+            'De check is er ook als .odt op één A4, met per platform wat het kader eist.',
             'De kanalenscan blijft, voor een grondige toets en voor starten en stoppen op een platform.',
         ],
     ],

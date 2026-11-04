@@ -17,17 +17,16 @@ return [
     'download_uitleg' => 'Het document opent in Word, LibreOffice en Google Docs, met kopjes, lijsten en tabellen.',
     'inladen' => 'Een bestand van een eerdere check, of van de kanalenscan. Je browser leest het zelf, dus er gaat '
         . 'niets naar de server.',
-    'voet' => 'Stand van november 2026. De check is een vereenvoudiging van de kanalenscan. Hij vervangt het advies '
-        . 'van je CPO, CISO en CIO niet.',
+    'voet' => 'Stand van november 2026. De check toetst alleen wat het kader eist, en geeft geen advies. Hij '
+        . 'vervangt het advies van je CPO, CISO en CIO niet.',
     'bronnen' => [
         'Rijksbrede platformkaders, versie 1.0, bij de notitie ‘Aanwezigheid Rijksoverheid op sociale media’ '
             . '(30 oktober 2026)',
     ],
     'stappen' => [
         1 => 'Stap 1 · het kanaal',
-        2 => 'Stap 2 · de doelen',
-        3 => 'Stap 3 · de voorwaarden',
-        4 => 'Stap 4 · voldoet het?',
+        2 => 'Stap 2 · de voorwaarden',
+        3 => 'Stap 3 · voldoet het?',
     ],
     'route' => '',
 

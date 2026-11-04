@@ -1,8 +1,10 @@
 <?php
 
 /**
- * De vragen. Vier stappen: het kanaal, de doelen, twee voorwaarden, en de
- * uitkomst, met de uitleg als het kanaal niet voldoet. Eén check gaat over één kanaal.
+ * De vragen. Drie stappen: het kanaal, de voorwaarden, en de uitkomst met de
+ * uitleg als het kanaal niet voldoet. Eén check gaat over één kanaal. De check
+ * vraagt alleen wat juridisch telt; doelen en doelgroep zijn advies, en die
+ * horen in de kanalenscan.
  *
  * De sleutels van het platform, de voorwaarden en het vaststellen zijn die van
  * de kanalenscan (sm_). Een bestand van de kanalenscan vult ze dus in.
@@ -13,7 +15,7 @@ declare(strict_types=1);
 /** @return list<array<string,mixed>> */
 function oc_secties(): array
 {
-    return [oc_sectie_kanaal(), oc_sectie_doelen(), oc_sectie_voorwaarden(), oc_sectie_besluit()];
+    return [oc_sectie_kanaal(), oc_sectie_voorwaarden(), oc_sectie_besluit()];
 }
 
 function oc_sectie_kanaal(): array
@@ -22,7 +24,9 @@ function oc_sectie_kanaal(): array
     foreach (sm_kaders() as $k => $kader) {
         $platforms[$k] = [
             'label' => $kader['label'] ?? $kader['naam'],
-            'hint' => trim(($kader['hint'] ?? '') . ' ' . SM_INZET[$kader['inzet']]['label'] . '.'),
+            'hint' => trim(($kader['hint'] ?? '') . ' ' . (empty($kader['explain'])
+                ? 'In beginsel inzetbaar.'
+                : 'Altijd uitleg nodig.')),
         ];
     }
 
@@ -78,49 +82,36 @@ function oc_sectie_kanaal(): array
     ];
 }
 
-function oc_sectie_doelen(): array
-{
-    return [
-        'id' => 'doelen',
-        'titel' => 'De doelen',
-        'stap' => 2,
-        'intro' => 'Waarvoor gebruiken jullie het kanaal? Zet het kader van het platform een doel bij ‘niet’, dan moet '
-            . 'je uitleggen waarom jullie het toch doen.',
-        'vragen' => [
-            [
-                'key' => 'oc_doelen',
-                'type' => 'checkbox',
-                'label' => 'Welke doelen heeft het kanaal?',
-                'hint' => 'Kruis alles aan wat past. Ook wat jullie er af en toe mee doen. Alleen wat het kader bij '
-                    . '‘niet’ zet, vraagt om uitleg.',
-                'verplicht' => true,
-                'opties' => oc_doelen(),
-            ],
-            [
-                'key' => 'oc_toets_doelen',
-                'type' => 'afgeleid',
-                'bron' => 'doelen',
-                'label' => 'Past dit binnen het kader?',
-            ],
-        ],
-    ];
-}
-
 function oc_sectie_voorwaarden(): array
 {
+    $nietMastodon = ['sm_platform' => oc_platforms_behalve('mastodon')];
+
     return [
         'id' => 'voorwaarden',
         'titel' => 'De voorwaarden',
-        'stap' => 3,
-        'intro' => 'Twee voorwaarden gelden voor elk platform.',
+        'stap' => 2,
+        'intro' => 'Wat het kader voor elk platform eist.',
         'vragen' => [
+            [
+                'key' => 'oc_contact',
+                'type' => 'radio',
+                'label' => 'Gebruik je het kanaal voor dienstverlening of veilig contact?',
+                'hint' => 'Iemand helpen met een eigen vraag, aanvraag of zaak, vaak met persoonsgegevens. Dat mag '
+                    . 'alleen op social.overheid.nl.',
+                'verplicht_als' => $nietMastodon,
+                'toon_als' => $nietMastodon,
+                'opties' => [
+                    'nee' => ['label' => 'Nee'],
+                    'ja' => ['label' => 'Ja'],
+                ],
+            ],
             [
                 'key' => 'sm_eigen_kanalen',
                 'type' => 'radio',
                 'label' => 'Staat alles wat je hier plaatst ook op een eigen kanaal van de overheid?',
                 'hint' => 'Zoals je eigen site of social.overheid.nl. Dit kanaal komt erbij, niet in plaats daarvan.',
-                'verplicht_als' => ['sm_platform' => oc_platforms_behalve('mastodon')],
-                'toon_als' => ['sm_platform' => oc_platforms_behalve('mastodon')],
+                'verplicht_als' => $nietMastodon,
+                'toon_als' => $nietMastodon,
                 'opties' => [
                     'ja' => ['label' => 'Ja, alles'],
                     'deels' => ['label' => 'Voor een deel'],
@@ -150,9 +141,9 @@ function oc_sectie_besluit(): array
     return [
         'id' => 'besluit',
         'titel' => 'Voldoet het kanaal?',
-        'stap' => 4,
-        'intro' => 'Past alles binnen het kader, dan voldoet het kanaal. Zo niet, dan leg je uit waarom jullie het '
-            . 'kanaal toch nodig hebben.',
+        'stap' => 3,
+        'intro' => 'Voldoet het kanaal niet, dan leg je uit waarom jullie het toch nodig hebben. In de notitie heet dat '
+            . 'een explain.',
         'vragen' => [
             [
                 'key' => 'oc_uitkomst',
@@ -164,7 +155,7 @@ function oc_sectie_besluit(): array
                 'key' => 'oc_afwijking',
                 'type' => 'textarea',
                 'label' => 'Waarvan wijk je af?',
-                'hint' => 'De check vult in wat buiten het kader valt. Vul aan waar nodig.',
+                'hint' => 'De check vult in wat niet voldoet. Vul aan waar nodig.',
                 'motivatie_voor' => 'afwijking',
                 'toon_als_uitkomst' => $explain,
                 'verplicht_als_uitkomst' => $explain,

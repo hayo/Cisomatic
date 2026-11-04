@@ -1,8 +1,7 @@
 /**
  * De regels van de Online communicatie check, voor de motor in ../assets/app.js.
  *
- * - het kader van het gekozen platform
- * - of de doelen binnen het kader vallen
+ * - wat het kader van het gekozen platform eist
  * - de uitkomst: voldoet, of uitleg nodig (comply of explain)
  * - bij uitleg de afwijkingen, voorgevuld
  *
@@ -47,43 +46,38 @@
     }
 
     /** Spiegelt oc_tekst(). */
-    function tekst(sleutel, naam, lijst) {
-        return data().teksten[sleutel]
-            .replace('{naam}', naam || '')
-            .replace('{lijst}', cm.opsomming(lijst || []));
+    function tekst(sleutel, naam, grond) {
+        return data().teksten[sleutel].replace('{naam}', naam || '').replace('{grond}', grond || '').trim();
     }
 
-    /** De gekozen doelen met deze ruimte in het kader, als labels, in vaste volgorde. */
-    function doelen(a, k, ruimte) {
-        return Object.keys(data().doelen)
-            .filter(function (d) { return cm.heeft(a.oc_doelen || [], d) && k.ruimte[d] === ruimte; })
-            .map(function (d) { return data().doelen[d]; });
-    }
-
-    /** Spiegelt oc_eigen_geldt(). */
-    function eigenGeldt(a) {
+    /** Spiegelt oc_eigen_geldt() en oc_contact_geldt(). */
+    function geldt(a) {
         return a.sm_platform !== 'mastodon';
     }
 
     /** Spiegelt oc_compleet(). */
     function compleet(a) {
         return !!a.sm_platform
-            && (a.oc_doelen || []).length > 0
             && !!a.sm_doorverwijzen
-            && (!eigenGeldt(a) || !!a.sm_eigen_kanalen);
+            && (!geldt(a) || (!!a.oc_contact && !!a.sm_eigen_kanalen));
+    }
+
+    /** Wat het kader over het platform zegt. Spiegelt de regel 'Platform' in oc_document(). */
+    function platformTekst(k) {
+        if (k.inzet === 'geen') { return tekst('geen_kader', k.naam); }
+        return k.explain ? tekst('explain', k.naam, k.grond) : tekst('inzetbaar', k.naam);
     }
 
     /** Spiegelt oc_evalueer(). */
     function evalueer(a) {
         var k = kader(a) || data().kaders.anders;
         var naam = k.naam;
-        // Midden in een zin met een kleine letter, zoals in oc_evalueer().
-        var buiten = doelen(a, k, 'nee').map(function (l) { return l.charAt(0).toLowerCase() + l.slice(1); });
-        var eigen = eigenGeldt(a) ? (a.sm_eigen_kanalen || '') : '';
+        var eigen = geldt(a) ? (a.sm_eigen_kanalen || '') : '';
+        var contact = geldt(a) && a.oc_contact === 'ja' && !k.contact;
 
         var afwijkingen = [
-            k.inzet === 'geen' ? tekst('geen_kader', naam) : (k.explain ? tekst('explain', naam) : ''),
-            buiten.length ? tekst('doelen', naam, buiten) : '',
+            k.inzet === 'geen' || k.explain ? platformTekst(k) : '',
+            contact ? tekst('contact', naam) : '',
             eigen === 'deels' ? tekst('eigen_deels') : (eigen === 'nee' ? tekst('eigen_nee') : ''),
             a.sm_doorverwijzen === 'nee' ? tekst('doorverwijzen', naam) : ''
         ].filter(Boolean);
@@ -91,7 +85,6 @@
         var uitkomst = !compleet(a) ? '' : (afwijkingen.length ? 'explain' : 'comply');
 
         return {
-            buiten: buiten,
             uitkomst: uitkomst,
             afwijkingen: afwijkingen,
             redenen: uitkomst === 'explain' ? afwijkingen : [tekst('comply')]
@@ -104,31 +97,18 @@
             return { waarde: 'nog te bepalen', niveau: '', redenen: ['Kies eerst het platform.'] };
         }
 
-        var inzet = data().inzet[k.inzet];
-        var u = evalueer(a);
-
         if (bron === 'kader') {
-            return { waarde: inzet.label, niveau: inzet.niveau, redenen: [k.uitleg, 'Doelgroep: ' + k.doelgroep] };
-        }
-        if (bron === 'doelen') {
-            if (!(a.oc_doelen || []).length) {
-                return { waarde: 'nog te bepalen', niveau: '', redenen: ['Kies eerst de doelen.'] };
-            }
-            if (k.inzet === 'geen') {
-                return { waarde: 'Geen kader', niveau: 'm', redenen: [tekst('doelen_geen_kader')] };
-            }
-            var klein = function (l) { return l.charAt(0).toLowerCase() + l.slice(1); };
-            var onbekend = doelen(a, k, 'onbekend').map(klein);
-            var betaald = doelen(a, k, 'betaald');
-            var extra = (onbekend.length ? [tekst('onbekend', k.naam, onbekend)] : [])
-                .concat(betaald.length ? [tekst('betaald', k.naam, betaald)] : []);
-            return u.buiten.length
-                ? { waarde: 'Niet helemaal', niveau: 'm', redenen: [tekst('doelen', k.naam, u.buiten)].concat(extra, ['Dan leg je straks uit waarom jullie het toch doen.']) }
-                : { waarde: 'Ja', niveau: 'l', redenen: [tekst('doelen_past', k.naam)].concat(extra) };
+            var inzet = data().inzet[k.inzet];
+            var letOp = [
+                k.toestel ? tekst('toestel', k.naam) : '',
+                k.gedrag ? tekst('gedrag', k.naam) : ''
+            ].filter(Boolean);
+            return { waarde: inzet.label, niveau: inzet.niveau, redenen: [platformTekst(k)].concat(letOp) };
         }
         if (bron === 'uitkomst') {
+            var u = evalueer(a);
             if (!u.uitkomst) {
-                return { waarde: 'nog te bepalen', niveau: '', redenen: ['Beantwoord eerst de vragen van de stappen 1 tot en met 3.'] };
+                return { waarde: 'nog te bepalen', niveau: '', redenen: ['Beantwoord eerst de vragen van stap 1 en 2.'] };
             }
             var soort = data().uitkomsten[u.uitkomst];
             return { waarde: soort.label, niveau: soort.niveau, redenen: u.redenen };

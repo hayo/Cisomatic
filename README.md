@@ -18,10 +18,10 @@ Er zijn nu twaalf formulieren:
 - **[socialemedia](socialemedia/README.md)**: de kanalenscan voor sociale media,
   voor het Rijk. Volgt één kanaal door de hele cyclus: starten, de jaarlijkse
   toets, en vertrekken. Levert een comply or explain, of een exitplan.
-- **[onlinecheck](onlinecheck/README.md)**: de Online communicatie check, een
-  eenvoudige versie van de kanalenscan. Toetst snel of één kanaal binnen het
-  rijksbrede kader past, of dat je moet uitleggen waarom niet. Met de check op
-  één A4.
+- **[onlinecheck](onlinecheck/README.md)**: de Online communicatie check. Toetst
+  snel of één kanaal op sociale media voldoet aan wat het rijksbrede kader eist,
+  of dat je moet uitleggen waarom niet. Alleen compliance, geen advies. Met de
+  check op één A4.
 - **[quickscan](quickscan/README.md)**: quickscan 1.0, de IB & Privacy Quickscan
   op de BIO 1. Welk beveiligingsniveau geldt, welke eisen, welke analyses.
 - **[dpia](dpia/README.md)**: een Data Protection Impact Assessment in de opbouw

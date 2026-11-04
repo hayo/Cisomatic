@@ -10,12 +10,6 @@
  * De vlaggen:
  * - explain: het kader vraagt voor dit platform altijd een explain
  * - toestel: de app mag niet op apparatuur van het Rijk
- * 'contactdoelen' zijn interactie, dienstverlening en veilig contact; alleen de
- * Online communicatie check toetst eraan. Die check gebruikt ook 'niet_doelen':
- * de doelen die de notitie bij een platform uitdrukkelijk bij "niet" zet. De
- * notitie zet een paar doelen alleen in de tekst bij "niet", zoals veilig
- * contact bij LinkedIn ("ongeschikt voor veilig contact") en dienstverlening
- * bij TikTok. Die staan er ook in.
  * En 'bewindspersoon': mag een bewindspersoon hier een account hebben (ja, nee,
  * of verboden, dan is het niet inzetten). 'let_op' geeft aandachtspunten bij
  * adverteren, per soort advertentie, of bij 'alle' voor elke advertentie.
@@ -55,26 +49,6 @@ const SM_DOELEN = [
         'hint' => 'Relaties en samenwerking met het buitenland opbouwen en onderhouden.',
     ],
     'monitoring' => ['label' => 'Monitoring', 'hint' => 'Actief volgen en analyseren wat er speelt in de samenleving en de media.'],
-];
-
-/**
- * De drie doelen uit de notitie die over contact gaan. De kanalenscan vraagt ze
- * bij contact, de Online communicatie check als gewone doelen. Per kader staat
- * in 'contactdoelen' welke binnen de ruimte vallen.
- */
-const SM_CONTACTDOELEN = [
-    'interactie' => [
-        'label' => 'Interactie',
-        'hint' => 'Makkelijk contact via vragen, reacties of gesprekken, zonder dat informeren het doel is.',
-    ],
-    'dienstverlening' => [
-        'label' => 'Dienstverlening',
-        'hint' => 'Iemand helpen met een eigen vraag, aanvraag of dienst van het Rijk.',
-    ],
-    'veilig' => [
-        'label' => 'Veilig contact',
-        'hint' => 'Rechtstreeks contact met burgers en bedrijven over hun eigen vragen, via een veilige bron van de overheid.',
-    ],
 ];
 
 const SM_VORMEN = [
@@ -157,8 +131,6 @@ function sm_kaders(): array
             'doelen' => ['activeren', 'arbeidsmarkt', 'attenderen', 'communitymanagement', 'duiden', 'informeren',
                 'gedrag', 'publieksvoorlichting', 'stakeholdermanagement'],
             'vormen' => ['arbeidsmarktcampagnes', 'crisis', 'publiekscampagnes', 'stakeholder'],
-            'contactdoelen' => [],
-            'niet_doelen' => ['dienstverlening', 'interactie', 'internationaal', 'monitoring', 'veilig', 'bereik'],
             'bewindspersoon' => 'nee',
             'betaald' => ['publiekscampagnes', 'arbeidsmarktcampagnes', 'gedrag'],
             'contact' => [],
@@ -181,8 +153,6 @@ function sm_kaders(): array
             'doelen' => ['activeren', 'arbeidsmarkt', 'attenderen', 'communitymanagement', 'duiden', 'informeren',
                 'internationaal', 'gedrag', 'publieksvoorlichting', 'bereik'],
             'vormen' => ['arbeidsmarktcampagnes', 'explainers', 'publiekscampagnes'],
-            'contactdoelen' => ['interactie'],
-            'niet_doelen' => ['dienstverlening', 'monitoring', 'stakeholdermanagement', 'veilig'],
             'bewindspersoon' => 'ja',
             'betaald' => ['publiekscampagnes', 'arbeidsmarktcampagnes', 'gedrag', 'bereik'],
             'contact' => ['reacties', 'vragen'],
@@ -210,9 +180,6 @@ function sm_kaders(): array
             ],
             'doelen' => ['attenderen', 'internationaal', 'monitoring'],
             'vormen' => ['crisis', 'pers'],
-            'contactdoelen' => [],
-            'niet_doelen' => ['activeren', 'arbeidsmarkt', 'duiden', 'dienstverlening', 'gedrag', 'informeren', 'interactie',
-                'stakeholdermanagement', 'publieksvoorlichting', 'veilig', 'bereik'],
             'bewindspersoon' => 'ja',
             'betaald' => [],
             'contact' => [],
@@ -236,9 +203,6 @@ function sm_kaders(): array
             ],
             'doelen' => ['activeren', 'arbeidsmarkt', 'attenderen', 'publieksvoorlichting'],
             'vormen' => ['arbeidsmarktcampagnes', 'explainers', 'publiekscampagnes'],
-            'contactdoelen' => [],
-            'niet_doelen' => ['duiden', 'informeren', 'interactie', 'internationaal', 'monitoring', 'stakeholdermanagement',
-                'veilig', 'bereik', 'dienstverlening'],
             'bewindspersoon' => 'verboden',
             'betaald' => ['publiekscampagnes', 'arbeidsmarktcampagnes', 'gedrag'],
             'contact' => [],
@@ -259,8 +223,6 @@ function sm_kaders(): array
             'doelen' => ['activeren', 'arbeidsmarkt', 'attenderen', 'duiden', 'gedrag', 'informeren',
                 'publieksvoorlichting', 'bereik'],
             'vormen' => ['arbeidsmarktcampagnes', 'explainers', 'instructie', 'persconferenties', 'publiekscampagnes'],
-            'contactdoelen' => [],
-            'niet_doelen' => ['dienstverlening', 'interactie', 'internationaal', 'stakeholdermanagement', 'veilig'],
             'bewindspersoon' => 'nee',
             'betaald' => ['publiekscampagnes', 'arbeidsmarktcampagnes', 'gedrag', 'bereik'],
             'contact' => [],
@@ -281,8 +243,6 @@ function sm_kaders(): array
             'doelen' => ['activeren', 'arbeidsmarkt', 'attenderen', 'duiden', 'informeren', 'stakeholdermanagement',
                 'bereik'],
             'vormen' => ['arbeidsmarktcampagnes', 'corporate', 'stakeholder'],
-            'contactdoelen' => ['interactie'],
-            'niet_doelen' => ['dienstverlening', 'internationaal', 'monitoring', 'publieksvoorlichting', 'veilig'],
             'bewindspersoon' => 'ja',
             'betaald' => ['arbeidsmarktcampagnes', 'bereik'],
             'contact' => ['reacties', 'vragen'],
@@ -309,8 +269,6 @@ function sm_kaders(): array
             ],
             'doelen' => ['attenderen', 'duiden', 'informeren', 'internationaal', 'stakeholdermanagement'],
             'vormen' => ['explainers', 'pers', 'stakeholder'],
-            'contactdoelen' => ['interactie', 'dienstverlening', 'veilig'],
-            'niet_doelen' => ['activeren', 'arbeidsmarkt', 'gedrag', 'monitoring', 'publieksvoorlichting', 'bereik'],
             'bewindspersoon' => 'ja',
             'betaald' => [],
             'contact' => ['reacties', 'vragen', 'persoonlijk'],
@@ -326,8 +284,6 @@ function sm_kaders(): array
             'risicos' => ['De tool kent de risico’s van dit platform niet. Zoek ze uit met je CPO en CISO.'],
             'doelen' => null,
             'vormen' => null,
-            'contactdoelen' => null,
-            'niet_doelen' => null,
             'bewindspersoon' => null,
             'betaald' => null,
             'contact' => null,
