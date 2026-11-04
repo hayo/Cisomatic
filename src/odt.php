@@ -215,10 +215,12 @@ const CM_ODT_BLADSTIJLEN = '<style:style style:name="Bladtitel" style:family="pa
 // minder ruimte in de cellen. Dit vervangt delen van de gewone stijlen.
 const CM_ODT_BLADMATEN = [
     // De ruimte boven en onder een vraagblok.
-    'fo:margin-top="0.35cm" fo:margin-bottom="0.15cm"' => 'fo:margin-top="0.15cm" fo:margin-bottom="0cm"',
+    'fo:margin-top="0.35cm" fo:margin-bottom="0.15cm"' => 'fo:margin-top="0.15cm" fo:margin-bottom="0.35cm"',
     // De ruimte in de cellen.
     'fo:padding="0.15cm"' => 'fo:padding="0.07cm"',
     'fo:padding="0.12cm"' => 'fo:padding="0.04cm"',
+    // Eén blad heeft geen paginanummer.
+    '<text:tab/>Pagina <text:page-number text:select-page="current">1</text:page-number> van <text:page-count>1</text:page-count>' => '',
     // De ruimte onder het logo.
     'fo:margin-bottom="0.8cm"/></style:header-style>' => 'fo:margin-bottom="0.3cm"/></style:header-style>',
     // De letters van de keuzes, de vraag en de uitleg.
@@ -556,7 +558,7 @@ function cm_odt_link(string $tekst, string $url): string
 
 // De opmaak van een invulveld: in de regel, midden op de tekst.
 const CM_ODT_VELDSTIJL = '<style:style style:name="Veld" style:family="graphic"><style:graphic-properties '
-    . 'style:vertical-pos="middle" style:vertical-rel="text" fo:margin-left="0.05cm" fo:margin-right="0.05cm"/>'
+    . 'style:vertical-pos="middle" style:vertical-rel="line" fo:margin-left="0.05cm" fo:margin-right="0.05cm"/>'
     . '</style:style>';
 
 /**
@@ -626,7 +628,7 @@ function cm_odt_lijst(array $items, string $stijl): string
  * over de hele breedte, met 'los' een regel zonder hokje. Een tabel heeft
  * 'kop', 'rijen' en 'breedtes' (de verhouding van de kolommen), en optioneel
  * 'voor' (wat in de eerste kolom staat in plaats van een hokje) en 'hoogte'
- * (van elke rij, in cm). Een cel met alleen '☐' wordt een hokje. Een tabel kan
+ * (van elke rij, in cm). Zonder 'kop' heeft de tabel geen kopregel. Een cel met alleen '☐' wordt een hokje. Een tabel kan
  * alleen in een losse vraag.
  *
  * @param array<string,mixed> $v een vraag (nr, vraag, bijzin, noten, en keuzes, vak of tabel), of kop en delen
@@ -691,7 +693,7 @@ function cm_odt_vraagblok(array $v, int $nummer, string &$stijlen): string
             $breed + 1) . '</table:table-row></table:table-header-rows>';
     } else {
         $kop = $balk($delen[0]);
-        if ($tabel !== null) {
+        if (($tabel['kop'] ?? []) !== []) {
             $kop .= '<table:table-row>' . $cel('Invulcel', '<text:p text:style-name="Kolomkop"/>')
                 . implode('', array_map(static fn (string $k): string => $cel('Invulcel', $p('Kolomkop', $k)), $tabel['kop']))
                 . '</table:table-row>';

@@ -13,6 +13,12 @@
 
 declare(strict_types=1);
 
+/** De kolommen van het kanaal en van de uitleg: label en veld. Zo staan ze onder elkaar. */
+const OC_KOLOMBREEDTES = [4.4, 11.0];
+
+/** De breedte van een veld in de tweede kolom, binnen de rand van de cel. */
+const OC_VELDBREEDTE = 10.55;
+
 /**
  * @param callable(string):string $nr het nummer van een vraag; niet nodig op één blad
  * @return array<string,mixed>
@@ -32,11 +38,18 @@ function oc_vragenlijst(callable $nr): array
         ['vraagblok', [
             'nr' => '1',
             'vraag' => 'Het kanaal',
-            'keuzes' => [
-                ['los' => true, 'Platform en accountnaam: ' . $veld('projectnaam', 11.8)],
-                ['los' => true, 'Organisatie: ' . $veld('organisatieonderdeel', 8.4) . $ruim . 'Datum: ' . $veld('datum', 4.2)],
-                ['los' => true, 'Ingevuld door: ' . $veld('aanvrager', 5.2) . $ruim . 'Vastgesteld door: '
-                    . $veld('sm_directeur', 5.2)],
+            // Dezelfde kolommen als de uitleg, zodat labels en velden onder elkaar staan.
+            'tabel' => [
+                'kop' => [],
+                'rijen' => [
+                    ['Platform en accountnaam', $veld('projectnaam', OC_VELDBREEDTE)],
+                    ['Organisatie', $veld('organisatieonderdeel', OC_VELDBREEDTE)],
+                    ['Datum', $veld('datum', OC_VELDBREEDTE)],
+                    ['Ingevuld door', $veld('aanvrager', OC_VELDBREEDTE)],
+                    ['Vastgesteld door', $veld('sm_directeur', OC_VELDBREEDTE)],
+                ],
+                'breedtes' => OC_KOLOMBREEDTES,
+                'voor' => '',
             ],
         ]],
 
@@ -48,14 +61,13 @@ function oc_vragenlijst(callable $nr): array
             'tabel' => [
                 'kop' => ['Vraag', 'Uitleg'],
                 'rijen' => array_map(static fn (string $vraag, string $key): array => [$vraag, cm_odt_veld('vak', $key,
-                    10.7, 3.4)], array_values(OC_UITLEG), array_keys(OC_UITLEG)),
-                'breedtes' => [4.4, 11.0],
+                    OC_VELDBREEDTE, 3.4)], array_values(OC_UITLEG), array_keys(OC_UITLEG)),
+                'breedtes' => OC_KOLOMBREEDTES,
                 'voor' => ['a', 'b', 'c', 'd'],
                 'hoogte' => 3.6,
             ],
         ]],
 
         ['noot', OC_BESTUURSRAAD],
-        ['noot', 'Bron: rijksbrede platformkaders 1.0, bij de notitie ‘Aanwezigheid Rijksoverheid op sociale media’.'],
     ]];
 }
