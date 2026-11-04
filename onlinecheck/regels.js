@@ -3,8 +3,8 @@
  *
  * - het kader van het gekozen platform
  * - of de doelen binnen het kader vallen
- * - de uitkomst: comply of explain
- * - bij een explain de afwijkingen, voorgevuld
+ * - de uitkomst: voldoet, of uitleg nodig (comply of explain)
+ * - bij uitleg de afwijkingen, voorgevuld
  *
  * Spiegelt oc_evalueer() in afleiding.php; PHP rekent bij het versturen alles
  * opnieuw uit. De kaders en teksten komen uit PHP, als data-groepen op de vraag
@@ -117,10 +117,13 @@
             if (k.inzet === 'geen') {
                 return { waarde: 'Geen kader', niveau: 'm', redenen: [tekst('doelen_geen_kader')] };
             }
+            var klein = function (l) { return l.charAt(0).toLowerCase() + l.slice(1); };
+            var onbekend = doelen(a, k, 'onbekend').map(klein);
             var betaald = doelen(a, k, 'betaald');
-            var extra = betaald.length ? [tekst('betaald', k.naam, betaald)] : [];
+            var extra = (onbekend.length ? [tekst('onbekend', k.naam, onbekend)] : [])
+                .concat(betaald.length ? [tekst('betaald', k.naam, betaald)] : []);
             return u.buiten.length
-                ? { waarde: 'Niet helemaal', niveau: 'm', redenen: [tekst('doelen', k.naam, u.buiten)].concat(extra, ['Dan werk je straks een explain uit.']) }
+                ? { waarde: 'Niet helemaal', niveau: 'm', redenen: [tekst('doelen', k.naam, u.buiten)].concat(extra, ['Dan leg je straks uit waarom jullie het toch doen.']) }
                 : { waarde: 'Ja', niveau: 'l', redenen: [tekst('doelen_past', k.naam)].concat(extra) };
         }
         if (bron === 'uitkomst') {

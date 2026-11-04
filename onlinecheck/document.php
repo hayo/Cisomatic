@@ -2,7 +2,7 @@
 
 /**
  * Het document: de uitkomst van de check voor één kanaal. Bovenaan de uitkomst,
- * dan de doelen en de voorwaarden, bij een explain de uitleg, en als bijlage
+ * dan de doelen en de voorwaarden, de uitleg als het kanaal niet voldoet, en als bijlage
  * het kader van het platform.
  */
 
@@ -39,7 +39,7 @@ function oc_document(array $a, array $u): array
         : ($u['buiten'] === [] ? oc_tekst('doelen_past', $kader['naam']) : oc_tekst('doelen', $kader['naam'], $u['buiten']));
 
     $uitleg = $u['uitkomst'] === 'explain' ? [
-        ['h2', '3. Explain'],
+        ['h2', '3. Uitleg (explain)'],
         ['h3', 'Waarvan wordt afgeweken'],
         ['lijst', cm_regels((string) ($a['oc_afwijking'] ?? ''))],
         ['h3', 'Waarom dit kanaal nodig is'],
@@ -79,24 +79,32 @@ function oc_document(array $a, array $u): array
         ['h3', 'Risico’s'],
         ['lijst', $kader['risicos']],
         ...($kader['doelen'] === null ? [] : [
-            ['h3', 'Doelen binnen het kader'],
-            ['alinea', oc_document_ruimte($kader)],
+            ['h3', 'Doelen in het kader'],
+            ...oc_document_ruimte($kader),
         ]),
     ];
 }
 
-/** De doelen binnen het kader als opsomming, met de doelen die alleen met advertenties passen. */
-function oc_document_ruimte(array $kader): string
+/** Per soort de doelen van de check, zoals het kader ze noemt. */
+function oc_document_ruimte(array $kader): array
 {
-    $lijst = [];
+    $soorten = [
+        'ja' => 'Wel',
+        'betaald' => 'Alleen met advertenties',
+        'onbekend' => 'Niet genoemd, dus het mag',
+        'nee' => 'Niet, dus uitleg nodig',
+    ];
+    $lijst = array_fill_keys(array_keys($soorten), []);
     foreach (oc_doelen() as $k => $doel) {
-        $ruimte = oc_ruimte($kader, $k);
-        if ($ruimte === 'ja') {
-            $lijst[] = $doel['label'];
-        } elseif ($ruimte === 'betaald') {
-            $lijst[] = $doel['label'] . ' (alleen met advertenties)';
+        $lijst[oc_ruimte($kader, $k)][] = $doel['label'];
+    }
+
+    $uit = [];
+    foreach ($soorten as $soort => $label) {
+        if ($lijst[$soort] !== []) {
+            $uit[] = ['term', $label, cm_opsomming($lijst[$soort])];
         }
     }
 
-    return $lijst === [] ? 'Geen.' : cm_opsomming($lijst) . '.';
+    return $uit;
 }

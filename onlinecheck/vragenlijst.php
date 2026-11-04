@@ -4,10 +4,10 @@
  * De check op één A4, om op papier of in Word in te vullen. De motor maakt hem
  * niet uit de secties, zoals bij de andere formulieren, maar neemt dit blad
  * over ('vragenlijst_blad' in de definitie). Zo past alles op één pagina:
- * - het kanaal en het platform, met per platform of het altijd explain is
+ * - het kanaal en het platform, met per platform of uitleg altijd nodig is
  * - de doelen, met per platform of ze binnen het kader vallen
  * - de twee voorwaarden
- * - de uitkomst, met de regel in één zin, en bij een explain de vier vragen
+ * - de uitkomst, met de regel in één zin, en bij uitleg de vier vragen
  *   uit de notitie
  *
  * De matrix komt uit ../socialemedia/kaders.php, via oc_ruimte(). De
@@ -17,7 +17,7 @@
 
 declare(strict_types=1);
 
-/** De volgorde van de kolommen: eerst wat in beginsel inzetbaar is, dan wat altijd explain is. */
+/** De volgorde van de kolommen: eerst wat in beginsel inzetbaar is, dan waar uitleg altijd nodig is. */
 const OC_KOLOMMEN = ['instagram', 'youtube', 'linkedin', 'mastodon', 'facebook', 'x', 'tiktok'];
 
 /**
@@ -36,8 +36,8 @@ function oc_vragenlijst(callable $nr): array
 
     return ['blad' => [
         ['h1', 'Online communicatie check'],
-        ['noot', 'Eén check per kanaal. Past alles binnen het rijksbrede kader, dan is het comply. Zo niet, dan '
-            . 'explain.'],
+        ['noot', 'Eén check per kanaal. Past alles binnen het rijksbrede kader, dan voldoet het kanaal. Zo niet, dan '
+            . 'leg je uit waarom jullie het toch gebruiken (explain).'],
 
         ['vraagblok', [
             'nr' => '1',
@@ -54,7 +54,7 @@ function oc_vragenlijst(callable $nr): array
             'bijzin' => 'kies één',
             'keuzes' => [
                 ['los' => true, 'In beginsel inzetbaar:' . $ruim . $hokjes(array_map($naam, $inzetbaar))],
-                ['los' => true, 'Altijd explain:' . $ruim . $hokjes([...array_map($naam, $explain), 'Ander kanaal: ……………………'])],
+                ['los' => true, 'Altijd uitleg nodig:' . $ruim . $hokjes([...array_map($naam, $explain), 'Ander kanaal: ……………………'])],
             ],
         ]],
 
@@ -63,8 +63,9 @@ function oc_vragenlijst(callable $nr): array
             'vraag' => 'Welke doelen heeft het kanaal?',
             'bijzin' => 'kruis aan wat past',
             'noten' => [
-                'Kijk bij elk aangekruist doel in de kolom van je platform. ✓ is binnen het kader, – is erbuiten, '
-                    . '* is alleen met advertenties. Mastodon is social.overheid.nl.',
+                'Kijk bij elk aangekruist doel in de kolom van je platform. ✗: het kader zegt ‘niet’, leg uit. ~: het '
+                    . 'kader noemt het niet; het mag, maar ga na of het past. *: alleen met advertenties. Leeg: mag. '
+                    . 'Mastodon is social.overheid.nl.',
             ],
             'tabel' => oc_vragenlijst_matrix($kaders),
         ]],
@@ -85,8 +86,8 @@ function oc_vragenlijst(callable $nr): array
             'nr' => '5',
             'vraag' => 'De uitkomst:' . $ruim . $hokjes(array_column(OC_UITKOMSTEN, 'label')),
             'noten' => [
-                'Comply als het platform in beginsel inzetbaar is, elk doel een ✓ heeft en beide voorwaarden ja zijn. '
-                    . 'Anders explain: beantwoord a tot en met d.',
+                'Het kanaal voldoet als het platform in beginsel inzetbaar is, geen doel een ✗ heeft en beide '
+                    . 'voorwaarden ja zijn. Anders is uitleg nodig: beantwoord a tot en met d.',
             ],
             'tabel' => [
                 'kop' => [
@@ -98,7 +99,7 @@ function oc_vragenlijst(callable $nr): array
                 // Lege regels, om te schrijven. Zo groeit het vak ook in Word niet weg.
                 'rijen' => [array_fill(0, 4, ['', ...array_fill(0, 8, "\u{00A0}")])],
                 'breedtes' => [3.85, 3.85, 3.85, 3.85],
-                'voor' => 'Explain',
+                'voor' => 'Uitleg',
             ],
         ]],
 
@@ -109,7 +110,8 @@ function oc_vragenlijst(callable $nr): array
 }
 
 /**
- * De doelen met per platform ✓, * of –. Het hokje zet de motor ervoor.
+ * De doelen met per platform ✗ (uitleg nodig), ~ (niet genoemd), * (alleen met
+ * advertenties) of leeg (mag). Het hokje zet de motor ervoor.
  *
  * @param array<string,array<string,mixed>> $kaders
  * @return array<string,mixed>
@@ -126,7 +128,7 @@ function oc_vragenlijst_matrix(array $kaders): array
         'x' => 'X',
         'tiktok' => "Tik\u{00AD}Tok",
     ];
-    $teken = ['ja' => '✓', 'betaald' => '✓*', 'nee' => '–'];
+    $teken = ['ja' => '', 'betaald' => '*', 'onbekend' => '~', 'nee' => '✗'];
 
     $rijen = [];
     foreach (oc_doelen() as $k => $doel) {

@@ -1,9 +1,10 @@
 <?php
 
 /**
- * Wat de check uitrekent. Eén regel: comply als het platform in beginsel
- * inzetbaar is, elk doel binnen het kader valt, en aan de twee voorwaarden is
- * voldaan. Anders explain.
+ * Wat de check uitrekent. Eén regel: het kanaal voldoet als het platform in
+ * beginsel inzetbaar is, geen doel in het kader bij "niet" staat, en aan de
+ * twee voorwaarden is voldaan. Anders is uitleg nodig: de explain uit de
+ * notitie. Een doel dat het kader niet noemt, mag.
  *
  * De kaders komen uit ../socialemedia/kaders.php, dezelfde als die van de
  * kanalenscan. regels.js rekent hetzelfde uit tijdens het invullen, met de
@@ -13,15 +14,14 @@
 declare(strict_types=1);
 
 const OC_UITKOMSTEN = [
-    'comply' => ['label' => 'Comply', 'niveau' => 'l'],
-    'explain' => ['label' => 'Explain', 'niveau' => 'm'],
+    'comply' => ['label' => 'Voldoet', 'niveau' => 'l'],
+    'explain' => ['label' => 'Uitleg nodig', 'niveau' => 'm'],
 ];
 
 /**
  * De doelen van de check: de vijftien doelen uit de notitie, samengevoegd tot
- * elf. Alleen doelen die bij elk platform dezelfde ruimte hebben, staan samen.
- * Zo verandert geen uitkomst. Verder samenvoegen kan niet zonder verlies: dan
- * valt bijvoorbeeld informeren op LinkedIn buiten het kader.
+ * twaalf. Alleen doelen die bij elk platform hetzelfde krijgen, staan samen.
+ * Zo verandert geen uitkomst.
  */
 const OC_GROEPEN = [
     'informeren' => [
@@ -30,11 +30,8 @@ const OC_GROEPEN = [
         'doelen' => ['informeren', 'duiden'],
     ],
     'attenderen' => ['doelen' => ['attenderen']],
-    'voorlichting' => [
-        'label' => 'Voorlichten en gedrag beïnvloeden',
-        'hint' => 'Het brede publiek voorlichten over beleid, of bepaald gedrag stimuleren of ontmoedigen.',
-        'doelen' => ['publieksvoorlichting', 'gedrag'],
-    ],
+    'publieksvoorlichting' => ['doelen' => ['publieksvoorlichting']],
+    'gedrag' => ['doelen' => ['gedrag']],
     'activeren' => [
         'label' => 'Activeren en werven',
         'hint' => 'Mensen iets laten doen, zoals zich aanmelden of meedoen. Ook medewerkers werven en binden.',
@@ -56,13 +53,14 @@ const OC_GROEPEN = [
 /** De zinnen van de uitkomst. {naam} is het platform, {lijst} een opsomming. */
 const OC_TEKSTEN = [
     'comply' => 'Het kanaal past binnen het rijksbrede kader.',
-    'explain' => '{naam} is in beginsel niet inzetbaar. Daarom vraagt het kader altijd een explain.',
-    'geen_kader' => 'Voor {naam} is er geen rijksbreed kader. Dan is het altijd een explain.',
-    'doelen' => 'Deze doelen vallen buiten het kader van {naam}: {lijst}.',
+    'explain' => '{naam} is in beginsel niet inzetbaar. Daarom moet je altijd uitleggen waarom jullie het gebruiken.',
+    'geen_kader' => 'Voor {naam} is er geen rijksbreed kader. Daarom moet je altijd uitleggen waarom jullie het gebruiken.',
+    'doelen' => 'Het kader van {naam} zet deze doelen bij ‘niet’: {lijst}.',
     'eigen_deels' => 'Niet alles wat jullie hier plaatsen, staat ook op een eigen kanaal van de overheid.',
     'eigen_nee' => 'Wat jullie hier plaatsen, staat niet op een eigen kanaal van de overheid.',
     'doorverwijzen' => 'Jullie wijzen mensen niet op de risico’s van contact via {naam}, en verwijzen niet door.',
-    'doelen_past' => 'Alle doelen passen binnen het kader van {naam}.',
+    'doelen_past' => 'Geen van de doelen staat in het kader van {naam} bij ‘niet’.',
+    'onbekend' => 'Het kader van {naam} noemt dit niet: {lijst}. Dat mag, maar ga na of het platform er geschikt voor is.',
     'doelen_geen_kader' => 'Er is geen kader om de doelen aan te toetsen.',
     'betaald' => '{lijst} past op {naam} alleen met advertenties.',
     'toestel' => 'De app van {naam} mag nooit op een telefoon, tablet of computer van het Rijk.',
@@ -85,10 +83,13 @@ function oc_doelen(): array
 }
 
 /**
- * Hoe een doel van de check zich tot een kader verhoudt: 'ja' (binnen het
- * kader), 'betaald' (alleen met advertenties, zoals gedragsbeïnvloeding op
- * TikTok) of 'nee'. Bij samengevoegde doelen telt de krapste ruimte. Een
- * platform zonder kader geeft null: daar is niets om aan te toetsen.
+ * Hoe een doel van de check zich tot een kader verhoudt:
+ * - 'nee': de notitie zet het bij "niet" (uitleg nodig)
+ * - 'ja': de notitie zet het bij "wel"
+ * - 'betaald': alleen met advertenties, zoals gedragsbeïnvloeding op TikTok
+ * - 'onbekend': de notitie noemt het niet. Dat mag.
+ * Bij samengevoegde doelen telt de krapste. Een platform zonder kader geeft
+ * null: daar is niets om aan te toetsen.
  */
 function oc_ruimte(array $kader, string $groep): ?string
 {
@@ -96,11 +97,12 @@ function oc_ruimte(array $kader, string $groep): ?string
         return null;
     }
 
-    $rang = ['nee' => 0, 'betaald' => 1, 'ja' => 2];
+    $rang = ['nee' => 0, 'betaald' => 1, 'onbekend' => 2, 'ja' => 3];
     $ruimtes = array_map(static fn (string $doel): string => match (true) {
+        in_array($doel, $kader['niet_doelen'], true) => 'nee',
         in_array($doel, [...$kader['doelen'], ...$kader['contactdoelen']], true) => 'ja',
         in_array($doel, $kader['betaald'], true) => 'betaald',
-        default => 'nee',
+        default => 'onbekend',
     }, OC_GROEPEN[$groep]['doelen']);
     usort($ruimtes, static fn (string $x, string $y): int => $rang[$x] <=> $rang[$y]);
 
@@ -155,6 +157,7 @@ function oc_evalueer(array $a): array
 
     $buiten = array_values(array_filter($gekozen, static fn (string $d): bool => oc_ruimte($kader, $d) === 'nee'));
     $betaald = array_values(array_filter($gekozen, static fn (string $d): bool => oc_ruimte($kader, $d) === 'betaald'));
+    $onbekend = array_values(array_filter($gekozen, static fn (string $d): bool => oc_ruimte($kader, $d) === 'onbekend'));
     $eigen = oc_eigen_geldt($a) ? (string) ($a['sm_eigen_kanalen'] ?? '') : '';
 
     $afwijkingen = array_values(array_filter([
@@ -171,6 +174,7 @@ function oc_evalueer(array $a): array
     };
 
     $letOp = array_values(array_filter([
+        $onbekend === [] ? '' : oc_tekst('onbekend', $naam, array_map($klein, $onbekend)),
         $betaald === [] ? '' : oc_tekst('betaald', $naam, array_map($label, $betaald)),
         $kader['toestel'] ? oc_tekst('toestel', $naam) : '',
     ]));

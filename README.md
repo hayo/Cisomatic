@@ -20,7 +20,8 @@ Er zijn nu twaalf formulieren:
   toets, en vertrekken. Levert een comply or explain, of een exitplan.
 - **[onlinecheck](onlinecheck/README.md)**: de Online communicatie check, een
   eenvoudige versie van de kanalenscan. Toetst snel of één kanaal binnen het
-  rijksbrede kader past: comply of explain. Met de check op één A4.
+  rijksbrede kader past, of dat je moet uitleggen waarom niet. Met de check op
+  één A4.
 - **[quickscan](quickscan/README.md)**: quickscan 1.0, de IB & Privacy Quickscan
   op de BIO 1. Welk beveiligingsniveau geldt, welke eisen, welke analyses.
 - **[dpia](dpia/README.md)**: een Data Protection Impact Assessment in de opbouw

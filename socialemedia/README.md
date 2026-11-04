@@ -138,8 +138,9 @@ gebruik, en waar je op let bij adverteren. Wat daar niet in staat, valt erbuiten
 herzien; loop dit bestand dan na.
 
 De [Online communicatie check](../onlinecheck/README.md) leest dezelfde kaders.
-Voor de check staan er per kader ook `contactdoelen` in: interactie,
-dienstverlening en veilig contact, als doelen. De kanalenscan gebruikt ze niet.
+Voor de check staan er per kader ook `contactdoelen` in (interactie,
+dienstverlening en veilig contact, als doelen) en `niet_doelen` (wat de notitie
+uitdrukkelijk bij "niet" zet). De kanalenscan gebruikt ze niet.
 
 De hints bij de doelen volgen de toelichting op de communicatiedoelen in de
 notitie. Die noemt ook dienstverlening, interactie en veilig contact; de scan

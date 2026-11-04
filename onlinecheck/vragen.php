@@ -2,7 +2,7 @@
 
 /**
  * De vragen. Vier stappen: het kanaal, de doelen, twee voorwaarden, en de
- * uitkomst met bij een explain de uitleg. Eén check gaat over één kanaal.
+ * uitkomst, met de uitleg als het kanaal niet voldoet. Eén check gaat over één kanaal.
  *
  * De sleutels van het platform, de voorwaarden en het vaststellen zijn die van
  * de kanalenscan (sm_). Een bestand van de kanalenscan vult ze dus in.
@@ -84,13 +84,15 @@ function oc_sectie_doelen(): array
         'id' => 'doelen',
         'titel' => 'De doelen',
         'stap' => 2,
-        'intro' => 'Waarvoor gebruiken jullie het kanaal? Elk doel moet binnen het kader van het platform vallen.',
+        'intro' => 'Waarvoor gebruiken jullie het kanaal? Zet het kader van het platform een doel bij ‘niet’, dan moet '
+            . 'je uitleggen waarom jullie het toch doen.',
         'vragen' => [
             [
                 'key' => 'oc_doelen',
                 'type' => 'checkbox',
                 'label' => 'Welke doelen heeft het kanaal?',
-                'hint' => 'Kruis alles aan wat past. Ook wat jullie er af en toe mee doen.',
+                'hint' => 'Kruis alles aan wat past. Ook wat jullie er af en toe mee doen. Alleen wat het kader bij '
+                    . '‘niet’ zet, vraagt om uitleg.',
                 'verplicht' => true,
                 'opties' => oc_doelen(),
             ],
@@ -147,10 +149,10 @@ function oc_sectie_besluit(): array
 
     return [
         'id' => 'besluit',
-        'titel' => 'Comply or explain',
+        'titel' => 'Voldoet het kanaal?',
         'stap' => 4,
-        'intro' => 'Past alles binnen het kader, dan is het comply. Zo niet, dan leg je uit waarom jullie het kanaal '
-            . 'toch nodig hebben.',
+        'intro' => 'Past alles binnen het kader, dan voldoet het kanaal. Zo niet, dan leg je uit waarom jullie het '
+            . 'kanaal toch nodig hebben.',
         'vragen' => [
             [
                 'key' => 'oc_uitkomst',

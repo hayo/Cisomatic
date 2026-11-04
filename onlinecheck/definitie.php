@@ -12,7 +12,7 @@ return [
     'titel' => 'Online communicatie check',
     'naam' => 'online communicatie check',
     'intro' => 'Voor de adviseur sociale media. Toets snel of één kanaal past binnen het rijksbrede kader. Past het, '
-        . 'dan is het comply. Past het niet, dan leg je uit waarom: een explain.',
+        . 'dan voldoet het kanaal. Past het niet, dan leg je uit waarom jullie het toch gebruiken.',
     'uitvoer' => 'document',
     'download_uitleg' => 'Het document opent in Word, LibreOffice en Google Docs, met kopjes, lijsten en tabellen.',
     'inladen' => 'Een bestand van een eerdere check, of van de kanalenscan. Je browser leest het zelf, dus er gaat '
@@ -27,7 +27,7 @@ return [
         1 => 'Stap 1 · het kanaal',
         2 => 'Stap 2 · de doelen',
         3 => 'Stap 3 · de voorwaarden',
-        4 => 'Stap 4 · comply or explain',
+        4 => 'Stap 4 · voldoet het?',
     ],
     'route' => '',
 

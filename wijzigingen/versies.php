@@ -18,9 +18,10 @@ return [
         'datum' => '2026-11-04',
         'wijzigingen' => [
             'Nieuw: de Online communicatie check. Daarmee toets je snel of een kanaal op sociale media binnen het '
-                . 'rijksbrede kader past. Het is comply of explain.',
-            'De check vraagt alleen het platform, de doelen en twee voorwaarden. Bij een explain leg je uit waarom.',
-            'De vijftien doelen uit de notitie zijn samengevoegd tot elf. De uitkomst blijft daardoor gelijk.',
+                . 'rijksbrede kader past. Het kanaal voldoet, of je legt uit waarom jullie het toch gebruiken.',
+            'De check vraagt alleen het platform, de doelen en twee voorwaarden.',
+            'Alleen wat het kader bij ‘niet’ zet, vraagt om uitleg. Noemt het kader een doel niet, dan mag het.',
+            'De vijftien doelen uit de notitie zijn samengevoegd tot twaalf. De uitkomst blijft daardoor gelijk.',
             'De check is er ook als .odt op één A4. Daarop zie je per platform welke doelen binnen het kader vallen.',
             'De kanalenscan blijft, voor een grondige toets en voor starten en stoppen op een platform.',
         ],
