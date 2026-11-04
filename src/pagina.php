@@ -41,7 +41,10 @@ $werkplek = cm_werkplek();
 
     <?php require $map . '/vooraf.php'; ?>
 
-    <?php if (($formulier['vragenlijst'] ?? true) !== false): ?>
+    <?php if (!empty($formulier['vragenlijst_blad'])): ?>
+    <p data-vragenlijst>Liever op papier? <a href="?vragenlijst=odt">Download de check op één A4 als .odt</a>. Neem
+       je antwoorden daarna over in het formulier; dat maakt het <?= h($uitvoer) ?>.</p>
+    <?php elseif (($formulier['vragenlijst'] ?? true) !== false): ?>
     <p data-vragenlijst>Liever eerst op papier, of samen met collega’s? <a href="?vragenlijst=odt">Download de
        hele vragenlijst als .odt</a>. Daarin staan alle vragen, en wanneer ze gelden. Neem je antwoorden daarna
        over in het formulier; dat maakt het <?= h($uitvoer) ?>.</p>

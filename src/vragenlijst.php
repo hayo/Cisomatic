@@ -22,6 +22,8 @@
  * - uitkomsten: per naam en waarde van toon_als_uitkomst een tekst, die na
  *   "Alleen als" komt
  * - bijlagen: blokken aan het eind
+ * - blad: met 'vragenlijst_blad' in de definitie het hele document, op één
+ *   blad. De vragenlijst maakt dan zelf niets, en de rest telt niet mee.
  */
 
 declare(strict_types=1);
@@ -52,6 +54,11 @@ function cm_vragenlijst(): array
     $haak = $formulier['vragenlijst'] ?? null;
     $extra = is_string($haak) ? $haak($nr) : [];
     $extra += ['inleiding' => [], 'vragen' => [], 'uitkomsten' => [], 'bijlagen' => []];
+
+    // Een check op één blad maakt het formulier helemaal zelf.
+    if (!empty($formulier['vragenlijst_blad'])) {
+        return $extra['blad'];
+    }
 
     $blokken = [
         ['h1', 'Vragenlijst: ' . $formulier['titel']],
@@ -434,5 +441,6 @@ function cm_vragenlijst_voorwaarde(array $item, array $nummers, array|callable $
 /** Stuurt de vragenlijst als .odt-download, als het formulier er een heeft. */
 function cm_stuur_vragenlijst(): never
 {
-    cm_stuur_odt(cm_vragenlijst(), cm_bestandsnaam('vragenlijst', 'odt'));
+    $blad = !empty(cm_formulier()['vragenlijst_blad']);
+    cm_stuur_odt(cm_vragenlijst(), cm_bestandsnaam($blad ? 'check' : 'vragenlijst', 'odt'), '', '', $blad);
 }

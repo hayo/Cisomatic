@@ -14,6 +14,18 @@ declare(strict_types=1);
 
 return [
     [
+        'versie' => '1.4',
+        'datum' => '2026-11-04',
+        'wijzigingen' => [
+            'Nieuw: de Online communicatie check. Daarmee toets je snel of een kanaal op sociale media binnen het '
+                . 'rijksbrede kader past. Het is comply of explain.',
+            'De check vraagt alleen het platform, de doelen en twee voorwaarden. Bij een explain leg je uit waarom.',
+            'De vijftien doelen uit de notitie zijn samengevoegd tot elf. De uitkomst blijft daardoor gelijk.',
+            'De check is er ook als .odt op één A4. Daarop zie je per platform welke doelen binnen het kader vallen.',
+            'De kanalenscan blijft, voor een grondige toets en voor starten en stoppen op een platform.',
+        ],
+    ],
+    [
         'versie' => '1.3.1',
         'datum' => '2026-11-03',
         'wijzigingen' => [

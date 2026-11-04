@@ -6,7 +6,7 @@ op de pagina, en als OpenDocument-tekst (`.odt`).
 
 Demo: https://hayobethlehem.nl/forge/cisomatic
 
-Er zijn nu elf formulieren:
+Er zijn nu twaalf formulieren:
 
 - **[businesscase](businesscase/README.md)**: de business case en intaketoets,
   vóór alles. Vijf toetsen: is het nodig, kan het zonder nieuw systeem, is er al
@@ -18,6 +18,9 @@ Er zijn nu elf formulieren:
 - **[socialemedia](socialemedia/README.md)**: de kanalenscan voor sociale media,
   voor het Rijk. Volgt één kanaal door de hele cyclus: starten, de jaarlijkse
   toets, en vertrekken. Levert een comply or explain, of een exitplan.
+- **[onlinecheck](onlinecheck/README.md)**: de Online communicatie check, een
+  eenvoudige versie van de kanalenscan. Toetst snel of één kanaal binnen het
+  rijksbrede kader past: comply of explain. Met de check op één A4.
 - **[quickscan](quickscan/README.md)**: quickscan 1.0, de IB & Privacy Quickscan
   op de BIO 1. Welk beveiligingsniveau geldt, welke eisen, welke analyses.
 - **[dpia](dpia/README.md)**: een Data Protection Impact Assessment in de opbouw
@@ -85,7 +88,8 @@ huisstijl/                het lint en de lettertypen van de Rijkshuisstijl, voor
 De motorfuncties heten `cm_`, die van de quickscan `qs_`, die van quickscan 2.0
 `q2_`, die van de DPIA `dp_`, die van de IAMA `ia_`, die van de business case
 `bc_`, die van de kanalenscan `sm_`, die van de soevereiniteitsscan `sv_`, die
-van de AI-scan `ai_`, `gai_` voor generatieve AI, die van het CIO-oordeel `co_`,
+van de Online communicatie check `oc_`, die van de AI-scan `ai_`, `gai_` voor
+generatieve AI, die van het CIO-oordeel `co_`,
 en die van de fit/gap `fg_`, met `fg1_` voor de BIO 1 en `fg2_` voor de BIO2. Een
 formulier gebruikt de motor; de motor kent geen formulier bij naam.
 
@@ -196,6 +200,7 @@ Alleen gegevens, geen code. De voordeur leest dit bestand ook.
 | `dossier` | Optioneel: `false` als een ander het formulier invult, zoals de leverancier of het CIO-office. Het hoort dan niet in een dossier |
 | `vervolg` | Optioneel: functie die van antwoorden en uitkomst zegt welke andere formulieren voorgesteld zijn, en waarom. Een dossier zet ze erbij |
 | `vragenlijst` | Optioneel: functie die de vragenlijst als `.odt` aanvult, of `false` voor geen vragenlijst. Zie Vragenlijst als .odt |
+| `vragenlijst_blad` | Optioneel: `true` als het formulier de vragenlijst zelf maakt, op één blad. Zie Vragenlijst als .odt |
 
 ### vragen.php
 
@@ -448,6 +453,14 @@ het nummer van een vraag geeft ("vraag 7"), en geeft terug:
 | `vragen` | Per sleutel: `antwoord` (met `keuzes` of `tabel`) in plaats van de keuzes of het vak, `noten` voor extra uitleg in de balk, `volgende` voor een pijl achter een keuze (waarde => tekst), `blokken` in plaats van een uitkomstblok, en `na` voor blokken na de vraag |
 | `uitkomsten` | Wanneer een vraag met `toon_als_uitkomst` geldt, als tekst na "Alleen als". Een lijst per naam en waarde, of een functie met de naam en de waarden. Een lege tekst laat de voorwaarde weg |
 | `bijlagen` | Blokken aan het eind |
+| `blad` | Met `vragenlijst_blad` het hele document, op één blad |
+
+Een formulier kan de vragenlijst ook helemaal zelf maken, op één blad. Zet dan
+`'vragenlijst_blad' => true` in de definitie, en geef de blokken terug onder
+`blad`. De motor maakt dan niets uit de secties. Het `.odt`-bestand krijgt geen
+titelpagina en geen inhoudsopgave, en de vraagblokken staan dichter op elkaar,
+met kleinere letters. De link boven het formulier noemt het dan de check op één
+A4. De Online communicatie check doet dat.
 
 Een uitkomstblok zonder aanvulling slaat de vragenlijst over: wat het formulier
 uitrekent, staat in het document. De kanalenscan, de AI-scan, de DPIA en het

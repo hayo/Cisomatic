@@ -204,17 +204,43 @@ const CM_ODT_INHOUDSTIJLEN = '<style:style style:name="Titelpagina" style:family
     . '<style:style style:name="Cel" style:family="table-cell"><style:table-cell-properties fo:padding="0.1cm" fo:border="0.5pt solid #bfbfbf"/></style:style>'
     . '<style:style style:name="Kopcel" style:family="table-cell"><style:table-cell-properties fo:padding="0.1cm" fo:border="0.5pt solid #bfbfbf" fo:background-color="{vlak}"/></style:style>';
 
+// Alleen op één blad: de titel bovenaan de eerste pagina, op de gewone pagina-opmaak.
+const CM_ODT_BLADSTIJLEN = '<style:style style:name="Bladtitel" style:family="paragraph" style:parent-style-name="Title" style:master-page-name="Standard">'
+    . '<style:paragraph-properties fo:margin-top="0cm" fo:margin-bottom="0.1cm"/><style:text-properties fo:font-size="17pt"/></style:style>';
+
+// Op één blad staan de vraagblokken dichter op elkaar, met kleinere letters en
+// minder ruimte in de cellen. Dit vervangt delen van de gewone stijlen.
+const CM_ODT_BLADMATEN = [
+    // De ruimte boven en onder een vraagblok.
+    'fo:margin-top="0.35cm" fo:margin-bottom="0.15cm"' => 'fo:margin-top="0.15cm" fo:margin-bottom="0cm"',
+    // De ruimte in de cellen.
+    'fo:padding="0.15cm"' => 'fo:padding="0.07cm"',
+    'fo:padding="0.12cm"' => 'fo:padding="0.04cm"',
+    // De ruimte onder het logo.
+    'fo:margin-bottom="0.8cm"/></style:header-style>' => 'fo:margin-bottom="0.3cm"/></style:header-style>',
+    // De letters van de keuzes, de vraag en de uitleg.
+    '<style:text-properties fo:font-size="10.5pt"/>' => '<style:text-properties fo:font-size="9pt"/>',
+    '<style:text-properties fo:font-size="12pt" fo:font-weight="bold" fo:color="#ffffff"/>'
+        => '<style:text-properties fo:font-size="10.5pt" fo:font-weight="bold" fo:color="#ffffff"/>',
+    '<style:text-properties fo:font-size="13pt" fo:color="{kleur}"/>' => '<style:text-properties fo:font-size="10.5pt" fo:color="{kleur}"/>',
+    '<style:text-properties fo:font-size="9pt" fo:color="#3d3d3d"/>' => '<style:text-properties fo:font-size="8.5pt" fo:color="#3d3d3d"/>',
+];
+
 /**
  * Het document begint met een titelpagina: de titel en wat er vóór het eerste
  * hoofdstuk staat. Dan volgt de inhoudsopgave, en daarna de hoofdstukken. Met
  * 'hoofdstuk_per_pagina' in de definitie begint elk hoofdstuk op een nieuwe
  * pagina.
  *
+ * Met $blad is het één blad, zoals een check op één A4: geen titelpagina en
+ * geen inhoudsopgave, de titel bovenaan de eerste pagina, en de blokken dichter
+ * op elkaar.
+ *
  * @param list<array<int,mixed>> $blokken
  */
-function cm_odt(array $blokken, string $auteur = '', string $kenmerk = ''): string
+function cm_odt(array $blokken, string $auteur = '', string $kenmerk = '', bool $blad = false): string
 {
-    $apart = !empty(cm_formulier()['hoofdstuk_per_pagina']);
+    $apart = !$blad && !empty(cm_formulier()['hoofdstuk_per_pagina']);
     $titel = cm_documenttitel($blokken);
     $logo = cm_odt_logo();
     $huisstijl = cm_odt_huisstijl();
@@ -240,8 +266,8 @@ function cm_odt(array $blokken, string $auteur = '', string $kenmerk = ''): stri
         }
 
         $body .= match ($blok[0]) {
-            'h1' => '<text:p text:style-name="Titelpagina">' . cm_odt_tekst($blok[1]) . '</text:p>',
-            'h2' => $kop($blok[1], 1, ++$hoofdstukken === 1 || $apart ? 'Hoofdstuk' : 'Heading_20_1'),
+            'h1' => '<text:p text:style-name="' . ($blad ? 'Bladtitel' : 'Titelpagina') . '">' . cm_odt_tekst($blok[1]) . '</text:p>',
+            'h2' => $kop($blok[1], 1, !$blad && (++$hoofdstukken === 1 || $apart) ? 'Hoofdstuk' : 'Heading_20_1'),
             'h3' => $plek === null
                 ? '<text:h text:style-name="Heading_20_2" text:outline-level="2">' . cm_odt_tekst($blok[1]) . '</text:h>'
                 : $kop($blok[1], 2, 'Heading_20_2'),
@@ -261,9 +287,12 @@ function cm_odt(array $blokken, string $auteur = '', string $kenmerk = ''): stri
         };
     }
 
-    if ($plek !== null) {
+    if ($plek !== null && !$blad) {
         $body = substr_replace($body, cm_odt_inhoud($inhoud), $plek, 0);
     }
+
+    $maten = $blad ? CM_ODT_BLADMATEN : [];
+    $inhoudstijlen = strtr(strtr(CM_ODT_INHOUDSTIJLEN, $maten), $huisstijl['tokens']) . ($blad ? CM_ODT_BLADSTIJLEN : '');
 
     $maker = $auteur === '' ? '' : '<meta:initial-creator>' . cm_odt_tekst($auteur) . '</meta:initial-creator>'
         . '<dc:creator>' . cm_odt_tekst($auteur) . '</dc:creator>';
@@ -278,7 +307,7 @@ function cm_odt(array $blokken, string $auteur = '', string $kenmerk = ''): stri
 
     $content = '<?xml version="1.0" encoding="UTF-8"?>' . "\n"
         . '<office:document-content ' . CM_ODT_NS . '>' . $huisstijl['decls']
-        . '<office:automatic-styles>' . strtr(CM_ODT_INHOUDSTIJLEN, $huisstijl['tokens']) . $kolomstijlen
+        . '<office:automatic-styles>' . $inhoudstijlen . $kolomstijlen
         . '</office:automatic-styles>'
         . '<office:body><office:text>' . $body . '</office:text></office:body>'
         . '</office:document-content>';
@@ -295,8 +324,8 @@ function cm_odt(array $blokken, string $auteur = '', string $kenmerk = ''): stri
         'META-INF/manifest.xml' => sprintf(CM_ODT_MANIFEST, $manifest),
         'meta.xml' => $meta,
         'settings.xml' => sprintf(CM_ODT_INSTELLINGEN, $huisstijl['bestanden'] === [] ? 'false' : 'true'),
-        'styles.xml' => strtr(CM_ODT_STIJLEN, $huisstijl['tokens'])
-            . cm_odt_opmaak($kenmerk === '' ? $titel : $titel . ' · ' . $kenmerk, $logo),
+        'styles.xml' => strtr(strtr(CM_ODT_STIJLEN, $maten), $huisstijl['tokens'])
+            . strtr(cm_odt_opmaak($kenmerk === '' ? $titel : $titel . ' · ' . $kenmerk, $logo), $maten),
         'content.xml' => $content,
         ...array_map(static fn (array $bestand): string => $bestand[1], $extra),
     ]);
@@ -717,9 +746,9 @@ function cm_zip(array $bestanden): string
 }
 
 /** Stuurt het document als .odt-download en stopt het verzoek. */
-function cm_stuur_odt(array $blokken, string $bestandsnaam, string $auteur = '', string $kenmerk = ''): never
+function cm_stuur_odt(array $blokken, string $bestandsnaam, string $auteur = '', string $kenmerk = '', bool $blad = false): never
 {
-    $odt = cm_odt($blokken, $auteur, $kenmerk);
+    $odt = cm_odt($blokken, $auteur, $kenmerk, $blad);
 
     // Een site of host kan al een outputbuffer hebben lopen; die hoort niet in het bestand.
     while (ob_get_level() > 0) {
