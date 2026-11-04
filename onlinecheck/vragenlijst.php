@@ -55,16 +55,15 @@ function oc_vragenlijst(callable $nr): array
 
         ['vraagblok', [
             'nr' => '2',
-            'vraag' => 'Voldoet het kanaal aan de ' . cm_odt_link('platformkaders', OC_KADERS_URL) . '?' . $ruim
-                . $keuze('ja', 'Ja') . $keuze('nee', 'Nee'),
-            'noten' => ['Voldoet het niet, beantwoord dan a tot en met d.'],
+            'vraag' => 'Voldoet het kanaal aan de ' . cm_odt_link('platformkaders', OC_KADERS_URL) . '?',
+            'noten' => [$keuze('ja', 'Ja') . $ruim . $keuze('nee', 'Nee'), 'Voldoet het niet, beantwoord dan a tot en met d.'],
             'tabel' => [
                 'kop' => ['Vraag', 'Uitleg'],
                 'rijen' => array_map(static fn (string $vraag, string $key): array => [$vraag, cm_odt_veld('vak', $key,
-                    OC_VELDBREEDTE, 3.4)], array_values(OC_UITLEG), array_keys(OC_UITLEG)),
+                    OC_VELDBREEDTE, 3.25)], array_values(OC_UITLEG), array_keys(OC_UITLEG)),
                 'breedtes' => OC_KOLOMBREEDTES,
                 'voor' => ['a', 'b', 'c', 'd'],
-                'hoogte' => 3.6,
+                'hoogte' => 3.45,
             ],
         ]],
 
