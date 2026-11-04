@@ -61,8 +61,7 @@ kanalenscan. Hij gebruikt:
 - `risicos`: als bijlage in het document
 
 Waarom een platform altijd uitleg vraagt, staat kort in `OC_GRONDEN` in
-`afleiding.php`, en nog korter voor het A4 in `OC_GRONDEN_KORT` in
-`vragenlijst.php`. Loop die na bij de jaarlijkse herziening.
+`afleiding.php`. Loop die na bij de jaarlijkse herziening.
 
 ## Sleutels
 
@@ -79,11 +78,11 @@ voor wie op papier of in Word wil werken. De motor maakt hem niet uit de
 secties: met `'vragenlijst_blad' => true` in de definitie neemt hij het blad
 uit `oc_vragenlijst()` over, zonder titelpagina en inhoudsopgave.
 
-Op het blad staat eerst het kanaal: platform en accountnaam als tekst. Dan een
-tabel met per platform of uitleg altijd nodig is, of dienstverlening en veilig
-contact mogen, en waarom; het basiskanaal staat bovenaan. Daaronder de
-voorwaarden als korte zinnen waar ja goed is, de uitkomst met de regel in één
-zin, en de vier vragen van de uitleg onder elkaar. Verandert `oc_evalueer()`, loop dan ook `vragenlijst.php` na. Komt er
+Op het blad staat eerst het kanaal: platform en accountnaam als tekst. Dan de
+voorwaarden als korte zinnen waar ja goed is, met als eerste dat het platform
+in beginsel inzetbaar is. Op social.overheid.nl sla je ze over. Daaronder de
+uitkomst met de regel in één zin, en de vier vragen van de uitleg onder elkaar.
+Verandert `oc_evalueer()`, loop dan ook `vragenlijst.php` na. Komt er
 een platform bij, kijk dan of het blad nog op één pagina past.
 
 ## regels.js

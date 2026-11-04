@@ -22,8 +22,8 @@ return [
             'De check toetst alleen wat het kader eist: het platform en drie voorwaarden. Advies over doelen en '
                 . 'doelgroep geeft hij niet.',
             'social.overheid.nl is het basiskanaal. Daar mag alles, dus daar gelden geen voorwaarden.',
-            'De check is er ook als .odt op één A4: ‘Pas toe of leg uit - social media’. Daarop staat per platform wat '
-                . 'het kader eist, en onderaan dat het formulier naar de bestuursraad gaat.',
+            'De check is er ook als .odt op één A4: ‘Pas toe of leg uit - social media’. Onderaan staat dat het '
+                . 'formulier naar de bestuursraad gaat.',
             'De kanalenscan blijft, voor een grondige toets en voor starten en stoppen op een platform.',
         ],
     ],
