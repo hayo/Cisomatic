@@ -18,6 +18,9 @@ const CM_ODT_NS = 'xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.
     . 'xmlns:svg="urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0" '
     . 'xmlns:meta="urn:oasis:names:tc:opendocument:xmlns:meta:1.0" '
     . 'xmlns:draw="urn:oasis:names:tc:opendocument:xmlns:drawing:1.0" '
+    . 'xmlns:form="urn:oasis:names:tc:opendocument:xmlns:form:1.0" '
+    // Nodig voor invulvelden: form:control-implementation verwijst naar ooo:.
+    . 'xmlns:ooo="http://openoffice.org/2004/office" '
     . 'xmlns:xlink="http://www.w3.org/1999/xlink" '
     . 'xmlns:dc="http://purl.org/dc/elements/1.1/" office:version="1.2"';
 
@@ -291,6 +294,8 @@ function cm_odt(array $blokken, string $auteur = '', string $kenmerk = '', bool 
         $body = substr_replace($body, cm_odt_inhoud($inhoud), $plek, 0);
     }
 
+    [$body, $velden] = cm_odt_velden($body);
+
     $maten = $blad ? CM_ODT_BLADMATEN : [];
     $inhoudstijlen = strtr(strtr(CM_ODT_INHOUDSTIJLEN, $maten), $huisstijl['tokens']) . ($blad ? CM_ODT_BLADSTIJLEN : '');
 
@@ -307,9 +312,9 @@ function cm_odt(array $blokken, string $auteur = '', string $kenmerk = '', bool 
 
     $content = '<?xml version="1.0" encoding="UTF-8"?>' . "\n"
         . '<office:document-content ' . CM_ODT_NS . '>' . $huisstijl['decls']
-        . '<office:automatic-styles>' . $inhoudstijlen . $kolomstijlen
+        . '<office:automatic-styles>' . $inhoudstijlen . $kolomstijlen . ($velden === '' ? '' : CM_ODT_VELDSTIJL)
         . '</office:automatic-styles>'
-        . '<office:body><office:text>' . $body . '</office:text></office:body>'
+        . '<office:body><office:text>' . $velden . $body . '</office:text></office:body>'
         . '</office:document-content>';
 
     $extra = $huisstijl['bestanden'] + ($logo === null ? [] : [$logo['pad'] => [$logo['mime'], $logo['data']]]);
@@ -526,6 +531,61 @@ function cm_odt_tekst(string $tekst): string
     $tekst = (string) preg_replace('/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/', '', $tekst);
 
     return htmlspecialchars($tekst, ENT_XML1 | ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+}
+
+/**
+ * Een invulveld in een tekst, zoals in een vraagblok: 'tekst' (één regel),
+ * 'vak' (meer regels) of 'keuze' (een rondje met een label; keuzes met
+ * dezelfde naam sluiten elkaar uit). Breedte en hoogte in cm. De naam is de
+ * sleutel van de vraag. cm_odt() maakt er een formulierveld van, dat je in
+ * LibreOffice kunt invullen.
+ *
+ * @param array{label?:string,waarde?:string} $opties
+ */
+function cm_odt_veld(string $soort, string $naam, float $breedte, float $hoogte = 0.5, array $opties = []): string
+{
+    return "\u{E000}" . base64_encode((string) json_encode(['soort' => $soort, 'naam' => $naam,
+        'breedte' => $breedte, 'hoogte' => $hoogte] + $opties)) . "\u{E001}";
+}
+
+// De opmaak van een invulveld: in de regel, midden op de tekst.
+const CM_ODT_VELDSTIJL = '<style:style style:name="Veld" style:family="graphic"><style:graphic-properties '
+    . 'style:vertical-pos="middle" style:vertical-rel="text" fo:margin-left="0.05cm" fo:margin-right="0.05cm"/>'
+    . '</style:style>';
+
+/**
+ * Zet de invulvelden van cm_odt_veld() om. Geeft de tekst terug met de velden
+ * erin, en het formulier dat bovenaan de tekst hoort (leeg zonder velden).
+ *
+ * @return array{0:string,1:string}
+ */
+function cm_odt_velden(string $body): array
+{
+    $controls = '';
+    $n = 0;
+    $body = (string) preg_replace_callback('/\x{E000}([A-Za-z0-9+\/=]+)\x{E001}/u', static function (array $m) use (&$controls, &$n): string {
+        $v = json_decode((string) base64_decode($m[1]), true);
+        $id = 'veld' . ++$n;
+        $naam = cm_odt_tekst((string) $v['naam']);
+        $kenmerk = ' form:name="' . $naam . '" form:id="' . $id . '" xml:id="' . $id . '"';
+        $controls .= match ($v['soort']) {
+            'vak' => '<form:textarea' . $kenmerk . ' form:control-implementation="ooo:com.sun.star.form.component.TextField">'
+                . '<form:properties><form:property form:property-name="MultiLine" office:value-type="boolean" '
+                . 'office:boolean-value="true"/></form:properties></form:textarea>',
+            'keuze' => '<form:radio' . $kenmerk . ' form:control-implementation="ooo:com.sun.star.form.component.RadioButton"'
+                . ' form:label="' . cm_odt_tekst((string) ($v['label'] ?? '')) . '" form:value="'
+                . cm_odt_tekst((string) ($v['waarde'] ?? '')) . '"/>',
+            default => '<form:text' . $kenmerk . ' form:control-implementation="ooo:com.sun.star.form.component.TextField"/>',
+        };
+
+        return '<draw:control text:anchor-type="as-char" draw:z-index="' . $n . '" draw:style-name="Veld" svg:width="'
+            . sprintf('%.2Fcm', (float) $v['breedte']) . '" svg:height="' . sprintf('%.2Fcm', (float) $v['hoogte'])
+            . '" draw:control="' . $id . '"/>';
+    }, $body);
+
+    return [$body, $controls === '' ? '' : '<office:forms form:automatic-focus="false" form:apply-design-mode="false">'
+        . '<form:form form:name="Formulier" form:control-implementation="ooo:com.sun.star.form.component.Form">'
+        . $controls . '</form:form></office:forms>'];
 }
 
 /** @param list<string> $items */

@@ -78,12 +78,11 @@ voor wie op papier of in Word wil werken. De motor maakt hem niet uit de
 secties: met `'vragenlijst_blad' => true` in de definitie neemt hij het blad
 uit `oc_vragenlijst()` over, zonder titelpagina en inhoudsopgave.
 
-Op het blad staat eerst het kanaal: platform en accountnaam als tekst. Dan de
-voorwaarden als korte zinnen waar ja goed is, met als eerste dat het platform
-in beginsel inzetbaar is. Op social.overheid.nl sla je ze over. Daaronder de
-uitkomst met de regel in één zin, en de vier vragen van de uitleg onder elkaar.
-Verandert `oc_evalueer()`, loop dan ook `vragenlijst.php` na. Komt er
-een platform bij, kijk dan of het blad nog op één pagina past.
+Op het blad staan drie dingen: het kanaal (platform en accountnaam), of het
+kanaal voldoet (ja of nee), en de vier vragen van de uitleg onder elkaar. Het
+is invulbaar: elk antwoord is een formulierveld (`cm_odt_veld()`), met de
+sleutel van het formulier als naam. Dat werkt in LibreOffice; Word kent die
+velden niet goed.
 
 ## regels.js
 

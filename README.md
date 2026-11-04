@@ -463,6 +463,12 @@ titelpagina en geen inhoudsopgave, en de vraagblokken staan dichter op elkaar,
 met kleinere letters. De link boven het formulier noemt het dan de check op één
 A4. De Online communicatie check doet dat.
 
+Zo'n blad kan invulvelden hebben. `cm_odt_veld()` zet een veld in een tekst:
+`tekst` (één regel), `vak` (meer regels) of `keuze` (een rondje; keuzes met
+dezelfde naam sluiten elkaar uit). Geef de sleutel van de vraag als naam. Het
+`.odt`-bestand krijgt dan echte formuliervelden, die je in LibreOffice invult.
+Word kent die velden niet goed.
+
 Een uitkomstblok zonder aanvulling slaat de vragenlijst over: wat het formulier
 uitrekent, staat in het document. De kanalenscan, de AI-scan, de DPIA en het
 CIO-oordeel vullen aan. De vragenlijst wordt niet ingelezen: wie het document

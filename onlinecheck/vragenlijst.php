@@ -5,13 +5,10 @@
  * niet uit de secties, zoals bij de andere formulieren, maar neemt dit blad
  * over ('vragenlijst_blad' in de definitie). Zo past alles op één pagina:
  * - het kanaal: platform en accountnaam
- * - de voorwaarden, als zinnen waar ja goed is, met als eerste het platform.
- *   Niet op het basiskanaal
- * - de uitkomst, met de regel in één zin, en bij uitleg de vier vragen uit de
- *   notitie
- *
- * De platforms komen uit ../socialemedia/kaders.php. De rekenregel
- * staat hier in woorden. Verandert oc_evalueer(), loop dan ook dit bestand na.
+ * - voldoet het kanaal: ja of nee
+ * - de vier vragen van de uitleg uit de notitie
+ * Alles is in te vullen in LibreOffice: de velden hebben de sleutels van het
+ * formulier als naam.
  */
 
 declare(strict_types=1);
@@ -22,12 +19,10 @@ declare(strict_types=1);
  */
 function oc_vragenlijst(callable $nr): array
 {
-    $kaders = sm_kaders();
-    // De platforms die in beginsel inzetbaar zijn, behalve het basiskanaal: daar gelden de voorwaarden niet.
-    $inzetbaar = array_values(array_map(static fn (array $k): string => $k['naam'], array_filter($kaders,
-        static fn (array $k): bool => empty($k['explain']) && !oc_basis($k))));
     $ruim = "\u{00A0}\u{00A0}\u{00A0}\u{00A0}";
-    $hokjes = static fn (array $labels): string => implode($ruim, array_map(static fn (string $l): string => '☐ ' . $l, $labels));
+    $veld = static fn (string $naam, float $breedte): string => cm_odt_veld('tekst', $naam, $breedte);
+    $keuze = static fn (string $waarde, string $label): string => cm_odt_veld('keuze', 'oc_voldoet', 1.6, 0.5,
+        ['label' => $label, 'waarde' => $waarde]);
 
     return ['blad' => [
         ['h1', OC_TITEL],
@@ -38,40 +33,24 @@ function oc_vragenlijst(callable $nr): array
             'nr' => '1',
             'vraag' => 'Het kanaal',
             'keuzes' => [
-                ['los' => true, 'Platform en accountnaam:'],
-                ['los' => true, 'Organisatie:' . str_repeat("\u{00A0}", 80) . 'Datum:'],
-                ['los' => true, 'Ingevuld door:' . str_repeat("\u{00A0}", 50) . 'Vastgesteld door (directeur Communicatie):'],
+                ['los' => true, 'Platform en accountnaam: ' . $veld('projectnaam', 11.8)],
+                ['los' => true, 'Organisatie: ' . $veld('organisatieonderdeel', 8.4) . $ruim . 'Datum: ' . $veld('datum', 4.2)],
+                ['los' => true, 'Ingevuld door: ' . $veld('aanvrager', 5.2) . $ruim . 'Vastgesteld door: '
+                    . $veld('sm_directeur', 5.2)],
             ],
         ]],
 
         ['vraagblok', [
             'nr' => '2',
-            'vraag' => 'Voorwaarden',
-            'bijzin' => 'kies per regel',
-            'noten' => ['Sla dit over bij social.overheid.nl, het basiskanaal. Daar mag alles.'],
-            'keuzes' => [
-                ['los' => true, $hokjes(['Ja', 'Nee']) . $ruim . 'Het platform is ' . implode(', ', array_slice($inzetbaar, 0, -1)) . ' of ' . end($inzetbaar) . '. '
-                    . 'Facebook, X, TikTok en andere platforms voldoen nooit.'],
-                ['los' => true, $hokjes(['Ja', 'Nee']) . $ruim . 'Geen dienstverlening of veilig contact.'],
-                ['los' => true, $hokjes(['Ja', 'Nee']) . $ruim . 'Alles staat ook op een eigen kanaal van de overheid.'],
-                ['los' => true, $hokjes(['Ja', 'Nee']) . $ruim . 'Mensen worden gewezen op de risico’s van contact, en '
-                    . 'doorverwezen.'],
-            ],
-        ]],
-
-        ['vraagblok', [
-            'nr' => '3',
-            'vraag' => 'Voldoet het kanaal?' . $ruim . $hokjes(array_column(OC_UITKOMSTEN, 'label')),
-            'noten' => [
-                'Het kanaal voldoet op social.overheid.nl, of als bij 2 alles ja is. Voldoet het niet, beantwoord dan a '
-                    . 'tot en met d.',
-            ],
+            'vraag' => 'Voldoet het kanaal?' . $ruim . $keuze('ja', 'Ja') . $keuze('nee', 'Nee'),
+            'noten' => ['Voldoet het niet, beantwoord dan a tot en met d.'],
             'tabel' => [
                 'kop' => ['Vraag', 'Uitleg'],
-                'rijen' => array_map(static fn (string $vraag): array => [$vraag, ''], array_values(OC_UITLEG)),
+                'rijen' => array_map(static fn (string $vraag, string $key): array => [$vraag, cm_odt_veld('vak', $key,
+                    10.7, 3.4)], array_values(OC_UITLEG), array_keys(OC_UITLEG)),
                 'breedtes' => [4.4, 11.0],
                 'voor' => ['a', 'b', 'c', 'd'],
-                'hoogte' => 2.7,
+                'hoogte' => 3.6,
             ],
         ]],
 
