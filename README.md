@@ -129,19 +129,18 @@ Een site kan de losse pagina opvragen met `/standalone` achter het adres. De
 voordeur zet dat staartje dan ook achter elk formulier.
 
 De code is in deze repo en in de site gelijk. Deze repo is de bron. Na elke
-push naar `main` zet de GitHub Action `naar-codeberg.yml` de map ook in de repo
-van de site op Codeberg, met `git subtree`. Het werk zelf doet
-`.github/naar-codeberg.sh`, dat ook lokaal draait. Zo zet je het aan:
+push naar `main` zet de GitHub Action `naar-site.yml` de map ook in de repo
+van de site, met `git subtree`. Het werk zelf doet
+`.github/naar-site.sh`, dat ook lokaal draait. Zo zet je het aan:
 
-1. Maak op Codeberg een token met schrijfrechten op repositories, onder
-   Instellingen, Applicaties.
+1. Maak op GitHub een fine-grained token voor alleen de repo van de site, met
+   Contents op lezen en schrijven. Het token van Wassenaar Aanzien kan ook.
 2. Zet dat op GitHub onder Settings, Secrets and variables, Actions, als geheim
-   `CODEBERG_TOKEN`.
-3. Optioneel, als variabelen op dezelfde plek: `CODEBERG_REPO` (standaard
-   `hayo/codeberg-hayobethlehem.nl`), `CODEBERG_PAD` (standaard
-   `hb2025/content/forge/cisomatic`), `CODEBERG_TAK` (standaard de
-   standaardbranch) en `CODEBERG_GEBRUIKER`, als de repo bij een organisatie
-   hoort. Zonder het geheim slaat de Action zichzelf over.
+   `SITE_TOKEN`.
+3. Optioneel, als variabelen op dezelfde plek: `SITE_REPO` (standaard
+   `hayo/hayobethlehem.nl`), `SITE_PAD` (standaard
+   `hb2025/content/forge/cisomatic`) en `SITE_TAK` (standaard de
+   standaardbranch). Zonder het geheim slaat de Action zichzelf over.
 4. Start de Action één keer met de hand, onder Actions, met "eerste keer" aan.
    Die vervangt de map op de site door een subtree. Wat alleen daar in die map
    stond, valt weg.

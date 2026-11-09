@@ -14,6 +14,13 @@ declare(strict_types=1);
 
 return [
     [
+        'versie' => '1.3.2',
+        'datum' => '2026-11-09',
+        'wijzigingen' => [
+            'Achter de schermen: updates gaan nu via GitHub naar de site. Voor de formulieren verandert er niets.',
+        ],
+    ],
+    [
         'versie' => '1.3.1',
         'datum' => '2026-11-03',
         'wijzigingen' => [
