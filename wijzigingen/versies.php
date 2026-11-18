@@ -14,6 +14,15 @@ declare(strict_types=1);
 
 return [
     [
+        'versie' => '1.3.3',
+        'datum' => '2026-11-18',
+        'wijzigingen' => [
+            'Op de pagina van een dossier download je nu alle documenten. Dat kan per document, of alles samen in '
+                . 'één zip, met het projectbestand erbij.',
+            'Is een document verouderd? Dan maakt de download het opnieuw, met de antwoorden van nu.',
+        ],
+    ],
+    [
         'versie' => '1.3.2',
         'datum' => '2026-11-18',
         'wijzigingen' => [

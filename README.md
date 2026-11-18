@@ -373,6 +373,14 @@ de fase `start` en de quickscan van dat normenkader. Een formulier opent dan met
   antwoord als "nog niet uitgezocht" of "weet ik niet" (`niet_gekeken`,
   `onbekend`, `weet_niet`, `twijfel`) is een open punt, met een link naar de
   vraag.
+- **Downloaden.** Bovenaan het dossier download je elk document apart, het
+  projectbestand, of alles samen in één zip. Een document maakt de server
+  opnieuw uit de antwoorden in het dossier: `dossier.js` stuurt ze met `fetch`
+  naar het formulier, net als de downloadknop op de resultaatpagina. Het
+  kenmerk komt terug in de kop `X-Cisomatic-Kenmerk`. Een verouderd document is
+  daarna weer bij. Ontbreekt er een antwoord, dan geeft de server geen document,
+  en noemt het dossier dat formulier. De zip maakt de browser zelf, zonder
+  compressie, want een `.odt` is al een zip.
 
 Alle dossiers staan in `localStorage`, onder `cisomatic-dossiers`. Het
 projectbestand is het dossier als JSON, met `"soort": "dossier"`. De voordeur

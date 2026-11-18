@@ -6,6 +6,7 @@
  * - een antwoord dat in meer formulieren staat, geldt in het hele dossier
  * - wijzigt zo'n antwoord nadat een document gemaakt is, dan is dat document verouderd
  * - per formulier zie je hoe ver het is, en wat er nog uitgezocht moet worden
+ * - je downloadt elk document apart, het projectbestand, of alles in één zip
  *
  * Alle dossiers staan in localStorage, onder één sleutel. Er gaat niets naar
  * de server. Het projectbestand is het dossier als JSON; de voordeur laadt het
@@ -627,6 +628,7 @@
             el('p', { id: 'dossier-stand', tekst: standZin(stand) })
         ]));
 
+        pagina.appendChild(tekenDownloaden(dossier, lijst));
         pagina.appendChild(tekenNormenkader(dossier));
         pagina.appendChild(el('h3', { tekst: 'Formulieren' }));
 
@@ -772,20 +774,6 @@
     function tekenProjectbestand(dossier) {
         var melding = el('p', { 'data-dossier-melding': true, hidden: true });
 
-        var download = el('button', { type: 'button', tekst: 'Download het projectbestand' });
-        download.addEventListener('click', function () {
-            var vers = lees(dossier.id);
-            var data = Object.assign({ soort: 'dossier', formaat: 1, opgeslagen_op: nu() }, vers);
-            var link = el('a', {
-                href: URL.createObjectURL(new Blob([JSON.stringify(data, null, 2)], { type: 'application/json;charset=utf-8' })),
-                download: new Date().toISOString().slice(0, 10) + '_dossier_' + slug(vers.naam) + '.json'
-            });
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            URL.revokeObjectURL(link.href);
-        });
-
         var invoer = el('input', { type: 'file', id: 'dossier-antwoordbestand', accept: 'application/json,.json' });
         invoer.addEventListener('change', function () {
             leesBestand(invoer, function (data) {
@@ -802,10 +790,7 @@
         });
 
         return el('section', { class: 'dossier-bestand' }, [
-            el('h3', { tekst: 'Projectbestand' }),
-            el('p', { tekst: 'Het projectbestand is het hele dossier in één bestand: alle antwoorden, en welke '
-                + 'documenten er zijn. Bewaar het, of geef het door. Op de voordeur laad je het weer in.' }),
-            el('p', {}, [download]),
+            el('h3', { tekst: 'Bestanden toevoegen' }),
             el('label', { for: 'dossier-antwoordbestand', tekst: 'Het antwoordbestand van één formulier toevoegen' }),
             el('p', { class: 'hint', tekst: 'Bijvoorbeeld een DPIA die iemand anders al maakte. Je browser leest het '
                 + 'bestand zelf, dus er gaat niets naar de server.' }),
@@ -813,6 +798,241 @@
             melding,
             el('p', {}, [wis])
         ]);
+    }
+
+    // ----------------------------------------------------------- downloaden
+
+    /**
+     * Bovenaan het dossier: alles in één zip, het projectbestand, en een
+     * lijst van de documenten. Elk document maakt de server opnieuw uit de
+     * antwoorden in het dossier, net als de knop op de resultaatpagina.
+     */
+    function tekenDownloaden(dossier, lijst) {
+        var met = lijst.filter(function (f) { return dossier.documenten[f] && meta[f]; });
+        var melding = el('p', { 'data-download-melding': true, hidden: true });
+
+        var alles = el('button', { type: 'button', tekst: met.length
+            ? 'Download alles (.zip)' : 'Download het projectbestand (.zip)' });
+        alles.addEventListener('click', function () {
+            var vers = lees(dossier.id);
+            var stukken = [];
+            var mislukt = [];
+
+            alles.disabled = true;
+            melding.hidden = true;
+
+            var keten = met.reduce(function (vorige, f, i) {
+                return vorige.then(function () {
+                    alles.textContent = 'Bezig: document ' + (i + 1) + ' van ' + met.length + '…';
+                    return haalDocument(vers, f).then(function (stuk) { stukken.push(stuk); }, function () {
+                        mislukt.push(titelVan(vers, f));
+                    });
+                });
+            }, Promise.resolve());
+
+            keten.then(function () {
+                var bestanden = stukken.map(function (stuk) { return { naam: stuk.naam, inhoud: stuk.inhoud }; });
+                bestanden.push({ naam: projectbestandNaam(vers), inhoud: new TextEncoder().encode(projectbestand(vers)) });
+                bewaarAls(zip(bestanden), datumNu() + '_dossier_' + slug(vers.naam) + '.zip');
+                werkDocumentenBij(dossier.id, stukken);
+                // Na het hertekenen staat de melding op een nieuwe plek.
+                if (mislukt.length) { toon(artikel.querySelector('[data-download-melding]'), nietGelukt(mislukt), true); }
+            }).finally(function () {
+                alles.disabled = false;
+                alles.textContent = 'Download alles (.zip)';
+            });
+        });
+
+        var project = el('button', { type: 'button', tekst: 'Download het projectbestand' });
+        project.addEventListener('click', function () {
+            var vers = lees(dossier.id);
+            bewaarAls(new Blob([projectbestand(vers)], { type: 'application/json;charset=utf-8' }),
+                projectbestandNaam(vers));
+        });
+
+        var ul = el('ul', { class: 'dossier-documenten' });
+        met.forEach(function (f) {
+            var doc = dossier.documenten[f];
+            ul.appendChild(el('li', {}, [
+                knopDocument(dossier.id, f, titelVan(dossier, f)),
+                ' ',
+                el('span', { tekst: doc.verouderd ? 'verouderd, wordt opnieuw gemaakt'
+                    : 'gemaakt op ' + datum(doc.gemaakt_op) })
+            ]));
+        });
+
+        return el('section', { class: 'dossier-downloaden' }, [
+            el('h3', { tekst: 'Downloaden' }),
+            el('p', { tekst: met.length
+                ? 'Alles is de documenten en het projectbestand samen in één zip. Het projectbestand is het hele '
+                    + 'dossier in één bestand. Bewaar het, of geef het door. Op de voordeur laad je het weer in.'
+                : 'Er zijn nog geen documenten. Het projectbestand is het hele dossier in één bestand. Bewaar het, '
+                    + 'of geef het door. Op de voordeur laad je het weer in.' }),
+            el('p', {}, [met.length ? alles : null, project]),
+            met.length ? ul : null,
+            melding
+        ]);
+    }
+
+    /** Een knop die één document downloadt. */
+    function knopDocument(id, f, label) {
+        var knop = el('button', { type: 'button', class: 'dossier-download', tekst: label });
+
+        knop.addEventListener('click', function () {
+            var vers = lees(id);
+            var melding = artikel.querySelector('[data-download-melding]');
+
+            knop.disabled = true;
+            knop.textContent = 'Bezig…';
+
+            haalDocument(vers, f).then(function (stuk) {
+                bewaarAls(new Blob([stuk.inhoud], { type: 'application/vnd.oasis.opendocument.text' }), stuk.naam);
+                werkDocumentenBij(id, [stuk]);
+            }, function () {
+                toon(melding, nietGelukt([titelVan(vers, f)]), true);
+                melding.scrollIntoView({ block: 'nearest' });
+            }).finally(function () {
+                knop.disabled = false;
+                knop.textContent = label;
+            });
+        });
+
+        return knop;
+    }
+
+    function nietGelukt(titels) {
+        return (titels.length === 1 ? 'Het document van de ' + titels[0] + ' kon niet worden gemaakt.'
+            : 'Deze documenten konden niet worden gemaakt: ' + titels.join(', ') + '.')
+            + ' Meestal ontbreekt er een antwoord. Open het formulier, en maak het document daar.';
+    }
+
+    /**
+     * Laat de server het document maken, zoals de downloadknop op de
+     * resultaatpagina. Geeft de naam, de inhoud en het kenmerk terug. Komt er
+     * geen document, dan ontbreekt er iets, en is de belofte afgewezen.
+     */
+    function haalDocument(dossier, f) {
+        var data = new FormData();
+        data.append('uitvoer', 'odt');
+        data.append('antwoorden', JSON.stringify(dossier.antwoorden[f] || {}));
+
+        return fetch(meta[f].href, { method: 'POST', body: data, credentials: 'same-origin' }).then(function (antwoord) {
+            var soort = antwoord.headers.get('Content-Type') || '';
+            if (!antwoord.ok || soort.indexOf('opendocument') === -1) { throw new Error(f); }
+
+            var naam = /filename="([^"]+)"/.exec(antwoord.headers.get('Content-Disposition') || '');
+
+            return antwoord.arrayBuffer().then(function (buffer) {
+                return {
+                    f: f,
+                    naam: naam ? naam[1] : datumNu() + '_' + f + '_' + slug(dossier.naam) + '.odt',
+                    kenmerk: antwoord.headers.get('X-Cisomatic-Kenmerk') || '',
+                    inhoud: new Uint8Array(buffer)
+                };
+            });
+        });
+    }
+
+    /** Een document dat net opnieuw gemaakt is, is niet meer verouderd. */
+    function werkDocumentenBij(id, stukken) {
+        var vers = lees(id);
+        if (!vers || !stukken.length) { return; }
+
+        stukken.forEach(function (stuk) {
+            vers.documenten[stuk.f] = {
+                kenmerk: stuk.kenmerk || (vers.documenten[stuk.f] || {}).kenmerk || '',
+                gemaakt_op: nu(),
+                verouderd: false
+            };
+        });
+
+        bewaar(vers);
+        teken();
+    }
+
+    function projectbestand(dossier) {
+        return JSON.stringify(Object.assign({ soort: 'dossier', formaat: 1, opgeslagen_op: nu() }, dossier), null, 2);
+    }
+
+    function projectbestandNaam(dossier) {
+        return datumNu() + '_dossier_' + slug(dossier.naam) + '.json';
+    }
+
+    function datumNu() {
+        return new Date().toISOString().slice(0, 10);
+    }
+
+    function bewaarAls(blob, naam) {
+        var link = el('a', { href: URL.createObjectURL(blob), download: naam });
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        setTimeout(function () { URL.revokeObjectURL(link.href); }, 1000);
+    }
+
+    var CRC_TABEL = (function () {
+        var tabel = [];
+        for (var n = 0; n < 256; n++) {
+            var c = n;
+            for (var k = 0; k < 8; k++) { c = c & 1 ? 0xEDB88320 ^ (c >>> 1) : c >>> 1; }
+            tabel[n] = c >>> 0;
+        }
+        return tabel;
+    }());
+
+    function crc32(bytes) {
+        var c = 0xFFFFFFFF;
+        for (var i = 0; i < bytes.length; i++) { c = CRC_TABEL[(c ^ bytes[i]) & 0xFF] ^ (c >>> 8); }
+        return (c ^ 0xFFFFFFFF) >>> 0;
+    }
+
+    /**
+     * Een zip zonder compressie. De documenten zijn zelf al een zip, dus
+     * inpakken levert bijna niets op. Spiegelt het idee van cm_zip().
+     *
+     * @param {Array<{naam: string, inhoud: Uint8Array}>} bestanden
+     */
+    function zip(bestanden) {
+        var tekst = new TextEncoder();
+        var moment = new Date();
+        var tijd = (moment.getHours() << 11) | (moment.getMinutes() << 5) | (moment.getSeconds() >> 1);
+        var dag = ((moment.getFullYear() - 1980) << 9) | ((moment.getMonth() + 1) << 5) | moment.getDate();
+        var delen = [];
+        var centraal = [];
+        var plek = 0;
+        var grootte = 0;
+
+        bestanden.forEach(function (bestand) {
+            var naam = tekst.encode(bestand.naam);
+            var crc = crc32(bestand.inhoud);
+            var lengte = bestand.inhoud.length;
+            var kop = new DataView(new ArrayBuffer(30));
+            var regel = new DataView(new ArrayBuffer(46));
+
+            // Bit 11 van de vlaggen: de naam is UTF-8.
+            [[0, 0x04034b50, 4], [4, 20, 2], [6, 0x0800, 2], [10, tijd, 2], [12, dag, 2], [14, crc, 4],
+                [18, lengte, 4], [22, lengte, 4], [26, naam.length, 2]].forEach(function (v) {
+                if (v[2] === 4) { kop.setUint32(v[0], v[1], true); } else { kop.setUint16(v[0], v[1], true); }
+            });
+            [[0, 0x02014b50, 4], [4, 20, 2], [6, 20, 2], [8, 0x0800, 2], [12, tijd, 2], [14, dag, 2], [16, crc, 4],
+                [20, lengte, 4], [24, lengte, 4], [28, naam.length, 2], [42, plek, 4]].forEach(function (v) {
+                if (v[2] === 4) { regel.setUint32(v[0], v[1], true); } else { regel.setUint16(v[0], v[1], true); }
+            });
+
+            delen.push(kop.buffer, naam, bestand.inhoud);
+            centraal.push(regel.buffer, naam);
+            plek += 30 + naam.length + lengte;
+            grootte += 46 + naam.length;
+        });
+
+        var eind = new DataView(new ArrayBuffer(22));
+        eind.setUint32(0, 0x06054b50, true);
+        eind.setUint16(8, bestanden.length, true);
+        eind.setUint16(10, bestanden.length, true);
+        eind.setUint32(12, grootte, true);
+        eind.setUint32(16, plek, true);
+
+        return new Blob(delen.concat(centraal, [eind.buffer]), { type: 'application/zip' });
     }
 
     function voegAntwoordbestandToe(id, data, melding) {

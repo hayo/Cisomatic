@@ -64,8 +64,8 @@ $opgemaakt = cm_blokken_naar_html($blokken);
     </p>
     <p data-acties data-zonder-dossier hidden>Bewaar de antwoorden als je later verder wilt. Op het formulier laad
        je dat bestand weer in, dan hoef je niet alles opnieuw in te vullen. Een ander formulier leest het ook in.</p>
-    <p data-met-dossier hidden>Het document staat nu in het dossier. Wil je het hele dossier bewaren of doorgeven?
-       Download dan het projectbestand op de pagina van het dossier.</p>
+    <p data-met-dossier hidden>Het document staat nu in het dossier. Op de pagina van het dossier download je alle
+       documenten en het projectbestand, apart of samen in één zip.</p>
 
     <?php if ($opgemaakt['inhoud'] !== []): ?>
         <nav aria-label="Inhoud van het <?= h($uitvoer) ?>">
