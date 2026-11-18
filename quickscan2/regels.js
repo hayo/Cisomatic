@@ -24,16 +24,23 @@
         ververs: ververs
     });
 
-    // 'Geen van deze' sluit de soorten schade uit, en andersom. In de capture-fase,
-    // zodat de motor bij deze invoer al met de juiste vinkjes rekent.
+    // 'Geen van deze' sluit de soorten schade uit, en andersom. Zo ook 'Geen gegevens'
+    // bij de soorten informatie. In de capture-fase, zodat de motor bij deze invoer al
+    // met de juiste vinkjes rekent.
     document.addEventListener('input', function (e) {
         var vakje = e.target;
-        if (vakje.name !== 'tbb_soorten[]' || !vakje.checked) { return; }
+        if ((vakje.name !== 'tbb_soorten[]' && vakje.name !== 'informatie_soorten[]') || !vakje.checked) { return; }
 
-        cm.elk(vakje.form.elements['tbb_soorten[]'], function (ander) {
+        cm.elk(vakje.form.elements[vakje.name], function (ander) {
             if (ander !== vakje && (vakje.value === 'geen' || ander.value === 'geen')) { ander.checked = false; }
         });
     }, true);
+
+    /** Spiegelt q2_geen_gegevens(). */
+    function geenGegevens(a) {
+        var soorten = a.informatie_soorten || [];
+        return soorten.length === 1 && soorten[0] === 'geen';
+    }
 
     function avgMinimum(pgCategorieen, pgBijzonder) {
         if (pgBijzonder === 'meerdere') { return 'zh'; }
@@ -71,6 +78,7 @@
             return niveau;
         }
         if (key === 'rpo') {
+            if (geenGegevens(a)) { return 'nvt'; }
             return {
                 zh: '1-uur', h: '4-uur', m: '24-uur', l: '24-uur', zl: '1-week'
             }[a.beschikbaarheid] || '';
@@ -228,6 +236,9 @@
         var ondergrens = cm.rang(uitAvg) > cm.rang(uitRubricering) ? uitAvg : uitRubricering;
         var redenen = [];
 
+        if (geenGegevens(a)) {
+            redenen.push('Het systeem bevat geen gegevens. Er valt dus niets geheim te houden.');
+        }
         if (a.rubricering) {
             redenen.push('De informatie is aangemerkt als ‘' + cm.optieLabel('rubricering', a.rubricering)
                 + '’; dat komt overeen met vertrouwelijkheid ' + LABEL[uitRubricering] + '.');
@@ -308,7 +319,7 @@
         });
         if (!bronnen.length) { bronnen.push([0, 'Geen van de soorten schade']); }
 
-        bronnen.push([
+        bronnen.push(geenGegevens(a) ? [0, 'Geen gegevens, dus geen rubricering'] : [
             { 'dep-vertrouwelijk': 4, 'stg-confidentieel': 3, 'stg-geheim': 2, 'stg-zeer-geheim': 1 }[a.rubricering] || 0,
             'Rubricering ‘' + (a.rubricering ? cm.optieLabel('rubricering', a.rubricering) : 'Niet ingevuld') + '’'
         ]);
@@ -394,6 +405,10 @@
         if (voor === 'vertrouwelijkheid') { return afgeleideVertrouwelijkheid(a).redenen.join(' '); }
         if (voor === 'dreiging') { return afgeleidDreigingsprofiel(a).redenen.join(' '); }
         if (voor === 'tbb') { return afgeleideTbb(a).redenen.join('\n'); }
+
+        if (voor === 'rpo' && geenGegevens(a) && a.rpo === 'nvt') {
+            return 'Het systeem bevat geen gegevens. Er valt dus niets terug te zetten.';
+        }
 
         if (voor === 'rpo') {
             // 'Niets' en 'Niet van toepassing' passen niet in deze zin.

@@ -209,6 +209,20 @@
 #cisomatic .dossier-erbij > label { font-weight: bold; }
 #cisomatic .dossier-erbij select { width: auto; flex: 1 1 16em; }
 
+#cisomatic .dossier-downloaden {
+    border: 0.07em solid var(--line);
+    border-radius: var(--radius);
+    padding: 0.4em 1.2em 1em;
+    margin: 0 0 1.5em;
+}
+
+#cisomatic .dossier-downloaden > p:first-of-type { font-family: var(--font-ui); color: var(--muted); }
+#cisomatic .dossier-downloaden > p > button + button { margin-left: 0.4em; }
+#cisomatic .dossier-documenten { padding-left: 0; list-style: none; font-family: var(--font-ui); }
+#cisomatic .dossier-documenten li { margin: 0.4em 0; }
+#cisomatic .dossier-documenten li > span { color: var(--muted); }
+#cisomatic .dossier-documenten button { padding: 0.3em 0.8em; }
+
 #cisomatic .dossier-bestand {
     border-top: 0.07em solid var(--line);
     padding-top: 1.2em;

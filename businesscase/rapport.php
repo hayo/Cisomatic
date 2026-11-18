@@ -3,10 +3,11 @@
 /**
  * Het document: de business case en intaketoets als blokken.
  *
- * Na de titelpagina komt het advies aan het MT, met per toets de uitkomst.
- * Daarna volgen de toetsen en het voorstel, elk een hoofdstuk, met elke vraag
- * als kop en het antwoord eronder. Aan het eind tekent het MT het besluit. Een
- * blok is [soort, inhoud]; zie ../README.md.
+ * Kort gehouden. Na de titel komt het advies aan het MT, met per toets de
+ * uitkomst. Daarna het probleem en het voorstel, en de vijf toetsen, elk als
+ * tabel met de vraag en het antwoord. Een toelichting staat in de cel van zijn
+ * vraag. Aan het eind tekent het MT het besluit. Een blok is [soort, inhoud];
+ * zie ../README.md.
  */
 
 declare(strict_types=1);
@@ -15,67 +16,88 @@ declare(strict_types=1);
 function bc_rapport(array $a, array $u): array
 {
     $naam = trim((string) ($a['projectnaam'] ?? '')) ?: 'Naamloos project';
-    $b = [...bc_rapport_inleiding($a, $u, $naam), ...bc_rapport_advies($a, $u)];
+    $secties = array_values(array_filter(cm_secties(), static fn (array $s): bool => isset($s['stap'])));
+    $toetsen = array_filter($secties, static fn (array $s): bool => isset($u['toetsen'][$s['id']]));
+    $overig = array_filter($secties, static fn (array $s): bool => !isset($u['toetsen'][$s['id']]));
 
-    foreach (cm_secties() as $sectie) {
-        if (!isset($sectie['stap'])) {
-            continue;
-        }
+    $b = [...bc_rapport_inleiding($a, $naam, $u), ...bc_rapport_advies($a, $u)];
 
-        $b[] = ['h2', ($sectie['stap'] <= 5 ? 'Toets ' . $sectie['stap'] . ': ' : '') . $sectie['titel']];
+    $b[] = ['h2', 'Probleem en voorstel'];
+    $b[] = bc_tabel(array_merge(...array_map(static fn (array $s): array => bc_rijen($s, $a, $u), $overig)));
 
-        foreach ($sectie['vragen'] as $vraag) {
-            if (cm_zichtbaar($vraag, $a)) {
-                array_push($b, ...bc_antwoord($vraag, $a, $u));
-            }
-        }
+    $b[] = ['h2', 'De vijf toetsen'];
+    foreach ($toetsen as $sectie) {
+        $toets = $u['toetsen'][$sectie['id']];
+        $b[] = ['h3', 'Toets ' . $toets['stap'] . ': ' . $toets['titel']];
+        $b[] = bc_tabel(bc_rijen($sectie, $a, $u));
+        $b[] = ['alinea', 'Uitkomst: ' . $toets['label'] . '. ' . implode(' ', $toets['redenen'])];
     }
 
-    return [...$b, ...bc_rapport_besluit($a)];
+    return [...$b, ...bc_rapport_besluit()];
 }
 
-/** Tekst uit een tekstvak als alinea's, één per regel. */
-function bc_alineas(string $tekst): array
+/** Een tabel met de vraag links en het antwoord rechts. @param list<array{0:string,1:list<string>}> $rijen */
+function bc_tabel(array $rijen): array
 {
-    return array_map(static fn (string $regel): array => ['alinea', $regel], cm_regels($tekst));
+    return ['tabel', ['rijen' => $rijen, 'breedtes' => [6, 10.6], 'rijkop' => true]];
 }
 
 /**
- * Een vraag met zijn antwoord. Een vraag met 'bij' hoort bij de vraag ervoor,
- * en krijgt geen eigen kop. Een lege optionele vraag valt weg. Een
- * uitkomstblok zegt hoe de toets uitvalt, of hoe jullie inkopen.
+ * De vragen van een sectie als rijen. Een vraag met 'bij' komt in de cel van
+ * de vraag ervoor. Een lege optionele vraag valt weg. Het uitkomstblok van een
+ * toets staat onder de tabel, dat van de inkoop als rij.
  *
- * @param array<string,mixed> $vraag
- * @return list<array<int,mixed>>
+ * @return list<array{0:string,1:list<string>}>
  */
-function bc_antwoord(array $vraag, array $a, array $u): array
+function bc_rijen(array $sectie, array $a, array $u): array
+{
+    $rijen = [];
+
+    foreach ($sectie['vragen'] as $vraag) {
+        if (!cm_zichtbaar($vraag, $a)) {
+            continue;
+        }
+
+        if ($vraag['type'] === 'afgeleid') {
+            if ($vraag['bron'] === 'inkoop') {
+                $rijen[] = [$vraag['label'], [$u['inkoop']['label'] . '.', ...$u['inkoop']['redenen']]];
+            }
+            continue;
+        }
+
+        $antwoord = bc_antwoord($vraag, $a);
+
+        if (!empty($vraag['bij']) && $rijen !== []) {
+            array_push($rijen[count($rijen) - 1][1], ...$antwoord);
+        } elseif ($antwoord !== []) {
+            $rijen[] = [$vraag['label'], $antwoord];
+        } elseif (empty($vraag['optioneel'])) {
+            $rijen[] = [$vraag['label'], ['Geen.']];
+        }
+    }
+
+    return $rijen;
+}
+
+/** Het antwoord op één vraag, als regels. @return list<string> */
+function bc_antwoord(array $vraag, array $a): array
 {
     $key = $vraag['key'];
-    $kop = empty($vraag['bij']) ? [['h4', $vraag['label']]] : [];
-    $uit = $vraag['type'] === 'afgeleid'
-        ? ($vraag['bron'] === 'inkoop' ? $u['inkoop'] : $u['toetsen'][$vraag['bron']])
-        : null;
 
     return match ($vraag['type']) {
-        'afgeleid' => [['h4', $vraag['bron'] === 'inkoop' ? $vraag['label'] : 'Uitkomst'], ['alinea', $uit['label'] . '.'],
-            ['lijst', $uit['redenen']]],
-        'radio' => [...$kop, ['alinea', cm_antwoord_tekst($key, $a) . '.']],
-        'checkbox' => [...$kop, ['lijst', array_map(
+        'radio' => ($a[$key] ?? '') === '' ? [] : [cm_antwoord_tekst($key, $a) . '.'],
+        'checkbox' => array_map(
             static fn (string $w): string => $vraag['opties'][$w]['label'],
             (array) ($a[$key] ?? [])
-        )]],
-        default => cm_regels((string) ($a[$key] ?? '')) === []
-            ? ($kop === [] || !empty($vraag['optioneel']) ? [] : [...$kop, ['alinea', 'Geen.']])
-            : [...$kop, ...bc_alineas((string) $a[$key])],
+        ),
+        default => cm_regels((string) ($a[$key] ?? '')),
     };
 }
 
-function bc_rapport_inleiding(array $a, array $u, string $naam): array
+function bc_rapport_inleiding(array $a, string $naam, array $u): array
 {
     return [
         ['h1', 'Business case en intaketoets ' . $naam],
-        ['term', 'Risico', $u['risico']['label']],
-        ['term', 'Advies', $u['risico']['advies']],
         ['term', 'Versie', $u['versie']],
         ['term', 'Datum', cm_datum_nl(new DateTimeImmutable('now'))],
         ['term', 'Opgesteld door', (string) $a['aanvrager']],
@@ -84,45 +106,38 @@ function bc_rapport_inleiding(array $a, array $u, string $naam): array
     ];
 }
 
-/** De pagina voor het MT: het risico, de toetsen, wat opvalt, en wat er daarna gebeurt. */
+/** Het advies voor het MT: het risico, de toetsen, wat opvalt, en wat er daarna gebeurt. */
 function bc_rapport_advies(array $a, array $u): array
 {
     $toetsen = array_map(
-        static fn (array $p): array => ['Toets ' . $p['stap'] . ': ' . $p['titel'], [$p['label'] . '.', ...$p['redenen']]],
+        static fn (array $p): array => ['Toets ' . $p['stap'] . ': ' . $p['titel'], $p['label']],
         array_values($u['toetsen'])
     );
 
     return [
         ['h2', 'Advies aan het MT'],
-        ['alinea', 'Dit document toetst niet of de oplossing goed is. Het toetst of het probleem belangrijk genoeg is, '
-            . 'en of een nieuw systeem nu de juiste stap is. Dat gebeurt in vijf toetsen. Het MT besluit daarna.'],
         ['term', 'Risico', $u['risico']['label']],
-        ['term', 'Voor de burger', cm_antwoord_tekst('bc_burger_merkt', $a)],
-        ['term', 'Eenmalig', (string) $a['bc_kosten_eenmalig']],
-        ['term', 'Per jaar', (string) $a['bc_kosten_jaarlijks']],
-        ['term', 'Inkoop', $u['inkoop']['label']],
         ['alinea', $u['risico']['advies']],
         ['tabel', [
-            'kop' => ['Toets', 'Uitkomst'],
-            'rijen' => $toetsen,
-            'breedtes' => [5, 11.6],
+            'rijen' => [
+                ...$toetsen,
+                ['Voor de burger', cm_antwoord_tekst('bc_burger_merkt', $a)],
+                ['Kosten', ['Eenmalig: ' . $a['bc_kosten_eenmalig'], 'Per jaar: ' . $a['bc_kosten_jaarlijks']]],
+                ['Inkoop', $u['inkoop']['label']],
+            ],
+            'breedtes' => [6, 10.6],
             'rijkop' => true,
         ]],
-        ['h3', 'Het probleem'],
-        ...bc_alineas((string) $a['bc_probleem']),
-        ['h3', 'Het voorstel'],
-        ...bc_alineas((string) $a['bc_oplossing']),
         ...($u['aandachtspunten'] === [] ? [] : [['h3', 'Aandachtspunten'], ['lijst', $u['aandachtspunten']]]),
         ['h3', 'Vervolgstappen'],
         ['genummerd', $u['vervolg']],
     ];
 }
 
-function bc_rapport_besluit(array $a): array
+function bc_rapport_besluit(): array
 {
     return [
         ['h2', 'Besluit van het MT'],
-        ['alinea', 'Het MT kiest een van de drie besluiten, en tekent hieronder.'],
         ['tabel', [
             'rijen' => [
                 ['Datum', ''],
@@ -130,7 +145,7 @@ function bc_rapport_besluit(array $a): array
                 ['Voorwaarden of toelichting', ''],
                 ['Handtekening', ''],
             ],
-            'breedtes' => [4.5, 12.1],
+            'breedtes' => [6, 10.6],
             'rijkop' => true,
         ]],
     ];

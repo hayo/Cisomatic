@@ -407,14 +407,16 @@ function q2_sectie_informatie(): array
         'stap'  => 1,
         'intro' => 'Kruis aan wat er in het systeem terecht kan komen. Ga uit van het slechtste geval: alles '
             . 'wat het systeem toelaat, gebeurt ook. Bij een raamcontract telt ook mee wat er later onder dat '
-            . 'contract komt.',
+            . 'contract komt. Komen er helemaal geen gegevens in? Kies dan "geen gegevens". De vragen over '
+            . 'gevoeligheid, privacy en archief vallen dan weg.',
         'vragen' => [
             [
                 'key' => 'informatie_soorten',
                 'type' => 'checkbox',
                 'label' => 'Welke soorten informatie worden verwerkt?',
                 'hint' => 'Kruis alles aan wat erin kan komen. De tool ziet dan zelf of er persoonsgegevens bij '
-                    . 'zijn, en welke soort. Die vragen hoef je dus niet apart te beantwoorden.',
+                    . 'zijn, en welke soort. Die vragen hoef je dus niet apart te beantwoorden. ‘Geen gegevens’ '
+                    . 'kies je alleen, zonder andere vinkjes.',
                 'verplicht' => true,
                 'groepen' => q2_informatiegroepen(),
                 'opties' => q2_informatiesoorten(),
@@ -422,6 +424,7 @@ function q2_sectie_informatie(): array
             [
                 'key' => 'informatie_anders',
                 'type' => 'textarea',
+                'toon_als' => q2_met_gegevens(),
                 'label' => 'Staat er iets niet bij?',
                 'hint' => 'Eén soort per regel. Zitten er persoonsgegevens bij? Kruis dan hierboven ook "andere '
                     . 'persoonsgegevens" aan.',
@@ -437,6 +440,7 @@ function q2_sectie_informatie(): array
             [
                 'key' => 'rubricering',
                 'type' => 'radio',
+                'toon_als' => q2_met_gegevens(),
                 'label' => 'Hoe gevoelig is die informatie?',
                 'hint' => 'Kies het gevoeligste stuk dat erin kan komen. Hieruit volgt straks hoe geheim de '
                     . 'informatie moet blijven.',
@@ -532,7 +536,23 @@ function q2_informatiesoorten(): array
         }
     }
 
-    return $opties;
+    return $opties + [
+        'geen' => [
+            'label' => 'Geen gegevens',
+            'hint' => 'Het systeem slaat niets op, en er gaan geen gegevens van mensen of van de organisatie '
+                . 'doorheen. Bijvoorbeeld een rekenhulp die alles in de browser doet.',
+            'groep' => 'Geen informatie',
+        ],
+    ];
+}
+
+/**
+ * Alleen als er gegevens in het systeem komen. 'Geen gegevens' sluit de andere
+ * vinkjes uit, dus elk ander vinkje betekent: er zijn gegevens.
+ */
+function q2_met_gegevens(): array
+{
+    return ['informatie_soorten' => array_values(array_diff(array_keys(q2_informatiesoorten()), ['geen']))];
 }
 
 /** De sleutels per groep, zodat de afleiding weet wat waarbij hoort. */
@@ -817,6 +837,7 @@ function q2_sectie_archief(): array
         'id'    => 'archief',
         'titel' => 'Bewaren, vernietigen en archiveren',
         'stap' => 1,
+        'toon_als' => q2_met_gegevens(),
         'intro' => 'Wat de overheid voor haar werk maakt of krijgt, valt onder de Archiefwet 2026. Dat geldt '
             . 'voor elke vorm, dus ook voor chats, mail en gegevens in een clouddienst. Voor alles geldt een '
             . 'bewaartermijn. Daarna moet je de informatie echt vernietigen, of naar een archief brengen. Onder '

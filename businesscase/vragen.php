@@ -96,7 +96,7 @@ function bc_toets(int $stap, string $id, string $titel, string $intro, array $vr
 }
 
 /**
- * De plekken waar al een oplossing kan zijn. Toets 3 en 4 stellen ze.
+ * De plekken waar al een oplossing kan zijn. Toets 3 en 4 stellen er elk één.
  *
  * @return array<string,array{label:string,hint:string}>
  */
@@ -105,19 +105,13 @@ function bc_checks(): array
     return [
         'bc_check_eigen' => [
             'label' => 'Kan een systeem dat jullie al hebben dit?',
-            'hint' => 'Een systeem of een licentie die er al is, kan vaak meer dan je denkt. Past het deels? Kijk dan '
-                . 'of jullie de werkwijze kunnen aanpassen aan dat systeem. Kan het technisch, maar past het niet bij '
-                . 'de rest? Schrijf dat dan op.',
+            'hint' => 'Een systeem of licentie die er al is, kan vaak meer dan je denkt. Kan de werkwijze zich '
+                . 'eraan aanpassen?',
         ],
         'bc_check_rijk' => [
-            'label' => 'Is er een voorziening van het Rijk die dit doet, of komt die eraan?',
-            'hint' => 'Veel regelt het Rijk één keer voor iedereen. Denk aan de generieke digitale infrastructuur '
-                . '(GDI) van Logius, met onder meer DigiD en MijnOverheid, of aan een shared service organisatie.',
-        ],
-        'bc_check_hergebruik' => [
-            'label' => 'Heeft een andere overheid hier al een oplossing voor?',
-            'hint' => 'Die kun je soms hergebruiken. Past open source even goed? Dan heeft dat de voorkeur van het '
-                . 'Rijk. Kijk ook op developer.overheid.nl.',
+            'label' => 'Heeft het Rijk of een andere overheid hier al een oplossing voor, of komt die eraan?',
+            'hint' => 'Denk aan de voorzieningen van Logius, zoals DigiD, aan een shared service organisatie, of '
+                . 'aan open source van een andere overheid op developer.overheid.nl.',
         ],
     ];
 }
@@ -143,7 +137,7 @@ function bc_check(string $key): array
 
     return [
         bc_keuze($key, $check['label'], BC_CHECK_OPTIES, $check['hint']),
-        bc_uitleg($key . '_toelichting', 'Wat heb je bekeken? En waarom past het wel of niet?',
+        bc_uitleg($key . '_toelichting', 'Wat heb je bekeken, en waarom past het wel of niet?',
             bc_als_uitgezocht($key, BC_CHECK_OPTIES)),
     ];
 }
@@ -174,11 +168,9 @@ function bc_sectie_over(): array
     return [
         'id' => 'over',
         'titel' => 'Over dit project',
-        'intro' => 'Dit document is een advies aan het MT. Het laat zien of het project nodig is, en hoeveel risico '
-            . 'het heeft. Daarna besluit het MT of het project verder mag.',
+        'intro' => 'Dit document is een advies aan het MT: is het project nodig, en hoeveel risico heeft het?',
         'vragen' => [
-            bc_vraag('projectnaam', 'Hoe heet het project?', 'Deze naam komt overal in het document terug, en in de '
-                . 'bestandsnaam.', ['type' => 'text']),
+            bc_vraag('projectnaam', 'Hoe heet het project?', '', ['type' => 'text']),
             bc_vraag('aanvrager', 'Wie vult dit in?', 'Naam en functie.', ['type' => 'text']),
             bc_vraag('organisatieonderdeel', 'Welke afdeling vraagt het project aan?', '', ['type' => 'text']),
             bc_vraag('email', 'Op welk mailadres ben je bereikbaar?', '', [
@@ -200,65 +192,46 @@ function bc_sectie_probleem(): array
         'id' => 'probleem',
         'titel' => 'Wat is het probleem?',
         'stap' => 1,
-        'intro' => 'Beschrijf eerst het werk en wat daar misgaat. Nog niet de oplossing.',
+        'intro' => 'Beschrijf het werk en wat daar misgaat. Nog niet de oplossing.',
         'vragen' => [
-            bc_vraag('proces_omschrijving', 'Om welk werk gaat het?', 'Beschrijf het werk in gewone taal. Wat '
-                . 'gebeurt er, van begin tot eind?'),
-            bc_vraag('bc_probleem', 'Wat gaat er nu mis? En hoe weet je dat?', 'Noem feiten of cijfers, zoals '
-                . 'klachten, wachttijden, fouten of een audit.', ['hoogte' => 4]),
+            bc_vraag('proces_omschrijving', 'Om welk werk gaat het?', 'In gewone taal, van begin tot eind.'),
+            bc_vraag('bc_probleem', 'Wat gaat er nu mis? En hoe weet je dat?', 'Noem feiten, zoals klachten, '
+                . 'wachttijden, fouten of een audit.'),
             bc_keuze('bc_burger_merkt', 'Merkt de burger iets van dit project?', [
-                'direct' => [
-                    'label' => 'Ja, de burger gebruikt het zelf',
-                    'hint' => 'Bijvoorbeeld een website, een app of een formulier.',
-                ],
-                'dienst' => [
-                    'label' => 'Ja, aan onze dienstverlening',
-                    'hint' => 'Bijvoorbeeld doordat een aanvraag sneller klaar is, of doordat er minder fouten in '
-                        . 'zitten.',
-                ],
-                'indirect' => [
-                    'label' => 'Alleen indirect',
-                    'hint' => 'Het werk van de organisatie wordt beter of goedkoper. De burger merkt dat niet '
-                        . 'meteen.',
-                ],
+                'direct' => ['label' => 'Ja, de burger gebruikt het zelf'],
+                'dienst' => ['label' => 'Ja, aan onze dienstverlening'],
+                'indirect' => ['label' => 'Alleen indirect'],
                 'niet' => ['label' => 'Nee'],
-            ], 'Met de burger bedoelen we hier ook bedrijven en instellingen.'),
-            bc_vraag('bc_burger_waarde', 'Hoe helpt dit de burger?', 'Schrijf het op zoals de burger het zou '
-                . 'zeggen. Merkt de burger niets? Leg dan uit waarom het project toch nodig is.'),
+            ], 'Met de burger bedoelen we ook bedrijven en instellingen.'),
+            bc_uitleg('bc_burger_waarde', 'Hoe merkt de burger het? Of waarom is het toch nodig?'),
         ],
     ];
 }
 
 function bc_sectie_nodig(): array
 {
-    return bc_toets(1, 'nodig', 'Is het nodig, en waarom nu?', 'Niets doen is altijd een keuze. Dit project moet '
-        . 'dus beter zijn dan niets doen.', [
+    return bc_toets(1, 'nodig', 'Is het nodig, en waarom nu?', 'Niets doen is ook een keuze. Is dit project '
+        . 'beter?', [
         bc_keuze('bc_plicht', 'Is er een plicht die jullie kunnen aantonen?', [
             'ja' => ['label' => 'Ja', 'niveau' => 'l'],
             'nee' => ['label' => 'Nee', 'niveau' => 'h'],
             'niet_gekeken' => ['label' => 'Nog niet uitgezocht', 'niveau' => 'm'],
-        ], 'Bijvoorbeeld een wet, de BIO2, de Cyberbeveiligingswet of een andere bindende regel. Een bevinding uit '
-            . 'een audit of een risico voor de continuïteit telt ook.'),
-        bc_uitleg('bc_plicht_toelichting', 'Welke plicht of welk risico? Noem het artikel of de bevinding.', [
+        ], 'Een wet, de BIO2, de Cyberbeveiligingswet, een bevinding uit een audit of een risico voor de '
+            . 'continuïteit.'),
+        bc_uitleg('bc_plicht_toelichting', 'Welke? Noem het artikel of de bevinding.', [
             'toon_als' => ['bc_plicht' => ['ja']],
         ]),
         bc_keuze('bc_schade', 'Kost niets doen meer dan dit project?', [
             'ja' => ['label' => 'Ja', 'niveau' => 'l'],
             'nee' => ['label' => 'Nee', 'niveau' => 'h'],
             'niet_gekeken' => ['label' => 'Nog niet uitgezocht', 'niveau' => 'm'],
-        ], 'Vergelijk met jullie eigen schatting van de kosten. Tel ook mee wat niet in geld uit te drukken is, zoals '
-            . 'de rechten van de burger.'),
-        bc_uitleg('bc_alt_niets', 'Wat gebeurt er als jullie niets doen? En wat kost dat, en voor wie?',
+        ], 'Tel ook mee wat niet in geld uit te drukken is, zoals de rechten van de burger.'),
+        bc_uitleg('bc_alt_niets', 'Wat gebeurt er als jullie niets doen, en wat kost dat?',
             ['toon_als' => ['bc_schade' => ['ja', 'nee']]]),
         bc_keuze('bc_nu', 'Moet het nu beginnen?', [
             'ja' => ['label' => 'Ja, wachten maakt het erger', 'niveau' => 'l'],
-            'nee' => [
-                'label' => 'Nee, het kan wachten',
-                'hint' => 'Bijvoorbeeld omdat een nieuwe wet of een landelijke oplossing eraan komt.',
-                'niveau' => 'm',
-            ],
+            'nee' => ['label' => 'Nee, het kan wachten, bijvoorbeeld op een nieuwe wet', 'niveau' => 'm'],
         ]),
-        bc_uitleg('bc_waarom_nu', 'Waarom?'),
     ], [
         'l' => ['Er is een plicht, of niets doen kost meer dan het project. En het moet nu.'],
         'm' => ['Het is nog niet duidelijk of het project nodig is, of het kan wachten. Zoek uit wat niets doen kost, '
@@ -273,16 +246,15 @@ function bc_sectie_nodig(): array
 
 function bc_sectie_zonder_it(): array
 {
-    return bc_toets(2, 'zonder_it', 'Kan het zonder nieuw systeem?', 'Een systeem lost niet elk probleem op. Soms '
-        . 'zit het probleem in het werk zelf.', [
+    return bc_toets(2, 'zonder_it', 'Kan het zonder nieuw systeem?', 'Soms zit het probleem in het werk zelf.', [
         bc_keuze('bc_alt_werkwijze', 'Kan het probleem ook zonder nieuw systeem worden opgelost?', [
             'ja' => ['label' => 'Ja, en dat is genoeg', 'niveau' => 'h'],
             'deels' => ['label' => 'Deels, maar het is niet genoeg', 'niveau' => 'l'],
             'nee' => ['label' => 'Nee', 'niveau' => 'l'],
             'niet_gekeken' => ['label' => 'Nog niet uitgezocht', 'niveau' => 'm'],
-        ], 'Kijk eerst naar het werk. Is het geanalyseerd? Helpen duidelijke afspraken over wie wat beslist, een '
-            . 'andere volgorde, een training of betere controle bij de invoer?'),
-        bc_uitleg('bc_alt_werkwijze_waarom', 'Wat hebben jullie bekeken of geprobeerd? Noem ook de analyse van het werk.',
+        ], 'Denk aan afspraken over wie wat beslist, een andere volgorde, een training of betere controle bij de '
+            . 'invoer.'),
+        bc_uitleg('bc_alt_werkwijze_waarom', 'Wat hebben jullie bekeken of geprobeerd?',
             ['toon_als' => ['bc_alt_werkwijze' => ['ja', 'deels', 'nee']]]),
     ], [
         'l' => ['Een andere werkwijze lost het probleem niet op. Een systeem kan helpen.'],
@@ -297,16 +269,14 @@ function bc_sectie_zonder_it(): array
 
 function bc_sectie_bestaand(): array
 {
-    return bc_toets(3, 'bestaand', 'Wat is er al?', 'Kijk eerst wat er al is, voor je iets nieuws koopt. Zeg bij '
-        . 'elke vraag wat je hebt bekeken.', [
+    return bc_toets(3, 'bestaand', 'Wat is er al?', 'Kijk eerst wat er al is, voor je iets nieuws koopt.', [
         ...bc_check('bc_check_eigen'),
-        bc_keuze('bc_domeinarchitectuur', 'Waar staat dit in de domeinarchitectuur?', [
-            'staat' => ['label' => 'Het staat erin', 'niveau' => 'l'],
+        bc_keuze('bc_domeinarchitectuur', 'Past het in de domeinarchitectuur?', [
+            'staat' => ['label' => 'Ja, het staat erin', 'niveau' => 'l'],
             'past' => ['label' => 'Het staat er nog niet in, maar het past erin', 'niveau' => 'm'],
-            'past_niet' => ['label' => 'Het past er niet in', 'niveau' => 'h'],
+            'past_niet' => ['label' => 'Nee, het past er niet in', 'niveau' => 'h'],
             'niet_gekeken' => ['label' => 'Nog niet uitgezocht', 'niveau' => 'm'],
-        ], 'Zoek op in welk domein dit hoort, en welke bouwsteen het is. Past het bij de systemen, de gegevens en de '
-            . 'koppelingen die er al zijn?'),
+        ], 'Past het bij de systemen, de gegevens en de koppelingen die er al zijn?'),
         bc_uitleg('bc_domeinarchitectuur_toelichting', 'Welk domein en welke bouwsteen? Of waarom past het niet?',
             ['toon_als' => ['bc_domeinarchitectuur' => ['staat', 'past', 'past_niet']]]),
     ], [
@@ -330,16 +300,16 @@ function bc_sectie_taak(): array
             'ja' => ['label' => 'Ja', 'niveau' => 'l'],
             'deels' => ['label' => 'Deels, het raakt ook de taak van een ketenpartner', 'niveau' => 'm'],
             'nee' => ['label' => 'Nee', 'niveau' => 'h'],
-        ], $org === null ? 'Kijk naar het besluit of de wet die jullie taak regelt.'
-            : 'De taken van ' . $org['naam'] . ' staan in ' . $org['besluit'] . '.'),
-        ...($org === null ? [] : [bc_keuze('bc_taken', 'Bij welke taak hoort het?', bc_taken($org), 'Kies de diensten '
-            . 'waar het bij hoort. Ze volgen uit de taken in het besluit.', [
+        ], $org === null ? '' : 'De taken van ' . $org['naam'] . ' staan in ' . $org['besluit'] . '.'),
+        ...($org === null ? [] : [bc_keuze('bc_taken', 'Bij welke diensten hoort het?', bc_taken($org), '', [
             'type' => 'checkbox', 'toon_als' => ['bc_mandaat' => ['ja', 'deels']],
         ])]),
-        bc_uitleg('bc_mandaat_toelichting', $org === null ? 'Welk besluit of welke wet? En welke ketenpartner?'
-            : 'Licht toe. Welke ketenpartner, als die er is?'),
+        $org === null
+            ? bc_uitleg('bc_mandaat_toelichting', 'Welk besluit of welke wet? En welke ketenpartner?')
+            : bc_uitleg('bc_mandaat_toelichting', 'Welke ketenpartner? Of waarom niet?', [
+                'toon_als' => ['bc_mandaat' => ['deels', 'nee']],
+            ]),
         ...bc_check('bc_check_rijk'),
-        ...bc_check('bc_check_hergebruik'),
     ], [
         'l' => ['Het hoort bij jullie taak. En er is geen oplossing van het Rijk of van een andere overheid.'],
         'm' => ['Het raakt ook een ketenpartner, of nog niet alles is uitgezocht. Overleg eerst met de ketenpartner, '
@@ -354,26 +324,24 @@ function bc_sectie_taak(): array
 
 function bc_sectie_dragen(): array
 {
-    return bc_toets(5, 'dragen', 'Kunnen jullie het dragen?', 'Na de oplevering begint het pas. Een systeem heeft '
-        . 'elk jaar een eigenaar, geld en beheer nodig, en op een dag ook een einde.', [
+    return bc_toets(5, 'dragen', 'Kunnen jullie het dragen?', 'Een systeem heeft elk jaar een eigenaar, geld en '
+        . 'beheer nodig, en op een dag een einde.', [
         bc_keuze('bc_eigenaar', 'Is er een eigenaar in de lijn?', [
             'ja' => ['label' => 'Ja', 'niveau' => 'l'],
             'nee' => ['label' => 'Nog niet', 'niveau' => 'm'],
-        ], 'Iemand in de vaste organisatie die na de oplevering zorgt dat het wordt gebruikt, en erop stuurt.'),
+        ], 'Iemand in de vaste organisatie die na de oplevering op het gebruik stuurt.'),
         bc_uitleg('bc_eigenaar_toelichting', 'Wie? Naam en functie.', ['toon_als' => ['bc_eigenaar' => ['ja']]]),
         bc_keuze('bc_budget', 'Is er geld voor?', [
             'ja' => ['label' => 'Ja, voor de aanschaf en voor elk jaar daarna', 'niveau' => 'l'],
             'eenmalig' => ['label' => 'Alleen voor de aanschaf', 'niveau' => 'h'],
             'nee' => ['label' => 'Nog niet', 'niveau' => 'm'],
-        ], 'Denk ook aan de mensen voor het beheer, elk jaar.'),
-        bc_keuze('bc_beheer_akkoord', 'Kan het beheer dit dragen?', [
+        ], 'Ook voor de mensen van het beheer, elk jaar.'),
+        bc_keuze('bc_beheer_akkoord', 'Kunnen het beheer en de CISO dit dragen?', [
             'ja' => ['label' => 'Ja, dat hebben zij op papier gezet', 'niveau' => 'l'],
             'gevraagd' => ['label' => 'Gevraagd, maar nog geen antwoord', 'niveau' => 'm'],
             'nee' => ['label' => 'Nee', 'niveau' => 'h'],
             'niet_gekeken' => ['label' => 'Nog niet gevraagd', 'niveau' => 'm'],
-        ], 'Vraag het aan de beheerorganisatie en aan de CISO. Kunnen zij het ondersteunen, en ook veilig houden '
-            . 'volgens de BIO2?'),
-        bc_uitleg('bc_beheer', 'Wie beheert het, en hoeveel mensen kost dat ongeveer?'),
+        ], 'Kunnen zij het ondersteunen, en veilig houden volgens de BIO2?'),
         bc_keuze('bc_kennis', 'Hebben jullie genoeg kennis en mensen om dit in te voeren?', [
             'ja' => ['label' => 'Ja', 'niveau' => 'l'],
             'deels' => ['label' => 'Deels', 'niveau' => 'm'],
@@ -382,12 +350,11 @@ function bc_sectie_dragen(): array
         bc_uitleg('bc_kennis_toelichting', 'Wat ontbreekt er, en hoe lossen jullie dat op?', [
             'toon_als' => ['bc_kennis' => ['deels', 'nee']],
         ]),
-        bc_keuze('bc_exit', 'Kunnen jullie later weer stoppen, of overstappen naar iets anders?', [
+        bc_keuze('bc_exit', 'Kunnen jullie later weer stoppen, of overstappen?', [
             'ja' => ['label' => 'Ja', 'niveau' => 'l'],
             'moeilijk' => ['label' => 'Dat wordt moeilijk', 'niveau' => 'm'],
             'weet_niet' => ['label' => 'Dat weten we nog niet', 'niveau' => 'm'],
-        ], 'Ook als de oplossing over een paar jaar niet meer nodig is. Kunnen jullie de gegevens dan meenemen, in '
-            . 'een open formaat? En wat kost het om te stoppen?'),
+        ], 'Kunnen jullie de gegevens dan meenemen, in een open formaat? En wat kost stoppen?'),
     ], [
         'l' => ['Er is een eigenaar, er is geld voor elk jaar, en het beheer kan het dragen. Stoppen kan ook.'],
         'm' => ['Nog niet alles is geregeld: de eigenaar, het geld, het beheer, de kennis of het stoppen. Regel dat '
@@ -406,37 +373,32 @@ function bc_sectie_voorstel(): array
         'id' => 'voorstel',
         'titel' => 'Wat stellen jullie voor?',
         'stap' => 6,
-        'intro' => 'Een schatting is genoeg. De bedragen hoeven nog niet precies te kloppen.',
+        'intro' => 'Een schatting is genoeg.',
         'vragen' => [
-            bc_vraag('bc_doel', 'Wat is er straks beter?', 'Noem liefst iets wat je kunt meten, zoals een kortere '
-                . 'wachttijd of minder fouten.'),
-            bc_vraag('bc_oplossing', 'Welke oplossing kiezen jullie?', 'Beschrijf de oplossing in gewone taal. Noem '
-                . 'nog geen merk of leverancier, want wie het levert, volgt uit de inkoop.', ['hoogte' => 4]),
-            bc_vraag('bc_waarom_deze', 'Waarom deze oplossing?', 'Welke andere oplossingen hebben jullie bekeken, '
-                . 'zoals zelf bouwen? En waarom is deze beter?'),
+            bc_vraag('bc_doel', 'Wat is er straks beter, en voor wie?', 'Liefst iets wat je kunt meten, zoals een '
+                . 'kortere wachttijd of minder fouten.'),
+            bc_vraag('bc_oplossing', 'Welke oplossing kiezen jullie, en waarom deze?', 'In gewone taal, zonder merk '
+                . 'of leverancier. Noem ook wat jullie nog meer bekeken, zoals zelf bouwen.'),
             bc_vraag('bc_kosten_eenmalig', 'Wat kost het eenmalig?', 'Aanschaf, inrichten, gegevens overzetten en '
                 . 'opleiden.', ['type' => 'text']),
             bc_vraag('bc_kosten_jaarlijks', 'Wat kost het per jaar, en hoeveel jaar?', 'Licenties, beheer, hosting en '
-                . 'de uren van eigen mensen.', ['type' => 'text']),
-            bc_keuze('bc_omvang', 'Wat kost het project in totaal, over de hele looptijd?', [
+                . 'eigen uren.', ['type' => 'text']),
+            bc_keuze('bc_omvang', 'Wat kost het in totaal, over de hele looptijd?', [
                 'klein' => ['label' => 'Minder dan 1 miljoen euro'],
                 'middel' => ['label' => 'Tussen 1 en 5 miljoen euro'],
                 'groot' => ['label' => 'Meer dan 5 miljoen euro'],
-            ], 'Tel alles mee, ook de uren van eigen mensen. Boven 5 miljoen euro gelden bij het Rijk extra regels.'),
-            bc_vraag('bc_baten', 'Wat levert het op?', 'In geld, in tijd of in minder fouten. Zeg ook voor wie: de '
-                . 'burger, de medewerker of de organisatie.'),
+            ], 'Ook de eigen uren. Boven 5 miljoen euro gelden extra regels.'),
             bc_keuze('inkoopvorm', 'Wat voor inkoop wordt dit?', [
                 'geen' => ['label' => 'Geen inkoop', 'hint' => 'We bouwen of gebruiken dit zelf.'],
                 'enkele' => ['label' => 'Enkele opdracht'],
                 'nadere' => ['label' => 'Nadere opdracht', 'hint' => 'Onder een raamcontract dat er al is.'],
                 'raamcontract' => ['label' => 'Een nieuw raamcontract'],
-            ], 'Het Rijk koopt veel samen in. Vraag je inkoopadviseur of er al een raamcontract is.'),
+            ], 'Vraag je inkoopadviseur of er al een raamcontract is.'),
             bc_keuze('bc_opdrachtwaarde', 'Hoeveel betalen jullie de leverancier, over de hele looptijd?', [
                 'onder' => ['label' => 'Minder dan 140.000 euro'],
                 'boven' => ['label' => '140.000 euro of meer'],
                 'onbekend' => ['label' => 'Dat weten we nog niet'],
-            ], 'Zonder btw, en met alle verlengingen. Bij een nieuw raamcontract tel je alle opdrachten eronder bij '
-                . 'elkaar. Dit bedrag bepaalt hoe jullie moeten inkopen.', [
+            ], 'Zonder btw, met alle verlengingen. Bij een raamcontract alle opdrachten samen.', [
                 'toon_als' => ['inkoopvorm' => ['enkele', 'raamcontract']],
             ]),
             [
@@ -444,7 +406,6 @@ function bc_sectie_voorstel(): array
                 'type' => 'afgeleid',
                 'bron' => 'inkoop',
                 'label' => 'Hoe kopen jullie dit in?',
-                'hint' => 'Volgt uit de soort inkoop en uit het bedrag.',
                 'groepen' => BC_INKOOP,
             ],
         ],

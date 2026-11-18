@@ -36,7 +36,7 @@ return [
         6 => 'Het voorstel',
     ],
     'route' => '',
-    'hoofdstuk_per_pagina' => true,
+    'hoofdstuk_per_pagina' => false,
 
     'overnemen' => [
         'quickscan2' => ['naam' => 'quickscan 2.0', 'overslaan' => $eigen],

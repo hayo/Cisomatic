@@ -52,6 +52,20 @@ Wat de teksten zeggen, en wat de tool zelf kiest:
   noemen geen drempel; ze laten die aan de organisatie. Het advies zegt dat er
   ook bij. Andere drempels van de organisatie gaan voor.
 
+## Geen gegevens
+
+Bij de soorten informatie staat ook ‘Geen gegevens’, voor een systeem dat niets
+opslaat en waar niets doorheen gaat, zoals een rekenhulp in de browser. Die
+keuze sluit de andere vinkjes uit, net als ‘Geen van deze’ bij de schade.
+`q2_met_gegevens()` verbergt dan de rubricering, de vraag naar andere soorten,
+de privacy en het hele archief. `q2_geen_gegevens()` zorgt dat de rest klopt:
+
+- de rubricering telt als openbaar, en telt niet mee voor de TBB;
+- de vertrouwelijkheid is Zeer laag, met die reden erbij;
+- de tool stelt voor de RPO ‘niet van toepassing’ voor;
+- het advies laat de archiefstappen, de bewaartermijn, de Archiefwet en de Woo
+  weg.
+
 ## Te beschermen belangen
 
 Niemand kiest het TBB-niveau zelf. De invuller vinkt aan welke soorten schade

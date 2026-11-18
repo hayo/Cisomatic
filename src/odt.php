@@ -729,6 +729,11 @@ function cm_stuur_odt(array $blokken, string $bestandsnaam, string $auteur = '',
     header('Content-Type: application/vnd.oasis.opendocument.text');
     header('Content-Disposition: attachment; filename="' . $bestandsnaam . '"');
     header('Content-Length: ' . strlen($odt));
+
+    // Een dossier haalt documenten op met fetch, en leest het kenmerk hier.
+    if ($kenmerk !== '') {
+        header('X-Cisomatic-Kenmerk: ' . $kenmerk);
+    }
     echo $odt;
     exit;
 }

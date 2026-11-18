@@ -14,6 +14,25 @@ declare(strict_types=1);
 
 return [
     [
+        'versie' => '1.3.3',
+        'datum' => '2026-11-18',
+        'wijzigingen' => [
+            'Op de pagina van een dossier download je nu alle documenten. Dat kan per document, of alles samen in '
+                . 'één zip, met het projectbestand erbij.',
+            'Is een document verouderd? Dan maakt de download het opnieuw, met de antwoorden van nu.',
+        ],
+    ],
+    [
+        'versie' => '1.3.2',
+        'datum' => '2026-11-18',
+        'wijzigingen' => [
+            'De business case is korter. Er zijn minder vragen, en de uitleg bij de vragen is korter.',
+            'Het document van de business case is half zo lang. Elke toets is nu één tabel, met de uitkomst eronder.',
+            'In quickscan 2.0 kun je bij de soorten informatie kiezen voor ‘Geen gegevens’. Dan vallen de vragen over '
+                . 'gevoeligheid, privacy en archief weg.',
+        ],
+    ],
+    [
         'versie' => '1.3.1',
         'datum' => '2026-11-03',
         'wijzigingen' => [
