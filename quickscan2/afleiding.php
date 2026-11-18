@@ -84,6 +84,10 @@ function q2_zware_bijzondere_gegevens(): array
 /** Voorgestelde RPO, die volgt uit hoe lang het systeem plat mag liggen. */
 function q2_voorstel_rpo(array $a): string
 {
+    if (q2_geen_gegevens($a)) {
+        return 'nvt';
+    }
+
     return match ((string) ($a['beschikbaarheid'] ?? '')) {
         'zh' => '1-uur',
         'h' => '4-uur',
@@ -152,6 +156,7 @@ function q2_afgeleide_vertrouwelijkheid(array $a): array
 {
     $pg = q2_afgeleide_persoonsgegevens($a);
     $rubricering = (string) ($a['rubricering'] ?? '');
+    $redenen = [];
 
     $uitRubricering = match ($rubricering) {
         'stg-confidentieel', 'stg-geheim', 'stg-zeer-geheim' => 'zh',
@@ -163,11 +168,14 @@ function q2_afgeleide_vertrouwelijkheid(array $a): array
 
     $uitAvg = q2_avg_minimum($pg['categorieen'], $pg['bijzonder']);
 
+    if (q2_geen_gegevens($a)) {
+        $redenen[] = 'Het systeem bevat geen gegevens. Er valt dus niets geheim te houden.';
+    }
+
     // Beide ondergrenzen staan letterlijk in de vertrouwelijkheidstabel.
     $ondergrens = cm_niveau_rang($uitAvg) > cm_niveau_rang($uitRubricering) ? $uitAvg : $uitRubricering;
-    $redenen = [];
 
-    if ($rubricering !== '') {
+    if ($rubricering !== '' && !q2_geen_gegevens($a)) {
         $redenen[] = sprintf(
             'De informatie is aangemerkt als ‘%s’. Dat past bij vertrouwelijkheid %s.',
             q2_antwoord_tekst('rubricering', $a),
@@ -293,6 +301,12 @@ function q2_valideer(array $a): array
         $fouten['tbb_soorten'] = 'Je koos ‘Geen van deze’ en ook een soort schade. Haal een van de vinkjes weg.';
     }
 
+    $informatie = (array) ($a['informatie_soorten'] ?? []);
+    if (in_array('geen', $informatie, true) && count($informatie) > 1) {
+        $fouten['informatie_soorten'] = 'Je koos ‘Geen gegevens’ en ook een soort informatie. Haal een van de '
+            . 'vinkjes weg.';
+    }
+
     foreach (['i' => 'integriteit', 'v' => 'vertrouwelijkheid'] as $letter => $naam) {
         $gekozen = (string) ($a[$naam . '_bijstelling'] ?? '');
 
@@ -360,6 +374,10 @@ function q2_motivatie_voorstel(string $voor, array $a): string
     // De opbouw staat per regel, zodat hij in het tekstvak leesbaar blijft.
     if ($voor === 'tbb') {
         return implode("\n", q2_tbb($a)['redenen']);
+    }
+
+    if ($voor === 'rpo' && q2_geen_gegevens($a) && ($a['rpo'] ?? '') === 'nvt') {
+        return 'Het systeem bevat geen gegevens. Er valt dus niets terug te zetten.';
     }
 
     if ($voor === 'rpo') {
@@ -600,6 +618,12 @@ function q2_met_aannames(array $antwoorden): array
     return ['antwoorden' => $antwoorden, 'aannames' => $aannames];
 }
 
+/** Of het systeem helemaal geen gegevens bevat. Dan vallen rubricering en archief weg. */
+function q2_geen_gegevens(array $a): bool
+{
+    return (array) ($a['informatie_soorten'] ?? []) === ['geen'];
+}
+
 /** Alle sleutels uit de aankruislijst die persoonsgegevens zijn. */
 function q2_persoonsgegeven_sleutels(): array
 {
@@ -788,7 +812,7 @@ function q2_tbb(array $a, ?array $biv = null): array
     }
 
     $rubricering = ['dep-vertrouwelijk' => 4, 'stg-confidentieel' => 3, 'stg-geheim' => 2, 'stg-zeer-geheim' => 1];
-    $bronnen[] = [
+    $bronnen[] = q2_geen_gegevens($a) ? [0, 'Geen gegevens, dus geen rubricering'] : [
         $rubricering[(string) ($a['rubricering'] ?? '')] ?? 0,
         'Rubricering ‘' . q2_antwoord_tekst('rubricering', $a) . '’',
     ];

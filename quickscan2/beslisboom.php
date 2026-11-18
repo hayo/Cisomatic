@@ -60,6 +60,11 @@ function q2_evalueer(array $a): array
     // 'Weet ik niet' wordt hier vervangen door de aanname die bij de vraag hoort.
     $metAannames = q2_met_aannames($a);
     $a = $metAannames['antwoorden'];
+
+    // Zonder gegevens is er niets te rubriceren. Openbaar is dan de lichtste lezing.
+    if (q2_geen_gegevens($a)) {
+        $a['rubricering'] = 'openbaar';
+    }
     $u['aannames'] = $metAannames['aannames'];
     $u['cbw'] = q2_cbw($a);
 
@@ -198,7 +203,9 @@ function q2_evalueer(array $a): array
 
     $u = q2_analyses($u, $a, $heeftPg, $dreigingHoog);
     $u = q2_privacy_checks($u, $a, $heeftPg);
-    $u = q2_archiefwet($u, $a, $heeftPg, $heeftCloud);
+    if (!q2_geen_gegevens($a)) {
+        $u = q2_archiefwet($u, $a, $heeftPg, $heeftCloud);
+    }
 
     // ------------------------------------------------------------------
     // 6. Wetten en regels, maatregelen en eisen
@@ -532,10 +539,13 @@ function q2_wetgeving(array $u, array $a, bool $heeftPg, bool $heeftCloud): arra
             . 'persoonsgegevens worden verwerkt';
     }
 
-    $u['wetgeving'][] = 'Archiefwet 2026: wat hier wordt opgemaakt of ontvangen is informatie waarvoor een '
-        . 'bewaartermijn en een overbrengingsplicht gelden';
-    $u['wetgeving'][] = 'Wet open overheid: de informatie kan opgevraagd worden en moet dus vindbaar en '
-        . 'leverbaar zijn';
+    // Zonder gegevens valt er niets te bewaren of op te vragen.
+    if (!q2_geen_gegevens($a)) {
+        $u['wetgeving'][] = 'Archiefwet 2026: wat hier wordt opgemaakt of ontvangen is informatie waarvoor een '
+            . 'bewaartermijn en een overbrengingsplicht gelden';
+        $u['wetgeving'][] = 'Wet open overheid: de informatie kan opgevraagd worden en moet dus vindbaar en '
+            . 'leverbaar zijn';
+    }
 
     if ($heeftCloud) {
         $u['wetgeving'][] = 'Herziening rijksbreed cloudbeleid 2026: grenzen aan cloud van een externe leverancier';
@@ -1018,12 +1028,14 @@ function q2_beslisboom_pad(array $a, array $u, array $ctx): array
         );
     }
 
-    $s[] = $stap(
-        'Is de bewaartermijn bepaald?',
-        q2_antwoord_tekst('bewaartermijn', $a),
-        'Blokkerend: zonder termijn voldoe je niet aan de AVG en de Archiefwet',
-        ($a['bewaartermijn'] ?? '') === 'onbepaald'
-    );
+    if (!q2_geen_gegevens($a)) {
+        $s[] = $stap(
+            'Is de bewaartermijn bepaald?',
+            q2_antwoord_tekst('bewaartermijn', $a),
+            'Blokkerend: zonder termijn voldoe je niet aan de AVG en de Archiefwet',
+            ($a['bewaartermijn'] ?? '') === 'onbepaald'
+        );
+    }
 
     $s[] = $stap(
         'Komt er AI in het systeem?',

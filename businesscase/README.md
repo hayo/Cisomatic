@@ -18,12 +18,15 @@ de motor. Hier staat wat alleen dit formulier doet.
 | --- | --- |
 | Over dit project | project, opsteller, afdeling |
 | Het probleem | het werk, wat er misgaat, de burger |
-| Toets 1 Nodig | een plicht, wat niets doen kost, waarom nu |
+| Toets 1 Nodig | een plicht, wat niets doen kost, nu of later |
 | Toets 2 Zonder nieuw systeem | kan een andere werkwijze het oplossen? |
 | Toets 3 Wat er al is | een eigen systeem, de plek in de domeinarchitectuur |
-| Toets 4 Jullie taak | het mandaat en de taak uit het besluit, een voorziening van het Rijk, een oplossing van een andere overheid |
+| Toets 4 Jullie taak | het mandaat en de taak uit het besluit, een oplossing van het Rijk of een andere overheid |
 | Toets 5 Dragen | eigenaar, geld per jaar, akkoord van beheer en CISO, kennis, stoppen |
-| Het voorstel | doel, oplossing, kosten, baten, inkoop |
+| Het voorstel | doel, oplossing, kosten, inkoop |
+
+Het formulier is bewust kort: één vraag per onderwerp, en alleen een
+toelichting waar die iets toevoegt.
 
 ## Toetsen
 
@@ -87,11 +90,14 @@ probleem en het doel over, via `als`: `bc_probleem` wordt `ia_aanleiding`, en
 
 ## Het document
 
-Na de titelpagina volgt het advies aan het MT: het risico, een tabel met de
-uitkomst per toets, het probleem, het voorstel, de aandachtspunten en de
-vervolgstappen. Daarna volgt elke toets als hoofdstuk, met zijn uitkomst. Aan
-het eind staat het besluit van het MT, met drie vakjes: doorgaan, eerst meer
-uitzoeken, of stoppen en een andere route kiezen.
+Kort, zodat het MT het in een paar minuten leest. Na de titelpagina volgt het
+advies aan het MT: het risico, één tabel met de uitkomst per toets, de burger,
+de kosten en de inkoop, en daaronder de aandachtspunten en de vervolgstappen.
+Daarna het probleem en het voorstel als tabel, en de vijf toetsen, elk als
+tabel met de vraag links en het antwoord rechts. Een toelichting staat in de
+cel van zijn vraag. Onder elke tabel staat de uitkomst. Aan het eind staat het
+besluit van het MT, met drie vakjes: doorgaan, eerst meer uitzoeken, of stoppen
+en een andere route kiezen. Hoofdstukken beginnen niet op een nieuwe pagina.
 
 ## Herkomst
 

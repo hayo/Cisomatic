@@ -146,15 +146,12 @@ function bc_aandachtspunten(array $a): array
 function bc_vervolg(array $a): array
 {
     $stappen = [
-        'Het MT leest dit advies, en vult het besluit in op de laatste pagina.',
+        'Het MT leest dit advies, en vult het besluit aan het eind in.',
         bc_inkoop_route($a) === 'geen' ? '' : 'Bespreek de inkoop met je inkoopadviseur.',
         ($a['bc_omvang'] ?? '') === 'groot'
-            ? 'Vraag een oordeel van de CIO aan, en meld het project bij het Adviescollege ICT-toetsing. Voor het '
-                . 'oordeel van de CIO zijn dit document, een planning en een architectuurschets nodig.'
+            ? 'Vraag een CIO-oordeel aan, met dit document, een planning en een architectuurschets.'
             : '',
-        'Gaat het MT akkoord? Vul dan quickscan 2.0 in. Die laat zien wat de BIO2 en de Cyberbeveiligingswet vragen, '
-            . 'en of er ook een DPIA of een IAMA nodig is. In een dossier neemt de quickscan de antwoorden van dit '
-            . 'document vanzelf over. Anders laad je daar het antwoordbestand van dit document in.',
+        'Gaat het MT akkoord? Vul dan quickscan 2.0 in. Die neemt de antwoorden van dit document over.',
     ];
 
     return array_values(array_filter($stappen));
