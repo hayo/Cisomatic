@@ -765,6 +765,47 @@ function dp_sectie_techniek(): array
                 'hoogte' => 3,
             ],
             [
+                'key' => 'training',
+                'type' => 'radio',
+                'label' => 'Worden de persoonsgegevens ook gebruikt om een AI-model te trainen, te testen of te verbeteren?',
+                'hint' => 'Een trainingsset bundelt vaak veel gegevens op één plek, en blijft soms langer bestaan dan '
+                    . 'de verwerking zelf.',
+                'verplicht' => true,
+                'toon_als' => ['ai' => ['mogelijk', 'onderdeel']],
+                'opties' => [
+                    'nee' => ['label' => 'Nee, het model leert niet van deze gegevens'],
+                    'ja' => ['label' => 'Ja, de organisatie traint of verbetert er een eigen model mee'],
+                    'leverancier' => [
+                        'label' => 'Ja, de leverancier traint of verbetert er zijn eigen model mee',
+                        'hint' => 'Dan gebruikt de leverancier de gegevens ook voor zichzelf. Dat past meestal niet '
+                            . 'bij een verwerker.',
+                    ],
+                ],
+            ],
+            [
+                'key' => 'training_herkomst',
+                'type' => 'radio',
+                'label' => 'Waarvoor zijn die gegevens eerst verzameld?',
+                'verplicht' => true,
+                'toon_als' => ['training' => ['ja', 'leverancier']],
+                'opties' => [
+                    'zelfde' => ['label' => 'Voor deze verwerking'],
+                    'ander' => [
+                        'label' => 'Voor een ander doel, zoals het gewone werk of het archief',
+                        'hint' => 'Dan moet het nieuwe doel passen bij het oude (artikel 6, lid 4 AVG).',
+                    ],
+                ],
+            ],
+            [
+                'key' => 'training_toelichting',
+                'type' => 'textarea',
+                'label' => 'Welke gegevens gaan in de trainingsset, van wie, en hoeveel? Wie kan erbij, en wanneer '
+                    . 'wordt de set verwijderd?',
+                'verplicht' => true,
+                'toon_als' => ['training' => ['ja', 'leverancier']],
+                'hoogte' => 3,
+            ],
+            [
                 'key' => 'afgeleid_kaders',
                 'type' => 'afgeleid',
                 'bron' => 'kaders',

@@ -239,6 +239,25 @@ function dp_risicos(): array
                 'toets' => 'Het systeem wordt getoetst op onterechte verschillen tussen groepen',
             ],
         ],
+        [
+            'id' => 'r14',
+            'titel' => 'Trainingsdata buiten het doel',
+            'tekst' => 'Persoonsgegevens gaan in een set om een AI-model mee te trainen of te testen. Zo’n set '
+                . 'bundelt veel gegevens op één plek, is moeilijk weer leeg te maken, en blijft vaak langer '
+                . 'bestaan dan nodig. Gegevens die voor iets anders zijn verzameld, mogen alleen gebruikt worden '
+                . 'als het nieuwe doel bij het oude past (artikel 5, lid 1, onder b en artikel 6, lid 4 van de '
+                . 'AVG). Het kan leiden tot een inbreuk op de privacy, een boete of reputatieschade.',
+            'categorieen' => ['A', 'H', 'L', 'M'],
+            'toon_als' => ['training' => ['ja', 'leverancier']],
+            'maatregelen' => [
+                'minimaal' => 'De trainingsset bevat alleen de gegevens die voor de kwaliteit van het model nodig zijn',
+                'pseudonimisering' => 'De gegevens in de trainingsset zijn gepseudonimiseerd of weggelaten waar het kan',
+                'apart' => 'De trainingsset staat apart, en alleen wie het model bouwt, kan erbij',
+                'termijn' => 'De trainingsset heeft een eigen bewaartermijn, en wordt daarna verwijderd',
+                'geheimhouding' => 'Wie de set samenstelt of gebruikt, heeft een geheimhoudingsplicht',
+                'leverancier' => 'Het contract verbiedt de leverancier de gegevens voor zijn eigen modellen te gebruiken',
+            ],
+        ],
     ];
 }
 

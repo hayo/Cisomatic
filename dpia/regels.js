@@ -290,6 +290,13 @@
                     handmatig: ['m', 'Vernietigen kan alleen met de hand.'],
                     automatisch: ['l', 'Het systeem vernietigt de gegevens automatisch.']
                 }[a.archief_vernietiging] || standaard;
+            case 'r14':
+                if (a.training === 'leverancier') {
+                    return ['h', 'De leverancier mag de gegevens voor zijn eigen model gebruiken.'];
+                }
+                return a.training_herkomst === 'ander'
+                    ? ['m', 'De gegevens zijn eerst voor een ander doel verzameld.']
+                    : ['l', 'De gegevens zijn voor deze verwerking verzameld, en het model dient alleen die.'];
             case 'r12':
                 return {
                     'buiten-eer': ['h', 'Gegevens gaan naar een land zonder adequaatheidsbesluit en zonder modelcontract.'],

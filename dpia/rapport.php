@@ -363,7 +363,30 @@ function dp_techniekzinnen(array $a): array
         default => 'AI is bij deze verwerking uitgesloten.',
     }];
 
-    return [...$b, ...dp_alineas((string) ($a['ai_omschrijving'] ?? ''))];
+    $b = [...$b, ...dp_alineas((string) ($a['ai_omschrijving'] ?? ''))];
+
+    $training = match ($a['training'] ?? '') {
+        'ja' => 'De organisatie gebruikt de persoonsgegevens ook om een eigen AI-model te trainen, te testen of te '
+            . 'verbeteren.',
+        'leverancier' => 'De leverancier gebruikt de persoonsgegevens ook om zijn eigen AI-model te trainen, te testen '
+            . 'of te verbeteren.',
+        'nee' => 'Het AI-model leert niet van deze persoonsgegevens.',
+        default => '',
+    };
+
+    if ($training === '') {
+        return $b;
+    }
+
+    $b[] = ['alinea', $training];
+    if (($a['training_herkomst'] ?? '') !== '') {
+        $b[] = ['alinea', $a['training_herkomst'] === 'ander'
+            ? 'Die gegevens zijn eerst voor een ander doel verzameld. Het trainen moet dus passen bij dat doel '
+                . '(artikel 6, lid 4 AVG).'
+            : 'Die gegevens zijn voor deze verwerking verzameld.'];
+    }
+
+    return [...$b, ...dp_alineas((string) ($a['training_toelichting'] ?? ''))];
 }
 
 function dp_rapport_rechtmatigheid(array $a, array $u, string $naam): array
