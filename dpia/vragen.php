@@ -54,6 +54,18 @@ function dp_niveau_opties(string $leeg): array
 }
 
 /** @return array<string,array<string,string>> */
+/**
+ * Waar de data van de clouddienst staat. Dezelfde keuzes als in de quickscans en de soevereiniteitsscan,
+ * zodat een dossier het antwoord kan delen: 'eu' en 'eer' zijn allebei binnen de EER.
+ */
+function dp_cloud_locatie_opties(): array
+{
+    return [
+        'eu' => ['label' => 'Alleen in de EU'],
+        'eer' => ['label' => 'In de EER of Zwitserland, maar niet alleen in de EU', 'hint' => 'Ook in Noorwegen, IJsland, Liechtenstein of Zwitserland.'],
+    ] + array_slice(dp_locatie_opties(), 1, null, true);
+}
+
 function dp_locatie_opties(): array
 {
     return [
@@ -716,7 +728,7 @@ function dp_sectie_techniek(): array
                 'hint' => 'Tel ook de reservekopieën mee, en de hulp op afstand vanuit het buitenland.',
                 'verplicht' => true,
                 'toon_als' => ['cloud' => ['ja', 'mogelijk']],
-                'opties' => dp_locatie_opties(),
+                'opties' => dp_cloud_locatie_opties(),
             ],
             [
                 'key' => 'technieken',

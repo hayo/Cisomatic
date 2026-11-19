@@ -204,7 +204,7 @@ Alleen gegevens, geen code. De voordeur leest dit bestand ook.
 
 | Sleutel | Betekenis |
 | --- | --- |
-| `key` | Unieke sleutel. Gelijke sleutels in twee formulieren laten een bestand van het een het ander invullen |
+| `key` | Unieke sleutel. Gelijke sleutels in twee formulieren laten een bestand van het een het ander invullen. Geef zo'n vraag in elk formulier dezelfde keuzes, met dezelfde betekenis: een keuze die een ander formulier niet kent, valt daar weg |
 | `type` | `text`, `email`, `textarea`, `radio`, `checkbox`, `select`, `rijen`, `maatregelen`, `afgeleid` of `kop` |
 | `label`, `hint` | De vraag, en een korte verduidelijking |
 | `opties` | Bij keuzes: waarde => `label`, `hint`, `groep`, en `uitleg` voor een volledige omschrijving onder de keuze |

@@ -69,6 +69,18 @@ function q2_locatie_opties(string $binnen): array
     ];
 }
 
+/**
+ * Waar de data van de clouddienst staat. Dezelfde keuzes als in de DPIA, quickscan 1.0 en de
+ * soevereiniteitsscan, zodat een dossier het antwoord kan delen: 'eu' en 'eer' zijn allebei binnen de EER.
+ */
+function q2_cloud_locatie_opties(): array
+{
+    return [
+        'eu' => ['label' => 'Alleen in de EU'],
+        'eer' => ['label' => 'In de EER of Zwitserland, maar niet alleen in de EU', 'hint' => 'Ook in Noorwegen, IJsland, Liechtenstein of Zwitserland.'],
+    ] + array_slice(q2_locatie_opties(''), 1, null, true);
+}
+
 /** Hulpje: BIV-opties opbouwen uit een toelichtingenlijst. */
 function q2_biv_opties(array $toelichting, array $korteHints): array
 {
@@ -1432,7 +1444,7 @@ function q2_sectie_cloud(): array
                 'verplicht' => true,
                 'toon_als' => q2_met_cloud(),
                 'aanname' => 'buiten-eer',
-                'opties' => q2_locatie_opties('Alleen in de EER of Zwitserland'),
+                'opties' => q2_cloud_locatie_opties(),
             ],
             [
                 'key' => 'cloud_jurisdictie',

@@ -1122,7 +1122,8 @@ function qs_sectie_cloud(): array
                 'toon_als' => ['cloud' => ['ja', 'mogelijk']],
                 'aanname' => 'buiten-eer',
                 'opties' => [
-                    'eer' => ['label' => 'Binnen de EER'],
+                    'eu' => ['label' => 'Alleen in de EU'],
+                    'eer' => ['label' => 'In de EER of Zwitserland, maar niet alleen in de EU', 'hint' => 'Ook in Noorwegen, IJsland, Liechtenstein of Zwitserland.'],
                     'adequaatheid' => ['label' => 'Buiten de EER, in een land met adequaatheidsbesluit'],
                     'modelcontract' => ['label' => 'Buiten de EER, op basis van een modelcontract (SCC)'],
                     'buiten-eer' => [

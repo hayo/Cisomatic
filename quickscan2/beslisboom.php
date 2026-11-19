@@ -275,7 +275,7 @@ function q2_cloudbeleid(array $u, array $a, array $pg): array
                 : 'Dit systeem heeft ' . q2_tbb_label($u['tbb']['niveau']) . '.');
     }
 
-    if ($extern && ($a['cloud_locatie'] ?? '') !== 'eer') {
+    if ($extern && !in_array($a['cloud_locatie'] ?? '', ['eu', 'eer'], true)) {
         $niet[] = 'Alle informatie moet binnen de EER of Zwitserland worden opgeslagen en verwerkt. Dat is hier '
             . 'niet zo, of het staat niet vast.';
     }
@@ -969,7 +969,7 @@ function q2_beslisboom_pad(array $a, array $u, array $ctx): array
     );
 
     if ($ctx['heeftCloud']) {
-        $buiten = ($a['cloud_locatie'] ?? '') !== 'eer';
+        $buiten = !in_array($a['cloud_locatie'] ?? '', ['eu', 'eer'], true);
         $s[] = $stap(
             'Blijven de data binnen de EER of Zwitserland?',
             q2_antwoord_tekst('cloud_locatie', $a),

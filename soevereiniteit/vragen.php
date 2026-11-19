@@ -378,7 +378,7 @@ function sv_themavragen(): array
                 'Tel ook de reservekopieën mee, en de hulp op afstand. Een beheerder buiten de EU die kan meekijken, '
                 . 'telt ook.', [
                     'eu' => sv_optie(4, 'Alleen in de EU'),
-                    'eer' => sv_optie(3, 'In Europa, maar niet alleen in de EU',
+                    'eer' => sv_optie(3, 'In de EER of Zwitserland, maar niet alleen in de EU',
                         'Ook in Noorwegen, IJsland, Liechtenstein of Zwitserland.'),
                     'adequaatheid' => sv_optie(1, 'Ook buiten Europa, in een land dat de EU veilig vindt',
                         'De EU heeft dan besloten dat dat land persoonsgegevens goed beschermt. Een voorbeeld is de '
