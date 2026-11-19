@@ -64,7 +64,53 @@ function ia_rapport(array $a, array $u): array
         array_push($b, ['h2', 'Actiepunten tot nu toe'], ...ia_rijen(cm_alle_vragen()['ia_actiepunten'], $u['actiepunten']));
     }
 
-    return $u['sessie'] === 3 && $u['gestopt'] === '' ? [...$b, ...ia_rapport_besluit()] : $b;
+    $b = $u['sessie'] === 3 && $u['gestopt'] === '' ? [...$b, ...ia_rapport_besluit()] : $b;
+
+    return [...$b, ...ia_rapport_standpunten($a)];
+}
+
+/**
+ * De bijlage met de standpunten per rol: per rol een paragraaf, en de
+ * verschillen in een tabel. Zonder rollen is er geen bijlage.
+ *
+ * @return list<array<int,mixed>>
+ */
+function ia_rapport_standpunten(array $a): array
+{
+    $rollen = (array) ($a['ia_standpunten'] ?? []);
+    $botsingen = (array) ($a['ia_botsingen'] ?? []);
+
+    if ($rollen === [] && $botsingen === []) {
+        return [];
+    }
+
+    $vragen = cm_alle_vragen();
+    $kolommen = $vragen['ia_standpunten']['kolommen'];
+    $b = [
+        ['h2', 'Bijlage: standpunten per rol'],
+        ['alinea', 'Deze bijlage laat zien hoe elke rol aan tafel naar het algoritme keek, los van het antwoord van '
+            . 'het team. Zo blijft zichtbaar wat in dat antwoord is afgewogen.'],
+    ];
+
+    foreach ($rollen as $rij) {
+        $b[] = ['h3', (string) $rij['rol']];
+
+        foreach (['spel', 'zorg', 'voorwaarde', 'ernst'] as $kolom) {
+            if (cm_regels((string) ($rij[$kolom] ?? '')) !== []) {
+                array_push($b, ['h4', $kolommen[$kolom]['label']], ...ia_alineas((string) $rij[$kolom]));
+            }
+        }
+
+        if (($rij['advies'] ?? '') !== '') {
+            array_push($b, ['h4', $kolommen['advies']['label']], ['alinea', $kolommen['advies']['opties'][$rij['advies']]['label'] . '.']);
+        }
+    }
+
+    if ($botsingen !== []) {
+        array_push($b, ['h3', 'Waar de rollen het oneens waren'], ...ia_rijen($vragen['ia_botsingen'], $botsingen));
+    }
+
+    return $b;
 }
 
 /** Tekst uit een tekstvak als alinea's, één per regel. */

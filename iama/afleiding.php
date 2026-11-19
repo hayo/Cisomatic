@@ -40,6 +40,15 @@ function ia_suggesties(array $a): array
     return cm_regels((string) ($a['ia_grondrechten_negatief'] ?? ''));
 }
 
+/** De namen uit het team, als suggestie bij de standpunten per rol. */
+function ia_rollen(array $a): array
+{
+    return array_values(array_filter(array_map(
+        static fn (array $lid): string => trim((string) ($lid['naam'] ?? '')),
+        (array) ($a['ia_team'] ?? [])
+    )));
+}
+
 /** De zwaarste ernst uit 4.3, of leeg. */
 function ia_zwaarste_ernst(array $a): string
 {

@@ -45,6 +45,7 @@ function ia_secties(): array
         ia_sectie_balans(),
         ia_sectie_advies(),
         ia_sectie_restrisicos(),
+        ia_sectie_standpunten(),
     ];
 }
 
@@ -927,6 +928,68 @@ function ia_sectie_restrisicos(): array
                 'kolommen' => [
                     'risico' => ['type' => 'textarea', 'label' => 'Wat is het risico?', 'kort' => 'Restrisico', 'verplicht' => true, 'breedte' => 8],
                     'belang' => ['type' => 'text', 'label' => 'Voor welk grondrecht of belang?', 'kort' => 'Grondrecht of belang', 'breedte' => 5],
+                ],
+            ],
+        ],
+    ];
+}
+
+// ---------------------------------------------------------------------------
+// Standpunten per rol: geen deel van het IAMA, maar een bijlage bij het document
+
+/**
+ * Wat elke rol aan tafel vond, los van het antwoord van het team. Zonder 'stap'
+ * slaat het rapport deze sectie over in de vijf delen; ia_rapport_standpunten()
+ * maakt er een bijlage van. Niets is verplicht, en het kan in elke sessie.
+ */
+function ia_sectie_standpunten(): array
+{
+    $advies = [
+        '' => ['label' => 'Kies'],
+        'inzetten' => ['label' => 'Het algoritme gebruiken'],
+        'voorwaarden' => ['label' => 'Het algoritme gebruiken, onder voorwaarden'],
+        'niet' => ['label' => 'Het algoritme niet gebruiken'],
+        'geen' => ['label' => 'Geen eigen advies'],
+    ];
+
+    return [
+        'id' => 'standpunten',
+        'titel' => 'Standpunten per rol',
+        'intro' => 'Elke rol aan tafel kijkt anders naar het algoritme. Hier zet je per rol wat er op het spel '
+            . 'staat, wat de grootste zorg is, en wat de voorwaarde is om ja te zeggen. Zo blijft zichtbaar wat in '
+            . 'het antwoord van het team is afgewogen. Het document zet dit in een bijlage. Niets hier is verplicht, '
+            . 'en je kunt het na elke sessie aanvullen.',
+        'vragen' => [
+            [
+                'key' => 'ia_standpunten',
+                'type' => 'rijen',
+                'label' => 'Hoe kijkt elke rol naar het algoritme?',
+                'hint' => 'Eén rol per regel. Denk ook aan wie niet aan tafel zit, zoals de mensen die het algoritme '
+                    . 'raakt. Iemand uit het team kan voor hen spreken.',
+                'rij_label' => 'Rol',
+                'erbij' => 'Nog een rol',
+                'suggesties' => 'ia_rollen',
+                'kolommen' => [
+                    'rol' => ['type' => 'text', 'label' => 'Rol', 'verplicht' => true, 'suggesties' => true],
+                    'spel' => ['type' => 'textarea', 'label' => 'Wat staat er voor deze rol op het spel?'],
+                    'zorg' => ['type' => 'textarea', 'label' => 'Wat is de grootste zorg?'],
+                    'voorwaarde' => ['type' => 'textarea', 'label' => 'Wat is de voorwaarde om ja te zeggen?'],
+                    'ernst' => ['type' => 'textarea', 'label' => 'Hoe ernstig is de inbreuk op grondrechten, volgens deze rol?'],
+                    'advies' => ['type' => 'select', 'label' => 'Wat adviseert deze rol?', 'opties' => $advies],
+                ],
+            ],
+            [
+                'key' => 'ia_botsingen',
+                'type' => 'rijen',
+                'label' => 'Waar waren de rollen het oneens?',
+                'hint' => 'Zet hier ook wat het team met het verschil deed. Volgde het team een rol niet, dan hoort '
+                    . 'dat vaak ook bij de restrisico’s.',
+                'rij_label' => 'Verschil',
+                'erbij' => 'Nog een verschil',
+                'kolommen' => [
+                    'onderwerp' => ['type' => 'text', 'label' => 'Waarover?', 'kort' => 'Onderwerp', 'verplicht' => true, 'breedte' => 3.2],
+                    'standpunten' => ['type' => 'textarea', 'label' => 'Wie zag wat?', 'kort' => 'Wie zag wat', 'breedte' => 6.7],
+                    'besluit' => ['type' => 'textarea', 'label' => 'Wat deed het team ermee?', 'kort' => 'Wat het team deed', 'breedte' => 6.7],
                 ],
             ],
         ],
