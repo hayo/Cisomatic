@@ -133,6 +133,10 @@ function bc_aandachtspunten(array $a): array
             default => '',
         },
         ...($inkoop !== null && $inkoop['niveau'] === 'm' ? $inkoop['redenen'] : []),
+        ($a['bc_check_rijk'] ?? '') === 'aansluiten'
+            ? 'Dit project sluit aan bij een oplossing van een ander. Leg vast wat jullie bijdragen, wie wat '
+                . 'beheert, wat er met jullie gegevens gebeurt, en hoe jullie weer stoppen.'
+            : '',
         ($a['bc_omvang'] ?? '') === 'groot'
             ? 'Het project kost meer dan 5 miljoen euro. Dan geeft de CIO van het ministerie een oordeel, en meld je '
                 . 'het project bij het Adviescollege ICT-toetsing. Reken voor het oordeel van de CIO op ongeveer drie maanden.'
@@ -151,7 +155,8 @@ function bc_vervolg(array $a): array
         ($a['bc_omvang'] ?? '') === 'groot'
             ? 'Vraag een CIO-oordeel aan, met dit document, een planning en een architectuurschets.'
             : '',
-        'Gaat het MT akkoord? Vul dan quickscan 2.0 in. Die neemt de antwoorden van dit document over.',
+        'Gaat het MT akkoord? Vul dan quickscan 2.0 in. Die neemt de antwoorden van dit document over. Is de '
+            . 'quickscan er al, kijk dan of hij nog past bij dit document.',
     ];
 
     return array_values(array_filter($stappen));

@@ -25,6 +25,18 @@ const BC_CHECK_OPTIES = [
     'niet_gekeken' => ['label' => 'Nog niet uitgezocht', 'niveau' => 'm'],
 ];
 
+/**
+ * Bij een oplossing van een ander kan het project zelf het aansluiten zijn. Dan is dat geen andere route, maar
+ * het voorstel.
+ */
+const BC_AANSLUITEN = [
+    'aansluiten' => [
+        'label' => 'Ja, en dit project is het aansluiten daarbij',
+        'hint' => 'Bijvoorbeeld als eerste organisatie die meedoet aan een voorziening die nog wordt gebouwd.',
+        'niveau' => 'l',
+    ],
+];
+
 /** @return list<array<string,mixed>> */
 function bc_secties(): array
 {
@@ -134,11 +146,12 @@ function bc_als_uitgezocht(string $key, array $opties): array
 function bc_check(string $key): array
 {
     $check = bc_checks()[$key];
+    $opties = $key === 'bc_check_eigen' ? BC_CHECK_OPTIES : BC_CHECK_OPTIES + BC_AANSLUITEN;
 
     return [
-        bc_keuze($key, $check['label'], BC_CHECK_OPTIES, $check['hint']),
-        bc_uitleg($key . '_toelichting', 'Wat heb je bekeken, en waarom past het wel of niet?',
-            bc_als_uitgezocht($key, BC_CHECK_OPTIES)),
+        bc_keuze($key, $check['label'], $opties, $check['hint']),
+        bc_uitleg($key . '_toelichting', 'Wat heb je bekeken? En waarom past het wel of niet?',
+            bc_als_uitgezocht($key, $opties)),
     ];
 }
 
@@ -311,7 +324,8 @@ function bc_sectie_taak(): array
             ]),
         ...bc_check('bc_check_rijk'),
     ], [
-        'l' => ['Het hoort bij jullie taak. En er is geen oplossing van het Rijk of van een andere overheid.'],
+        'l' => ['Het hoort bij jullie taak. En er is geen oplossing van het Rijk of van een andere overheid, of dit '
+            . 'project sluit daarbij aan.'],
         'm' => ['Het raakt ook een ketenpartner, of nog niet alles is uitgezocht. Overleg eerst met de ketenpartner, '
             . 'en kijk wat er landelijk al is.'],
         'h' => ['Het is niet jullie taak, of een andere overheid heeft er al iets voor. Sluit daarbij aan, of laat het '

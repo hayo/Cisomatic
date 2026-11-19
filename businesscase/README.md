@@ -43,6 +43,14 @@ genoeg: een plicht, of schade die groter is dan de kosten. Daarom telt voor de
 vragen in `of` alleen het laagste niveau. Het risico voor het MT is het hoogste
 niveau van alle toetsen.
 
+Soms is aansluiten bij een ander het project zelf, zoals een ministerie dat
+meedoet aan een voorziening van het Rijk die nog wordt gebouwd. Daarom hebben
+de vragen naar een voorziening van het Rijk en een oplossing van een andere
+overheid een vijfde keuze, "Ja, en dit project is het aansluiten daarbij"
+(`BC_AANSLUITEN`). Die telt als in orde, en geeft een aandachtspunt: leg vast
+wat jullie bijdragen, wie beheert, wat er met de gegevens gebeurt, en hoe jullie
+stoppen.
+
 Niveaus, labels en teksten gaan via `groepen` als `data-groepen` op het
 uitkomstblok. `regels.js` spiegelt alleen de rekenregel van
 `bc_toets_niveau()`.
