@@ -14,6 +14,14 @@ declare(strict_types=1);
 
 return [
     [
+        'versie' => '1.3.7',
+        'datum' => '2026-11-19',
+        'wijzigingen' => [
+            'Gebruikt de toepassing geen generatieve AI, dan staat er in de AI-scan ook geen tabel meer over '
+                . 'generatieve AI.',
+        ],
+    ],
+    [
         'versie' => '1.3.6',
         'datum' => '2026-11-24',
         'wijzigingen' => [

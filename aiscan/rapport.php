@@ -135,7 +135,8 @@ function ai_rapport_antwoorden(array $a, array $u): array
         cm_antwoord_tekst($key, $a) ?: 'Geen van deze',
     ];
 
-    $gai = array_filter(
+    // Alleen bij generatieve AI. Anders zijn die vragen verborgen, en is een lege aankruisvraag [] in plaats van ''.
+    $gai = ($a['ai_generatief'] ?? '') !== 'ja' ? [] : array_filter(
         array_keys(cm_alle_vragen()),
         static fn (string $key): bool => str_starts_with($key, 'gai_') && ($a[$key] ?? '') !== ''
     );
