@@ -11,7 +11,7 @@ on:
   workflow_dispatch:
     inputs:
       eerste_keer:
-        description: Vervang de map in de site één keer door een subtree
+        description: Vervang de map in de site door deze repo (de eerste keer, of na een botsing)
         type: boolean
         default: false
 

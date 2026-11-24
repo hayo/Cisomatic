@@ -145,9 +145,11 @@ je het aan:
    `hb2025/content/forge/cisomatic`) en `SITE_TAK` (standaard de
    standaardbranch).
 
-De map in de site is al een subtree. Voor een nieuwe site start je de Action
-één keer met de hand, onder Actions, met "eerste keer" aan. Die vervangt de map
-door een subtree. Wat alleen daar in die map stond, valt weg.
+Start de Action de eerste keer met de hand, onder Actions, met "eerste keer"
+aan. Die vervangt de map in de site door deze repo, als nieuwe subtree. Wat
+alleen daar in die map stond, valt weg. Doe dat ook als een update botst, omdat
+er in de site toch iets in de map veranderd is. Zet die wijziging dan eerst
+hier terug.
 
 Pas je in de site toch iets aan in de map, stuur het dan terug met
 `git subtree push --prefix=<map> <deze repo> <branch>`, en maak een pull
