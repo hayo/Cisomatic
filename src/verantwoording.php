@@ -102,8 +102,9 @@ function cm_verantwoording(array $a, array $u, string $vingerafdruk, string $ken
         ['term', 'Opgesteld door', trim((string) ($a['aanvrager'] ?? '')) ?: 'Niet ingevuld'],
         ['term', 'Versie van de Cisomatic', cm_versie()],
         ['term', 'Versie van de regels', cm_regelversie()],
-        ['term', 'Gebaseerd op', implode('; ', $formulier['bronnen'])],
         ['term', 'Let op', (string) $formulier['voet']],
+        ['alinea', 'Het formulier is gebaseerd op deze documenten.'],
+        ['lijst', array_values(array_map('strval', $formulier['bronnen']))],
         ['alinea', 'Het formulier rekent de uitkomst uit met vaste regels. Dezelfde antwoorden geven met dezelfde '
             . 'versie van de regels altijd dezelfde uitkomst.'],
         ...($vaststelling === [] ? [] : [
@@ -126,9 +127,13 @@ function cm_verantwoording(array $a, array $u, string $vingerafdruk, string $ken
         ['term', 'Vingerafdruk van de antwoorden', $vingerafdruk],
         ['term', 'Antwoordbestand', cm_bestandsnaam((string) ($a['projectnaam'] ?? ''), 'json')],
         ['alinea', 'De vingerafdruk is een SHA-256 over alle antwoorden. Het antwoordbestand heeft dezelfde '
-            . 'vingerafdruk. Laad dat bestand in het formulier, en maak het document opnieuw. Komt dezelfde '
-            . 'vingerafdruk eruit, dan hoort dit document bij die antwoorden. Is ook de versie van de regels gelijk, '
-            . 'dan is de uitkomst dezelfde.'],
+            . 'vingerafdruk. Zo ga je na dat dit document bij die antwoorden hoort.'],
+        ['genummerd', [
+            'Laad het antwoordbestand in het formulier.',
+            'Maak het document opnieuw.',
+            'Vergelijk de vingerafdruk. Is die gelijk, dan hoort dit document bij die antwoorden.',
+            'Vergelijk de versie van de regels. Is die ook gelijk, dan is de uitkomst dezelfde.',
+        ]],
     ];
 }
 

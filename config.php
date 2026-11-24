@@ -33,11 +33,12 @@ return [
     // centimeters; dat punt komt op het midden van de pagina. Zonder 'midden'
     // staat het hele beeld in het midden. Met 'woordmerk' staat er een tekst
     // rechts naast het beeld, in de letter 'woordmerk' van de huisstijl. Bij
-    // null heeft het document geen logo.
+    // null heeft het document geen logo. Hier staat het woordmerk al in het
+    // beeld, zodat Word het niet kan verschuiven; tools/logo.php maakt het.
     'logo' => [
-        'bestand' => __DIR__ . '/huisstijl/rijkslint.png',
-        'breedte' => 1.6,
-        'woordmerk' => 'Rijksoverheid',
+        'bestand' => __DIR__ . '/huisstijl/rijkslogo.png',
+        'breedte' => 3.97,
+        'midden' => 0.8,
     ],
 
     // De huisstijl van het .odt-bestand. De lettertypen gaan mee in het bestand,
@@ -56,10 +57,8 @@ return [
                 __DIR__ . '/huisstijl/RijksSans-Italic.ttf',
                 __DIR__ . '/huisstijl/RijksSans-BoldItalic.ttf',
             ],
-            'RijksoverheidSerif' => [__DIR__ . '/huisstijl/RijksoverheidSerif-Italic.ttf'],
         ],
         'tekst' => 'Rijks Sans',
-        'woordmerk' => 'RijksoverheidSerif',
         'kleur' => '#154273',
         'vlak' => '#e3e9f0',
     ],

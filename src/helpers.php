@@ -101,6 +101,37 @@ function cm_opsomming(array $delen): string
 }
 
 /**
+ * Een stuk advies als korte uitleg met een lijst van wat je doet. Een zin die
+ * begint met een opdracht, zoals "Leg vast" of "Zorg dat", gaat in de lijst;
+ * de andere zinnen vormen samen de uitleg erboven. Zo leest een stap niet als
+ * één lap tekst.
+ *
+ * @return list<array<int,mixed>>
+ */
+function cm_uitleg_en_acties(string $tekst): array
+{
+    $zinnen = preg_split('/(?<=[.!?])\s+(?=[A-Z])/u', trim($tekst)) ?: [];
+    $opdracht = '/^(Leg|Zoek|Zorg|Test|Gebruik|Spreek|Maak|Kies|Regel|Laat|Neem|Vraag|Bepaal|Wijs|Zet|Controleer|'
+        . 'Houd|Sluit|Vermeld|Noteer|Meld|Richt|Stel|Doe|Ga)\b/u';
+    $uitleg = [];
+    $acties = [];
+
+    foreach ($zinnen as $zin) {
+        if (preg_match($opdracht, $zin)) {
+            $acties[] = $zin;
+        } else {
+            $uitleg[] = $zin;
+        }
+    }
+
+    if (count($acties) < 2) {
+        return [['alinea', trim($tekst)]];
+    }
+
+    return [...($uitleg === [] ? [] : [['alinea', implode(' ', $uitleg)]]), ['lijst', $acties]];
+}
+
+/**
  * De niet-lege regels uit een tekstvak.
  *
  * @return list<string>

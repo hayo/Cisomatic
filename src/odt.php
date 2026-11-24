@@ -49,29 +49,29 @@ const CM_ODT_STIJLEN = '<?xml version="1.0" encoding="UTF-8"?>' . "\n"
 </style:default-style>
 <style:style style:name="Standard" style:family="paragraph" style:class="text"/>
 <style:style style:name="Text_20_body" style:display-name="Text body" style:family="paragraph" style:parent-style-name="Standard" style:class="text">
- <style:paragraph-properties fo:margin-top="0cm" fo:margin-bottom="0.25cm" fo:line-height="120%"/>
+ <style:paragraph-properties fo:margin-top="0cm" fo:margin-bottom="0.3cm" fo:line-height="140%"/>
 </style:style>
 <style:style style:name="Title" style:family="paragraph" style:parent-style-name="Standard" style:next-style-name="Text_20_body" style:class="chapter">
  <style:paragraph-properties fo:margin-bottom="0.4cm"/>
  <style:text-properties fo:font-size="22pt" fo:font-weight="bold" fo:color="{kleur}"/>
 </style:style>
 <style:style style:name="Heading" style:family="paragraph" style:parent-style-name="Standard" style:next-style-name="Text_20_body" style:class="text">
- <style:paragraph-properties fo:margin-top="0.5cm" fo:margin-bottom="0.15cm" fo:keep-with-next="always"/>
+ <style:paragraph-properties fo:margin-top="0.6cm" fo:margin-bottom="0.2cm" fo:keep-with-next="always"/>
  <style:text-properties fo:font-weight="bold" fo:color="{kleur}"/>
 </style:style>
 <style:style style:name="Heading_20_1" style:display-name="Heading 1" style:family="paragraph" style:parent-style-name="Heading" style:next-style-name="Text_20_body" style:default-outline-level="1" style:class="text">
- <style:paragraph-properties fo:margin-top="0.7cm"/>
+ <style:paragraph-properties fo:margin-top="0.9cm"/>
  <style:text-properties fo:font-size="15pt"/>
 </style:style>
 <style:style style:name="Heading_20_2" style:display-name="Heading 2" style:family="paragraph" style:parent-style-name="Heading" style:next-style-name="Text_20_body" style:default-outline-level="2" style:class="text">
- <style:paragraph-properties fo:margin-top="0.6cm"/>
+ <style:paragraph-properties fo:margin-top="0.8cm"/>
  <style:text-properties fo:font-size="13pt"/>
 </style:style>
 <style:style style:name="Heading_20_3" style:display-name="Heading 3" style:family="paragraph" style:parent-style-name="Heading" style:next-style-name="Text_20_body" style:default-outline-level="3" style:class="text">
  <style:text-properties fo:font-size="11pt"/>
 </style:style>
 <style:style style:name="List_20_Paragraph" style:display-name="List Paragraph" style:family="paragraph" style:parent-style-name="Text_20_body" style:class="list">
- <style:paragraph-properties fo:margin-bottom="0.12cm"/>
+ <style:paragraph-properties fo:margin-bottom="0.15cm" fo:line-height="130%"/>
 </style:style>
 <style:style style:name="Quotations" style:family="paragraph" style:parent-style-name="Text_20_body" style:class="html">
  <style:paragraph-properties fo:keep-with-next="always" fo:margin-top="0.1cm" fo:margin-bottom="0.35cm" fo:padding="0.2cm" fo:background-color="{vlak}" fo:border-left="2.5pt solid {kleur}" fo:border-right="none" fo:border-top="none" fo:border-bottom="none"/>
@@ -448,7 +448,7 @@ function cm_odt_opmaak(string $titel, ?array $logo): string
             . '" xlink:type="simple" xlink:show="embed" xlink:actuate="onLoad"/></draw:frame>'
             . cm_odt_tekst($logo['woordmerk']) . '</text:p></style:header>';
         $kopstijl = '<style:header-style><style:header-footer-properties fo:min-height="' . $cm($logo['hoogte'])
-            . '" fo:margin-bottom="0.8cm"/></style:header-style>';
+            . '" fo:margin-bottom="1cm"/></style:header-style>';
         $grafisch = '<style:style style:name="Logo" style:family="graphic"><style:graphic-properties style:wrap="none" '
             . 'style:vertical-pos="from-top" style:vertical-rel="page" style:horizontal-pos="from-left" '
             . 'style:horizontal-rel="page" fo:border="none" fo:padding="0cm"/></style:style>'

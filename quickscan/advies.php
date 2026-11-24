@@ -269,17 +269,18 @@ function qs_advies_archief(array $a, array $u): array
     $b = [
         ['h2', 'Zo richt je de archiefprocessen in'],
         ['alinea', 'Alles wat in dit proces wordt gemaakt of ontvangen, valt onder de Archiefwet 2026. Waar het '
-            . 'staat en in welke vorm, maakt niet uit. De wet brengt de overbrengingstermijn terug van twintig '
-            . 'naar tien jaar. Wat vroeger iets voor later was, valt nu binnen de looptijd van dit systeem. De '
-            . 'stappen hieronder horen bij de inrichting. De meeste zijn goedkoper als je ze regelt voordat het '
-            . 'systeem in gebruik gaat.'],
+            . 'staat en in welke vorm, maakt niet uit.'],
+        ['alinea', 'De wet brengt de overbrengingstermijn terug van twintig naar tien jaar. Wat vroeger iets voor '
+            . 'later was, valt nu binnen de looptijd van dit systeem.'],
+        ['alinea', 'De stappen hieronder horen bij de inrichting. De meeste zijn goedkoper als je ze regelt voordat '
+            . 'het systeem in gebruik gaat.'],
         ['term', 'Opgegeven bewaartermijn', qs_antwoord_tekst('bewaartermijn', $a)
             . ($toelichting === '' ? '' : ' (' . $toelichting . ')')],
     ];
 
     foreach ($u['archief'] as $nummer => $stap) {
         $b[] = ['h3', sprintf('%d. %s', $nummer + 1, $stap['titel'])];
-        $b[] = ['alinea', $stap['tekst']];
+        array_push($b, ...cm_uitleg_en_acties($stap['tekst']));
     }
 
     return $b;

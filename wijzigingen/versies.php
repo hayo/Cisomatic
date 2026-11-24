@@ -14,6 +14,18 @@ declare(strict_types=1);
 
 return [
     [
+        'versie' => '1.3.5',
+        'datum' => '2026-11-24',
+        'wijzigingen' => [
+            'Het woord Rijksoverheid valt in Word niet meer van het lint af. Lint en woord zijn nu samen één plaatje, '
+                . 'helemaal bovenaan de pagina.',
+            'De documenten lezen makkelijker. Er is meer ruimte tussen de regels, de alinea’s en de koppen.',
+            'In de quickscans staat bij elke stap voor het archief eerst kort waarom, en daaronder in een lijst wat je '
+                . 'doet. Lange alinea’s zijn korter, en de termijnen voor een incidentmelding staan in een tabel.',
+            'In de verantwoording staan de bronnen onder elkaar, en de controle in vier stappen.',
+        ],
+    ],
+    [
         'versie' => '1.3.4',
         'datum' => '2026-11-24',
         'wijzigingen' => [
