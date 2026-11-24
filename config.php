@@ -26,6 +26,16 @@ return [
     // privacyverklaring daar belooft dat een bezoek niets vastlegt.
     'bewaar_map' => null,
 
+    // Wat de host doet bij elk los bezoek (GET), zonder de site eromheen. Op
+    // hayobethlehem.nl telt dit een bezoek van een andere site mee in de
+    // referrals van de site. Bij null gebeurt er niets.
+    'bij_bezoek' => is_file($log = __DIR__ . '/../../../assets/parts/referral.php')
+        ? static function () use ($log): void {
+            require_once $log;
+            log_referral('cisomatic');
+        }
+        : null,
+
     // Het logo bovenaan elke pagina van het .odt-bestand, tegen de bovenrand.
     // Een PNG of JPEG, bijvoorbeeld ['bestand' => __DIR__ . '/img/logo.png',
     // 'breedte' => 5.5]. De breedte is in centimeters. 'midden' is de afstand

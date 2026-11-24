@@ -14,6 +14,14 @@ declare(strict_types=1);
 
 return [
     [
+        'versie' => '1.3.8',
+        'datum' => '2026-11-24',
+        'wijzigingen' => [
+            'Een host kan in config.php met bij_bezoek iets laten doen bij elk los bezoek, zoals tellen van welke site '
+                . 'iemand kwam.',
+        ],
+    ],
+    [
         'versie' => '1.3.7',
         'datum' => '2026-11-19',
         'wijzigingen' => [
