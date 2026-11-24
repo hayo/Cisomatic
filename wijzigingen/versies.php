@@ -14,6 +14,16 @@ declare(strict_types=1);
 
 return [
     [
+        'versie' => '1.3.4',
+        'datum' => '2026-11-24',
+        'wijzigingen' => [
+            'Je kunt een document nu ook zonder de webapp maken, op de opdrachtregel. De scripts staan in de map '
+                . 'tools.',
+            'Het ene script geeft alle vragen van een formulier op een rij. Het andere maakt van je antwoorden het '
+                . 'document en het antwoordbestand, net als de webapp. Het zegt ook wat nog ontbreekt.',
+        ],
+    ],
+    [
         'versie' => '1.3.3',
         'datum' => '2026-11-18',
         'wijzigingen' => [

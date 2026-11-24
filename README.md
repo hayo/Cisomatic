@@ -71,6 +71,7 @@ wijzigingen/versies.php   de versies, de nieuwste bovenaan; de bovenste is de ve
 wijzigingen/index.php     de pagina met wijzigingen; de voettekst van elke pagina linkt ernaar
 bewaard/                  opgeslagen documenten, als bewaren aan staat
 huisstijl/                het lint en de lettertypen van de Rijkshuisstijl, voor het .odt-bestand
+tools/                    een document maken zonder de webapp, op de opdrachtregel; zie tools/README.md
 
 <formulier>/index.php         roept de motor aan met de naam van de map
 <formulier>/definitie.php     teksten, bestanden en de functies die de motor aanroept
@@ -417,6 +418,14 @@ De downloadknop stuurt de antwoorden als JSON terug naar de server. Die rekent
 alles opnieuw uit en levert een `.odt` op, dus er wordt tussen twee verzoeken
 niets bewaard. Dat werkt ook zonder JavaScript. "Kopieer" zet het document op
 het klembord als opgemaakte tekst.
+
+## Zonder de webapp
+
+Op de opdrachtregel maak je een document ook zonder browser. `tools/vragen.php`
+geeft alle vragen van een formulier, één regel per vraag, of een leeg
+antwoordbestand om in te vullen. `tools/maak.php` maakt van een antwoordbestand
+het `.odt`-bestand en het antwoordbestand, net als de webapp, en noemt wat
+ontbreekt of opvalt. Meer staat in `tools/README.md`.
 
 ## Vragenlijst als .odt
 
