@@ -14,6 +14,13 @@ declare(strict_types=1);
 
 return [
     [
+        'versie' => '1.3.6',
+        'datum' => '2026-11-24',
+        'wijzigingen' => [
+            'Achter de schermen: een nieuwe versie gaat nu meteen naar hayobethlehem.nl, en niet meer via Codeberg.',
+        ],
+    ],
+    [
         'versie' => '1.3.5',
         'datum' => '2026-11-24',
         'wijzigingen' => [

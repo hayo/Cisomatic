@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #
 # Zet de cisomatic in de repo van de site, met git subtree. Deze repo is de
-# bron; de site krijgt de map in PAD. De workflow naar-codeberg.yml draait dit
+# bron; de site krijgt de map in PAD. De workflow naar-site.yml draait dit
 # na elke push naar main, maar het werkt ook lokaal.
 #
 # - SITE_URL: de repo van de site, met een token om te mogen pushen
