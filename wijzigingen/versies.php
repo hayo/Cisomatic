@@ -14,6 +14,14 @@ declare(strict_types=1);
 
 return [
     [
+        'versie' => '1.3.13',
+        'datum' => '2026-11-24',
+        'wijzigingen' => [
+            'Achter de schermen: de notities zeggen nu dat je de Cisomatic alleen in de eigen repo verandert, en niet '
+                . 'op hayobethlehem.nl.',
+        ],
+    ],
+    [
         'versie' => '1.3.12',
         'datum' => '2026-11-24',
         'wijzigingen' => [
