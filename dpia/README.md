@@ -65,10 +65,14 @@ Een bestand van de DPIA zelf heeft `"soort": "dpia"`, en laadt alles terug.
 
 ## Risico's
 
-Er zijn dertien standaardrisico's: de elf uit het sjabloon, en twee die alleen
+Er zijn veertien standaardrisico's: de elf uit het sjabloon, en drie die alleen
 verschijnen als ze gelden. Doorgifte buiten de EER verschijnt bij een cloud of
 subverwerker buiten de EER. Besluiten zonder mens verschijnt bij
-geautomatiseerde besluitvorming of profilering. Het risico over toestemming
+geautomatiseerde besluitvorming of profilering. Trainingsdata buiten het doel
+verschijnt als de gegevens ook een AI-model trainen, testen of verbeteren
+(`training`). De kans is dan Hoog als de leverancier er zijn eigen model mee
+traint, Midden als de gegevens eerst voor een ander doel zijn verzameld
+(`training_herkomst`), en anders Laag. Het risico over toestemming
 verschijnt alleen als toestemming de grondslag of de uitzondering is. Eigen
 risico's staan in het uitklapblok onder de risico's.
 

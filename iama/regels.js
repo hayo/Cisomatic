@@ -3,6 +3,7 @@
  *
  * - bij vraag 4.2.1 stelt de tool nee voor, als het algoritme geen AI-systeem is
  * - bij 4.3 krijgt het veld voor een grondrecht de aangetaste grondrechten uit 4.1.2 als suggestie
+ * - bij de standpunten krijgt het veld voor een rol de namen uit het team als suggestie
  * - bij de balans neemt de tool de antwoorden bij 4.4.1 en 4.5.1 alvast over
  *
  * PHP rekent bij het versturen alles opnieuw uit. Het voorstel staat alleen
@@ -35,18 +36,24 @@
         return '';
     }
 
+    /** Bij 4.3 de grondrechten uit 4.1.2, bij de standpunten de namen uit het team. */
     function vulSuggesties(form, a) {
-        var namen = cm.tekstregels(a.ia_grondrechten_negatief);
+        vul(form.querySelector('#ia_inbreuken-suggesties'), cm.tekstregels(a.ia_grondrechten_negatief));
+        vul(form.querySelector('#ia_standpunten-suggesties'), [].map.call(
+            form.querySelectorAll('input[name^="ia_team["][name$="[naam]"]'),
+            function (veld) { return veld.value.trim(); }
+        ).filter(Boolean));
+    }
 
-        cm.elk(form.querySelectorAll('datalist[data-suggesties]'), function (lijst) {
-            if (lijst.dataset.namen === namen.join('\n')) { return; }
-            lijst.dataset.namen = namen.join('\n');
-            lijst.textContent = '';
-            namen.forEach(function (naam) {
-                var optie = document.createElement('option');
-                optie.textContent = naam;
-                lijst.appendChild(optie);
-            });
+    function vul(lijst, namen) {
+        if (!lijst || lijst.dataset.namen === namen.join('\n')) { return; }
+
+        lijst.dataset.namen = namen.join('\n');
+        lijst.textContent = '';
+        namen.forEach(function (naam) {
+            var optie = document.createElement('option');
+            optie.textContent = naam;
+            lijst.appendChild(optie);
         });
     }
 }());

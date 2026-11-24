@@ -380,6 +380,14 @@ function dp_aandachtspunten(array $a, bool $samen): array
             . 'Algoritmeregister hoort.';
     }
 
+    if (($a['training'] ?? '') === 'leverancier') {
+        $punten[] = 'De leverancier traint zijn eigen model met de gegevens. Dan is hij voor dat deel geen verwerker '
+            . 'meer. Verbied het in het contract, of regel een eigen grondslag.';
+    } elseif (($a['training_herkomst'] ?? '') === 'ander') {
+        $punten[] = 'Het model wordt getraind met gegevens die voor een ander doel zijn verzameld. Leg vast waarom '
+            . 'dat doel past bij het oude (artikel 6, lid 4 AVG).';
+    }
+
     if (array_intersect((array) ($a['technieken'] ?? []), ['besluitvorming', 'profilering']) !== []) {
         $punten[] = 'Het systeem neemt besluiten over mensen of maakt profielen van hen. Artikel 22 van de '
             . 'AVG stelt daar eisen aan.';

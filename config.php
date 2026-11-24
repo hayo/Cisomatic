@@ -26,6 +26,16 @@ return [
     // privacyverklaring daar belooft dat een bezoek niets vastlegt.
     'bewaar_map' => null,
 
+    // Wat de host doet bij elk los bezoek (GET), zonder de site eromheen. Op
+    // hayobethlehem.nl telt dit een bezoek van een andere site mee in de
+    // referrals van de site. Bij null gebeurt er niets.
+    'bij_bezoek' => is_file($log = __DIR__ . '/../../../assets/parts/referral.php')
+        ? static function () use ($log): void {
+            require_once $log;
+            log_referral('cisomatic');
+        }
+        : null,
+
     // Het logo bovenaan elke pagina van het .odt-bestand, tegen de bovenrand.
     // Een PNG of JPEG, bijvoorbeeld ['bestand' => __DIR__ . '/img/logo.png',
     // 'breedte' => 5.5]. De breedte is in centimeters. 'midden' is de afstand
@@ -33,11 +43,12 @@ return [
     // centimeters; dat punt komt op het midden van de pagina. Zonder 'midden'
     // staat het hele beeld in het midden. Met 'woordmerk' staat er een tekst
     // rechts naast het beeld, in de letter 'woordmerk' van de huisstijl. Bij
-    // null heeft het document geen logo.
+    // null heeft het document geen logo. Hier staat het woordmerk al in het
+    // beeld, zodat Word het niet kan verschuiven; tools/logo.php maakt het.
     'logo' => [
-        'bestand' => __DIR__ . '/huisstijl/rijkslint.png',
-        'breedte' => 1.6,
-        'woordmerk' => 'Rijksoverheid',
+        'bestand' => __DIR__ . '/huisstijl/rijkslogo.png',
+        'breedte' => 3.97,
+        'midden' => 0.8,
     ],
 
     // De huisstijl van het .odt-bestand. De lettertypen gaan mee in het bestand,
@@ -56,10 +67,8 @@ return [
                 __DIR__ . '/huisstijl/RijksSans-Italic.ttf',
                 __DIR__ . '/huisstijl/RijksSans-BoldItalic.ttf',
             ],
-            'RijksoverheidSerif' => [__DIR__ . '/huisstijl/RijksoverheidSerif-Italic.ttf'],
         ],
         'tekst' => 'Rijks Sans',
-        'woordmerk' => 'RijksoverheidSerif',
         'kleur' => '#154273',
         'vlak' => '#e3e9f0',
     ],

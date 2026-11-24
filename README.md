@@ -130,26 +130,30 @@ Een site kan de losse pagina opvragen met `/standalone` achter het adres. De
 voordeur zet dat staartje dan ook achter elk formulier.
 
 De code is in deze repo en in de site gelijk. Deze repo is de bron. Na elke
-push naar `main` zet de GitHub Action `naar-codeberg.yml` de map ook in de repo
-van de site op Codeberg, met `git subtree`. Het werk zelf doet
-`.github/naar-codeberg.sh`, dat ook lokaal draait. Zo zet je het aan:
+push naar `main` zet de GitHub Action `naar-site.yml` de map ook in de repo van
+de site, `hayo/hayobethlehem.nl`, met `git subtree`. Die push start daar de
+deploy. Het werk zelf doet `.github/naar-site.sh`, dat ook lokaal draait. Zo zet
+je het aan:
 
-1. Maak op Codeberg een token met schrijfrechten op repositories, onder
-   Instellingen, Applicaties.
-2. Zet dat op GitHub onder Settings, Secrets and variables, Actions, als geheim
-   `CODEBERG_TOKEN`.
-3. Optioneel, als variabelen op dezelfde plek: `CODEBERG_REPO` (standaard
-   `hayo/codeberg-hayobethlehem.nl`), `CODEBERG_PAD` (standaard
-   `hb2025/content/forge/cisomatic`), `CODEBERG_TAK` (standaard de
-   standaardbranch) en `CODEBERG_GEBRUIKER`, als de repo bij een organisatie
-   hoort. Zonder het geheim slaat de Action zichzelf over.
-4. Start de Action één keer met de hand, onder Actions, met "eerste keer" aan.
-   Die vervangt de map op de site door een subtree. Wat alleen daar in die map
-   stond, valt weg.
+1. Maak op GitHub een fine-grained token, onder Settings, Developer settings,
+   Personal access tokens. Geef het alleen toegang tot `hayo/hayobethlehem.nl`,
+   met Contents: Read and write.
+2. Zet dat in deze repo onder Settings, Secrets and variables, Actions, als
+   geheim `SITE_TOKEN`. Zonder het geheim slaat de Action zichzelf over.
+3. Optioneel, als variabelen op dezelfde plek: `SITE_REPO` (standaard
+   `hayo/hayobethlehem.nl`), `SITE_PAD` (standaard
+   `hb2025/content/forge/cisomatic`) en `SITE_TAK` (standaard de
+   standaardbranch).
 
-Daarna gaat het vanzelf. Pas je op de site toch iets aan in de map, stuur het
-dan terug met `git subtree push --prefix=<map> <deze repo> <branch>`, en maak
-een pull request. Anders botst de volgende update.
+Start de Action de eerste keer met de hand, onder Actions, met "eerste keer"
+aan. Die vervangt de map in de site door deze repo, als nieuwe subtree. Wat
+alleen daar in die map stond, valt weg. Doe dat ook als een update botst, omdat
+er in de site toch iets in de map veranderd is. Zet die wijziging dan eerst
+hier terug.
+
+Pas je in de site toch iets aan in de map, stuur het dan terug met
+`git subtree push --prefix=<map> <deze repo> <branch>`, en maak een pull
+request. Anders botst de volgende update.
 
 ## Een formulier toevoegen
 
@@ -202,7 +206,7 @@ Alleen gegevens, geen code. De voordeur leest dit bestand ook.
 
 | Sleutel | Betekenis |
 | --- | --- |
-| `key` | Unieke sleutel. Gelijke sleutels in twee formulieren laten een bestand van het een het ander invullen |
+| `key` | Unieke sleutel. Gelijke sleutels in twee formulieren laten een bestand van het een het ander invullen. Geef zo'n vraag in elk formulier dezelfde keuzes, met dezelfde betekenis: een keuze die een ander formulier niet kent, valt daar weg |
 | `type` | `text`, `email`, `textarea`, `radio`, `checkbox`, `select`, `rijen`, `maatregelen`, `afgeleid` of `kop` |
 | `label`, `hint` | De vraag, en een korte verduidelijking |
 | `opties` | Bij keuzes: waarde => `label`, `hint`, `groep`, en `uitleg` voor een volledige omschrijving onder de keuze |
@@ -476,7 +480,10 @@ wil, neemt de antwoorden over in het formulier.
 Met `logo` staat er een beeld bovenaan elke pagina van het `.odt`-bestand,
 tegen de bovenrand. `midden` zet het lint van een rijkslogo op het midden van
 de pagina. `woordmerk` zet er een tekst naast, zoals "Rijksoverheid" of de naam
-van een ministerie. Het staat aan, met het lint uit `huisstijl/`.
+van een ministerie. Word schuift zo'n tekst soms van het lint af. Daarom staat
+het aan met `huisstijl/rijkslogo.png`: het lint en het woordmerk samen in één
+beeld. `php tools/logo.php "Ministerie van ..."` maakt dat beeld opnieuw, met een
+andere tekst.
 
 `huisstijl` geeft het `.odt`-bestand zijn letters en kleuren. De lettertypen
 gaan in het bestand mee, dus LibreOffice toont ze ook op een computer zonder

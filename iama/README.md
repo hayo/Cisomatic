@@ -29,6 +29,21 @@ delen die nog komen, zeggen dat ze in
 een volgende sessie volgen. Na elke sessie download je de antwoorden, en laad je
 ze de volgende keer weer in.
 
+## Standpunten per rol
+
+Na deel 5 staat een sectie die niet in het IAMA zit: per rol wat er op het spel
+staat, de grootste zorg, de voorwaarde om ja te zeggen, hoe ernstig de inbreuk
+volgens die rol is, en het advies van die rol (`ia_standpunten`). Daaronder de
+verschillen tussen de rollen, en wat het team ermee deed (`ia_botsingen`).
+Niets is verplicht, en de sectie geldt in elke sessie. Het veld voor de rol
+krijgt de namen uit het team als suggestie.
+
+De IAMA zelf geeft het antwoord van het team. De standpunten laten zien wat
+daarin is afgewogen, ook de rol die het team niet volgde. Het document zet ze in
+een bijlage, na het besluit. De sectie heeft geen `stap`, dus `ia_rapport()`
+slaat haar over in de vijf delen, en `ia_rapport_standpunten()` maakt de
+bijlage. Zonder rollen en zonder verschillen is er geen bijlage.
+
 ## Wat het anders doet dan het PDF-sjabloon
 
 | Stond in het sjabloon | Nu |
@@ -45,7 +60,8 @@ ze de volgende keer weer in.
 | Een vak voor restrisico’s | Rijen, met in het document een lege kolom om ze te aanvaarden of af te wijzen |
 
 Drie vragen staan niet in het sjabloon: wie het algoritme ontwikkelde, wie het
-besluit neemt (bij 3.2), en wie er in het team zitten. Het IAMA noemt het team
+besluit neemt (bij 3.2), en wie er in het team zitten. De standpunten per rol
+staan er ook niet in. Het IAMA noemt het team
 en de rol van de mens wel in de instructie; de tool heeft ze nodig voor de
 aandachtspunten.
 
@@ -102,7 +118,7 @@ afleiding.php     klasse, ernst, actiepunten, aandachtspunten en wat blokkeert
 rapport.php       het document als blokken
 vooraf.php        "Voor je begint"
 samenvatting.php  de IAMA in het kort
-regels.js         het voorstel bij 4.2.1, de suggesties bij 4.3 en de teksten in de balans
+regels.js         het voorstel bij 4.2.1, de suggesties bij 4.3 en de standpunten, en de teksten in de balans
 ```
 
 ## Beperkingen

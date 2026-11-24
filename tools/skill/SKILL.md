@@ -50,6 +50,10 @@ zoals van de quickscan naar de DPIA.
 - **Een tekstvak** (`textarea`) met meer punten: elk punt op een eigen regel
   (`\n`), zonder streepje, sterretje of nummer ervoor. Het document maakt er zelf
   een lijst van.
+- **Korte alinea's.** Elke regel in een tekstvak wordt een eigen alinea. Houd
+  een regel bij één gedachte, twee of drie zinnen. Is het een rij dingen, zet
+  dan elk ding op een eigen regel. `maak.php` meldt een regel van meer dan 350
+  tekens.
 - **Geen dubbele punt aan het eind van een regel.** Het document zet soms zelf
   een leesteken achter een antwoord.
 - **Keuzes** bij `checkbox` als lijst, bij `maatregelen` als

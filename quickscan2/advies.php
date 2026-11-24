@@ -186,13 +186,19 @@ function q2_advies_bio2(array $u): array
     return [
         ['h2', 'Wat de BIO2 hier vraagt'],
         ['alinea', 'De BIO2 kent geen vaste beveiligingsniveaus meer. Elk systeem krijgt de maatregelen uit '
-            . 'ISO 27002 en de verplichte overheidsmaatregelen. Bij elk nieuw systeem en elke grote wijziging hoort '
-            . 'een risicoafweging, met de risicomanagementmethodiek van de organisatie (5.08.01). Die methode heeft '
-            . 'een quickscan die bepaalt of de basis genoeg is (paragraaf 6.2). Daarvoor is deze quickscan.'],
+            . 'ISO 27002 en de verplichte overheidsmaatregelen.'],
+        ['alinea', 'Bij elk nieuw systeem en elke grote wijziging hoort een risicoafweging, met de '
+            . 'risicomanagementmethodiek van de organisatie (5.08.01). Die methode heeft een quickscan die bepaalt '
+            . 'of de basis genoeg is (paragraaf 6.2). Daarvoor is deze quickscan.'],
         ['alinea', 'Wanneer er een volledige risicoanalyse volgt, schrijft de BIO2 niet voor. Deze quickscan vraagt '
-            . 'erom bij een cruciaal systeem, een eis Zeer hoog of een hoog dreigingsprofiel. Of bij een '
-            . '(kritisch) strategisch proces op een vitaal systeem. Heeft de organisatie andere drempels '
-            . 'vastgesteld, dan gelden die.'],
+            . 'erom bij:'],
+        ['lijst', [
+            'een cruciaal systeem',
+            'een eis Zeer hoog',
+            'een hoog dreigingsprofiel',
+            'een (kritisch) strategisch proces op een vitaal systeem',
+        ]],
+        ['alinea', 'Heeft de organisatie andere drempels vastgesteld, dan gelden die.'],
         ['term', 'Beveiligingsniveau', $u['niveau']],
         ['alinea', 'De overheidsmaatregelen gelden altijd, ook als er geen volledige risicoanalyse nodig is. Een '
             . 'risico bewust accepteren mag alleen bij de eigen maatregelen van de organisatie, en alleen na een '
@@ -230,11 +236,19 @@ function q2_advies_cbw(array $a, array $u): array
     }
 
     $b[] = ['h3', 'Een significant incident melden'];
-    $b[] = ['alinea', 'Een significant incident meldt de organisatie bij het CSIRT en bij de minister van BZK. '
-        . 'Binnen 24 uur gaat er een vroegtijdige waarschuwing uit, binnen 72 uur de melding. Het eindverslag '
-        . 'volgt uiterlijk een maand na de melding (Cyberbeveiligingswet, artikel 26, 27 en 29). Een incident is '
-        . 'significant als de dienst ernstig verstoord raakt of er veel geld verloren gaat. Of als anderen er '
-        . 'flinke schade van hebben (artikel 25).'];
+    $b[] = ['alinea', 'Een incident is significant als de dienst ernstig verstoord raakt of er veel geld verloren '
+        . 'gaat. Of als anderen er flinke schade van hebben (Cyberbeveiligingswet, artikel 25).'];
+    $b[] = ['alinea', 'De organisatie meldt het bij het CSIRT en bij de minister van BZK (artikel 26, 27 en 29).'];
+    $b[] = ['tabel', [
+        'kop' => ['Wanneer', 'Wat'],
+        'rijen' => [
+            ['Binnen 24 uur', 'Een vroegtijdige waarschuwing'],
+            ['Binnen 72 uur', 'De melding'],
+            ['Uiterlijk een maand na de melding', 'Het eindverslag'],
+        ],
+        'breedtes' => [6, 10.6],
+        'rijkop' => true,
+    ]];
 
     if ($u['meldplicht'] === []) {
         $b[] = ['alinea', 'De tool ziet bij dit systeem geen incident dat vanzelf de drempels uit de regeling '
@@ -331,17 +345,18 @@ function q2_advies_archief(array $a, array $u): array
     $b = [
         ['h2', 'Zo richt je de archiefprocessen in'],
         ['alinea', 'Alles wat in dit proces wordt gemaakt of ontvangen, valt onder de Archiefwet 2026. Waar het '
-            . 'staat en in welke vorm, maakt niet uit. De wet brengt de overbrengingstermijn terug van twintig '
-            . 'naar tien jaar. Wat vroeger iets voor later was, valt nu binnen de looptijd van dit systeem. De '
-            . 'stappen hieronder horen bij de inrichting. De meeste zijn goedkoper als je ze regelt voordat het '
-            . 'systeem in gebruik gaat.'],
+            . 'staat en in welke vorm, maakt niet uit.'],
+        ['alinea', 'De wet brengt de overbrengingstermijn terug van twintig naar tien jaar. Wat vroeger iets voor '
+            . 'later was, valt nu binnen de looptijd van dit systeem.'],
+        ['alinea', 'De stappen hieronder horen bij de inrichting. De meeste zijn goedkoper als je ze regelt voordat '
+            . 'het systeem in gebruik gaat.'],
         ['term', 'Opgegeven bewaartermijn', q2_antwoord_tekst('bewaartermijn', $a)
             . ($toelichting === '' ? '' : ' (' . $toelichting . ')')],
     ];
 
     foreach ($u['archief'] as $nummer => $stap) {
         $b[] = ['h3', sprintf('%d. %s', $nummer + 1, $stap['titel'])];
-        $b[] = ['alinea', $stap['tekst']];
+        array_push($b, ...cm_uitleg_en_acties($stap['tekst']));
     }
 
     return $b;

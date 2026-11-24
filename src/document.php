@@ -19,6 +19,10 @@ declare(strict_types=1);
 // Binnen een site stuurt de site deze kop mee; hier doet niemand dat.
 header("Content-Security-Policy: script-src 'self'; style-src 'self'");
 
+if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'GET' && is_callable($bijBezoek = cm_config()['bij_bezoek'] ?? null)) {
+    $bijBezoek();
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="nl">

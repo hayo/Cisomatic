@@ -14,13 +14,87 @@ declare(strict_types=1);
 
 return [
     [
-        'versie' => '1.3.4',
+        'versie' => '1.3.12',
+        'datum' => '2026-11-24',
+        'wijzigingen' => [
+            'Achter de schermen: een nieuwe versie gaat nu meteen naar hayobethlehem.nl, en niet meer via Codeberg.',
+            'De wijzigingen die alleen op hayobethlehem.nl stonden, zitten nu ook in de bron. De versies zijn opnieuw '
+                . 'genummerd, zodat er één lijst is.',
+        ],
+    ],
+    [
+        'versie' => '1.3.11',
+        'datum' => '2026-11-24',
+        'wijzigingen' => [
+            'Het woord Rijksoverheid valt in Word niet meer van het lint af. Lint en woord zijn nu samen één plaatje, '
+                . 'helemaal bovenaan de pagina.',
+            'De documenten lezen makkelijker. Er is meer ruimte tussen de regels, de alinea’s en de koppen.',
+            'In de quickscans staat bij elke stap voor het archief eerst kort waarom, en daaronder in een lijst wat je '
+                . 'doet. Lange alinea’s zijn korter, en de termijnen voor een incidentmelding staan in een tabel.',
+            'In de verantwoording staan de bronnen onder elkaar, en de controle in vier stappen.',
+        ],
+    ],
+    [
+        'versie' => '1.3.10',
         'datum' => '2026-11-24',
         'wijzigingen' => [
             'Je kunt een document nu ook zonder de webapp maken, op de opdrachtregel. De scripts staan in de map '
                 . 'tools.',
             'Het ene script geeft alle vragen van een formulier op een rij. Het andere maakt van je antwoorden het '
                 . 'document en het antwoordbestand, net als de webapp. Het zegt ook wat nog ontbreekt.',
+        ],
+    ],
+    [
+        'versie' => '1.3.9',
+        'datum' => '2026-11-24',
+        'wijzigingen' => [
+            'Een host kan in config.php met bij_bezoek iets laten doen bij elk los bezoek, zoals tellen van welke site '
+                . 'iemand kwam.',
+        ],
+    ],
+    [
+        'versie' => '1.3.8',
+        'datum' => '2026-11-19',
+        'wijzigingen' => [
+            'Gebruikt de toepassing geen generatieve AI, dan staat er in de AI-scan ook geen tabel meer over '
+                . 'generatieve AI.',
+        ],
+    ],
+    [
+        'versie' => '1.3.7',
+        'datum' => '2026-11-19',
+        'wijzigingen' => [
+            'De business case kent nu een project dat aansluit bij een voorziening van het Rijk of van een andere '
+                . 'overheid. Dat telt bij toets 4 als in orde, en niet als een andere route.',
+            'De laatste vervolgstap klopt nu ook als de quickscan er al is.',
+        ],
+    ],
+    [
+        'versie' => '1.3.6',
+        'datum' => '2026-11-19',
+        'wijzigingen' => [
+            'De vraag waar de data van de cloud staat, heeft nu overal dezelfde keuzes: in de quickscans, de DPIA en de '
+                . 'soevereiniteitsscan. Er is een keuze bij: alleen in de EU.',
+            'In een dossier gaat dat antwoord zo goed mee naar elk formulier. Eerder viel het soms weg.',
+        ],
+    ],
+    [
+        'versie' => '1.3.5',
+        'datum' => '2026-11-19',
+        'wijzigingen' => [
+            'De DPIA vraagt nu of de gegevens ook een AI-model trainen, testen of verbeteren, en waarvoor ze eerst '
+                . 'verzameld zijn.',
+            'Is dat zo, dan komt er een risico bij: trainingsdata buiten het doel, met maatregelen voor de '
+                . 'trainingsset.',
+        ],
+    ],
+    [
+        'versie' => '1.3.4',
+        'datum' => '2026-11-19',
+        'wijzigingen' => [
+            'De IAMA heeft een nieuw deel: standpunten per rol. Per rol zet je wat er op het spel staat, de grootste '
+                . 'zorg, de voorwaarde en het advies. Ook zet je waar de rollen het oneens waren.',
+            'Het document zet de standpunten in een bijlage, na het besluit.',
         ],
     ],
     [

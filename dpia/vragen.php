@@ -54,6 +54,18 @@ function dp_niveau_opties(string $leeg): array
 }
 
 /** @return array<string,array<string,string>> */
+/**
+ * Waar de data van de clouddienst staat. Dezelfde keuzes als in de quickscans en de soevereiniteitsscan,
+ * zodat een dossier het antwoord kan delen: 'eu' en 'eer' zijn allebei binnen de EER.
+ */
+function dp_cloud_locatie_opties(): array
+{
+    return [
+        'eu' => ['label' => 'Alleen in de EU'],
+        'eer' => ['label' => 'In de EER of Zwitserland, maar niet alleen in de EU', 'hint' => 'Ook in Noorwegen, IJsland, Liechtenstein of Zwitserland.'],
+    ] + array_slice(dp_locatie_opties(), 1, null, true);
+}
+
 function dp_locatie_opties(): array
 {
     return [
@@ -716,7 +728,7 @@ function dp_sectie_techniek(): array
                 'hint' => 'Tel ook de reservekopieën mee, en de hulp op afstand vanuit het buitenland.',
                 'verplicht' => true,
                 'toon_als' => ['cloud' => ['ja', 'mogelijk']],
-                'opties' => dp_locatie_opties(),
+                'opties' => dp_cloud_locatie_opties(),
             ],
             [
                 'key' => 'technieken',
@@ -762,6 +774,47 @@ function dp_sectie_techniek(): array
                 'label' => 'Waarvoor wordt de AI gebruikt, en hoe werkt het?',
                 'verplicht' => true,
                 'toon_als' => ['ai' => ['mogelijk', 'onderdeel']],
+                'hoogte' => 3,
+            ],
+            [
+                'key' => 'training',
+                'type' => 'radio',
+                'label' => 'Worden de persoonsgegevens ook gebruikt om een AI-model te trainen, te testen of te verbeteren?',
+                'hint' => 'Een trainingsset bundelt vaak veel gegevens op één plek, en blijft soms langer bestaan dan '
+                    . 'de verwerking zelf.',
+                'verplicht' => true,
+                'toon_als' => ['ai' => ['mogelijk', 'onderdeel']],
+                'opties' => [
+                    'nee' => ['label' => 'Nee, het model leert niet van deze gegevens'],
+                    'ja' => ['label' => 'Ja, de organisatie traint of verbetert er een eigen model mee'],
+                    'leverancier' => [
+                        'label' => 'Ja, de leverancier traint of verbetert er zijn eigen model mee',
+                        'hint' => 'Dan gebruikt de leverancier de gegevens ook voor zichzelf. Dat past meestal niet '
+                            . 'bij een verwerker.',
+                    ],
+                ],
+            ],
+            [
+                'key' => 'training_herkomst',
+                'type' => 'radio',
+                'label' => 'Waarvoor zijn die gegevens eerst verzameld?',
+                'verplicht' => true,
+                'toon_als' => ['training' => ['ja', 'leverancier']],
+                'opties' => [
+                    'zelfde' => ['label' => 'Voor deze verwerking'],
+                    'ander' => [
+                        'label' => 'Voor een ander doel, zoals het gewone werk of het archief',
+                        'hint' => 'Dan moet het nieuwe doel passen bij het oude (artikel 6, lid 4 AVG).',
+                    ],
+                ],
+            ],
+            [
+                'key' => 'training_toelichting',
+                'type' => 'textarea',
+                'label' => 'Welke gegevens gaan in de trainingsset, van wie, en hoeveel? Wie kan erbij, en wanneer '
+                    . 'wordt de set verwijderd?',
+                'verplicht' => true,
+                'toon_als' => ['training' => ['ja', 'leverancier']],
                 'hoogte' => 3,
             ],
             [

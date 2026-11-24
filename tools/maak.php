@@ -16,7 +16,8 @@
  * 2. schrijft het .odt-bestand en het antwoordbestand (.json), met dezelfde
  *    namen, het kenmerk en de vingerafdruk als de webapp
  * 3. noemt wat in de tekst opvalt: een streepje voor een regel, een regel
- *    die eindigt op een dubbele punt, een punt achter een kort tekstveld
+ *    die eindigt op een dubbele punt, een punt achter een kort tekstveld, en
+ *    een alinea die te lang is om prettig te lezen
  *
  * Bij een fout in stap 1 komt er geen document, en stopt het met code 1.
  */
@@ -147,6 +148,10 @@ $bekijk = static function (string $waar, string $tekst, bool $kort) use (&$tekst
         }
         if ($kort && preg_match('/[^.]\.$/u', $regel)) {
             $tekstMeldingen[] = "$waar: een kort veld eindigt op een punt.";
+        }
+        if (!$kort && mb_strlen($regel) > 350) {
+            $tekstMeldingen[] = "$waar: een alinea van " . mb_strlen($regel) . ' tekens. Splits hem: één gedachte per regel, '
+                . 'of een opsomming met één punt per regel.';
         }
         if (str_contains($regel, '  ')) {
             $tekstMeldingen[] = "$waar: twee spaties achter elkaar.";
